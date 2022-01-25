@@ -20,21 +20,7 @@ namespace Pruefungen
         {
             database = Program.database;
             /*var source = new AutoCompleteStringCollection();
-            source.AddRange(new string[]
-                            {
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December"
-                            });
+            source.AddRange(new string[] {"January","February"});
             var textBox = new TextBox
             {
                 AutoCompleteCustomSource = source,
@@ -48,6 +34,41 @@ namespace Pruefungen
             };*/
 
             InitializeComponent();
+            Panel panel_time_line1;
+            for (int i = 0; i < 3; i++)
+            {
+                panel_time_line1 = new Panel();
+                panel_time_line1.Location = new Point(12, 12 + 85 * i);
+                panel_time_line1.Name = "panel_time_line1";
+                panel_time_line1.Size = new Size(2400, 80);
+                panel_time_line1.Margin = new Padding(5);
+                panel_time_line1.TabIndex = 0;
+                panel_time_line1.BackColor = Color.Red;
+                panel_time_line1.Paint += panel1_Paint;
+                this.panel_time_line.Controls.Add(panel_time_line1);
+
+            }
+            void panel1_Paint(object sender, PaintEventArgs e)
+            {
+                ControlPaint.DrawBorder(e.Graphics, panel_time_line1.ClientRectangle,
+                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // left
+                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // top
+                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // right
+                Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
+                Font drawFont = new Font("Arial", 10);
+                SolidBrush drawBrush = new SolidBrush(Color.Black);
+                float x = 10.0F;
+                StringFormat drawFormat = new StringFormat();
+                // drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+
+                // Draw string to screen.
+                for (int i = 0; i < 24; i++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_time_line1.Width / 24 * i, 10, panel_time_line1.Width / 24 * i, panel_time_line1.Height - 20);
+                    e.Graphics.DrawString(i + " Uhr", drawFont, drawBrush, 10 + panel_time_line1.Width / 24 * i, panel_time_line1.Height - 30, drawFormat);
+                }
+            }
+
             /*var autocomplete_subject = new AutoCompleteStringCollection();
             autocomplete_subject.AddRange(new string[] { "Mathe", "Physik", "Deutsch", "Geschichte", "Englisch" });
             this.tb_subject.AutoCompleteCustomSource = autocomplete_subject;
