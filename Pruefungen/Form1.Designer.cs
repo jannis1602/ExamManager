@@ -529,8 +529,8 @@ namespace Pruefungen
             // 
             this.tlp_1.ColumnCount = 7;
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.74014F));
+            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.32947F));
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -586,17 +586,17 @@ namespace Pruefungen
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(194, 50);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(212, 50);
             this.tableLayoutPanel6.TabIndex = 7;
             // 
             // btn_keep_data_config
             // 
             this.btn_keep_data_config.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_keep_data_config.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btn_keep_data_config.Location = new System.Drawing.Point(123, 5);
+            this.btn_keep_data_config.Location = new System.Drawing.Point(134, 5);
             this.btn_keep_data_config.Margin = new System.Windows.Forms.Padding(5);
             this.btn_keep_data_config.Name = "btn_keep_data_config";
-            this.btn_keep_data_config.Size = new System.Drawing.Size(66, 40);
+            this.btn_keep_data_config.Size = new System.Drawing.Size(73, 40);
             this.btn_keep_data_config.TabIndex = 6;
             this.btn_keep_data_config.Text = "config";
             this.btn_keep_data_config.UseVisualStyleBackColor = true;
@@ -613,16 +613,17 @@ namespace Pruefungen
             this.tlp_config.RowCount = 2;
             this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlp_config.Size = new System.Drawing.Size(118, 50);
+            this.tlp_config.Size = new System.Drawing.Size(125, 50);
             this.tlp_config.TabIndex = 7;
             // 
             // cb_add_next_time
             // 
             this.cb_add_next_time.AutoSize = true;
+            this.cb_add_next_time.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.cb_add_next_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.cb_add_next_time.Location = new System.Drawing.Point(3, 28);
             this.cb_add_next_time.Name = "cb_add_next_time";
-            this.cb_add_next_time.Size = new System.Drawing.Size(112, 19);
+            this.cb_add_next_time.Size = new System.Drawing.Size(114, 19);
             this.cb_add_next_time.TabIndex = 6;
             this.cb_add_next_time.Text = "nächste +45min";
             this.cb_add_next_time.UseVisualStyleBackColor = true;
@@ -635,7 +636,7 @@ namespace Pruefungen
             this.cb_keep_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.cb_keep_data.Location = new System.Drawing.Point(3, 3);
             this.cb_keep_data.Name = "cb_keep_data";
-            this.cb_keep_data.Size = new System.Drawing.Size(112, 19);
+            this.cb_keep_data.Size = new System.Drawing.Size(119, 19);
             this.cb_keep_data.TabIndex = 5;
             this.cb_keep_data.Text = "Daten behalten";
             this.cb_keep_data.UseVisualStyleBackColor = true;
@@ -649,6 +650,7 @@ namespace Pruefungen
             this.btn_cancel.TabIndex = 10;
             this.btn_cancel.Text = "X";
             this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // btn_delete_exam
             // 
@@ -838,6 +840,7 @@ namespace Pruefungen
             this.panel_side_room.Name = "panel_side_room";
             this.panel_side_room.Size = new System.Drawing.Size(100, 135);
             this.panel_side_room.TabIndex = 0;
+            this.panel_side_room.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_room_Paint);
             // 
             // Form1
             // 

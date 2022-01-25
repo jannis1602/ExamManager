@@ -39,10 +39,12 @@ namespace Pruefungen
             };*/
             WindowState = FormWindowState.Maximized;
             InitializeComponent();
-            for (int i = 0; i < 10; i++)
+            // ## TODO: get next Exam date ## #######################################################
+            update_timeline();
+            /*for (int i = 0; i < 10; i++)
             {
                 AddTimeline("O-20" + i);
-            }
+            }*/
             /*Panel panel_time_line1;
             void panel1_Paint(object sender, PaintEventArgs e)
             {
@@ -172,13 +174,13 @@ namespace Pruefungen
         {
             Label lbl_room = new Label();
             lbl_room.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_room.Location = new Point(20, panel_side_time.Height+12 + 85 * time_line_list.Count);
+            lbl_room.Location = new Point(20, panel_side_time.Height + 12 + 85 * time_line_list.Count);
             lbl_room.Margin = new Padding(3);
             lbl_room.Name = "lbl_room";
             lbl_room.Size = new Size(80, 80);
             lbl_room.Text = room;
             lbl_room.TextAlign = ContentAlignment.MiddleLeft;
-            panel_side_room.Controls.Add(lbl_room);
+            //panel_side_room.Controls.Add(lbl_room);
             time_line_room_list.AddLast(lbl_room);
 
             this.panel_time_line.HorizontalScroll.Value = 0;
@@ -186,8 +188,8 @@ namespace Pruefungen
             panel_tl.Location = new Point(panel_side_room.Width, panel_side_time.Height + 12 + 85 * time_line_list.Count);
             panel_tl.Name = room;
             panel_tl.Size = new Size(2400, 80);
-            panel_tl.BackColor = Color.Red;
-            panel_tl.Paint += panel_timeline_Paint;
+            panel_tl.BackColor = Color.Gray;
+            panel_tl.Paint += panel_time_line_Paint;
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
         }
@@ -227,7 +229,7 @@ namespace Pruefungen
                 panel_tl_entity.Size = new Size(200 / 60 * Int32.Parse(s[10]), 60);
                 panel_tl_entity.Name = s[0];
                 panel_tl_entity.BackColor = Color.LightBlue;
-                panel_tl_entity.Paint += panel_timeline_entity_Paint;
+                panel_tl_entity.Paint += panel_time_line_entity_Paint;
                 panel_tl_entity.MouseClick += panel_tl_entity_click;
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
                 foreach (Panel p in time_line_list)
@@ -310,25 +312,72 @@ namespace Pruefungen
             {//ContextMenuStrip cm = sender as ContextMenuStrip;s}
         }*/
 
-        // ## [DEV] ##
-        private void panel_timeline_Paint(object sender, PaintEventArgs e)
+
+        private void panel_side_time_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
             ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // left
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // top
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // right
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Arial", 10);
-            SolidBrush drawBrush = new SolidBrush(Color.Black);
             StringFormat drawFormat = new StringFormat();
             for (int i = 0; i < 12; i++)
             {
-                e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_tl.Width / 12 * i, 10, panel_tl.Width / 12 * i, panel_tl.Height - 20);
-                e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_tl.Width / 12 * i, panel_tl.Height - 30, drawFormat);
+                e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
+                // add 30min line ######################
+                e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
             }
         }
-        private void panel_timeline_entity_Paint(object sender, PaintEventArgs e)
+        private void panel_side_room_Paint(object sender, PaintEventArgs e)
+        {
+            // ## [DEV] ##
+
+            Font drawFont = new Font("Arial", 10);
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rect = new Rectangle(5, 5, panel_side_room.Width - 10, panel_side_time.Height - 10);
+            e.Graphics.FillRectangle(Brushes.LightGreen, rect);
+            ControlPaint.DrawBorder(e.Graphics, rect,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
+            e.Graphics.DrawString("Q2", drawFont, Brushes.Black, rect, stringFormat);
+
+            int i = 0;
+            foreach (Label l in time_line_room_list)
+            {
+                Rectangle rect_room = new Rectangle(10, panel_side_time.Height + 20 + 85 * i, 80, 60);
+                stringFormat.Alignment = StringAlignment.Center;
+                stringFormat.LineAlignment = StringAlignment.Center;
+                e.Graphics.FillRectangle(Brushes.LightGreen, rect_room);
+                ControlPaint.DrawBorder(e.Graphics, rect_room,
+                Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+                Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
+                e.Graphics.DrawString(l.Text, drawFont, Brushes.Black, rect_room, stringFormat);
+                i++;
+            }
+
+        }
+        private void panel_time_line_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel_tl = sender as Panel;
+            ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid);
+            Font drawFont = new Font("Arial", 10);
+            SolidBrush drawBrush = new SolidBrush(Color.Blue);
+            StringFormat drawFormat = new StringFormat();
+            for (int i = 0; i < 12; i++)
+            {
+                e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
+                //e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
+            }
+        }
+        private void panel_time_line_entity_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl_entity = sender as Panel;
             ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
@@ -346,10 +395,8 @@ namespace Pruefungen
         private void btn_delete_exam_Click(object sender, EventArgs e)
         {
             database.DeleteExam(id);
-            Console.WriteLine("delete? " + id);
             id = 0;
             update_timeline();
-            if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(45); }
             if (this.cb_keep_data.Checked)
             {
                 this.tb_student.Clear();
@@ -367,27 +414,25 @@ namespace Pruefungen
         }
 
         private void btn_reuse_exam_Click(object sender, EventArgs e)
+        { id = 0; }
+
+        private void btn_cancel_Click(object sender, EventArgs e)
         {
             id = 0;
-        }
-
-        private void panel_side_time_Paint(object sender, PaintEventArgs e)
-        {
-            Panel panel_tl = sender as Panel;
-            ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // left
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // top
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // right
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
-            Font drawFont = new Font("Arial", 10);
-            SolidBrush drawBrush = new SolidBrush(Color.Black);
-            StringFormat drawFormat = new StringFormat();
-            for (int i = 0; i < 12; i++)
+            if (this.cb_keep_data.Checked)
+            { this.tb_student.Clear(); }
+            else
             {
-                e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_tl.Width / 12 * i, 10, panel_tl.Width / 12 * i, panel_tl.Height - 20);
-                e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_tl.Width / 12 * i, panel_tl.Height - 30, drawFormat);
+                this.tb_exam_room.Clear();
+                this.tb_preparation_room.Clear();
+                this.tb_student.Clear();
+                this.cb_subject.SelectedItem = null;
+                this.tb_teacher1.Clear();
+                this.tb_teacher2.Clear();
+                this.tb_teacher3.Clear();
             }
         }
+
         /*private void tb_duration_TextChanged(object sender, EventArgs e)
 {
 if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
