@@ -14,6 +14,7 @@ namespace Pruefungen
         LinkedList<Panel> time_line_list;
         LinkedList<Panel> time_line_entity_list;
         LinkedList<Label> time_line_room_list;
+        string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
 
         public Form1()
         {
@@ -39,7 +40,7 @@ namespace Pruefungen
             };*/
             WindowState = FormWindowState.Maximized;
             InitializeComponent();
-            // ## TODO: get next Exam date ## #######################################################
+            // ## TODO: get next Exam date ##  #######################################################
             update_timeline();
             /*for (int i = 0; i < 10; i++)
             {
@@ -138,6 +139,7 @@ namespace Pruefungen
             if (id == 0)
                 database.AddExam(date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, "Q2")[0], teacher1, teacher2, teacher3, subject, duration);
             id = 0;
+            label_mode.Text = edit_mode[0];
             update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(45); }
             if (this.cb_keep_data.Checked)
@@ -194,7 +196,7 @@ namespace Pruefungen
             time_line_list.AddLast(panel_tl);
         }
 
-        private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
+        private void dtp_time_line_date_ValueChanged(object sender, EventArgs e)
         {
             update_timeline();
         }
@@ -242,18 +244,19 @@ namespace Pruefungen
             if (e.Button == MouseButtons.Left)
             {
                 Panel p = sender as Panel;
-                string[] exam = Program.database.GetExamById(Int32.Parse(p.Name));
-                string[] student = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+                string[] exam = database.GetExamById(Int32.Parse(p.Name));
+                string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
 
                 DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     id = Int32.Parse(exam[0]);
+                    label_mode.Text = edit_mode[1];
                     this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
                     this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     this.tb_exam_room.Text = exam[3];
                     this.tb_preparation_room.Text = exam[4];
-                    string[] st = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+                    string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
                     this.tb_student.Text = st[1] + " " + st[2];
                     this.tb_teacher1.Text = exam[6];
                     this.tb_teacher2.Text = exam[7];
@@ -270,8 +273,8 @@ namespace Pruefungen
             if (e.Button == MouseButtons.Left)
             {
                 Panel p = sender as Panel;
-                string[] exam = Program.database.GetExamById(Int32.Parse(p.Name));
-                string[] student = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+                string[] exam = database.GetExamById(Int32.Parse(p.Name));
+                string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
 
                 /*DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
@@ -317,9 +320,9 @@ namespace Pruefungen
         {
             Panel panel_tl = sender as Panel;
             ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
             Color.DarkGreen, 4, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Arial", 10);
             StringFormat drawFormat = new StringFormat();
@@ -364,8 +367,8 @@ namespace Pruefungen
         {
             Panel panel_tl = sender as Panel;
             ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid, 
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
             Color.DarkGreen, 4, ButtonBorderStyle.Solid,
             Color.DarkGreen, 4, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Arial", 10);
@@ -388,7 +391,7 @@ namespace Pruefungen
             Font drawFont = new Font("Arial", 8);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
             StringFormat drawFormat = new StringFormat();
-            string[] student = Program.database.GetStudentByID(Int32.Parse(Program.database.GetExamById(Int32.Parse(panel_tl_entity.Name))[5]));
+            string[] student = database.GetStudentByID(Int32.Parse(database.GetExamById(Int32.Parse(panel_tl_entity.Name))[5]));
             e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 8, drawFormat);
         }
 
@@ -396,6 +399,7 @@ namespace Pruefungen
         {
             database.DeleteExam(id);
             id = 0;
+            label_mode.Text = edit_mode[0];
             update_timeline();
             if (this.cb_keep_data.Checked)
             {
@@ -414,11 +418,12 @@ namespace Pruefungen
         }
 
         private void btn_reuse_exam_Click(object sender, EventArgs e)
-        { id = 0; }
+        { id = 0; label_mode.Text = edit_mode[0]; }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             id = 0;
+            label_mode.Text = edit_mode[0];
             if (this.cb_keep_data.Checked)
             { this.tb_student.Clear(); }
             else
@@ -432,6 +437,7 @@ namespace Pruefungen
                 this.tb_teacher3.Clear();
             }
         }
+
 
         /*private void tb_duration_TextChanged(object sender, EventArgs e)
 {

@@ -143,7 +143,7 @@ namespace Pruefungen
             this.dtp_timeline_date.Name = "dtp_timeline_date";
             this.dtp_timeline_date.Size = new System.Drawing.Size(100, 21);
             this.dtp_timeline_date.TabIndex = 3;
-            this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_timeline_date_ValueChanged);
+            this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_time_line_date_ValueChanged);
             // 
             // btn_grid_view
             // 
