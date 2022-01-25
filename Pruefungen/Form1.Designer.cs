@@ -83,6 +83,7 @@ namespace Pruefungen
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
             this.panel_side_room = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -104,6 +105,7 @@ namespace Pruefungen
             this.tlp_duration.SuspendLayout();
             this.tlp_time.SuspendLayout();
             this.panel_time_line.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -113,7 +115,7 @@ namespace Pruefungen
             this.tlp_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_main.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tlp_main.Controls.Add(this.tableLayoutPanel2, 0, 2);
-            this.tlp_main.Controls.Add(this.panel_time_line, 0, 1);
+            this.tlp_main.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tlp_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_main.Location = new System.Drawing.Point(0, 0);
             this.tlp_main.Name = "tlp_main";
@@ -811,19 +813,18 @@ namespace Pruefungen
             // 
             this.panel_time_line.AutoScroll = true;
             this.panel_time_line.Controls.Add(this.panel_side_time);
-            this.panel_time_line.Controls.Add(this.panel_side_room);
             this.panel_time_line.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_time_line.Location = new System.Drawing.Point(0, 26);
+            this.panel_time_line.Location = new System.Drawing.Point(100, 0);
             this.panel_time_line.Margin = new System.Windows.Forms.Padding(0);
             this.panel_time_line.Name = "panel_time_line";
-            this.panel_time_line.Size = new System.Drawing.Size(784, 135);
+            this.panel_time_line.Size = new System.Drawing.Size(684, 135);
             this.panel_time_line.TabIndex = 2;
             // 
             // panel_side_time
             // 
             this.panel_side_time.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.panel_side_time.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel_side_time.Location = new System.Drawing.Point(100, 0);
+            this.panel_side_time.Location = new System.Drawing.Point(0, 0);
             this.panel_side_time.Margin = new System.Windows.Forms.Padding(0);
             this.panel_side_time.MaximumSize = new System.Drawing.Size(0, 50);
             this.panel_side_time.Name = "panel_side_time";
@@ -834,13 +835,29 @@ namespace Pruefungen
             // panel_side_room
             // 
             this.panel_side_room.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel_side_room.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel_side_room.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_side_room.Location = new System.Drawing.Point(0, 0);
             this.panel_side_room.Margin = new System.Windows.Forms.Padding(0);
             this.panel_side_room.Name = "panel_side_room";
             this.panel_side_room.Size = new System.Drawing.Size(100, 135);
             this.panel_side_room.TabIndex = 0;
             this.panel_side_room.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_room_Paint);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panel_side_room, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel_time_line, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 26);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 135);
+            this.tableLayoutPanel1.TabIndex = 2;
             // 
             // Form1
             // 
@@ -883,6 +900,7 @@ namespace Pruefungen
             this.tlp_time.ResumeLayout(false);
             this.tlp_time.PerformLayout();
             this.panel_time_line.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -942,6 +960,7 @@ namespace Pruefungen
         private System.Windows.Forms.Button btn_reuse_exam;
         private System.Windows.Forms.Panel panel_side_time;
         private System.Windows.Forms.Panel panel_time_line;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 

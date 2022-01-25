@@ -187,7 +187,7 @@ namespace Pruefungen
 
             this.panel_time_line.HorizontalScroll.Value = 0;
             Panel panel_tl = new Panel();
-            panel_tl.Location = new Point(panel_side_room.Width, panel_side_time.Height + 12 + 85 * time_line_list.Count);
+            panel_tl.Location = new Point(0, panel_side_time.Height + 12 + 85 * time_line_list.Count);
             panel_tl.Name = room;
             panel_tl.Size = new Size(2400, 80);
             panel_tl.BackColor = Color.Gray;
@@ -337,6 +337,7 @@ namespace Pruefungen
         {
             // ## [DEV] ##
 
+            Panel p = sender as Panel;
             Font drawFont = new Font("Arial", 10);
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
@@ -347,7 +348,7 @@ namespace Pruefungen
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
             e.Graphics.DrawString("Q2", drawFont, Brushes.Black, rect, stringFormat);
-
+            e.Graphics.DrawLine(new Pen(Color.Black, 4),p.Width,0,p.Width,p.Height );
             int i = 0;
             foreach (Label l in time_line_room_list)
             {
