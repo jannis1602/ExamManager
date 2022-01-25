@@ -256,10 +256,11 @@ namespace Pruefungen
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
         }
-        public void EditExam(string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
+        public void EditExam(int id, string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "INSERT INTO exam (date, time, exam_room, preparation_room, student, teacher_vorsitz, teacher_pruefer, teacher_protokoll, subject, duration) VALUES(@date,@time,@exam_room,@preparation_room,@student,@teacher_vorsitz,@teacher_pruefer,@teacher_protokoll,@subject,@duration)";
+            sqlite_cmd.CommandText = "UPDATE exam SET date=@date, time=@time, exam_room=@exam_room, preparation_room=@preparation_room, student=@student, teacher_vorsitz=@teacher_vorsitz, teacher_pruefer=@teacher_pruefer, teacher_protokoll=@teacher_protokoll, subject=@subject, duration=@duration WHERE id = @id";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
             sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@time", time);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
