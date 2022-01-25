@@ -26,6 +26,9 @@ namespace Pruefungen
             // subject dropdown
             // editmode: cancle btn 
             // duration or Endtime?
+
+            // btn prüfung hinzufügen ersetzen durch ändern...
+            // check db time for exam
         }
     }
 }

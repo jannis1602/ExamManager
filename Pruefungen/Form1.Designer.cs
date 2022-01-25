@@ -145,6 +145,7 @@ namespace Pruefungen
             this.dtp_timeline_date.Name = "dtp_timeline_date";
             this.dtp_timeline_date.Size = new System.Drawing.Size(100, 21);
             this.dtp_timeline_date.TabIndex = 3;
+            this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_time_line_date_ValueChanged);
             // 
             // btn_grid_view
@@ -812,6 +813,7 @@ namespace Pruefungen
             // panel_time_line
             // 
             this.panel_time_line.AutoScroll = true;
+            this.panel_time_line.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel_time_line.Controls.Add(this.panel_side_time);
             this.panel_time_line.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_time_line.Location = new System.Drawing.Point(100, 0);

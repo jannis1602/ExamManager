@@ -94,7 +94,7 @@ namespace Pruefungen
             if (form_grid != null && !form_grid.IsDisposed)
                 form_grid.Data_update();
         }
-        // ## [DEV] ##
+        // ## [DEV] ## ################################################################################
         private void AddExam()
         {
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
@@ -113,7 +113,7 @@ namespace Pruefungen
                 MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return;
             }
 
-            // check db ##################################################
+            // check db ######################################################################################################
 
             string name = student;
             string tempfirstname = null;
@@ -227,8 +227,11 @@ namespace Pruefungen
                 DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
                 DateTime examTime = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                 int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-                panel_tl_entity.Location = new Point(12 + 200 / 60 * totalMins, 10);
-                panel_tl_entity.Size = new Size(200 / 60 * Int32.Parse(s[10]), 60);
+                Console.WriteLine(s[0] + " minuten:" + 200 / 60 * totalMins);
+                float unit_per_minute = 200F / 60F;
+                float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
+                panel_tl_entity.Location = new Point(Convert.ToInt32(startpoint), 10);
+                panel_tl_entity.Size = new Size(Convert.ToInt32(unit_per_minute * Int32.Parse(s[10])), 60);
                 panel_tl_entity.Name = s[0];
                 panel_tl_entity.BackColor = Color.LightBlue;
                 panel_tl_entity.Paint += panel_time_line_entity_Paint;
@@ -329,7 +332,7 @@ namespace Pruefungen
             for (int i = 0; i < 12; i++)
             {
                 e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
-                // add 30min line ######################
+                // add 30min / 15min line ###########################################
                 e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
             }
         }
@@ -348,7 +351,7 @@ namespace Pruefungen
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
             e.Graphics.DrawString("Q2", drawFont, Brushes.Black, rect, stringFormat);
-            e.Graphics.DrawLine(new Pen(Color.Black, 4),p.Width,0,p.Width,p.Height );
+            e.Graphics.DrawLine(new Pen(Color.Black, 4), p.Width, 0, p.Width, p.Height);
             int i = 0;
             foreach (Label l in time_line_room_list)
             {
@@ -392,8 +395,11 @@ namespace Pruefungen
             Font drawFont = new Font("Arial", 8);
             SolidBrush drawBrush = new SolidBrush(Color.Black);
             StringFormat drawFormat = new StringFormat();
-            string[] student = database.GetStudentByID(Int32.Parse(database.GetExamById(Int32.Parse(panel_tl_entity.Name))[5]));
-            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 8, drawFormat);
+            string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
+            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 10, drawFormat);
+            e.Graphics.DrawString(exam[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 10 * 4, drawFormat);
+
         }
 
         private void btn_delete_exam_Click(object sender, EventArgs e)
