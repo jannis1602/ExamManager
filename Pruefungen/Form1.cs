@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Pruefungen
@@ -15,7 +12,6 @@ namespace Pruefungen
     {
         Database database;
         Form_grid form_grid;
-
         public Form1()
         {
             database = Program.database;
@@ -32,7 +28,7 @@ namespace Pruefungen
                 Width = ClientRectangle.Width - 40,
                 Visible = true
             };*/
-
+            WindowState = FormWindowState.Maximized;
             InitializeComponent();
             Panel panel_time_line1;
             for (int i = 0; i < 3; i++)
@@ -57,15 +53,12 @@ namespace Pruefungen
                 Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
                 Font drawFont = new Font("Arial", 10);
                 SolidBrush drawBrush = new SolidBrush(Color.Black);
-                float x = 10.0F;
                 StringFormat drawFormat = new StringFormat();
                 // drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
-
-                // Draw string to screen.
-                for (int i = 0; i < 24; i++)
+                for (int i = 0; i < 12; i++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_time_line1.Width / 24 * i, 10, panel_time_line1.Width / 24 * i, panel_time_line1.Height - 20);
-                    e.Graphics.DrawString(i + " Uhr", drawFont, drawBrush, 10 + panel_time_line1.Width / 24 * i, panel_time_line1.Height - 30, drawFormat);
+                    e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_time_line1.Width / 12 * i, 10, panel_time_line1.Width / 12 * i, panel_time_line1.Height - 20);
+                    e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_time_line1.Width / 12 * i, panel_time_line1.Height - 30, drawFormat);
                 }
             }
 
@@ -76,7 +69,6 @@ namespace Pruefungen
             this.tb_subject.AutoCompleteSource = AutoCompleteSource.CustomSource;*/
             string[] subjectlist = new string[] { "Mathe", "Physik", "Deutsch", "Geschichte", "Englisch" };
             cb_subject.Items.AddRange(subjectlist);
-
             var autocomplete_student = new AutoCompleteStringCollection();
             LinkedList<string[]> allStudents = database.GetAllStudents();
             string[] students = new string[allStudents.Count];
@@ -96,50 +88,16 @@ namespace Pruefungen
             this.tb_preparation_room.AutoCompleteCustomSource = autocomplete_exam_room;
             this.tb_preparation_room.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_preparation_room.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-            /*chart1.Titles.Add("Stacked BAR Chart!");
-            chart1.Series["RUN"].Points.AddXY("MACHINE 1", "50");
-            chart1.Series["ALARM"].Points.AddXY("MACHINE 1", "30");
-            chart1.Series["WAIT"].Points.AddXY("MACHINE 1", "10");
-            chart1.Series["OFF"].Points.AddXY("MACHINE 1", "10");
-
-            chart1.Series["RUN"].Points.AddXY("MACHINE 2", "250");
-            chart1.Series["ALARM"].Points.AddXY("MACHINE 2", "150");
-            chart1.Series["WAIT"].Points.AddXY("MACHINE 2", "70");
-            chart1.Series["OFF"].Points.AddXY("MACHINE 2", "200");
-
-            chart1.Series["RUN"].Points.AddXY("MACHINE 3", "50");
-            chart1.Series["ALARM"].Points.AddXY("MACHINE 3", "150");
-            chart1.Series["WAIT"].Points.AddXY("MACHINE 3", "150");
-            chart1.Series["OFF"].Points.AddXY("MACHINE 3", "400");
-
-            chart1.Series["RUN"].Points.AddXY("MACHINE 4", "250");
-            chart1.Series["ALARM"].Points.AddXY("MACHINE 4", "150");
-            chart1.Series["WAIT"].Points.AddXY("MACHINE 4", "750");
-            chart1.Series["OFF"].Points.AddXY("MACHINE 4", "200");
-
-
-            chart1.Series["RUN"].Points.AddXY("MACHINE 5", "250");
-            chart1.Series["ALARM"].Points.AddXY("MACHINE 5", "50");
-            chart1.Series["WAIT"].Points.AddXY("MACHINE 5", "170");
-            chart1.Series["OFF"].Points.AddXY("MACHINE 5", "20"); */
         }
 
         private void btn_add_exam_Click(object sender, EventArgs e)
         {
             AddExam();
-            form_grid.Data_update();
+            if (form_grid != null && !form_grid.IsDisposed)
+                form_grid.Data_update();
         }
         private void AddExam()
         {
-            //AddExam("2022-01-28", "09:00:00", "O-201", "O-202", "student1", "abc", "def", "ghi", "ma", 45);
-            //string date = tb_date.Text;
-            //IWebElement txtBxDatePicker = driver.FindElement(By.Id("TextBoxOfDatePicker"));
-            //txtBxDatePicker.SendKeys("dd/mm/yyy");
-            //DateTime datetime;
-            //DateTime.TryParseExact(tb_date.Text, "yyyy-mm-dd", null, DateTimeStyles.None, out datetime);
-            //date = datetime.ToString();
-            //string time = tb_time.Text;
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             string time = this.dtp_time.Value.ToString("HH:mm");
             string exam_room = tb_exam_room.Text.ToUpper();
@@ -148,7 +106,7 @@ namespace Pruefungen
             string teacher1 = tb_teacher1.Text;  // check in db
             string teacher2 = tb_teacher2.Text;  // check in db
             string teacher3 = tb_teacher3.Text;  // check in db
-            string subject = cb_subject.Text;       // upper
+            string subject = cb_subject.Text;       // uppercase
             int duration = Int16.Parse(tb_duration.Text);  // check for number
 
             if (exam_room != null && preparation_room != null && student != null && teacher1 != null && teacher2 != null && teacher3 != null && subject != null && duration != null)
@@ -167,6 +125,7 @@ namespace Pruefungen
             Console.WriteLine(" ===>>> " + database.GetStudent(tempfirstname, templastname, "Q2")[1]);
 
             database.AddExam(date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, "Q2")[0], teacher1, teacher2, teacher3, subject, duration);
+            update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(45); }
             if (this.cb_keep_data.Checked)
             {
@@ -198,7 +157,160 @@ namespace Pruefungen
                 form_grid.Show();
             }
         }
+        Panel panel_tl;
+        Panel panel_tl_entity;
+        public void AddTimeline()
+        {
+            panel_tl = new Panel();
+            panel_tl.Location = new Point(12, 12 + 85 * 4);
+            panel_tl.Name = "panel_time_line";
+            panel_tl.Size = new Size(2400, 80);
+            panel_tl.BackColor = Color.Red;
+            panel_tl.Paint += panel_timeline_Paint;
+            this.panel_time_line.Controls.Add(panel_tl);
+        }
 
+        private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
+        {
+            update_timeline();
+        }
+        public void update_timeline()
+        {
+            if (panel_tl != null)
+                panel_tl.Dispose();
+            AddTimeline();
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            foreach (string[] s in Program.database.GetAllExamsAtDate(date))
+            {
+                Console.WriteLine(s[0] + s[1] + s[2] + s[3] + s[4] + s[5] + s[6] + s[7] + s[8] + s[9] + s[10]);
+                panel_tl_entity = new Panel();
+                DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime examTime = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+                Console.WriteLine(totalMins);
+                Console.WriteLine(12 + 200 / 60 * totalMins);
+                panel_tl_entity.Location = new Point(12 + 200 / 60 * totalMins, 10);
+                panel_tl_entity.Name = s[0];
+                panel_tl_entity.Size = new Size(200 / 60 * Int32.Parse(s[10]), 60);
+                panel_tl_entity.BackColor = Color.LightBlue;
+                panel_tl_entity.Paint += panel_timeline_entity_Paint;
+                panel_tl_entity.MouseClick += panel_tl_entity_click;
+                panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
+                this.panel_tl.Controls.Add(panel_tl_entity);
+            }
+        }
+        private void panel_tl_entity_double_click(object sender, MouseEventArgs e) // TODO delete old if edited
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Panel p = sender as Panel;
+                string[] exam = Program.database.GetExamById(Int32.Parse(p.Name));
+                string[] student = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+
+                DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Console.WriteLine(exam[1]);
+                    this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+                    this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    this.tb_exam_room.Text = exam[3];
+                    this.tb_preparation_room.Text = exam[4];
+                    string[] st = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+                    this.tb_student.Text = st[1] + " " + st[2];
+                    this.tb_teacher1.Text = exam[6];
+                    this.tb_teacher2.Text = exam[7];
+                    this.tb_teacher3.Text = exam[8];
+                    this.cb_subject.Text = exam[9];
+                    this.tb_duration.Text = exam[10];
+                }
+            }
+        }
+        private void panel_tl_entity_click(object sender, MouseEventArgs e) // TODO delete old if edited
+        {
+            Console.WriteLine("Click");
+
+            if (e.Button == MouseButtons.Left)
+            {
+                Panel p = sender as Panel;
+                string[] exam = Program.database.GetExamById(Int32.Parse(p.Name));
+                string[] student = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+
+                /*DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Console.WriteLine(exam[1]);
+                    this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+                    this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    this.tb_exam_room.Text = exam[3];
+                    this.tb_preparation_room.Text = exam[4];
+                    string[] st = Program.database.GetStudentByID(Int32.Parse(exam[5]));
+                    this.tb_student.Text = st[1] + " " + st[2];
+                    this.tb_teacher1.Text = exam[6];
+                    this.tb_teacher2.Text = exam[7];
+                    this.tb_teacher3.Text = exam[8];
+                    this.cb_subject.Text = exam[9];
+                    this.tb_duration.Text = exam[10];
+                }*/
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                //Panel p = sender as Panel;
+                //int exam_id = Int32.Parse(Program.database.GetExamById(Int32.Parse(p.Name))[0]);
+                //string[] student = Program.database.GetStudentByID(Int32.Parse(Program.database.GetExamById(Int32.Parse(p.Name))[5]));
+                //DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Löschen?", "Warnung!", MessageBoxButtons.YesNo);
+                //if (result == DialogResult.Yes) { Program.database.DeleteExam(exam_id); p.Dispose(); }
+
+                /*ContextMenuStrip cm = new ContextMenuStrip();
+                cm.Name = Program.database.GetExamById(Int32.Parse(p.Name))[0];
+                cm.Items.Add("Item 1");
+                cm.Items.Add("Item 2");
+                cm.Show(p, new Point(e.X, e.Y));
+                cm.ItemClicked += new ToolStripItemClickedEventHandler(Item_Click);*/
+            }
+        }
+        /*private void Item_Click(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem.Text == "Delete")
+            {
+                //ContextMenuStrip cm = sender as ContextMenuStrip;
+            }
+            else
+            {
+                //Codes Here
+            }
+        }*/
+
+        private void panel_timeline_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // left
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // top
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid, // right
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
+            Font drawFont = new Font("Arial", 10);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+            StringFormat drawFormat = new StringFormat();
+            // drawFormat.FormatFlags = StringFormatFlags.
+            for (int i = 0; i < 12; i++)
+            {
+                e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_tl.Width / 12 * i, 10, panel_tl.Width / 12 * i, panel_tl.Height - 20);
+                e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_tl.Width / 12 * i, panel_tl.Height - 30, drawFormat);
+            }
+        }
+        private void panel_timeline_entity_Paint(object sender, PaintEventArgs e)
+        {
+            Panel p = sender as Panel;
+            ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid);
+            Font drawFont = new Font("Arial", 8);
+            SolidBrush drawBrush = new SolidBrush(Color.Black);
+            StringFormat drawFormat = new StringFormat();
+            string[] student = Program.database.GetStudentByID(Int32.Parse(Program.database.GetExamById(Int32.Parse(p.Name))[5]));
+            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 8, drawFormat);
+        }
         /*private void tb_duration_TextChanged(object sender, EventArgs e)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))

@@ -29,7 +29,11 @@ namespace Pruefungen
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.dtp_timeline_date = new System.Windows.Forms.DateTimePicker();
+            this.btn_grid_view = new System.Windows.Forms.Button();
+            this.panel_time_line = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_student = new System.Windows.Forms.TableLayoutPanel();
@@ -37,25 +41,25 @@ namespace Pruefungen
             this.lbl_student = new System.Windows.Forms.Label();
             this.btn_add_exam = new System.Windows.Forms.Button();
             this.tlp_4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlp_teacher1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_teacher1 = new System.Windows.Forms.TextBox();
-            this.lbl_teacher1 = new System.Windows.Forms.Label();
             this.tlp_teacher3 = new System.Windows.Forms.TableLayoutPanel();
             this.tb_teacher3 = new System.Windows.Forms.TextBox();
             this.lbl_teacher3 = new System.Windows.Forms.Label();
+            this.tlp_teacher1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tb_teacher1 = new System.Windows.Forms.TextBox();
+            this.lbl_teacher1 = new System.Windows.Forms.Label();
             this.tlp_teacher2 = new System.Windows.Forms.TableLayoutPanel();
             this.tb_teacher2 = new System.Windows.Forms.TextBox();
             this.lbl_teacher2 = new System.Windows.Forms.Label();
             this.tlp_3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlp_exam_room = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_exam_room = new System.Windows.Forms.TextBox();
-            this.lbl_exam_room = new System.Windows.Forms.Label();
             this.tlp_subject = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_subject = new System.Windows.Forms.Label();
             this.cb_subject = new System.Windows.Forms.ComboBox();
             this.tlp_preparation_room = new System.Windows.Forms.TableLayoutPanel();
             this.tb_preparation_room = new System.Windows.Forms.TextBox();
             this.lbl_preparation_room = new System.Windows.Forms.Label();
+            this.tlp_exam_room = new System.Windows.Forms.TableLayoutPanel();
+            this.tb_exam_room = new System.Windows.Forms.TextBox();
+            this.lbl_exam_room = new System.Windows.Forms.Label();
             this.tlp_1 = new System.Windows.Forms.TableLayoutPanel();
             this.label_mode = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -63,7 +67,7 @@ namespace Pruefungen
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
-            this.btn_grid_view = new System.Windows.Forms.Button();
+            this.btn_cancel = new System.Windows.Forms.Button();
             this.tlp_2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_date = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_date = new System.Windows.Forms.Label();
@@ -74,19 +78,20 @@ namespace Pruefungen
             this.tlp_time = new System.Windows.Forms.TableLayoutPanel();
             this.dtp_time = new System.Windows.Forms.DateTimePicker();
             this.lbl_time = new System.Windows.Forms.Label();
-            this.panel_time_line = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.btn_advanced = new System.Windows.Forms.Button();
+            this.tlp_main.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tlp_student.SuspendLayout();
             this.tlp_4.SuspendLayout();
-            this.tlp_teacher1.SuspendLayout();
             this.tlp_teacher3.SuspendLayout();
+            this.tlp_teacher1.SuspendLayout();
             this.tlp_teacher2.SuspendLayout();
             this.tlp_3.SuspendLayout();
-            this.tlp_exam_room.SuspendLayout();
             this.tlp_subject.SuspendLayout();
             this.tlp_preparation_room.SuspendLayout();
+            this.tlp_exam_room.SuspendLayout();
             this.tlp_1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tlp_config.SuspendLayout();
@@ -96,21 +101,65 @@ namespace Pruefungen
             this.tlp_time.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tlp_main
             // 
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.panel_time_line, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 411);
-            this.tableLayoutPanel1.TabIndex = 2;
+            this.tlp_main.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlp_main.ColumnCount = 1;
+            this.tlp_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_main.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tlp_main.Controls.Add(this.panel_time_line, 0, 1);
+            this.tlp_main.Controls.Add(this.tableLayoutPanel2, 0, 2);
+            this.tlp_main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_main.Location = new System.Drawing.Point(0, 0);
+            this.tlp_main.Name = "tlp_main";
+            this.tlp_main.RowCount = 3;
+            this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tlp_main.Size = new System.Drawing.Size(784, 411);
+            this.tlp_main.TabIndex = 2;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.dtp_timeline_date);
+            this.flowLayoutPanel1.Controls.Add(this.btn_grid_view);
+            this.flowLayoutPanel1.Controls.Add(this.btn_advanced);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(325, 26);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // dtp_timeline_date
+            // 
+            this.dtp_timeline_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.dtp_timeline_date.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtp_timeline_date.Location = new System.Drawing.Point(3, 3);
+            this.dtp_timeline_date.Name = "dtp_timeline_date";
+            this.dtp_timeline_date.Size = new System.Drawing.Size(100, 21);
+            this.dtp_timeline_date.TabIndex = 3;
+            this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_timeline_date_ValueChanged);
+            // 
+            // btn_grid_view
+            // 
+            this.btn_grid_view.Location = new System.Drawing.Point(109, 3);
+            this.btn_grid_view.Name = "btn_grid_view";
+            this.btn_grid_view.Size = new System.Drawing.Size(86, 21);
+            this.btn_grid_view.TabIndex = 9;
+            this.btn_grid_view.Text = "Tabelle";
+            this.btn_grid_view.UseVisualStyleBackColor = true;
+            this.btn_grid_view.Click += new System.EventHandler(this.btn_grid_view_Click);
+            // 
+            // panel_time_line
+            // 
+            this.panel_time_line.AutoScroll = true;
+            this.panel_time_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel_time_line.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_time_line.Location = new System.Drawing.Point(0, 26);
+            this.panel_time_line.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_time_line.Name = "panel_time_line";
+            this.panel_time_line.Size = new System.Drawing.Size(784, 135);
+            this.panel_time_line.TabIndex = 2;
             // 
             // tableLayoutPanel2
             // 
@@ -166,14 +215,14 @@ namespace Pruefungen
             this.tlp_student.Name = "tlp_student";
             this.tlp_student.RowCount = 1;
             this.tlp_student.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_student.Size = new System.Drawing.Size(382, 40);
+            this.tlp_student.Size = new System.Drawing.Size(382, 36);
             this.tlp_student.TabIndex = 4;
             // 
             // tb_student
             // 
             this.tb_student.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tb_student.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_student.Location = new System.Drawing.Point(76, 11);
+            this.tb_student.Location = new System.Drawing.Point(76, 7);
             this.tb_student.Name = "tb_student";
             this.tb_student.Size = new System.Drawing.Size(303, 26);
             this.tb_student.TabIndex = 2;
@@ -183,7 +232,8 @@ namespace Pruefungen
             this.lbl_student.AutoSize = true;
             this.lbl_student.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lbl_student.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_student.Location = new System.Drawing.Point(3, 17);
+            this.lbl_student.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.lbl_student.Location = new System.Drawing.Point(3, 13);
             this.lbl_student.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_student.Name = "lbl_student";
             this.lbl_student.Size = new System.Drawing.Size(67, 20);
@@ -223,44 +273,6 @@ namespace Pruefungen
             this.tlp_4.Size = new System.Drawing.Size(784, 50);
             this.tlp_4.TabIndex = 7;
             // 
-            // tlp_teacher1
-            // 
-            this.tlp_teacher1.ColumnCount = 2;
-            this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_teacher1.Controls.Add(this.tb_teacher1, 1, 0);
-            this.tlp_teacher1.Controls.Add(this.lbl_teacher1, 0, 0);
-            this.tlp_teacher1.Location = new System.Drawing.Point(5, 5);
-            this.tlp_teacher1.Margin = new System.Windows.Forms.Padding(0);
-            this.tlp_teacher1.Name = "tlp_teacher1";
-            this.tlp_teacher1.RowCount = 1;
-            this.tlp_teacher1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
-            this.tlp_teacher1.TabIndex = 4;
-            // 
-            // tb_teacher1
-            // 
-            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.Name = "tb_teacher1";
-            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.TabIndex = 2;
-            // 
-            // lbl_teacher1
-            // 
-            this.lbl_teacher1.AutoSize = true;
-            this.lbl_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lbl_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_teacher1.Location = new System.Drawing.Point(3, 17);
-            this.lbl_teacher1.Margin = new System.Windows.Forms.Padding(3);
-            this.lbl_teacher1.Name = "lbl_teacher1";
-            this.lbl_teacher1.Size = new System.Drawing.Size(59, 20);
-            this.lbl_teacher1.TabIndex = 1;
-            this.lbl_teacher1.Text = "Lehrer:";
-            this.lbl_teacher1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tlp_teacher3
             // 
             this.tlp_teacher3.ColumnCount = 2;
@@ -298,6 +310,44 @@ namespace Pruefungen
             this.lbl_teacher3.TabIndex = 1;
             this.lbl_teacher3.Text = "Lehrer:";
             this.lbl_teacher3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tlp_teacher1
+            // 
+            this.tlp_teacher1.ColumnCount = 2;
+            this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlp_teacher1.Controls.Add(this.tb_teacher1, 1, 0);
+            this.tlp_teacher1.Controls.Add(this.lbl_teacher1, 0, 0);
+            this.tlp_teacher1.Location = new System.Drawing.Point(5, 5);
+            this.tlp_teacher1.Margin = new System.Windows.Forms.Padding(0);
+            this.tlp_teacher1.Name = "tlp_teacher1";
+            this.tlp_teacher1.RowCount = 1;
+            this.tlp_teacher1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
+            this.tlp_teacher1.TabIndex = 4;
+            // 
+            // tb_teacher1
+            // 
+            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
+            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.Name = "tb_teacher1";
+            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.TabIndex = 2;
+            // 
+            // lbl_teacher1
+            // 
+            this.lbl_teacher1.AutoSize = true;
+            this.lbl_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_teacher1.Location = new System.Drawing.Point(3, 17);
+            this.lbl_teacher1.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_teacher1.Name = "lbl_teacher1";
+            this.lbl_teacher1.Size = new System.Drawing.Size(59, 20);
+            this.lbl_teacher1.TabIndex = 1;
+            this.lbl_teacher1.Text = "Lehrer:";
+            this.lbl_teacher1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_teacher2
             // 
@@ -355,45 +405,6 @@ namespace Pruefungen
             this.tlp_3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_3.Size = new System.Drawing.Size(784, 50);
             this.tlp_3.TabIndex = 6;
-            // 
-            // tlp_exam_room
-            // 
-            this.tlp_exam_room.ColumnCount = 2;
-            this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_exam_room.Controls.Add(this.tb_exam_room, 1, 0);
-            this.tlp_exam_room.Controls.Add(this.lbl_exam_room, 0, 0);
-            this.tlp_exam_room.Location = new System.Drawing.Point(263, 5);
-            this.tlp_exam_room.Margin = new System.Windows.Forms.Padding(0);
-            this.tlp_exam_room.Name = "tlp_exam_room";
-            this.tlp_exam_room.RowCount = 1;
-            this.tlp_exam_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_exam_room.Size = new System.Drawing.Size(253, 40);
-            this.tlp_exam_room.TabIndex = 5;
-            // 
-            // tb_exam_room
-            // 
-            this.tb_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_exam_room.Location = new System.Drawing.Point(122, 11);
-            this.tb_exam_room.MaximumSize = new System.Drawing.Size(80, 26);
-            this.tb_exam_room.Name = "tb_exam_room";
-            this.tb_exam_room.Size = new System.Drawing.Size(80, 26);
-            this.tb_exam_room.TabIndex = 2;
-            this.tb_exam_room.Text = "O-202";
-            // 
-            // lbl_exam_room
-            // 
-            this.lbl_exam_room.AutoSize = true;
-            this.lbl_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lbl_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_exam_room.Location = new System.Drawing.Point(3, 17);
-            this.lbl_exam_room.Margin = new System.Windows.Forms.Padding(3);
-            this.lbl_exam_room.Name = "lbl_exam_room";
-            this.lbl_exam_room.Size = new System.Drawing.Size(113, 20);
-            this.lbl_exam_room.TabIndex = 1;
-            this.lbl_exam_room.Text = "Prüfungsraum:";
-            this.lbl_exam_room.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_subject
             // 
@@ -472,6 +483,45 @@ namespace Pruefungen
             this.lbl_preparation_room.Text = "Vorbereitungsraum:";
             this.lbl_preparation_room.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tlp_exam_room
+            // 
+            this.tlp_exam_room.ColumnCount = 2;
+            this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlp_exam_room.Controls.Add(this.tb_exam_room, 1, 0);
+            this.tlp_exam_room.Controls.Add(this.lbl_exam_room, 0, 0);
+            this.tlp_exam_room.Location = new System.Drawing.Point(263, 5);
+            this.tlp_exam_room.Margin = new System.Windows.Forms.Padding(0);
+            this.tlp_exam_room.Name = "tlp_exam_room";
+            this.tlp_exam_room.RowCount = 1;
+            this.tlp_exam_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_exam_room.Size = new System.Drawing.Size(253, 40);
+            this.tlp_exam_room.TabIndex = 5;
+            // 
+            // tb_exam_room
+            // 
+            this.tb_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tb_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_exam_room.Location = new System.Drawing.Point(122, 11);
+            this.tb_exam_room.MaximumSize = new System.Drawing.Size(80, 26);
+            this.tb_exam_room.Name = "tb_exam_room";
+            this.tb_exam_room.Size = new System.Drawing.Size(80, 26);
+            this.tb_exam_room.TabIndex = 2;
+            this.tb_exam_room.Text = "O-202";
+            // 
+            // lbl_exam_room
+            // 
+            this.lbl_exam_room.AutoSize = true;
+            this.lbl_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_exam_room.Location = new System.Drawing.Point(3, 17);
+            this.lbl_exam_room.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_exam_room.Name = "lbl_exam_room";
+            this.lbl_exam_room.Size = new System.Drawing.Size(113, 20);
+            this.lbl_exam_room.TabIndex = 1;
+            this.lbl_exam_room.Text = "Prüfungsraum:";
+            this.lbl_exam_room.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // tlp_1
             // 
             this.tlp_1.ColumnCount = 4;
@@ -481,7 +531,7 @@ namespace Pruefungen
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_1.Controls.Add(this.label_mode, 0, 0);
             this.tlp_1.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tlp_1.Controls.Add(this.btn_grid_view, 2, 0);
+            this.tlp_1.Controls.Add(this.btn_cancel, 3, 0);
             this.tlp_1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_1.Location = new System.Drawing.Point(0, 0);
             this.tlp_1.Margin = new System.Windows.Forms.Padding(0);
@@ -571,15 +621,15 @@ namespace Pruefungen
             this.cb_keep_data.Text = "Daten behalten";
             this.cb_keep_data.UseVisualStyleBackColor = true;
             // 
-            // btn_grid_view
+            // btn_cancel
             // 
-            this.btn_grid_view.Location = new System.Drawing.Point(395, 3);
-            this.btn_grid_view.Name = "btn_grid_view";
-            this.btn_grid_view.Size = new System.Drawing.Size(86, 42);
-            this.btn_grid_view.TabIndex = 9;
-            this.btn_grid_view.Text = "Tabelle";
-            this.btn_grid_view.UseVisualStyleBackColor = true;
-            this.btn_grid_view.Click += new System.EventHandler(this.btn_grid_view_Click);
+            this.btn_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_cancel.Location = new System.Drawing.Point(731, 3);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(50, 44);
+            this.btn_cancel.TabIndex = 10;
+            this.btn_cancel.Text = "X";
+            this.btn_cancel.UseVisualStyleBackColor = true;
             // 
             // tlp_2
             // 
@@ -725,44 +775,43 @@ namespace Pruefungen
             this.lbl_time.Text = "Zeit:";
             this.lbl_time.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel_time_line
+            // btn_advanced
             // 
-            this.panel_time_line.AutoScroll = true;
-            this.panel_time_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel_time_line.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_time_line.Location = new System.Drawing.Point(0, 0);
-            this.panel_time_line.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_time_line.Name = "panel_time_line";
-            this.panel_time_line.Size = new System.Drawing.Size(784, 161);
-            this.panel_time_line.TabIndex = 2;
+            this.btn_advanced.Location = new System.Drawing.Point(201, 3);
+            this.btn_advanced.Name = "btn_advanced";
+            this.btn_advanced.Size = new System.Drawing.Size(86, 21);
+            this.btn_advanced.TabIndex = 10;
+            this.btn_advanced.Text = "Erweitert[DEV]";
+            this.btn_advanced.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 411);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tlp_main);
             this.Name = "Form1";
             this.Text = "Prüfungen";
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tlp_main.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tlp_student.ResumeLayout(false);
             this.tlp_student.PerformLayout();
             this.tlp_4.ResumeLayout(false);
-            this.tlp_teacher1.ResumeLayout(false);
-            this.tlp_teacher1.PerformLayout();
             this.tlp_teacher3.ResumeLayout(false);
             this.tlp_teacher3.PerformLayout();
+            this.tlp_teacher1.ResumeLayout(false);
+            this.tlp_teacher1.PerformLayout();
             this.tlp_teacher2.ResumeLayout(false);
             this.tlp_teacher2.PerformLayout();
             this.tlp_3.ResumeLayout(false);
-            this.tlp_exam_room.ResumeLayout(false);
-            this.tlp_exam_room.PerformLayout();
             this.tlp_subject.ResumeLayout(false);
             this.tlp_subject.PerformLayout();
             this.tlp_preparation_room.ResumeLayout(false);
             this.tlp_preparation_room.PerformLayout();
+            this.tlp_exam_room.ResumeLayout(false);
+            this.tlp_exam_room.PerformLayout();
             this.tlp_1.ResumeLayout(false);
             this.tlp_1.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -780,7 +829,7 @@ namespace Pruefungen
         }
 
         #endregion
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tlp_main;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tlp_2;
         private System.Windows.Forms.TableLayoutPanel tlp_1;
@@ -826,6 +875,10 @@ namespace Pruefungen
         private System.Windows.Forms.ComboBox cb_subject;
         private System.Windows.Forms.Button btn_grid_view;
         private System.Windows.Forms.Panel panel_time_line;
+        private System.Windows.Forms.DateTimePicker dtp_timeline_date;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.Button btn_advanced;
     }
 }
 

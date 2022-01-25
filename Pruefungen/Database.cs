@@ -256,6 +256,22 @@ namespace Pruefungen
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
         }
+        public void EditExam(string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO exam (date, time, exam_room, preparation_room, student, teacher_vorsitz, teacher_pruefer, teacher_protokoll, subject, duration) VALUES(@date,@time,@exam_room,@preparation_room,@student,@teacher_vorsitz,@teacher_pruefer,@teacher_protokoll,@subject,@duration)";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@time", time);
+            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
+            sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
+            sqlite_cmd.Parameters.AddWithValue("@student", student);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
+            sqlite_cmd.Parameters.AddWithValue("@subject", subject);
+            sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
+            sqlite_cmd.ExecuteNonQuery();
+        }
 
         public LinkedList<string[]> GetAllExams()
         {
@@ -287,10 +303,81 @@ namespace Pruefungen
             return data;
         }
 
+        public string[] GetExamById(int id)
+        {
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE id = @id";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
+            reader = sqlite_cmd.ExecuteReader();
+            string[] data = null;
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    data = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        data[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            data[i] = data[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            data[i] = data[i].Split(' ')[1];
+                            data[i] = data[i].Remove(data[i].Length - 3, 3);
+                        }
+                    }
+                }
+                reader.NextResult();
+            }
+            else { return null; }
+            return data;
+        }
+
+        public LinkedList<string[]> GetAllExamsAtDate(string date)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rowData[i] = rowData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rowData[i] = rowData[i].Split(' ')[1];
+                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
+        public void DeleteExam(int id)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM exam WHERE id = @id ";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
+            sqlite_cmd.ExecuteNonQuery();
+            //conn.Close();  
+        }
+
         private bool CheckTimeAndRoom(string time, string exam_room)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE time  = @time AND exam_room  = @exam_room";
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE time = @time AND exam_room = @exam_room";
             sqlite_cmd.Parameters.AddWithValue("@time", time);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             SQLiteDataReader reader = sqlite_cmd.ExecuteReader();

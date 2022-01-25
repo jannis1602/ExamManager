@@ -23,7 +23,9 @@ namespace Pruefungen
             // config add 45min when add new
             // duration time picker?
             // strg+enter -> add
-            // fach dropdown
+            // subject dropdown
+            // editmode: cancle btn 
+            // duration or Endtime?
         }
     }
 }
