@@ -184,13 +184,13 @@ namespace Pruefungen
         {
             if (form_grid == null)
             {
-                form_grid = new Form_grid();
+                form_grid = new Form_grid(1);
                 form_grid.Show();
             }
 
             if (form_grid.IsDisposed)
             {
-                form_grid = new Form_grid();
+                form_grid = new Form_grid(1);
                 form_grid.Show();
             }
         }
@@ -601,18 +601,29 @@ namespace Pruefungen
 
         private void prüfungenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // ## [DEV] ##
-            if (form_grid == null)
+            new Form_grid(0).Show();
+
+            /*if (form_grid == null)
             {
-                form_grid = new Form_grid();
+                form_grid = new Form_grid(0);
                 form_grid.Show();
             }
 
             if (form_grid.IsDisposed)
             {
-                form_grid = new Form_grid();
+                form_grid = new Form_grid(0);
                 form_grid.Show();
-            }
+            }*/
+        }
+
+        private void schuelerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Form_grid(1).Show();
+        }
+
+        private void lehrerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Form_grid(2).Show();
         }
     }
 }

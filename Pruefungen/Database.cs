@@ -208,8 +208,8 @@ namespace Pruefungen
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[3];
-                    for (int i = 0; i < 3; i++)
+                    string[] rowData = new string[6];
+                    for (int i = 0; i < 6; i++) 
                     {
                         rowData[i] = reader.GetValue(i).ToString();
                     }

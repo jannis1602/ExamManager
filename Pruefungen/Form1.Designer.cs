@@ -200,7 +200,7 @@ namespace Pruefungen
             this.menuStrip1.Location = new System.Drawing.Point(382, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(211, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(331, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -217,21 +217,23 @@ namespace Pruefungen
             // prüfungenToolStripMenuItem
             // 
             this.prüfungenToolStripMenuItem.Name = "prüfungenToolStripMenuItem";
-            this.prüfungenToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.prüfungenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.prüfungenToolStripMenuItem.Text = "Prüfungen";
             this.prüfungenToolStripMenuItem.Click += new System.EventHandler(this.prüfungenToolStripMenuItem_Click);
             // 
             // schülerToolStripMenuItem
             // 
             this.schülerToolStripMenuItem.Name = "schülerToolStripMenuItem";
-            this.schülerToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.schülerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.schülerToolStripMenuItem.Text = "Schüler";
+            this.schülerToolStripMenuItem.Click += new System.EventHandler(this.schuelerToolStripMenuItem_Click);
             // 
             // lehrerToolStripMenuItem
             // 
             this.lehrerToolStripMenuItem.Name = "lehrerToolStripMenuItem";
-            this.lehrerToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.lehrerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.lehrerToolStripMenuItem.Text = "Lehrer";
+            this.lehrerToolStripMenuItem.Click += new System.EventHandler(this.lehrerToolStripMenuItem_Click);
             // 
             // sucheToolStripMenuItem
             // 
