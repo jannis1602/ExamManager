@@ -22,6 +22,8 @@ namespace Pruefungen
             // strg+enter -> add
             // subject dropdown
             // timeline sort
+
+            // room side panel scroll with time line
         }
     }
 }

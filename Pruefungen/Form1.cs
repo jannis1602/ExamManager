@@ -13,16 +13,18 @@ namespace Pruefungen
         int id = 0;
         LinkedList<Panel> time_line_list;
         LinkedList<Panel> time_line_entity_list;
-        LinkedList<Label> time_line_room_list;
+        LinkedList<Panel> time_line_room_list;
         string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
         string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
+        Point panelScrollPos1 = new Point();
+        Point panelScrollPos2 = new Point();
+        Panel panel_empty;
         public Form1()
         {
             database = Program.database;
             time_line_list = new LinkedList<Panel>();
             time_line_entity_list = new LinkedList<Panel>();
-            time_line_room_list = new LinkedList<Label>();
-
+            time_line_room_list = new LinkedList<Panel>();
 
             /*var source = new AutoCompleteStringCollection();
             source.AddRange(new string[] {"January","February"});
@@ -39,7 +41,6 @@ namespace Pruefungen
             };*/
             WindowState = FormWindowState.Maximized;
             InitializeComponent();
-            // ## TODO: get next Exam date ##  #######################################################
             update_timeline();
             /*for (int i = 0; i < 10; i++)
             {
@@ -195,21 +196,49 @@ namespace Pruefungen
         }
         public void AddTimeline(string room)
         {
-            Label lbl_room = new Label();
+            /*Label lbl_room = new Label();
             lbl_room.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             lbl_room.Location = new Point(20, panel_side_time.Height + 12 + 85 * time_line_list.Count);
             lbl_room.Margin = new Padding(3);
             lbl_room.Name = "lbl_room";
             lbl_room.Size = new Size(80, 80);
             lbl_room.Text = room;
-            lbl_room.TextAlign = ContentAlignment.MiddleLeft;
-            //panel_side_room.Controls.Add(lbl_room);
-            time_line_room_list.AddLast(lbl_room);
+            lbl_room.TextAlign = ContentAlignment.MiddleLeft;*/
+            Panel panel_room = new Panel();
+            //panel_room.Location = new Point(10, panel_side_time.Height + 20 + 85 * time_line_list.Count);
+            //panel_room.Size = new Size(80, panel_side_time.Height + 12);
+            panel_room.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
+            panel_room.Size = new Size(panel_side_room.Width - 17, 80);
+            //panel_room.Margin = new Padding(5);
+            panel_room.BackColor = Color.LightBlue;
+            panel_room.Name = room;
+            Label lbl_room = new Label();
+            lbl_room.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_room.Location = new Point(0, 0);
+            //lbl_room.Margin = new Padding(3);
+            lbl_room.Dock = DockStyle.Fill;
+            //lbl_room.Size = new Size(80, 80);
+            lbl_room.Name = "lbl_room";
+            lbl_room.Text = room;
+            lbl_room.TextAlign = ContentAlignment.MiddleCenter;
+            panel_room.Controls.Add(lbl_room);
+            panel_side_room.Controls.Add(panel_room);
+            time_line_room_list.AddLast(panel_room);
+            //
+            /*if (panel_empty == null)
+                panel_empty = new Panel();
+            else panel_side_room.Controls.Remove(panel_empty);
+            panel_empty.Location = new Point(0, panel_side_time.Height + 12 + 85 * (time_line_list.Count + 1));
+            panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
+            panel_empty.BackColor = Color.Red;
+            panel_empty.Name = "empty";
+            panel_side_room.Controls.Add(panel_empty);*/
+            //
             panel_side_room.Refresh();
-
+            // -- timeline --
             this.panel_time_line.HorizontalScroll.Value = 0;
             Panel panel_tl = new Panel();
-            panel_tl.Location = new Point(0, panel_side_time.Height + 12 + 85 * time_line_list.Count);
+            panel_tl.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
             panel_tl.Name = room;
             panel_tl.Size = new Size(2400, 80);
             panel_tl.BackColor = Color.Gray;
@@ -226,7 +255,7 @@ namespace Pruefungen
         {
             foreach (Panel p in time_line_list) p.Dispose();
             foreach (Panel p in time_line_entity_list) p.Dispose();
-            foreach (Label p in time_line_room_list) p.Dispose();
+            foreach (Panel p in time_line_room_list) p.Dispose();
             time_line_list.Clear();
             time_line_entity_list.Clear();
             time_line_room_list.Clear();
@@ -242,6 +271,15 @@ namespace Pruefungen
                 Console.WriteLine(s);
             foreach (string s in room_list)
                 AddTimeline(s);
+            // ## [DEV] ## 
+            if (panel_empty == null)
+                panel_empty = new Panel();
+            else panel_side_room.Controls.Remove(panel_empty);
+            panel_empty.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
+            panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
+            panel_empty.BackColor = Color.Red;
+            panel_empty.Name = "empty";
+            panel_side_room.Controls.Add(panel_empty);
             foreach (string[] s in database.GetAllExamsAtDate(date))
             {
                 //Console.WriteLine(s[0] + s[1] + s[2] + s[3] + s[4] + s[5] + s[6] + s[7] + s[8] + s[9] + s[10]);
@@ -260,7 +298,9 @@ namespace Pruefungen
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
                 foreach (Panel p in time_line_list)
                     if (p.Name.Equals(s[3]))
+                    {
                         p.Controls.Add(panel_tl_entity);
+                    }
             }
         }
         private void panel_tl_entity_double_click(object sender, MouseEventArgs e) // TODO delete old if edited
@@ -370,11 +410,12 @@ namespace Pruefungen
             // ## [DEV] ##
 
             Panel p = sender as Panel;
+            // p.Height = panel_time_line.Height; // - panel_side_time.Height;
             Font drawFont = new Font("Arial", 10);
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
             stringFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rect = new Rectangle(5, 5, panel_side_room.Width - 10, panel_side_time.Height - 10);
+            Rectangle rect = new Rectangle(5, 5, panel_side_room.Width - 10 - 17, panel_side_time.Height - 10);
             e.Graphics.FillRectangle(Brushes.LightGreen, rect);
             ControlPaint.DrawBorder(e.Graphics, rect,
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
@@ -382,20 +423,41 @@ namespace Pruefungen
             e.Graphics.DrawString("Q2", drawFont, Brushes.Black, rect, stringFormat);
             e.Graphics.DrawLine(new Pen(Color.Black, 4), p.Width, 0, p.Width, p.Height);
             int i = 0;
-            foreach (Label l in time_line_room_list)
+            /*foreach (Panel pr in time_line_room_list)
             {
-                Rectangle rect_room = new Rectangle(10, panel_side_time.Height + 20 + 85 * i, 80, 60);
-                stringFormat.Alignment = StringAlignment.Center;
-                stringFormat.LineAlignment = StringAlignment.Center;
-                e.Graphics.FillRectangle(Brushes.LightGreen, rect_room);
-                ControlPaint.DrawBorder(e.Graphics, rect_room,
-                Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
-                Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
-                e.Graphics.DrawString(l.Text, drawFont, Brushes.Black, rect_room, stringFormat);
-                i++;
-            }
+                Panel panel_tl_room = pr;
+                panel_tl_room.Location = new Point(10, panel_side_time.Height + 20);
+                panel_tl_room.Size = new Size(80, 60);
+                panel_tl_room.BackColor = Color.LightBlue;
+                panel_tl_room.Paint += panel_time_line_entity_Paint;
+                panel_tl_room.MouseClick += panel_tl_entity_click;
+                panel_tl_room.MouseDoubleClick += panel_tl_entity_double_click;*/
+            /*                foreach (Panel p in time_line_list)
+                                if (p.Name.Equals(s[3]))
+                                    p.Controls.Add(panel_tl_entity);*/
 
+            /*Rectangle rect_room = new Rectangle(10, panel_side_time.Height + 20 + 85 * i, 80, 60);
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+            e.Graphics.FillRectangle(Brushes.LightGreen, rect_room);
+            ControlPaint.DrawBorder(e.Graphics, rect_room,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
+            e.Graphics.DrawString(pr.Text, drawFont, Brushes.Black, rect_room, stringFormat);
+            i++;*/
+            //}
+            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            {
+                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
+                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+            }
+            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            {
+                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
+                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+            }
         }
+
         private void panel_time_line_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
@@ -430,7 +492,6 @@ namespace Pruefungen
             Color.DarkGreen, 2, ButtonBorderStyle.Solid,
             Color.DarkGreen, 2, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Arial", 8);
-            SolidBrush drawBrush = new SolidBrush(Color.Black);
             StringFormat drawFormat = new StringFormat();
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
@@ -452,8 +513,8 @@ namespace Pruefungen
             e.Graphics.DrawString(student[1] + " " + student[2], drawFont, Brushes.Black, rectL1, stringFormat);
             e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
-            e.Graphics.DrawString(exam[9] + "  prep: " + exam[4], drawFont, Brushes.Black, rectL4, stringFormat);
-
+            e.Graphics.DrawString(exam[9] + " " + exam[3] + "  prep: " + exam[4], drawFont, Brushes.Black, rectL4, stringFormat);
+            // ## [DEV] ## TODO: startTime - end Time
 
         }
 
@@ -505,6 +566,27 @@ namespace Pruefungen
                 this.tb_teacher3.Clear();
             }
         }
+
+        private void panel_time_line_Move(object sender, EventArgs e)
+        {
+            Panel p = sender as Panel;
+            Console.WriteLine(p.AutoScrollPosition.Y);
+        }
+
+        private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
+        {
+            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            {
+                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
+                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+            }
+            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            {
+                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
+                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+            }
+        }
+
 
 
         /*private void tb_duration_TextChanged(object sender, EventArgs e)
