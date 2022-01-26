@@ -33,17 +33,18 @@ namespace Pruefungen
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.dtp_timeline_date = new System.Windows.Forms.DateTimePicker();
-            this.btn_grid_view = new System.Windows.Forms.Button();
             this.btn_search = new System.Windows.Forms.Button();
             this.btn_keep_data_config = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tabellenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.prüfungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.schülerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lehrerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_exams = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_students = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.sucheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.schülerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.lehrerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_teacher = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_subject = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenBehaltenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -142,7 +143,6 @@ namespace Pruefungen
             // flowLayoutPanel_menu
             // 
             this.flowLayoutPanel_menu.Controls.Add(this.dtp_timeline_date);
-            this.flowLayoutPanel_menu.Controls.Add(this.btn_grid_view);
             this.flowLayoutPanel_menu.Controls.Add(this.btn_search);
             this.flowLayoutPanel_menu.Controls.Add(this.btn_keep_data_config);
             this.flowLayoutPanel_menu.Controls.Add(this.menuStrip1);
@@ -163,19 +163,9 @@ namespace Pruefungen
             this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_time_line_date_ValueChanged);
             // 
-            // btn_grid_view
-            // 
-            this.btn_grid_view.Location = new System.Drawing.Point(109, 3);
-            this.btn_grid_view.Name = "btn_grid_view";
-            this.btn_grid_view.Size = new System.Drawing.Size(86, 21);
-            this.btn_grid_view.TabIndex = 9;
-            this.btn_grid_view.Text = "Tabelle";
-            this.btn_grid_view.UseVisualStyleBackColor = true;
-            this.btn_grid_view.Click += new System.EventHandler(this.btn_grid_view_Click);
-            // 
             // btn_search
             // 
-            this.btn_search.Location = new System.Drawing.Point(201, 3);
+            this.btn_search.Location = new System.Drawing.Point(109, 3);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(86, 21);
             this.btn_search.TabIndex = 11;
@@ -184,7 +174,7 @@ namespace Pruefungen
             // 
             // btn_keep_data_config
             // 
-            this.btn_keep_data_config.Location = new System.Drawing.Point(293, 3);
+            this.btn_keep_data_config.Location = new System.Drawing.Point(201, 3);
             this.btn_keep_data_config.Name = "btn_keep_data_config";
             this.btn_keep_data_config.Size = new System.Drawing.Size(86, 21);
             this.btn_keep_data_config.TabIndex = 6;
@@ -197,7 +187,7 @@ namespace Pruefungen
             this.tabellenToolStripMenuItem,
             this.sucheToolStripMenuItem,
             this.einstellungenToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(382, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(290, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.menuStrip1.Size = new System.Drawing.Size(331, 24);
@@ -207,54 +197,72 @@ namespace Pruefungen
             // tabellenToolStripMenuItem
             // 
             this.tabellenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.prüfungenToolStripMenuItem,
-            this.schülerToolStripMenuItem,
-            this.lehrerToolStripMenuItem});
+            this.tsmi_table_exams,
+            this.tsmi_table_students,
+            this.tsmi_table_teacher});
             this.tabellenToolStripMenuItem.Name = "tabellenToolStripMenuItem";
             this.tabellenToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.tabellenToolStripMenuItem.Text = "Tabellen";
             // 
-            // prüfungenToolStripMenuItem
+            // tsmi_table_exams
             // 
-            this.prüfungenToolStripMenuItem.Name = "prüfungenToolStripMenuItem";
-            this.prüfungenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.prüfungenToolStripMenuItem.Text = "Prüfungen";
-            this.prüfungenToolStripMenuItem.Click += new System.EventHandler(this.prüfungenToolStripMenuItem_Click);
+            this.tsmi_table_exams.Name = "tsmi_table_exams";
+            this.tsmi_table_exams.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_exams.Text = "Prüfungen";
+            this.tsmi_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
-            // schülerToolStripMenuItem
+            // tsmi_table_students
             // 
-            this.schülerToolStripMenuItem.Name = "schülerToolStripMenuItem";
-            this.schülerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.schülerToolStripMenuItem.Text = "Schüler";
-            this.schülerToolStripMenuItem.Click += new System.EventHandler(this.schuelerToolStripMenuItem_Click);
+            this.tsmi_table_students.Name = "tsmi_table_students";
+            this.tsmi_table_students.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_students.Text = "Schüler";
+            this.tsmi_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
-            // lehrerToolStripMenuItem
+            // tsmi_table_teacher
             // 
-            this.lehrerToolStripMenuItem.Name = "lehrerToolStripMenuItem";
-            this.lehrerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.lehrerToolStripMenuItem.Text = "Lehrer";
-            this.lehrerToolStripMenuItem.Click += new System.EventHandler(this.lehrerToolStripMenuItem_Click);
+            this.tsmi_table_teacher.Name = "tsmi_table_teacher";
+            this.tsmi_table_teacher.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_teacher.Text = "Lehrer";
+            this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
             // sucheToolStripMenuItem
             // 
             this.sucheToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.schülerToolStripMenuItem1,
-            this.lehrerToolStripMenuItem1});
+            this.tsmi_search_teacher,
+            this.tsmi_search_student,
+            this.tsmi_search_subject,
+            this.tsmi_search_delete});
             this.sucheToolStripMenuItem.Name = "sucheToolStripMenuItem";
             this.sucheToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.sucheToolStripMenuItem.Text = "Suche";
             // 
-            // schülerToolStripMenuItem1
+            // tsmi_search_teacher
             // 
-            this.schülerToolStripMenuItem1.Name = "schülerToolStripMenuItem1";
-            this.schülerToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
-            this.schülerToolStripMenuItem1.Text = "Schüler";
+            this.tsmi_search_teacher.Name = "tsmi_search_teacher";
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_teacher.Text = "Lehrer";
+            this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
-            // lehrerToolStripMenuItem1
+            // tsmi_search_student
             // 
-            this.lehrerToolStripMenuItem1.Name = "lehrerToolStripMenuItem1";
-            this.lehrerToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
-            this.lehrerToolStripMenuItem1.Text = "Lehrer";
+            this.tsmi_search_student.Name = "tsmi_search_student";
+            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_student.Text = "Schüler";
+            this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
+            // 
+            // tsmi_search_subject
+            // 
+            this.tsmi_search_subject.Name = "tsmi_search_subject";
+            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_subject.Text = "Fach";
+            this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
+            // 
+            // tsmi_search_delete
+            // 
+            this.tsmi_search_delete.Name = "tsmi_search_delete";
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_delete.Text = "Suche löschen";
+            this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
             // einstellungenToolStripMenuItem
             // 
@@ -1051,7 +1059,6 @@ namespace Pruefungen
         private System.Windows.Forms.Label lbl_date;
         private System.Windows.Forms.DateTimePicker dtp_time;
         private System.Windows.Forms.ComboBox cb_subject;
-        private System.Windows.Forms.Button btn_grid_view;
         private System.Windows.Forms.DateTimePicker dtp_timeline_date;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_menu;
         private System.Windows.Forms.Button btn_cancel;
@@ -1069,14 +1076,16 @@ namespace Pruefungen
         private System.Windows.Forms.CheckBox cb_keep_data;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tabellenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prüfungenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem schülerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lehrerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_exams;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_students;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_teacher;
         private System.Windows.Forms.ToolStripMenuItem sucheToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem schülerToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem lehrerToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_student;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_teacher;
         private System.Windows.Forms.ToolStripMenuItem datenBehaltenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_delete;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_subject;
     }
 }
 

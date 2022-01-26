@@ -21,7 +21,8 @@ namespace Pruefungen
             // config add 45min when add new
             // strg+enter -> add
             // subject dropdown
-            // timeline sort
+
+            // database subjects and rooms
 
             // room side panel scroll with time line
         }

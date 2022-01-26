@@ -236,6 +236,29 @@ namespace Pruefungen
             sqlite_cmd.ExecuteNonQuery();
         }
 
+        public LinkedList<string[]> GetAllTeachers()
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM teacher";
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[7];
+                    for (int i = 0; i < 7; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
         // Pruefung
         // ID student_ID VorsitzKuerzel PrueferKuerzel ProtokollKuerzel Fach Raum_Pruefung Raum_Vorbereitung Raum_Abholen Datum Uhrzeit Schulstunden
 

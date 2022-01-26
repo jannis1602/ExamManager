@@ -8,6 +8,8 @@ namespace Pruefungen
 {
     public partial class Form1 : Form
     {
+        public string search = null;
+
         Database database;
         Form_grid form_grid;
         int id = 0;
@@ -498,6 +500,16 @@ namespace Pruefungen
             StringFormat drawFormat = new StringFormat();
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+            if (search != null)
+                if (search.Equals(student[1] + " " + student[2]) || search.Equals(exam[9]))
+                {
+                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid);
+                }
+
             //e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 2, panel_tl_entity.Height / 16*1, drawFormat);
             //e.Graphics.DrawString(exam[2], drawFont, drawBrush, 2, panel_tl_entity.Height / 16 * 6, drawFormat);
             //e.Graphics.DrawString(exam[6] + " " + exam[7] + " " + exam[8], drawFont, drawBrush, 2, panel_tl_entity.Height / 16 * 10, drawFormat);
@@ -599,7 +611,7 @@ namespace Pruefungen
             cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
         }
 
-        private void prüfungenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmi_table_exams_Click(object sender, EventArgs e)
         {
             new Form_grid(0).Show();
 
@@ -616,14 +628,35 @@ namespace Pruefungen
             }*/
         }
 
-        private void schuelerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmi_table_students_Click(object sender, EventArgs e)
         {
             new Form_grid(1).Show();
         }
 
-        private void lehrerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmi_table_teacher_Click(object sender, EventArgs e)
         {
             new Form_grid(2).Show();
+        }
+
+        private void tsmi_search_teacher_Click(object sender, EventArgs e)
+        {
+            new FormSearch(0, this).Show();
+        }
+
+        private void tsmi_search_student_Click(object sender, EventArgs e)
+        {
+            new FormSearch(1, this).Show();
+        }
+        private void tsmi_search_subject_Click(object sender, EventArgs e)
+        {
+            new FormSearch(2, this).Show();
+
+        }
+
+        private void tsmi_search_delete_Click(object sender, EventArgs e)
+        {
+            search = null;
+            update_timeline();
         }
     }
 }
