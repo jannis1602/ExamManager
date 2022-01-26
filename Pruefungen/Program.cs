@@ -17,18 +17,11 @@ namespace Pruefungen
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            // draw or chart???
-
             // Student and Teacher Object
             // config add 45min when add new
-            // duration time picker?
             // strg+enter -> add
             // subject dropdown
-            // editmode: cancle btn 
-            // duration or Endtime?
-
-            // btn prüfung hinzufügen ersetzen durch ändern...
-            // check db time for exam
+            // timeline sort
         }
     }
 }

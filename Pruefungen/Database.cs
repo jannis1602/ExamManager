@@ -197,7 +197,7 @@ namespace Pruefungen
 
 
         // ## DEV ##
-        public LinkedList<string[]> GetAllStudents()      // TODO: List with List
+        public LinkedList<string[]> GetAllStudents()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
@@ -365,6 +365,38 @@ namespace Pruefungen
             }
             return data;
         }
+        public LinkedList<string[]> GetAllExamsAtDateAndRoom(string date, string exam_room)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND exam_room = @exam_room";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
+
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rowData[i] = rowData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rowData[i] = rowData[i].Split(' ')[1];
+                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
 
         public void DeleteExam(int id)
         {
@@ -375,10 +407,11 @@ namespace Pruefungen
             //conn.Close();  
         }
 
-        private bool CheckTimeAndRoom(string time, string exam_room)
+        public bool CheckTimeAndRoom(string date, string time, string exam_room)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE time = @time AND exam_room = @exam_room";
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE  date = @date AND time = @time AND exam_room = @exam_room";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@time", time);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             SQLiteDataReader reader = sqlite_cmd.ExecuteReader();

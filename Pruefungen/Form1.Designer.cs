@@ -589,17 +589,17 @@ namespace Pruefungen
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(212, 50);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(223, 50);
             this.tableLayoutPanel6.TabIndex = 7;
             // 
             // btn_keep_data_config
             // 
             this.btn_keep_data_config.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_keep_data_config.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btn_keep_data_config.Location = new System.Drawing.Point(134, 5);
+            this.btn_keep_data_config.Location = new System.Drawing.Point(141, 5);
             this.btn_keep_data_config.Margin = new System.Windows.Forms.Padding(5);
             this.btn_keep_data_config.Name = "btn_keep_data_config";
-            this.btn_keep_data_config.Size = new System.Drawing.Size(73, 40);
+            this.btn_keep_data_config.Size = new System.Drawing.Size(77, 40);
             this.btn_keep_data_config.TabIndex = 6;
             this.btn_keep_data_config.Text = "config";
             this.btn_keep_data_config.UseVisualStyleBackColor = true;
@@ -616,7 +616,7 @@ namespace Pruefungen
             this.tlp_config.RowCount = 2;
             this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlp_config.Size = new System.Drawing.Size(125, 50);
+            this.tlp_config.Size = new System.Drawing.Size(136, 50);
             this.tlp_config.TabIndex = 7;
             // 
             // cb_add_next_time
@@ -639,7 +639,7 @@ namespace Pruefungen
             this.cb_keep_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.cb_keep_data.Location = new System.Drawing.Point(3, 3);
             this.cb_keep_data.Name = "cb_keep_data";
-            this.cb_keep_data.Size = new System.Drawing.Size(119, 19);
+            this.cb_keep_data.Size = new System.Drawing.Size(124, 19);
             this.cb_keep_data.TabIndex = 5;
             this.cb_keep_data.Text = "Daten behalten";
             this.cb_keep_data.UseVisualStyleBackColor = true;

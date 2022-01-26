@@ -15,14 +15,13 @@ namespace Pruefungen
         LinkedList<Panel> time_line_entity_list;
         LinkedList<Label> time_line_room_list;
         string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
-
+        string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
         public Form1()
         {
             database = Program.database;
             time_line_list = new LinkedList<Panel>();
             time_line_entity_list = new LinkedList<Panel>();
             time_line_room_list = new LinkedList<Label>();
-
 
 
             /*var source = new AutoCompleteStringCollection();
@@ -113,6 +112,27 @@ namespace Pruefungen
                 MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return;
             }
 
+            /*if (database.CheckTimeAndRoom(date, time, exam_room))
+            {
+                MessageBox.Show("Raum besetzt!", "Warnung"); return;
+            }*/
+            if (id == 0)
+                foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
+                {
+                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                    DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+
+                    if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
+                    {
+                        Console.WriteLine("TIME!!!");
+                        MessageBox.Show("Raum besetzt!", "Warnung");
+                        return;
+                    }
+                }
+
+
             // check db ######################################################################################################
 
             string name = student;
@@ -140,6 +160,7 @@ namespace Pruefungen
                 database.AddExam(date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, "Q2")[0], teacher1, teacher2, teacher3, subject, duration);
             id = 0;
             label_mode.Text = edit_mode[0];
+            btn_add_exam.Text = add_mode[0];
             update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(45); }
             if (this.cb_keep_data.Checked)
@@ -184,6 +205,7 @@ namespace Pruefungen
             lbl_room.TextAlign = ContentAlignment.MiddleLeft;
             //panel_side_room.Controls.Add(lbl_room);
             time_line_room_list.AddLast(lbl_room);
+            panel_side_room.Refresh();
 
             this.panel_time_line.HorizontalScroll.Value = 0;
             Panel panel_tl = new Panel();
@@ -227,7 +249,6 @@ namespace Pruefungen
                 DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
                 DateTime examTime = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                 int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-                Console.WriteLine(s[0] + " minuten:" + 200 / 60 * totalMins);
                 float unit_per_minute = 200F / 60F;
                 float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
                 panel_tl_entity.Location = new Point(Convert.ToInt32(startpoint), 10);
@@ -255,6 +276,7 @@ namespace Pruefungen
                 {
                     id = Int32.Parse(exam[0]);
                     label_mode.Text = edit_mode[1];
+                    btn_add_exam.Text = add_mode[1];
                     this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
                     this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     this.tb_exam_room.Text = exam[3];
@@ -332,7 +354,14 @@ namespace Pruefungen
             for (int i = 0; i < 12; i++)
             {
                 e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
-                // add 30min / 15min line ###########################################
+                float[] dashValues = { 1, 1 };
+                Pen pen = new Pen(Color.Blue, 1);
+                pen.DashPattern = dashValues;
+                Pen pen2 = new Pen(Color.Blue, 2);
+                pen2.DashPattern = dashValues;
+                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
                 e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
             }
         }
@@ -381,6 +410,14 @@ namespace Pruefungen
             for (int i = 0; i < 12; i++)
             {
                 e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
+                float[] dashValues = { 1, 1 };
+                Pen pen = new Pen(Color.Blue, 1);
+                pen.DashPattern = dashValues;
+                Pen pen2 = new Pen(Color.Blue, 2);
+                pen2.DashPattern = dashValues;
+                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
                 //e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
             }
         }
@@ -397,40 +434,64 @@ namespace Pruefungen
             StringFormat drawFormat = new StringFormat();
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 10, drawFormat);
-            e.Graphics.DrawString(exam[2], drawFont, drawBrush, 5, panel_tl_entity.Height / 10 * 4, drawFormat);
+            //e.Graphics.DrawString(student[1] + " " + student[2], drawFont, drawBrush, 2, panel_tl_entity.Height / 16*1, drawFormat);
+            //e.Graphics.DrawString(exam[2], drawFont, drawBrush, 2, panel_tl_entity.Height / 16 * 6, drawFormat);
+            //e.Graphics.DrawString(exam[6] + " " + exam[7] + " " + exam[8], drawFont, drawBrush, 2, panel_tl_entity.Height / 16 * 10, drawFormat);
+
+            //ControlPaint.DrawBorder(e.Graphics, rect,
+            //Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid,
+            //Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
+            //Rectangle rect = new Rectangle(1, 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Near;
+            stringFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectL1 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 0, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, Brushes.Black, rectL1, stringFormat);
+            e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
+            e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
+            e.Graphics.DrawString(exam[9] + "  prep: " + exam[4], drawFont, Brushes.Black, rectL4, stringFormat);
+
 
         }
 
         private void btn_delete_exam_Click(object sender, EventArgs e)
         {
-            database.DeleteExam(id);
-            id = 0;
-            label_mode.Text = edit_mode[0];
-            update_timeline();
-            if (this.cb_keep_data.Checked)
+            DialogResult result = MessageBox.Show("Prüfung löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                this.tb_student.Clear();
-            }
-            else
-            {
-                this.tb_exam_room.Clear();
-                this.tb_preparation_room.Clear();
-                this.tb_student.Clear();
-                this.cb_subject.SelectedItem = null;
-                this.tb_teacher1.Clear();
-                this.tb_teacher2.Clear();
-                this.tb_teacher3.Clear();
+                database.DeleteExam(id);
+                id = 0;
+                label_mode.Text = edit_mode[0];
+                btn_add_exam.Text = add_mode[0];
+                update_timeline();
+                if (this.cb_keep_data.Checked)
+                {
+                    this.tb_student.Clear();
+                }
+                else
+                {
+                    this.tb_exam_room.Clear();
+                    this.tb_preparation_room.Clear();
+                    this.tb_student.Clear();
+                    this.cb_subject.SelectedItem = null;
+                    this.tb_teacher1.Clear();
+                    this.tb_teacher2.Clear();
+                    this.tb_teacher3.Clear();
+                }
             }
         }
 
         private void btn_reuse_exam_Click(object sender, EventArgs e)
-        { id = 0; label_mode.Text = edit_mode[0]; }
+        { id = 0; label_mode.Text = edit_mode[0]; btn_add_exam.Text = add_mode[0]; }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             id = 0;
             label_mode.Text = edit_mode[0];
+            btn_add_exam.Text = add_mode[0];
             if (this.cb_keep_data.Checked)
             { this.tb_student.Clear(); }
             else
