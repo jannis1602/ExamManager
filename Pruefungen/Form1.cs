@@ -163,7 +163,7 @@ namespace Pruefungen
             label_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             update_timeline();
-            if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(45); }
+            if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
             if (this.cb_keep_data.Checked)
             {
                 this.tb_student.Clear();
@@ -269,6 +269,9 @@ namespace Pruefungen
             }
             foreach (string s in room_list)
                 Console.WriteLine(s);
+            List<string> temp_room_list = new List<string>(room_list);
+            temp_room_list.Sort();
+            room_list = new LinkedList<string>(temp_room_list);
             foreach (string s in room_list)
                 AddTimeline(s);
             // ## [DEV] ## 
@@ -277,7 +280,7 @@ namespace Pruefungen
             else panel_side_room.Controls.Remove(panel_empty);
             panel_empty.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
             panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
-            panel_empty.BackColor = Color.Red;
+            //panel_empty.BackColor = Color.Red;
             panel_empty.Name = "empty";
             panel_side_room.Controls.Add(panel_empty);
             foreach (string[] s in database.GetAllExamsAtDate(date))
@@ -587,15 +590,29 @@ namespace Pruefungen
             }
         }
 
+        private void tb_duration_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
+            {
+                tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
+            }
+            cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
+        }
 
+        private void prüfungenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // ## [DEV] ##
+            if (form_grid == null)
+            {
+                form_grid = new Form_grid();
+                form_grid.Show();
+            }
 
-        /*private void tb_duration_TextChanged(object sender, EventArgs e)
-{
-if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
-{
-MessageBox.Show("Nur Zahlen!");
-tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
-}
-}*/
+            if (form_grid.IsDisposed)
+            {
+                form_grid = new Form_grid();
+                form_grid.Show();
+            }
+        }
     }
 }

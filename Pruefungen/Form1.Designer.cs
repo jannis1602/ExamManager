@@ -29,11 +29,23 @@ namespace Pruefungen
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.dtp_timeline_date = new System.Windows.Forms.DateTimePicker();
             this.btn_grid_view = new System.Windows.Forms.Button();
-            this.btn_advanced = new System.Windows.Forms.Button();
+            this.btn_search = new System.Windows.Forms.Button();
+            this.btn_keep_data_config = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.tabellenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prüfungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schülerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lehrerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sucheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schülerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.lehrerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.datenBehaltenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_student = new System.Windows.Forms.TableLayoutPanel();
@@ -61,15 +73,15 @@ namespace Pruefungen
             this.tb_exam_room = new System.Windows.Forms.TextBox();
             this.lbl_exam_room = new System.Windows.Forms.Label();
             this.tlp_1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_reuse_exam = new System.Windows.Forms.Button();
             this.label_mode = new System.Windows.Forms.Label();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_keep_data_config = new System.Windows.Forms.Button();
+            this.flp_edit_btns = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_cancel = new System.Windows.Forms.Button();
+            this.btn_reuse_exam = new System.Windows.Forms.Button();
+            this.btn_delete_exam = new System.Windows.Forms.Button();
+            this.btn_advanced = new System.Windows.Forms.Button();
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
-            this.btn_cancel = new System.Windows.Forms.Button();
-            this.btn_delete_exam = new System.Windows.Forms.Button();
             this.tlp_2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_date = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_date = new System.Windows.Forms.Label();
@@ -85,7 +97,8 @@ namespace Pruefungen
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
             this.tlp_main.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel_menu.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tlp_student.SuspendLayout();
@@ -98,7 +111,7 @@ namespace Pruefungen
             this.tlp_preparation_room.SuspendLayout();
             this.tlp_exam_room.SuspendLayout();
             this.tlp_1.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
+            this.flp_edit_btns.SuspendLayout();
             this.tlp_config.SuspendLayout();
             this.tlp_2.SuspendLayout();
             this.tlp_date.SuspendLayout();
@@ -113,7 +126,7 @@ namespace Pruefungen
             this.tlp_main.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tlp_main.ColumnCount = 1;
             this.tlp_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tlp_main.Controls.Add(this.flowLayoutPanel_menu, 0, 0);
             this.tlp_main.Controls.Add(this.tableLayoutPanel2, 0, 2);
             this.tlp_main.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tlp_main.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -126,16 +139,18 @@ namespace Pruefungen
             this.tlp_main.Size = new System.Drawing.Size(784, 411);
             this.tlp_main.TabIndex = 2;
             // 
-            // flowLayoutPanel1
+            // flowLayoutPanel_menu
             // 
-            this.flowLayoutPanel1.Controls.Add(this.dtp_timeline_date);
-            this.flowLayoutPanel1.Controls.Add(this.btn_grid_view);
-            this.flowLayoutPanel1.Controls.Add(this.btn_advanced);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(716, 26);
-            this.flowLayoutPanel1.TabIndex = 0;
+            this.flowLayoutPanel_menu.Controls.Add(this.dtp_timeline_date);
+            this.flowLayoutPanel_menu.Controls.Add(this.btn_grid_view);
+            this.flowLayoutPanel_menu.Controls.Add(this.btn_search);
+            this.flowLayoutPanel_menu.Controls.Add(this.btn_keep_data_config);
+            this.flowLayoutPanel_menu.Controls.Add(this.menuStrip1);
+            this.flowLayoutPanel_menu.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel_menu.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel_menu.Name = "flowLayoutPanel_menu";
+            this.flowLayoutPanel_menu.Size = new System.Drawing.Size(716, 26);
+            this.flowLayoutPanel_menu.TabIndex = 0;
             // 
             // dtp_timeline_date
             // 
@@ -158,14 +173,100 @@ namespace Pruefungen
             this.btn_grid_view.UseVisualStyleBackColor = true;
             this.btn_grid_view.Click += new System.EventHandler(this.btn_grid_view_Click);
             // 
-            // btn_advanced
+            // btn_search
             // 
-            this.btn_advanced.Location = new System.Drawing.Point(201, 3);
-            this.btn_advanced.Name = "btn_advanced";
-            this.btn_advanced.Size = new System.Drawing.Size(86, 21);
-            this.btn_advanced.TabIndex = 10;
-            this.btn_advanced.Text = "Erweitert[DEV]";
-            this.btn_advanced.UseVisualStyleBackColor = true;
+            this.btn_search.Location = new System.Drawing.Point(201, 3);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(86, 21);
+            this.btn_search.TabIndex = 11;
+            this.btn_search.Text = "Suche[DEV]";
+            this.btn_search.UseVisualStyleBackColor = true;
+            // 
+            // btn_keep_data_config
+            // 
+            this.btn_keep_data_config.Location = new System.Drawing.Point(293, 3);
+            this.btn_keep_data_config.Name = "btn_keep_data_config";
+            this.btn_keep_data_config.Size = new System.Drawing.Size(86, 21);
+            this.btn_keep_data_config.TabIndex = 6;
+            this.btn_keep_data_config.Text = "config[DEV]";
+            this.btn_keep_data_config.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tabellenToolStripMenuItem,
+            this.sucheToolStripMenuItem,
+            this.einstellungenToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(382, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.menuStrip1.Size = new System.Drawing.Size(211, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // tabellenToolStripMenuItem
+            // 
+            this.tabellenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.prüfungenToolStripMenuItem,
+            this.schülerToolStripMenuItem,
+            this.lehrerToolStripMenuItem});
+            this.tabellenToolStripMenuItem.Name = "tabellenToolStripMenuItem";
+            this.tabellenToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.tabellenToolStripMenuItem.Text = "Tabellen";
+            // 
+            // prüfungenToolStripMenuItem
+            // 
+            this.prüfungenToolStripMenuItem.Name = "prüfungenToolStripMenuItem";
+            this.prüfungenToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.prüfungenToolStripMenuItem.Text = "Prüfungen";
+            this.prüfungenToolStripMenuItem.Click += new System.EventHandler(this.prüfungenToolStripMenuItem_Click);
+            // 
+            // schülerToolStripMenuItem
+            // 
+            this.schülerToolStripMenuItem.Name = "schülerToolStripMenuItem";
+            this.schülerToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.schülerToolStripMenuItem.Text = "Schüler";
+            // 
+            // lehrerToolStripMenuItem
+            // 
+            this.lehrerToolStripMenuItem.Name = "lehrerToolStripMenuItem";
+            this.lehrerToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.lehrerToolStripMenuItem.Text = "Lehrer";
+            // 
+            // sucheToolStripMenuItem
+            // 
+            this.sucheToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.schülerToolStripMenuItem1,
+            this.lehrerToolStripMenuItem1});
+            this.sucheToolStripMenuItem.Name = "sucheToolStripMenuItem";
+            this.sucheToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.sucheToolStripMenuItem.Text = "Suche";
+            // 
+            // schülerToolStripMenuItem1
+            // 
+            this.schülerToolStripMenuItem1.Name = "schülerToolStripMenuItem1";
+            this.schülerToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
+            this.schülerToolStripMenuItem1.Text = "Schüler";
+            // 
+            // lehrerToolStripMenuItem1
+            // 
+            this.lehrerToolStripMenuItem1.Name = "lehrerToolStripMenuItem1";
+            this.lehrerToolStripMenuItem1.Size = new System.Drawing.Size(113, 22);
+            this.lehrerToolStripMenuItem1.Text = "Lehrer";
+            // 
+            // einstellungenToolStripMenuItem
+            // 
+            this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.datenBehaltenToolStripMenuItem});
+            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            // 
+            // datenBehaltenToolStripMenuItem
+            // 
+            this.datenBehaltenToolStripMenuItem.Name = "datenBehaltenToolStripMenuItem";
+            this.datenBehaltenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.datenBehaltenToolStripMenuItem.Text = "Daten behalten";
             // 
             // tableLayoutPanel2
             // 
@@ -530,19 +631,15 @@ namespace Pruefungen
             // 
             // tlp_1
             // 
-            this.tlp_1.ColumnCount = 7;
+            this.tlp_1.ColumnCount = 4;
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.74014F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.32947F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
-            this.tlp_1.Controls.Add(this.btn_reuse_exam, 4, 0);
+            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
+            this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 152F));
             this.tlp_1.Controls.Add(this.label_mode, 0, 0);
-            this.tlp_1.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tlp_1.Controls.Add(this.btn_cancel, 6, 0);
-            this.tlp_1.Controls.Add(this.btn_delete_exam, 5, 0);
+            this.tlp_1.Controls.Add(this.flp_edit_btns, 3, 0);
+            this.tlp_1.Controls.Add(this.btn_advanced, 2, 0);
+            this.tlp_1.Controls.Add(this.tlp_config, 1, 0);
             this.tlp_1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_1.Location = new System.Drawing.Point(0, 0);
             this.tlp_1.Margin = new System.Windows.Forms.Padding(0);
@@ -551,17 +648,6 @@ namespace Pruefungen
             this.tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_1.Size = new System.Drawing.Size(784, 50);
             this.tlp_1.TabIndex = 0;
-            // 
-            // btn_reuse_exam
-            // 
-            this.btn_reuse_exam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_reuse_exam.Location = new System.Drawing.Point(624, 3);
-            this.btn_reuse_exam.Name = "btn_reuse_exam";
-            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
-            this.btn_reuse_exam.TabIndex = 12;
-            this.btn_reuse_exam.Text = "reuse";
-            this.btn_reuse_exam.UseVisualStyleBackColor = true;
-            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
             // 
             // label_mode
             // 
@@ -577,77 +663,22 @@ namespace Pruefungen
             this.label_mode.Text = "neue Prüfung erstellen";
             this.label_mode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tableLayoutPanel6
+            // flp_edit_btns
             // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.22449F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.77551F));
-            this.tableLayoutPanel6.Controls.Add(this.btn_keep_data_config, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tlp_config, 0, 0);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(200, 0);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(218, 50);
-            this.tableLayoutPanel6.TabIndex = 7;
-            // 
-            // btn_keep_data_config
-            // 
-            this.btn_keep_data_config.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_keep_data_config.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btn_keep_data_config.Location = new System.Drawing.Point(138, 5);
-            this.btn_keep_data_config.Margin = new System.Windows.Forms.Padding(5);
-            this.btn_keep_data_config.Name = "btn_keep_data_config";
-            this.btn_keep_data_config.Size = new System.Drawing.Size(75, 40);
-            this.btn_keep_data_config.TabIndex = 6;
-            this.btn_keep_data_config.Text = "config";
-            this.btn_keep_data_config.UseVisualStyleBackColor = true;
-            // 
-            // tlp_config
-            // 
-            this.tlp_config.ColumnCount = 1;
-            this.tlp_config.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlp_config.Controls.Add(this.cb_add_next_time, 0, 1);
-            this.tlp_config.Controls.Add(this.cb_keep_data, 0, 0);
-            this.tlp_config.Location = new System.Drawing.Point(0, 0);
-            this.tlp_config.Margin = new System.Windows.Forms.Padding(0);
-            this.tlp_config.Name = "tlp_config";
-            this.tlp_config.RowCount = 2;
-            this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlp_config.Size = new System.Drawing.Size(133, 50);
-            this.tlp_config.TabIndex = 7;
-            // 
-            // cb_add_next_time
-            // 
-            this.cb_add_next_time.AutoSize = true;
-            this.cb_add_next_time.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cb_add_next_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.cb_add_next_time.Location = new System.Drawing.Point(3, 28);
-            this.cb_add_next_time.Name = "cb_add_next_time";
-            this.cb_add_next_time.Size = new System.Drawing.Size(114, 19);
-            this.cb_add_next_time.TabIndex = 6;
-            this.cb_add_next_time.Text = "nächste +45min";
-            this.cb_add_next_time.UseVisualStyleBackColor = true;
-            // 
-            // cb_keep_data
-            // 
-            this.cb_keep_data.AutoSize = true;
-            this.cb_keep_data.Checked = true;
-            this.cb_keep_data.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_keep_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.cb_keep_data.Location = new System.Drawing.Point(3, 3);
-            this.cb_keep_data.Name = "cb_keep_data";
-            this.cb_keep_data.Size = new System.Drawing.Size(124, 19);
-            this.cb_keep_data.TabIndex = 5;
-            this.cb_keep_data.Text = "Daten behalten";
-            this.cb_keep_data.UseVisualStyleBackColor = true;
+            this.flp_edit_btns.Controls.Add(this.btn_cancel);
+            this.flp_edit_btns.Controls.Add(this.btn_reuse_exam);
+            this.flp_edit_btns.Controls.Add(this.btn_delete_exam);
+            this.flp_edit_btns.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flp_edit_btns.Location = new System.Drawing.Point(633, 1);
+            this.flp_edit_btns.Margin = new System.Windows.Forms.Padding(1);
+            this.flp_edit_btns.Name = "flp_edit_btns";
+            this.flp_edit_btns.Size = new System.Drawing.Size(150, 48);
+            this.flp_edit_btns.TabIndex = 13;
             // 
             // btn_cancel
             // 
-            this.btn_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_cancel.Location = new System.Drawing.Point(736, 3);
+            this.btn_cancel.Location = new System.Drawing.Point(103, 2);
+            this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(45, 44);
             this.btn_cancel.TabIndex = 10;
@@ -655,16 +686,78 @@ namespace Pruefungen
             this.btn_cancel.UseVisualStyleBackColor = true;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
+            // btn_reuse_exam
+            // 
+            this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
+            this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_reuse_exam.Name = "btn_reuse_exam";
+            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
+            this.btn_reuse_exam.TabIndex = 12;
+            this.btn_reuse_exam.Text = "reuse";
+            this.btn_reuse_exam.UseVisualStyleBackColor = true;
+            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
+            // 
             // btn_delete_exam
             // 
-            this.btn_delete_exam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_delete_exam.Location = new System.Drawing.Point(674, 3);
+            this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
+            this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);
             this.btn_delete_exam.Name = "btn_delete_exam";
             this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
             this.btn_delete_exam.TabIndex = 11;
             this.btn_delete_exam.Text = "delete";
             this.btn_delete_exam.UseVisualStyleBackColor = true;
             this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
+            // 
+            // btn_advanced
+            // 
+            this.btn_advanced.Location = new System.Drawing.Point(347, 3);
+            this.btn_advanced.Name = "btn_advanced";
+            this.btn_advanced.Size = new System.Drawing.Size(86, 21);
+            this.btn_advanced.TabIndex = 10;
+            this.btn_advanced.Text = "Erweitert[DEV]";
+            this.btn_advanced.UseVisualStyleBackColor = true;
+            // 
+            // tlp_config
+            // 
+            this.tlp_config.ColumnCount = 1;
+            this.tlp_config.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_config.Controls.Add(this.cb_add_next_time, 0, 1);
+            this.tlp_config.Controls.Add(this.cb_keep_data, 0, 0);
+            this.tlp_config.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_config.Location = new System.Drawing.Point(200, 0);
+            this.tlp_config.Margin = new System.Windows.Forms.Padding(0);
+            this.tlp_config.Name = "tlp_config";
+            this.tlp_config.RowCount = 2;
+            this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_config.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_config.Size = new System.Drawing.Size(144, 50);
+            this.tlp_config.TabIndex = 7;
+            // 
+            // cb_add_next_time
+            // 
+            this.cb_add_next_time.AutoSize = true;
+            this.cb_add_next_time.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cb_add_next_time.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cb_add_next_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.cb_add_next_time.Location = new System.Drawing.Point(3, 28);
+            this.cb_add_next_time.Name = "cb_add_next_time";
+            this.cb_add_next_time.Size = new System.Drawing.Size(138, 19);
+            this.cb_add_next_time.TabIndex = 6;
+            this.cb_add_next_time.Text = "Nächste +45min";
+            this.cb_add_next_time.UseVisualStyleBackColor = true;
+            // 
+            // cb_keep_data
+            // 
+            this.cb_keep_data.Checked = true;
+            this.cb_keep_data.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_keep_data.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cb_keep_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.cb_keep_data.Location = new System.Drawing.Point(3, 3);
+            this.cb_keep_data.Name = "cb_keep_data";
+            this.cb_keep_data.Size = new System.Drawing.Size(138, 19);
+            this.cb_keep_data.TabIndex = 5;
+            this.cb_keep_data.Text = "Daten behalten";
+            this.cb_keep_data.UseVisualStyleBackColor = true;
             // 
             // tlp_2
             // 
@@ -724,7 +817,7 @@ namespace Pruefungen
             this.dtp_date.Name = "dtp_date";
             this.dtp_date.Size = new System.Drawing.Size(120, 26);
             this.dtp_date.TabIndex = 9;
-            this.dtp_date.Value = new System.DateTime(2022, 1, 24, 0, 0, 0, 0);
+            this.dtp_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             // 
             // tlp_duration
             // 
@@ -751,6 +844,7 @@ namespace Pruefungen
             this.tb_duration.Size = new System.Drawing.Size(60, 26);
             this.tb_duration.TabIndex = 2;
             this.tb_duration.Text = "45";
+            this.tb_duration.TextChanged += new System.EventHandler(this.tb_duration_TextChanged);
             // 
             // lbl_duration
             // 
@@ -869,10 +963,15 @@ namespace Pruefungen
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 411);
             this.Controls.Add(this.tlp_main);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Prüfungen";
             this.tlp_main.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel_menu.ResumeLayout(false);
+            this.flowLayoutPanel_menu.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tlp_student.ResumeLayout(false);
@@ -893,7 +992,7 @@ namespace Pruefungen
             this.tlp_exam_room.PerformLayout();
             this.tlp_1.ResumeLayout(false);
             this.tlp_1.PerformLayout();
-            this.tableLayoutPanel6.ResumeLayout(false);
+            this.flp_edit_btns.ResumeLayout(false);
             this.tlp_config.ResumeLayout(false);
             this.tlp_config.PerformLayout();
             this.tlp_2.ResumeLayout(false);
@@ -920,11 +1019,9 @@ namespace Pruefungen
         private System.Windows.Forms.TableLayoutPanel tlp_duration;
         private System.Windows.Forms.TextBox tb_duration;
         private System.Windows.Forms.Label lbl_duration;
-        private System.Windows.Forms.CheckBox cb_keep_data;
         private System.Windows.Forms.TableLayoutPanel tlp_3;
         private System.Windows.Forms.TableLayoutPanel tlp_subject;
         private System.Windows.Forms.Label lbl_subject;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Button btn_keep_data_config;
         private System.Windows.Forms.TableLayoutPanel tlp_4;
         private System.Windows.Forms.TableLayoutPanel tlp_teacher1;
@@ -951,12 +1048,10 @@ namespace Pruefungen
         private System.Windows.Forms.TableLayoutPanel tlp_date;
         private System.Windows.Forms.Label lbl_date;
         private System.Windows.Forms.DateTimePicker dtp_time;
-        private System.Windows.Forms.TableLayoutPanel tlp_config;
-        private System.Windows.Forms.CheckBox cb_add_next_time;
         private System.Windows.Forms.ComboBox cb_subject;
         private System.Windows.Forms.Button btn_grid_view;
         private System.Windows.Forms.DateTimePicker dtp_timeline_date;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_menu;
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.Button btn_advanced;
         private System.Windows.Forms.Button btn_delete_exam;
@@ -965,6 +1060,21 @@ namespace Pruefungen
         private System.Windows.Forms.Panel panel_side_time;
         private System.Windows.Forms.Panel panel_time_line;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flp_edit_btns;
+        private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.TableLayoutPanel tlp_config;
+        private System.Windows.Forms.CheckBox cb_add_next_time;
+        private System.Windows.Forms.CheckBox cb_keep_data;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tabellenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem prüfungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem schülerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lehrerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sucheToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem schülerToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem lehrerToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem datenBehaltenToolStripMenuItem;
     }
 }
 
