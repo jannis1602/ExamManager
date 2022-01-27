@@ -6,11 +6,9 @@ namespace Pruefungen
 {
     public partial class Form_grid : Form
     {
-        int table = 0;
         DataGridView dataGridView;
         public Form_grid(int table)
         {
-            this.table = table;
             InitializeComponent();
             if (table == 0)
             {

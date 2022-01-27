@@ -1,0 +1,201 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Pruefungen
+{
+    public partial class FormTeacherData : Form
+    {
+        Database database;
+        LinkedList<FlowLayoutPanel> teacher_entity_list;
+        string edit_id = null;
+        string[] add_mode = { "Lehrer hinzufügen", "Lehrer übernehmen" };
+        public FormTeacherData()
+        {
+            database = Program.database;
+            teacher_entity_list = new LinkedList<FlowLayoutPanel>();
+            InitializeComponent();
+            UpdateTeacherList();
+        }
+
+        private void FormTeacherData_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UpdateTeacherList()
+        {
+            foreach (FlowLayoutPanel p in teacher_entity_list) p.Dispose();
+            teacher_entity_list.Clear();
+
+            //TODO Order by lastname
+
+            foreach (string[] s in database.GetAllTeachers())
+            {
+                FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
+                //panel_room.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
+                panel_teacher.Size = new Size(950, 80);
+                panel_teacher.Margin = new Padding(5);
+                panel_teacher.BackColor = Color.LightBlue;
+                //panel_teacher.Name = room;
+                // -- NAME --
+                Label lbl_teacher_name = new Label();
+                lbl_teacher_name.Size = new Size(140, panel_teacher.Height);
+                lbl_teacher_name.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                //lbl_teacher_name.Location = new Point(0, 0);
+                //lbl_room.Margin = new Padding(3);
+                lbl_teacher_name.Text = s[1] + " " + s[2];
+                lbl_teacher_name.TextAlign = ContentAlignment.MiddleLeft;
+                panel_teacher.Controls.Add(lbl_teacher_name);
+                // -- shortname --
+                Label lbl_teacher_shortname = new Label();
+                lbl_teacher_shortname.Size = new Size(60, panel_teacher.Height);
+                lbl_teacher_shortname.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                lbl_teacher_shortname.Text = s[0];
+                lbl_teacher_shortname.TextAlign = ContentAlignment.MiddleLeft;
+                panel_teacher.Controls.Add(lbl_teacher_shortname);
+                // -- phone --
+                Label lbl_teacher_phone = new Label();
+                lbl_teacher_phone.Size = new Size(140, panel_teacher.Height);
+                lbl_teacher_phone.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                //lbl_teacher_phone.Location = new Point(0, 0);
+                //lbl_room.Margin = new Padding(3);
+                lbl_teacher_phone.Text = s[3];
+                lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
+                panel_teacher.Controls.Add(lbl_teacher_phone);
+                // -- subjects --
+                for (int i = 0; i < 3; i++)
+                {
+                    Label lbl_teacher_subject = new Label();
+                    lbl_teacher_subject.Size = new Size(100, panel_teacher.Height);
+                    lbl_teacher_subject.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                    //lbl_teacher_phone.Location = new Point(0, 0);
+                    //lbl_room.Margin = new Padding(3);
+                    lbl_teacher_subject.Text = s[4 + i];
+                    lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
+                    panel_teacher.Controls.Add(lbl_teacher_subject);
+                }
+                // -- BTN edit --
+                Button btn_teacher_edit = new Button();
+                btn_teacher_edit.Size = new Size(100, panel_teacher.Height - 40);
+                btn_teacher_edit.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                btn_teacher_edit.Text = "Bearbeiten";
+                btn_teacher_edit.Name = s[0];
+                btn_teacher_edit.Margin = new Padding(10, 20, 10, 20);
+                //btn_teacher_edit.Size= new Size(panel_teacher);
+                btn_teacher_edit.BackColor = Color.LightGray;
+                btn_teacher_edit.Click += btn_teacher_edit_Click;
+                panel_teacher.Controls.Add(btn_teacher_edit);
+                // -- BTN delete --
+                Button btn_teacher_delete = new Button();
+                btn_teacher_delete.Size = new Size(100, panel_teacher.Height - 40);
+                btn_teacher_delete.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                btn_teacher_delete.Text = "Löschen";
+                btn_teacher_delete.Name = s[0];
+                btn_teacher_delete.Margin = new Padding(10, 20, 10, 20);
+                //btn_teacher_edit.Size= new Size(panel_teacher);
+                btn_teacher_delete.BackColor = Color.LightGray;
+                btn_teacher_delete.Click += btn_teacher_delete_Click;
+                panel_teacher.Controls.Add(btn_teacher_delete);
+
+                //
+                this.flp_teacher_entitys.HorizontalScroll.Value = 0;
+                //flp_teacher_entitys.Controls.Add(panel_teacher);
+                panel_teacher.Name = s[2];
+                teacher_entity_list.AddLast(panel_teacher);
+            }
+
+            List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
+            temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
+            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);
+
+            foreach (Panel p in teacher_entity_list)
+            {
+                flp_teacher_entitys.Controls.Add(p);
+                this.flp_teacher_entitys.SetFlowBreak(p, true);
+            }
+        }
+
+        private void btn_teacher_delete_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            string[] t = database.GetTeacherByID(btn.Name);
+            string name = t[1] + " " + t[2];
+            DialogResult result = MessageBox.Show("Lehrer " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                database.DeleteTeacher(btn.Name);
+            }
+        }
+
+        private void btn_teacher_edit_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            edit_id = btn.Name;
+            btn_add_teacher.Text = add_mode[1];
+            tb_shortname.ReadOnly = true;
+            string[] t = database.GetTeacherByID(btn.Name);
+            tb_shortname.Text = t[0];
+            tb_firstname.Text = t[1];
+            tb_lastname.Text = t[2];
+            tb_phonenumber.Text = t[3];
+            tb_subject1.Text = t[4];
+            tb_subject2.Text = t[5];
+            tb_subject3.Text = t[6];
+        }
+
+        private void btn_add_teacher_Click(object sender, EventArgs e)
+        {
+            // TODO: check name?
+            string shortname = tb_shortname.Text;
+            string firstname = tb_firstname.Text;
+            string lastname = tb_lastname.Text;
+            string phonenumber = tb_phonenumber.Text;
+            string subject1 = tb_subject1.Text;
+            string subject2 = tb_subject2.Text;
+            string subject3 = tb_subject3.Text;
+            if (edit_id == null)
+            {
+                if (database.GetTeacherByID(shortname) != null)
+                { MessageBox.Show("Lehrer schon vorhanden", "Warnung"); return; }
+                database.AddTeacher(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3);
+            }
+            else
+            {
+                if (database.GetTeacherByID(shortname) == null)
+                { MessageBox.Show("Lehrer nicht vorhanden", "Warnung"); return; }
+                database.EditTeacher(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3);
+            }
+            UpdateTeacherList();
+            // .Clear(); ?
+            tb_shortname.Text = null;
+            tb_firstname.Text = null;
+            tb_lastname.Text = null;
+            tb_phonenumber.Text = null;
+            tb_subject1.Text = null;
+            tb_subject2.Text = null;
+            tb_subject3.Text = null;
+
+            edit_id = null;
+            btn_add_teacher.Text = add_mode[0];
+            tb_shortname.ReadOnly = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tb_shortname.Text = null;
+            tb_firstname.Text = null;
+            tb_lastname.Text = null;
+            tb_phonenumber.Text = null;
+            tb_subject1.Text = null;
+            tb_subject2.Text = null;
+            tb_subject3.Text = null;
+
+            edit_id = null;
+            btn_add_teacher.Text = add_mode[0];
+            tb_shortname.ReadOnly = false;
+        }
+    }
+}

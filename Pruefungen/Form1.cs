@@ -20,7 +20,7 @@ namespace Pruefungen
         string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
         Point panelScrollPos1 = new Point();
         Point panelScrollPos2 = new Point();
-        Panel panel_empty;
+        Panel panel_empty, panel_top;
         public Form1()
         {
             database = Program.database;
@@ -224,6 +224,7 @@ namespace Pruefungen
             lbl_room.Text = room;
             lbl_room.TextAlign = ContentAlignment.MiddleCenter;
             panel_room.Controls.Add(lbl_room);
+            this.panel_side_room.HorizontalScroll.Value = 0;
             panel_side_room.Controls.Add(panel_room);
             time_line_room_list.AddLast(panel_room);
             //
@@ -255,6 +256,21 @@ namespace Pruefungen
         }
         public void update_timeline()
         {
+            if (panel_empty != null)
+                panel_side_room.Controls.Remove(panel_empty);
+
+            if (panel_top == null)
+                panel_top = new Panel();
+            else panel_side_room.Controls.Remove(panel_top);
+
+            panel_top.Location = new Point(0, 0);
+            panel_top.Size = new Size(panel_side_room.Width - 17, panel_side_time.Height);
+            //panel_top.BackColor = Color.Gray;
+            panel_top.Name = "top";
+            panel_side_room.Controls.Add(panel_top);
+
+            //TODO: add top panel and text ####################################
+
             foreach (Panel p in time_line_list) p.Dispose();
             foreach (Panel p in time_line_entity_list) p.Dispose();
             foreach (Panel p in time_line_room_list) p.Dispose();
@@ -269,8 +285,6 @@ namespace Pruefungen
                 if (!room_list.Contains(s[3]))
                     room_list.AddLast(s[3]);
             }
-            foreach (string s in room_list)
-                Console.WriteLine(s);
             List<string> temp_room_list = new List<string>(room_list);
             temp_room_list.Sort();
             room_list = new LinkedList<string>(temp_room_list);
@@ -279,7 +293,6 @@ namespace Pruefungen
             // ## [DEV] ## 
             if (panel_empty == null)
                 panel_empty = new Panel();
-            else panel_side_room.Controls.Remove(panel_empty);
             panel_empty.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
             panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
             //panel_empty.BackColor = Color.Red;
@@ -385,36 +398,11 @@ namespace Pruefungen
             {//ContextMenuStrip cm = sender as ContextMenuStrip;s}
         }*/
 
-
-        private void panel_side_time_Paint(object sender, PaintEventArgs e)
-        {
-            Panel panel_tl = sender as Panel;
-            ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
-            Color.DarkGreen, 4, ButtonBorderStyle.Solid);
-            Font drawFont = new Font("Arial", 10);
-            StringFormat drawFormat = new StringFormat();
-            for (int i = 0; i < 12; i++)
-            {
-                e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
-                float[] dashValues = { 1, 1 };
-                Pen pen = new Pen(Color.Blue, 1);
-                pen.DashPattern = dashValues;
-                Pen pen2 = new Pen(Color.Blue, 2);
-                pen2.DashPattern = dashValues;
-                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
-                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
-                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
-                e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
-            }
-        }
         private void panel_side_room_Paint(object sender, PaintEventArgs e)
         {
             // ## [DEV] ##
 
-            Panel p = sender as Panel;
+            /*Panel p = sender as Panel;
             // p.Height = panel_time_line.Height; // - panel_side_time.Height;
             Font drawFont = new Font("Arial", 10);
             StringFormat stringFormat = new StringFormat();
@@ -427,7 +415,8 @@ namespace Pruefungen
             Color.DarkGreen, 2, ButtonBorderStyle.Solid, Color.DarkGreen, 2, ButtonBorderStyle.Solid);
             e.Graphics.DrawString("Q2", drawFont, Brushes.Black, rect, stringFormat);
             e.Graphics.DrawLine(new Pen(Color.Black, 4), p.Width, 0, p.Width, p.Height);
-            int i = 0;
+            int i = 0;*/
+
             /*foreach (Panel pr in time_line_room_list)
             {
                 Panel panel_tl_room = pr;
@@ -463,6 +452,31 @@ namespace Pruefungen
             }
         }
 
+        private void panel_side_time_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel_tl = sender as Panel;
+            ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid,
+            Color.DarkGreen, 4, ButtonBorderStyle.Solid);
+            Font drawFont = new Font("Arial", 10);
+            StringFormat drawFormat = new StringFormat();
+            for (int i = 0; i < 12; i++)
+            {
+                e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
+                float[] dashValues = { 1, 1 };
+                Pen pen = new Pen(Color.Blue, 1);
+                pen.DashPattern = dashValues;
+                Pen pen2 = new Pen(Color.Blue, 2);
+                pen2.DashPattern = dashValues;
+                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
+                e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
+            }
+        }
+
         private void panel_time_line_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
@@ -477,11 +491,12 @@ namespace Pruefungen
             for (int i = 0; i < 12; i++)
             {
                 e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
-                float[] dashValues = { 1, 1 };
+                float[] dashValues = { 2, 2 };
+                float[] dashValues2 = { 1, 1 };
                 Pen pen = new Pen(Color.Blue, 1);
                 pen.DashPattern = dashValues;
                 Pen pen2 = new Pen(Color.Blue, 2);
-                pen2.DashPattern = dashValues;
+                pen2.DashPattern = dashValues2;
                 e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
@@ -590,6 +605,11 @@ namespace Pruefungen
 
         private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
         {
+            //Console.WriteLine(panel_time_line.AutoScrollPosition.Y);
+            if (panel_time_line.AutoScrollPosition.Y == 0)
+                this.panel_side_room.HorizontalScroll.Value = 0;
+            //panel_side_room.AutoScrollPosition = new Point(0, 0);
+            // für unten auch
             if (panel_time_line.AutoScrollPosition != panelScrollPos1)
             {
                 panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
@@ -657,6 +677,13 @@ namespace Pruefungen
         {
             search = null;
             update_timeline();
+        }
+
+
+
+        private void tsmi_data_teachers_Click(object sender, EventArgs e)
+        {
+            new FormTeacherData().Show();
         }
     }
 }

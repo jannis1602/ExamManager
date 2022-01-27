@@ -35,6 +35,12 @@ namespace Pruefungen
 
             if (File.Exists("student.txt")) Console.WriteLine(" --- student.txt exists --- ");
             //InsertStudentFileIntoDB();
+            AddTeacher("DÖ", "Anette", "Döding", "0", "Mathe", "Informatik", "Physik");
+            AddTeacher("DRN", "Gesine", "Dronsz", "0", "Englisch", "Geschichte", "ev.Religion");
+            AddTeacher("BRER", "Silke", "Breier", "0", "Deutsch", "Englisch");
+            AddTeacher("RE", "Nils", "Rehm", "0", "Deutsch", "Sowi");
+            AddTeacher("BS", "Kai", "Bechstein", "0", "Chemie", "Physik");
+
 
         }
 
@@ -209,7 +215,7 @@ namespace Pruefungen
                 while (reader.Read())
                 {
                     string[] rowData = new string[6];
-                    for (int i = 0; i < 6; i++) 
+                    for (int i = 0; i < 6; i++)
                     {
                         rowData[i] = reader.GetValue(i).ToString();
                     }
@@ -222,8 +228,10 @@ namespace Pruefungen
 
         // Lehrer
         // Kürzel firstname lastname TelNummer Faecher
-        private void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
+        public void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
         {
+            // TODO: check if teacher exists
+            if (GetTeacherByID(short_name) != null) { return; }
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "INSERT INTO teacher (short_name, firstname, lastname, phone_number, subject1, subject2, subject3) VALUES(@short_name,@firstname,@lastname,@phone_number,@subject1,@subject2,@subject3); ";
             sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
@@ -257,6 +265,48 @@ namespace Pruefungen
                 reader.NextResult();
             }
             return data;
+        }
+
+        public void EditTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE teacher SET firstname=@firstname, lastname=@lastname, phone_number=@phone_number, subject1=@subject1, subject2=@subject2, subject3=@subject3 WHERE short_name = @short_name";
+            sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
+            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
+            sqlite_cmd.Parameters.AddWithValue("@subject1", subject1);
+            sqlite_cmd.Parameters.AddWithValue("@subject2", subject2);
+            sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
+
+        public string[] GetTeacherByID(string short_name)
+        {
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE short_name = @short_name";
+            sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
+            reader = sqlite_cmd.ExecuteReader();
+            string[] data = new string[7];
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < 7; i++)
+                        data[i] = reader.GetValue(i).ToString();
+                }
+            }
+            else return null;
+            return data;
+        }
+        public void DeleteTeacher(string short_name)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM teacher WHERE short_name = @short_name ";
+            sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
+            sqlite_cmd.ExecuteNonQuery();
         }
 
         // Pruefung
@@ -427,7 +477,6 @@ namespace Pruefungen
             sqlite_cmd.CommandText = "DELETE FROM exam WHERE id = @id ";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             sqlite_cmd.ExecuteNonQuery();
-            //conn.Close();  
         }
 
         public bool CheckTimeAndRoom(string date, string time, string exam_room)

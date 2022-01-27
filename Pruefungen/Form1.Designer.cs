@@ -45,6 +45,11 @@ namespace Pruefungen
             this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_subject = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.datenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_teachers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_subjects = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_rooms = new System.Windows.Forms.ToolStripMenuItem();
             this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenBehaltenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -186,11 +191,12 @@ namespace Pruefungen
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tabellenToolStripMenuItem,
             this.sucheToolStripMenuItem,
+            this.datenToolStripMenuItem,
             this.einstellungenToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(290, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(331, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(261, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -207,21 +213,21 @@ namespace Pruefungen
             // tsmi_table_exams
             // 
             this.tsmi_table_exams.Name = "tsmi_table_exams";
-            this.tsmi_table_exams.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_exams.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_exams.Text = "Prüfungen";
             this.tsmi_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
             // tsmi_table_students
             // 
             this.tsmi_table_students.Name = "tsmi_table_students";
-            this.tsmi_table_students.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_students.Text = "Schüler";
             this.tsmi_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
             // tsmi_table_teacher
             // 
             this.tsmi_table_teacher.Name = "tsmi_table_teacher";
-            this.tsmi_table_teacher.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_teacher.Text = "Lehrer";
             this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
@@ -264,6 +270,42 @@ namespace Pruefungen
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
+            // datenToolStripMenuItem
+            // 
+            this.datenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_data_students,
+            this.tsmi_data_teachers,
+            this.tsmi_data_subjects,
+            this.tsmi_data_rooms});
+            this.datenToolStripMenuItem.Name = "datenToolStripMenuItem";
+            this.datenToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.datenToolStripMenuItem.Text = "Daten";
+            // 
+            // tsmi_data_students
+            // 
+            this.tsmi_data_students.Name = "tsmi_data_students";
+            this.tsmi_data_students.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_students.Text = "Schüler";
+            // 
+            // tsmi_data_teachers
+            // 
+            this.tsmi_data_teachers.Name = "tsmi_data_teachers";
+            this.tsmi_data_teachers.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_teachers.Text = "Lehrer";
+            this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
+            // 
+            // tsmi_data_subjects
+            // 
+            this.tsmi_data_subjects.Name = "tsmi_data_subjects";
+            this.tsmi_data_subjects.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_subjects.Text = "Fächer";
+            // 
+            // tsmi_data_rooms
+            // 
+            this.tsmi_data_rooms.Name = "tsmi_data_rooms";
+            this.tsmi_data_rooms.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_rooms.Text = "Räume";
+            // 
             // einstellungenToolStripMenuItem
             // 
             this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -275,7 +317,7 @@ namespace Pruefungen
             // datenBehaltenToolStripMenuItem
             // 
             this.datenBehaltenToolStripMenuItem.Name = "datenBehaltenToolStripMenuItem";
-            this.datenBehaltenToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.datenBehaltenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.datenBehaltenToolStripMenuItem.Text = "Daten behalten";
             // 
             // tableLayoutPanel2
@@ -1086,6 +1128,11 @@ namespace Pruefungen
         private System.Windows.Forms.ToolStripMenuItem datenBehaltenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_delete;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_subject;
+        private System.Windows.Forms.ToolStripMenuItem datenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_students;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_teachers;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_subjects;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_rooms;
     }
 }
 
