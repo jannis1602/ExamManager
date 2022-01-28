@@ -62,19 +62,47 @@ namespace Pruefungen
 
         private void btn_search_Click(object sender, EventArgs e)
         {
-            form.search = tb_search_string.Text;
-            form.update_timeline();
-            this.Dispose();
-        }
-
-        private void tb_search_string_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Return)
+            if (tb_search_string.Text.Length > 0)
             {
-                form.search = tb_search_string.Text;
+                this.tb_search_string.Select(this.tb_search_string.Text.Length - 1, 0);
+                form.search = tb_search_string.Text.First().ToString().ToUpper() + (tb_search_string.Text.Substring(1));
                 form.update_timeline();
                 this.Dispose();
-                e.Handled = true;
+            }
+        }
+
+        /*private void tb_search_string_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Console.WriteLine(e.KeyChar);
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                if (tb_search_string.Text.Length > 0)
+                {
+                    this.tb_search_string.Select(this.tb_search_string.Text.Length - 1, 0);
+                    Console.WriteLine("SUCHE: " + tb_search_string.Text.First().ToString().ToUpper() + (tb_search_string.Text.Substring(1)));
+                    form.search = tb_search_string.Text;
+                    form.update_timeline();
+                    this.Dispose();
+                    e.Handled = true;
+                }
+            }
+        }*/
+
+        private void tb_search_string_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Console.WriteLine(e.KeyCode);
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (tb_search_string.Text.Length > 0)
+                {
+                    this.tb_search_string.Select(this.tb_search_string.Text.Length - 1, 0);
+                    Console.WriteLine("SUCHE: " + tb_search_string.Text.First().ToString().ToUpper() + (tb_search_string.Text.Substring(1)));
+                    form.search = tb_search_string.Text.First().ToString().ToUpper() + (tb_search_string.Text.Substring(1));
+                    Console.WriteLine("#" + form.search + "#");
+                    form.update_timeline();
+                    this.Dispose();
+                    //e.Handled = true;
+                }
             }
         }
     }

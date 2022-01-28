@@ -57,7 +57,7 @@ namespace Pruefungen
             this.btn_search.Margin = new System.Windows.Forms.Padding(50, 10, 50, 10);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(284, 30);
-            this.btn_search.TabIndex = 0;
+            this.btn_search.TabIndex = 1;
             this.btn_search.Text = "Suchen";
             this.btn_search.UseVisualStyleBackColor = true;
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
@@ -70,8 +70,8 @@ namespace Pruefungen
             this.tb_search_string.Margin = new System.Windows.Forms.Padding(30, 20, 30, 5);
             this.tb_search_string.Name = "tb_search_string";
             this.tb_search_string.Size = new System.Drawing.Size(324, 26);
-            this.tb_search_string.TabIndex = 1;
-            this.tb_search_string.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_search_string_KeyPress);
+            this.tb_search_string.TabIndex = 0;
+            this.tb_search_string.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.tb_search_string_PreviewKeyDown);
             // 
             // FormSearch
             // 

@@ -710,6 +710,11 @@ namespace Pruefungen
             update_timeline();
         }
 
+        private void tsmi_data_subjects_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
         {
             new FormTeacherData().Show();

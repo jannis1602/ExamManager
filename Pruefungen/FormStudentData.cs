@@ -115,7 +115,7 @@ namespace Pruefungen
             }
 
             List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(student_entity_list);
-            temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
+            temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList(); // .ThenBy( x => x.Bar)
             student_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);
 
             foreach (Panel p in student_entity_list)

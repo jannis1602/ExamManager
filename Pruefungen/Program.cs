@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Pruefungen
@@ -23,17 +20,14 @@ namespace Pruefungen
             // subject dropdown
 
             // database subjects and rooms
-            // rename form1 and form2
+            // rename form1 
 
             // room side panel scroll with time line
-
-            // delete panelside paint
-
-            // rename database students to student
             // test if fach 1 null und fach 3 notnull
-
-            // change exam Room
             // show search string
+
+            // FormRoomData liste
+            // tabindex
         }
     }
 }

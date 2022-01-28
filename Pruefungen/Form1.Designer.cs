@@ -291,6 +291,7 @@ namespace Pruefungen
             this.tsmi_data_subjects.Name = "tsmi_data_subjects";
             this.tsmi_data_subjects.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_subjects.Text = "Fächer";
+            this.tsmi_data_subjects.Click += new System.EventHandler(this.tsmi_data_subjects_Click);
             // 
             // stufeVerschiebenToolStripMenuItem
             // 

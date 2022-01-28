@@ -150,7 +150,7 @@ namespace Pruefungen
             this.ClientSize = new System.Drawing.Size(384, 121);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormChangeRoom";
-            this.Text = "FormChangeRoom";
+            this.Text = "Raumwechsel";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();

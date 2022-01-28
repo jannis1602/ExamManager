@@ -57,10 +57,9 @@ namespace Pruefungen
             this.btn_add.Margin = new System.Windows.Forms.Padding(50, 10, 50, 10);
             this.btn_add.Name = "btn_add";
             this.btn_add.Size = new System.Drawing.Size(284, 30);
-            this.btn_add.TabIndex = 0;
+            this.btn_add.TabIndex = 1;
             this.btn_add.Text = "Hinzufügen";
             this.btn_add.UseVisualStyleBackColor = true;
-            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // tb_add
             // 
@@ -70,7 +69,7 @@ namespace Pruefungen
             this.tb_add.Margin = new System.Windows.Forms.Padding(30, 20, 30, 5);
             this.tb_add.Name = "tb_add";
             this.tb_add.Size = new System.Drawing.Size(324, 26);
-            this.tb_add.TabIndex = 1;
+            this.tb_add.TabIndex = 0;
             this.tb_add.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_add_KeyPress);
             // 
             // FormRoomData
@@ -80,7 +79,7 @@ namespace Pruefungen
             this.ClientSize = new System.Drawing.Size(384, 111);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormRoomData";
-            this.Text = "FormRoomData";
+            this.Text = "Raum hinzufügen";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
