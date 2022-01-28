@@ -9,6 +9,7 @@ namespace Pruefungen
     public partial class Form1 : Form
     {
         public string search = null;
+        public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room
 
         Database database;
         Form_grid form_grid;
@@ -55,6 +56,7 @@ namespace Pruefungen
             for (int i = 0; i < subjectList.Count; i++)
                 subjects[i] = subjectList.ElementAt(i)[0];
             cb_subject.Items.AddRange(subjects);
+            // students
             var autocomplete_student = new AutoCompleteStringCollection();
             LinkedList<string[]> allStudents = database.GetAllStudents();
             string[] students = new string[allStudents.Count];
@@ -64,7 +66,7 @@ namespace Pruefungen
             this.tb_student.AutoCompleteCustomSource = autocomplete_student;
             this.tb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
+            // exam_room
             var autocomplete_exam_room = new AutoCompleteStringCollection();
             LinkedList<string[]> examList = Program.database.GetAllRooms();
             string[] rooms = new string[examList.Count];
@@ -74,7 +76,7 @@ namespace Pruefungen
             this.tb_exam_room.AutoCompleteCustomSource = autocomplete_exam_room;
             this.tb_exam_room.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_exam_room.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
+            // prep_room
             this.tb_preparation_room.AutoCompleteCustomSource = autocomplete_exam_room;
             this.tb_preparation_room.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_preparation_room.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -515,7 +517,35 @@ namespace Pruefungen
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             if (search != null)
-                if (search.Equals(student[1] + " " + student[2]) || search.Equals(exam[9]))
+                if (search_index == 0)
+                    if (search.Equals(student[1] + " " + student[2]))
+                    {
+                        ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid);
+                    }
+            if (search_index == 1)
+                if (search.Equals(exam[6]) || search.Equals(exam[7]) || search.Equals(exam[8]))
+                {
+                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid);
+                }
+            if (search_index == 2)
+                if (search.Equals(exam[9]))
+                {
+                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid,
+                    Color.Red, 2, ButtonBorderStyle.Solid);
+                }
+            if (search_index == 3)
+                if (search.Equals(exam[3]) || search.Equals(exam[4]))
                 {
                     ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
                     Color.Red, 2, ButtonBorderStyle.Solid,
@@ -681,10 +711,15 @@ namespace Pruefungen
             new FormSearch(2, this).Show();
 
         }
+        private void raumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormSearch(3, this).Show();
 
+        }
         private void tsmi_search_delete_Click(object sender, EventArgs e)
         {
             search = null;
+            search_index = 0;
             update_timeline();
         }
 
@@ -725,6 +760,16 @@ namespace Pruefungen
         void subjectdata_Event(object sender, EventArgs a)
         {
             LoadAutocomplete();
+        }
+
+        private void tsmi_data_editgrade_move_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("[DEVELOPMENT]", "Warnung!");
+        }
+        private void tsmi_data_editgrade_delete_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("[DEVELOPMENT]", "Warnung!");
+            //database.DeleteGrade();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)

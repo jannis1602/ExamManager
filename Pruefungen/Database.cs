@@ -248,6 +248,21 @@ namespace Pruefungen
             sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
             sqlite_cmd.ExecuteNonQuery();
         }
+        public void DeleteStudent(int id)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM student WHERE id = @id ";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+        public void DeleteGrade(string grade)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM student WHERE grade = @grade ";
+            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
 
         // Lehrer
         // Kürzel firstname lastname TelNummer Faecher
