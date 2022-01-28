@@ -74,6 +74,7 @@ namespace Pruefungen
                 form.search = tb_search_string.Text;
                 form.update_timeline();
                 this.Dispose();
+                e.Handled = true;
             }
         }
     }

@@ -65,17 +65,35 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormChangeRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangeRoom.Designer.cs">
+      <DependentUpon>FormChangeRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDataTable.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormDataTable.Designer.cs">
       <DependentUpon>FormDataTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormRoomData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRoomData.Designer.cs">
+      <DependentUpon>FormRoomData.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSearch.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormSearch.Designer.cs">
       <DependentUpon>FormSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStudentData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStudentData.Designer.cs">
+      <DependentUpon>FormStudentData.cs</DependentUpon>
     </Compile>
     <Compile Include="FormTeacherData.cs">
       <SubType>Form</SubType>
@@ -88,11 +106,20 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormChangeRoom.resx">
+      <DependentUpon>FormChangeRoom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormDataTable.resx">
       <DependentUpon>FormDataTable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormRoomData.resx">
+      <DependentUpon>FormRoomData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormSearch.resx">
       <DependentUpon>FormSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStudentData.resx">
+      <DependentUpon>FormStudentData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTeacherData.resx">
       <DependentUpon>FormTeacherData.cs</DependentUpon>

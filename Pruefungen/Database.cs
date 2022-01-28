@@ -15,17 +15,18 @@ namespace Pruefungen
         public Database()
         {
             connection = CreateConnection();
+            CreateStudentDB();
+            CreateTeacherDB();
+            CreateExamDB();
+            InsertStudentFileIntoDB();
             // #####################################################################################
-            SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            /*sqlite_cmd.CommandText = "DROP TABLE IF EXISTS exam";
+            /*SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DROP TABLE IF EXISTS exam";
             sqlite_cmd.ExecuteNonQuery();
             sqlite_cmd.CommandText = "DROP TABLE IF EXISTS teacher";
             sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = "DROP TABLE IF EXISTS students";
-            sqlite_cmd.ExecuteNonQuery();
-            CreateStudentDB();
-            CreateTeacherDB();
-            CreateExamDB();*/
+            sqlite_cmd.CommandText = "DROP TABLE IF EXISTS student";
+            sqlite_cmd.ExecuteNonQuery();*/
             // #####################################################################################
             //AddTeacher("user", "test", "user", "01234", "ma", "ph");
             //AddExam("2022-01-28", "09:00:00", "O-201", "O-202", "student1", "abc", "def", "ghi", "ma", 45);
@@ -33,7 +34,7 @@ namespace Pruefungen
 
             //Console.WriteLine("alle student: " + getAllstudent().Count);
 
-            if (File.Exists("student.txt")) Console.WriteLine(" --- student.txt exists --- ");
+            if (File.Exists("schueler.txt")) Console.WriteLine(" --- schueler.txt exists --- ");
             //InsertStudentFileIntoDB();
             AddTeacher("DÖ", "Anette", "Döding", "0", "Mathe", "Informatik", "Physik");
             AddTeacher("DRN", "Gesine", "Dronsz", "0", "Englisch", "Geschichte", "ev.Religion");
@@ -59,13 +60,13 @@ namespace Pruefungen
 
         // student
         // ID firstname lastname grade Email TelNummer
-        private void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = "0")
+        public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = "0")
         {
             if (email == null) email = firstname.Split(' ')[0] + "." + lastname.Replace(" ", ".") + "@gymrahden.de";
             //if (conn.State != System.Data.ConnectionState.Open) conn.Open();
             if (GetStudent(firstname, lastname, grade) != null) return;                     // TODO: ERROR Message
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "INSERT INTO students (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number); ";
+            sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number); ";
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
@@ -117,7 +118,7 @@ namespace Pruefungen
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM students WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname) AND grade = @grade"; // nur wenn kein student-object
+            sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname) AND grade = @grade"; // nur wenn kein student-object
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
@@ -140,7 +141,7 @@ namespace Pruefungen
                     List<string[]> data = null;
                     SQLiteDataReader reader;
                     SQLiteCommand sqlite_cmd = connection.CreateCommand();
-                    sqlite_cmd.CommandText = "SELECT * FROM students WHERE firstname = @firstname AND lastname = @lastname AND grade = @grade";
+                    sqlite_cmd.CommandText = "SELECT * FROM student WHERE firstname = @firstname AND lastname = @lastname AND grade = @grade";
                     sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
                     sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
                     sqlite_cmd.Parameters.AddWithValue("@grade", grade);
@@ -163,7 +164,7 @@ namespace Pruefungen
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM students WHERE id = @id";
+            sqlite_cmd.CommandText = "SELECT * FROM student WHERE id = @id";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             reader = sqlite_cmd.ExecuteReader();
             string[] data = new string[4];
@@ -184,7 +185,7 @@ namespace Pruefungen
             List<string[]> data = new List<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM students WHERE id = @id";
+            sqlite_cmd.CommandText = "SELECT * FROM student WHERE id = @id";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)                          // TODO if rows > 1 => ERROR
@@ -208,7 +209,7 @@ namespace Pruefungen
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM students";
+            sqlite_cmd.CommandText = "SELECT * FROM student";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -224,6 +225,19 @@ namespace Pruefungen
                 reader.NextResult();
             }
             return data;
+        }
+
+        public void EditStudent(int id, string firstname, string lastname, string grade, string email, string phone_number)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE student SET firstname=@firstname, lastname=@lastname, grade=@grade, email=@email, phone_number=@phone_number WHERE id = @id";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
+            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
+            sqlite_cmd.Parameters.AddWithValue("@email", email);
+            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
+            sqlite_cmd.ExecuteNonQuery();
         }
 
         // Lehrer
@@ -344,6 +358,16 @@ namespace Pruefungen
             sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
             sqlite_cmd.Parameters.AddWithValue("@subject", subject);
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
+        public void EditExamRoom(string date, string old_exam_room, string exam_room)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE exam SET exam_room=@exam_room WHERE date=@date AND exam_room=@old_exam_room";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@old_exam_room", old_exam_room);
+            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             sqlite_cmd.ExecuteNonQuery();
         }
 
@@ -496,7 +520,7 @@ namespace Pruefungen
         {
             connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT NOT NULL, lastname TEXT NOT NULL, grade TEXT, email TEXT, phone_number TEXT)";
+            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS student (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT NOT NULL, lastname TEXT NOT NULL, grade TEXT, email TEXT, phone_number TEXT)";
             sqlite_cmd.ExecuteNonQuery();
         }
         // Lehrer

@@ -33,24 +33,25 @@ namespace Pruefungen
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.dtp_timeline_date = new System.Windows.Forms.DateTimePicker();
-            this.btn_search = new System.Windows.Forms.Button();
-            this.btn_keep_data_config = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tabellenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_table_exams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_table_students = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
-            this.sucheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_subject = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
-            this.datenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_teachers = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_subjects = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_rooms = new System.Windows.Forms.ToolStripMenuItem();
-            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_subjects = new System.Windows.Forms.ToolStripMenuItem();
+            this.stufeVerschiebenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_editgrade_move = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_editgrade_delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenBehaltenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -84,7 +85,6 @@ namespace Pruefungen
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_reuse_exam = new System.Windows.Forms.Button();
             this.btn_delete_exam = new System.Windows.Forms.Button();
-            this.btn_advanced = new System.Windows.Forms.Button();
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
@@ -102,6 +102,8 @@ namespace Pruefungen
             this.panel_side_room = new System.Windows.Forms.Panel();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
+            this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -148,8 +150,6 @@ namespace Pruefungen
             // flowLayoutPanel_menu
             // 
             this.flowLayoutPanel_menu.Controls.Add(this.dtp_timeline_date);
-            this.flowLayoutPanel_menu.Controls.Add(this.btn_search);
-            this.flowLayoutPanel_menu.Controls.Add(this.btn_keep_data_config);
             this.flowLayoutPanel_menu.Controls.Add(this.menuStrip1);
             this.flowLayoutPanel_menu.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel_menu.Margin = new System.Windows.Forms.Padding(0);
@@ -168,35 +168,18 @@ namespace Pruefungen
             this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
             this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_time_line_date_ValueChanged);
             // 
-            // btn_search
-            // 
-            this.btn_search.Location = new System.Drawing.Point(109, 3);
-            this.btn_search.Name = "btn_search";
-            this.btn_search.Size = new System.Drawing.Size(86, 21);
-            this.btn_search.TabIndex = 11;
-            this.btn_search.Text = "Suche[DEV]";
-            this.btn_search.UseVisualStyleBackColor = true;
-            // 
-            // btn_keep_data_config
-            // 
-            this.btn_keep_data_config.Location = new System.Drawing.Point(201, 3);
-            this.btn_keep_data_config.Name = "btn_keep_data_config";
-            this.btn_keep_data_config.Size = new System.Drawing.Size(86, 21);
-            this.btn_keep_data_config.TabIndex = 6;
-            this.btn_keep_data_config.Text = "config[DEV]";
-            this.btn_keep_data_config.UseVisualStyleBackColor = true;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tabellenToolStripMenuItem,
-            this.sucheToolStripMenuItem,
-            this.datenToolStripMenuItem,
-            this.einstellungenToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(290, 0);
+            this.searchToolStripMenuItem,
+            this.dataToolStripMenuItem,
+            this.examToolStripMenuItem,
+            this.settingsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(106, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(261, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(443, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -231,16 +214,16 @@ namespace Pruefungen
             this.tsmi_table_teacher.Text = "Lehrer";
             this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
-            // sucheToolStripMenuItem
+            // searchToolStripMenuItem
             // 
-            this.sucheToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_search_teacher,
             this.tsmi_search_student,
             this.tsmi_search_subject,
             this.tsmi_search_delete});
-            this.sucheToolStripMenuItem.Name = "sucheToolStripMenuItem";
-            this.sucheToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.sucheToolStripMenuItem.Text = "Suche";
+            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.searchToolStripMenuItem.Text = "Suche";
             // 
             // tsmi_search_teacher
             // 
@@ -270,22 +253,24 @@ namespace Pruefungen
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
-            // datenToolStripMenuItem
+            // dataToolStripMenuItem
             // 
-            this.datenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_data_students,
             this.tsmi_data_teachers,
+            this.tsmi_data_rooms,
             this.tsmi_data_subjects,
-            this.tsmi_data_rooms});
-            this.datenToolStripMenuItem.Name = "datenToolStripMenuItem";
-            this.datenToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
-            this.datenToolStripMenuItem.Text = "Daten";
+            this.stufeVerschiebenToolStripMenuItem});
+            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.dataToolStripMenuItem.Text = "Daten";
             // 
             // tsmi_data_students
             // 
             this.tsmi_data_students.Name = "tsmi_data_students";
             this.tsmi_data_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_students.Text = "Schüler";
+            this.tsmi_data_students.Click += new System.EventHandler(this.tsmi_data_students_Click);
             // 
             // tsmi_data_teachers
             // 
@@ -294,25 +279,47 @@ namespace Pruefungen
             this.tsmi_data_teachers.Text = "Lehrer";
             this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
             // 
+            // tsmi_data_rooms
+            // 
+            this.tsmi_data_rooms.Name = "tsmi_data_rooms";
+            this.tsmi_data_rooms.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_rooms.Text = "Räume";
+            this.tsmi_data_rooms.Click += new System.EventHandler(this.tsmi_data_rooms_Click);
+            // 
             // tsmi_data_subjects
             // 
             this.tsmi_data_subjects.Name = "tsmi_data_subjects";
             this.tsmi_data_subjects.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_subjects.Text = "Fächer";
             // 
-            // tsmi_data_rooms
+            // stufeVerschiebenToolStripMenuItem
             // 
-            this.tsmi_data_rooms.Name = "tsmi_data_rooms";
-            this.tsmi_data_rooms.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_data_rooms.Text = "Räume";
+            this.stufeVerschiebenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_data_editgrade_move,
+            this.tsmi_data_editgrade_delete});
+            this.stufeVerschiebenToolStripMenuItem.Name = "stufeVerschiebenToolStripMenuItem";
+            this.stufeVerschiebenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stufeVerschiebenToolStripMenuItem.Text = "Stufe bearbeiten";
             // 
-            // einstellungenToolStripMenuItem
+            // tsmi_data_editgrade_move
             // 
-            this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_data_editgrade_move.Name = "tsmi_data_editgrade_move";
+            this.tsmi_data_editgrade_move.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_editgrade_move.Text = "Stufe verschieben";
+            // 
+            // tsmi_data_editgrade_delete
+            // 
+            this.tsmi_data_editgrade_delete.Name = "tsmi_data_editgrade_delete";
+            this.tsmi_data_editgrade_delete.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_editgrade_delete.Text = "Stufe Löschen";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.datenBehaltenToolStripMenuItem});
-            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
-            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.settingsToolStripMenuItem.Text = "Einstellungen";
             // 
             // datenBehaltenToolStripMenuItem
             // 
@@ -385,6 +392,7 @@ namespace Pruefungen
             this.tb_student.Name = "tb_student";
             this.tb_student.Size = new System.Drawing.Size(303, 26);
             this.tb_student.TabIndex = 2;
+            this.tb_student.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_student_KeyPress);
             // 
             // lbl_student
             // 
@@ -690,7 +698,6 @@ namespace Pruefungen
             this.tlp_1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 152F));
             this.tlp_1.Controls.Add(this.label_mode, 0, 0);
             this.tlp_1.Controls.Add(this.flp_edit_btns, 3, 0);
-            this.tlp_1.Controls.Add(this.btn_advanced, 2, 0);
             this.tlp_1.Controls.Add(this.tlp_config, 1, 0);
             this.tlp_1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_1.Location = new System.Drawing.Point(0, 0);
@@ -759,15 +766,6 @@ namespace Pruefungen
             this.btn_delete_exam.Text = "delete";
             this.btn_delete_exam.UseVisualStyleBackColor = true;
             this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
-            // 
-            // btn_advanced
-            // 
-            this.btn_advanced.Location = new System.Drawing.Point(347, 3);
-            this.btn_advanced.Name = "btn_advanced";
-            this.btn_advanced.Size = new System.Drawing.Size(86, 21);
-            this.btn_advanced.TabIndex = 10;
-            this.btn_advanced.Text = "Erweitert[DEV]";
-            this.btn_advanced.UseVisualStyleBackColor = true;
             // 
             // tlp_config
             // 
@@ -1009,6 +1007,21 @@ namespace Pruefungen
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
+            // examToolStripMenuItem
+            // 
+            this.examToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_exam_changeroom});
+            this.examToolStripMenuItem.Name = "examToolStripMenuItem";
+            this.examToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.examToolStripMenuItem.Text = "Prüfung";
+            // 
+            // tsmi_exam_changeroom
+            // 
+            this.tsmi_exam_changeroom.Name = "tsmi_exam_changeroom";
+            this.tsmi_exam_changeroom.Size = new System.Drawing.Size(190, 22);
+            this.tsmi_exam_changeroom.Text = "Prüfungsraum ändern";
+            this.tsmi_exam_changeroom.Click += new System.EventHandler(this.tsmi_exam_changeroom_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1074,7 +1087,6 @@ namespace Pruefungen
         private System.Windows.Forms.TableLayoutPanel tlp_3;
         private System.Windows.Forms.TableLayoutPanel tlp_subject;
         private System.Windows.Forms.Label lbl_subject;
-        private System.Windows.Forms.Button btn_keep_data_config;
         private System.Windows.Forms.TableLayoutPanel tlp_4;
         private System.Windows.Forms.TableLayoutPanel tlp_teacher1;
         private System.Windows.Forms.TextBox tb_teacher1;
@@ -1104,7 +1116,6 @@ namespace Pruefungen
         private System.Windows.Forms.DateTimePicker dtp_timeline_date;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_menu;
         private System.Windows.Forms.Button btn_cancel;
-        private System.Windows.Forms.Button btn_advanced;
         private System.Windows.Forms.Button btn_delete_exam;
         private System.Windows.Forms.Panel panel_side_room;
         private System.Windows.Forms.Button btn_reuse_exam;
@@ -1112,7 +1123,6 @@ namespace Pruefungen
         private System.Windows.Forms.Panel panel_time_line;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flp_edit_btns;
-        private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.TableLayoutPanel tlp_config;
         private System.Windows.Forms.CheckBox cb_add_next_time;
         private System.Windows.Forms.CheckBox cb_keep_data;
@@ -1121,18 +1131,23 @@ namespace Pruefungen
         private System.Windows.Forms.ToolStripMenuItem tsmi_table_exams;
         private System.Windows.Forms.ToolStripMenuItem tsmi_table_students;
         private System.Windows.Forms.ToolStripMenuItem tsmi_table_teacher;
-        private System.Windows.Forms.ToolStripMenuItem sucheToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_student;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_teacher;
         private System.Windows.Forms.ToolStripMenuItem datenBehaltenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_delete;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_subject;
-        private System.Windows.Forms.ToolStripMenuItem datenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_students;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_teachers;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_subjects;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_rooms;
+        private System.Windows.Forms.ToolStripMenuItem stufeVerschiebenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_editgrade_move;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_data_editgrade_delete;
+        private System.Windows.Forms.ToolStripMenuItem examToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_exam_changeroom;
     }
 }
 

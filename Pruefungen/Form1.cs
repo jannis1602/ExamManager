@@ -96,6 +96,17 @@ namespace Pruefungen
             if (form_grid != null && !form_grid.IsDisposed)
                 form_grid.Data_update();
         }
+        private void tb_student_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                AddExam();
+                if (form_grid != null && !form_grid.IsDisposed)
+                    form_grid.Data_update();
+                e.Handled = true;
+            }
+        }
+
         // ## [DEV] ## ################################################################################
         private void AddExam()
         {
@@ -351,8 +362,6 @@ namespace Pruefungen
         }
         private void panel_tl_entity_click(object sender, MouseEventArgs e) // TODO delete old if edited
         {
-            Console.WriteLine("Click");
-
             if (e.Button == MouseButtons.Left)
             {
                 Panel p = sender as Panel;
@@ -679,7 +688,27 @@ namespace Pruefungen
             update_timeline();
         }
 
+        private void tsmi_data_students_Click(object sender, EventArgs e)
+        {
+            new FormStudentData().Show();
+        }
 
+        private void tsmi_data_rooms_Click(object sender, EventArgs e)
+        {
+            new FormRoomData().Show();
+        }
+
+        private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
+        { 
+            FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
+            form.Disposed += changeroom_Event;
+            form.Show();
+        }
+
+        void changeroom_Event(object sender, EventArgs a)
+        {
+            update_timeline();
+        }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
         {

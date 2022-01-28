@@ -149,6 +149,9 @@ namespace Pruefungen
         private void btn_add_teacher_Click(object sender, EventArgs e)
         {
             // TODO: check name?
+
+            // TODO: Check if null #########################################################################################
+
             string shortname = tb_shortname.Text;
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
@@ -183,7 +186,7 @@ namespace Pruefungen
             tb_shortname.ReadOnly = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_cancel_Click(object sender, EventArgs e)
         {
             tb_shortname.Text = null;
             tb_firstname.Text = null;
@@ -197,5 +200,6 @@ namespace Pruefungen
             btn_add_teacher.Text = add_mode[0];
             tb_shortname.ReadOnly = false;
         }
+
     }
 }

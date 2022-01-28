@@ -31,6 +31,9 @@ namespace Pruefungen
 
             // rename database students to student
             // test if fach 1 null und fach 3 notnull
+
+            // change exam Room
+            // show search string
         }
     }
 }
