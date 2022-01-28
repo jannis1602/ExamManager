@@ -30,22 +30,16 @@ namespace Pruefungen
             foreach (FlowLayoutPanel p in teacher_entity_list) p.Dispose();
             teacher_entity_list.Clear();
 
-            //TODO Order by lastname
-
             foreach (string[] s in database.GetAllTeachers())
             {
                 FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
-                //panel_room.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
                 panel_teacher.Size = new Size(950, 80);
                 panel_teacher.Margin = new Padding(5);
                 panel_teacher.BackColor = Color.LightBlue;
-                //panel_teacher.Name = room;
                 // -- NAME --
                 Label lbl_teacher_name = new Label();
                 lbl_teacher_name.Size = new Size(140, panel_teacher.Height);
                 lbl_teacher_name.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                //lbl_teacher_name.Location = new Point(0, 0);
-                //lbl_room.Margin = new Padding(3);
                 lbl_teacher_name.Text = s[1] + " " + s[2];
                 lbl_teacher_name.TextAlign = ContentAlignment.MiddleLeft;
                 panel_teacher.Controls.Add(lbl_teacher_name);
@@ -60,8 +54,6 @@ namespace Pruefungen
                 Label lbl_teacher_phone = new Label();
                 lbl_teacher_phone.Size = new Size(140, panel_teacher.Height);
                 lbl_teacher_phone.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                //lbl_teacher_phone.Location = new Point(0, 0);
-                //lbl_room.Margin = new Padding(3);
                 lbl_teacher_phone.Text = s[3];
                 lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
                 panel_teacher.Controls.Add(lbl_teacher_phone);
@@ -71,8 +63,6 @@ namespace Pruefungen
                     Label lbl_teacher_subject = new Label();
                     lbl_teacher_subject.Size = new Size(100, panel_teacher.Height);
                     lbl_teacher_subject.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                    //lbl_teacher_phone.Location = new Point(0, 0);
-                    //lbl_room.Margin = new Padding(3);
                     lbl_teacher_subject.Text = s[4 + i];
                     lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
                     panel_teacher.Controls.Add(lbl_teacher_subject);
@@ -84,7 +74,6 @@ namespace Pruefungen
                 btn_teacher_edit.Text = "Bearbeiten";
                 btn_teacher_edit.Name = s[0];
                 btn_teacher_edit.Margin = new Padding(10, 20, 10, 20);
-                //btn_teacher_edit.Size= new Size(panel_teacher);
                 btn_teacher_edit.BackColor = Color.LightGray;
                 btn_teacher_edit.Click += btn_teacher_edit_Click;
                 panel_teacher.Controls.Add(btn_teacher_edit);
@@ -95,14 +84,12 @@ namespace Pruefungen
                 btn_teacher_delete.Text = "Löschen";
                 btn_teacher_delete.Name = s[0];
                 btn_teacher_delete.Margin = new Padding(10, 20, 10, 20);
-                //btn_teacher_edit.Size= new Size(panel_teacher);
                 btn_teacher_delete.BackColor = Color.LightGray;
                 btn_teacher_delete.Click += btn_teacher_delete_Click;
                 panel_teacher.Controls.Add(btn_teacher_delete);
 
                 //
                 this.flp_teacher_entitys.HorizontalScroll.Value = 0;
-                //flp_teacher_entitys.Controls.Add(panel_teacher);
                 panel_teacher.Name = s[2];
                 teacher_entity_list.AddLast(panel_teacher);
             }
@@ -148,10 +135,6 @@ namespace Pruefungen
 
         private void btn_add_teacher_Click(object sender, EventArgs e)
         {
-            // TODO: check name?
-
-            // TODO: Check if null #########################################################################################
-
             string shortname = tb_shortname.Text;
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
@@ -159,6 +142,10 @@ namespace Pruefungen
             string subject1 = tb_subject1.Text;
             string subject2 = tb_subject2.Text;
             string subject3 = tb_subject3.Text;
+            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || phonenumber.Length == 0 || subject1.Length == 0 || subject2.Length == 0 || subject3.Length == 0)
+            {
+                MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return;
+            }
             if (edit_id == null)
             {
                 if (database.GetTeacherByID(shortname) != null)
@@ -172,14 +159,13 @@ namespace Pruefungen
                 database.EditTeacher(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3);
             }
             UpdateTeacherList();
-            // .Clear(); ?
-            tb_shortname.Text = null;
-            tb_firstname.Text = null;
-            tb_lastname.Text = null;
-            tb_phonenumber.Text = null;
-            tb_subject1.Text = null;
-            tb_subject2.Text = null;
-            tb_subject3.Text = null;
+            tb_shortname.Clear();
+            tb_firstname.Clear();
+            tb_lastname.Clear();
+            tb_phonenumber.Clear();
+            tb_subject1.Clear();
+            tb_subject2.Clear();
+            tb_subject3.Clear();
 
             edit_id = null;
             btn_add_teacher.Text = add_mode[0];
@@ -188,13 +174,13 @@ namespace Pruefungen
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            tb_shortname.Text = null;
-            tb_firstname.Text = null;
-            tb_lastname.Text = null;
-            tb_phonenumber.Text = null;
-            tb_subject1.Text = null;
-            tb_subject2.Text = null;
-            tb_subject3.Text = null;
+            tb_shortname.Clear();
+            tb_firstname.Clear();
+            tb_lastname.Clear();
+            tb_phonenumber.Clear();
+            tb_subject1.Clear();
+            tb_subject2.Clear();
+            tb_subject3.Clear();
 
             edit_id = null;
             btn_add_teacher.Text = add_mode[0];

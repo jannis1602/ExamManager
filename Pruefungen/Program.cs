@@ -14,19 +14,11 @@ namespace Pruefungen
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            // Student and Teacher Object
-            // config add 45min when add new
             // strg+enter -> add
-            // subject dropdown
-
-            // database subjects and rooms
             // rename form1 
-
-            // room side panel scroll with time line
             // test if fach 1 null und fach 3 notnull
             // show search string
-
-            // FormRoomData liste
+            // room dropdown
             // tabindex
         }
     }

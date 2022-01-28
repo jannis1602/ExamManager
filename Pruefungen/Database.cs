@@ -18,7 +18,9 @@ namespace Pruefungen
             CreateStudentDB();
             CreateTeacherDB();
             CreateExamDB();
-            InsertStudentFileIntoDB();
+            CreateRoomDB();
+            CreateSubjectDB();
+            InsertStudentFileIntoDB("schueler.txt");
             // #####################################################################################
             /*SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "DROP TABLE IF EXISTS exam";
@@ -75,42 +77,49 @@ namespace Pruefungen
             sqlite_cmd.ExecuteNonQuery();
             //conn.Close();  
         }
-        private void InsertStudentFileIntoDB()
+        private void InsertStudentFileIntoDB(string file)
         {
             bool editDoppelnamen = false;
 
-            string[] lines = File.ReadAllLines("schueler.txt"); // Filechooser if default null
-            foreach (string line in lines)
+            if (File.Exists(file))
             {
-                //Console.WriteLine(line);
-                if (line.Split(' ').Length > 2)
-                    if (!editDoppelnamen)
-                    {
-                        string tempfirstname = null;
-                        for (int i = 0; i < line.Split(' ').Length - 1; i++)
-                            tempfirstname += line.Split(' ')[i] += " ";
-                        tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                        string templastname = null;
-                        templastname += line.Split(' ')[line.Split(' ').Length - 1];
-                        AddStudent(tempfirstname, templastname, "Q2");
-                    }
-                    else
-                    {
-                        for (int i = 1; i < line.Split(' ').Length; i++)
+                string[] lines = File.ReadAllLines(file); // Filechooser if default null
+                foreach (string line in lines)
+                {
+                    if (!line[0].Equals('#'))
+
+                        //Console.WriteLine(line);
+                        if (line.Split(' ').Length > 2)
                         {
-                            string tempfirstname = null;
-                            for (int fn = 0; fn < i; fn++)
-                                tempfirstname += line.Split(' ')[fn] += " ";
-                            tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                            string templastname = null;
-                            for (int ln = i; ln < line.Split(' ').Length; ln++)
-                                templastname += line.Split(' ')[ln];
-                            DialogResult result = MessageBox.Show("Auswahl: " + tempfirstname + " - " + templastname, "Info!", MessageBoxButtons.YesNo);
-                            if (result == DialogResult.Yes) { AddStudent(tempfirstname, templastname, "Q2"); break; }
-                            // MessageBox.Show(line + " nicht hinzugefügt!", "Info!", MessageBoxButtons.OK); // cancle -> retry
+                            if (!editDoppelnamen)
+                            {
+                                string tempfirstname = null;
+                                for (int i = 0; i < line.Split(' ').Length - 1; i++)
+                                    tempfirstname += line.Split(' ')[i] += " ";
+                                tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
+                                string templastname = null;
+                                templastname += line.Split(' ')[line.Split(' ').Length - 1];
+                                AddStudent(tempfirstname, templastname, "Q2");
+                            }
+                            else
+                            {
+                                for (int i = 1; i < line.Split(' ').Length; i++)
+                                {
+                                    string tempfirstname = null;
+                                    for (int fn = 0; fn < i; fn++)
+                                        tempfirstname += line.Split(' ')[fn] += " ";
+                                    tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
+                                    string templastname = null;
+                                    for (int ln = i; ln < line.Split(' ').Length; ln++)
+                                        templastname += line.Split(' ')[ln];
+                                    DialogResult result = MessageBox.Show("Auswahl: " + tempfirstname + " - " + templastname, "Info!", MessageBoxButtons.YesNo);
+                                    if (result == DialogResult.Yes) { AddStudent(tempfirstname, templastname, "Q2"); break; }
+                                    // MessageBox.Show(line + " nicht hinzugefügt!", "Info!", MessageBoxButtons.OK); // cancle -> retry
+                                }
+                            }
                         }
-                    }
-                else AddStudent(line.Split(' ')[0], line.Split(' ')[1], "Q2");
+                        else AddStudent(line.Split(' ')[0], line.Split(' ')[1], "Q2");
+                }
             }
         }
 
@@ -470,7 +479,6 @@ namespace Pruefungen
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND exam_room = @exam_room";
             sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
-
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -514,6 +522,142 @@ namespace Pruefungen
             if (reader.HasRows) return true;
             else return false;
         }
+
+        // room database /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public void AddRoom(string room_name)
+        {
+            if (GetRoom(room_name) == null)
+            {
+                SQLiteCommand sqlite_cmd = connection.CreateCommand();
+                sqlite_cmd.CommandText = "INSERT INTO room (room_name) VALUES(@room_name)";
+                sqlite_cmd.Parameters.AddWithValue("@room_name", room_name);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+        }
+
+        public string[] GetRoom(string room_name)
+        {
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM room WHERE room_name = @room_name";
+            sqlite_cmd.Parameters.AddWithValue("@room_name", room_name);
+            reader = sqlite_cmd.ExecuteReader();
+            string[] data = new string[1];
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < 1; i++)
+                    {
+                        data[i] = reader.GetValue(i).ToString();
+                    }
+                }
+            }
+            else return null;
+            return data;
+        }
+
+        public LinkedList<string[]> GetAllRooms()
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM room ORDER BY room_name";
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[1];
+                    for (int i = 0; i < 1; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
+        public void DeleteRoom(string room_name)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM room WHERE room_name = @room_name ";
+            sqlite_cmd.Parameters.AddWithValue("@room_name", room_name);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
+        // subject database //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public void AddSubject(string subject_name)
+        {
+            if (GetSubject(subject_name) == null)
+            {
+                SQLiteCommand sqlite_cmd = connection.CreateCommand();
+                sqlite_cmd.CommandText = "INSERT INTO subject (subject_name) VALUES(@subject_name)";
+                sqlite_cmd.Parameters.AddWithValue("@subject_name", subject_name);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+        }
+
+        public string[] GetSubject(string subject_name)
+        {
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM subject WHERE subject_name = @subject_name";
+            sqlite_cmd.Parameters.AddWithValue("@subject_name", subject_name);
+            reader = sqlite_cmd.ExecuteReader();
+            string[] data = new string[1];
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < 1; i++)
+                    {
+                        data[i] = reader.GetValue(i).ToString();
+                    }
+                }
+            }
+            else return null;
+            return data;
+        }
+
+        public LinkedList<string[]> GetAllSubjects()
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM subject ORDER BY subject_name";
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[1];
+                    for (int i = 0; i < 1; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
+        public void DeleteSubject(string subject_name)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM subject WHERE subject_name = @subject_name ";
+            sqlite_cmd.Parameters.AddWithValue("@subject_name", subject_name);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         // student
         // ID firstname lastname grade Email TelNummer
         private void CreateStudentDB()
@@ -539,6 +683,20 @@ namespace Pruefungen
             connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student TEXT, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";
+            sqlite_cmd.ExecuteNonQuery();
+        }
+        private void CreateRoomDB()
+        {
+            connection = CreateConnection();
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS room (room_name TEXT NOT NULL)";
+            sqlite_cmd.ExecuteNonQuery();
+        }
+        private void CreateSubjectDB()
+        {
+            connection = CreateConnection();
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS subject (subject_name TEXT NOT NULL)";
             sqlite_cmd.ExecuteNonQuery();
         }
     }

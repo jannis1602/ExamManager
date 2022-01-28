@@ -44,31 +44,17 @@ namespace Pruefungen
             WindowState = FormWindowState.Maximized;
             InitializeComponent();
             update_timeline();
-            /*for (int i = 0; i < 10; i++)
-            {
-                AddTimeline("O-20" + i);
-            }*/
-            /*Panel panel_time_line1;
-            void panel1_Paint(object sender, PaintEventArgs e)
-            {
-                ControlPaint.DrawBorder(e.Graphics, panel_time_line1.ClientRectangle,
-                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // left
-                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // top
-                Color.DarkGreen, 4, ButtonBorderStyle.Solid, // right
-                Color.DarkGreen, 4, ButtonBorderStyle.Solid);// bottom
-                Font drawFont = new Font("Arial", 10);
-                SolidBrush drawBrush = new SolidBrush(Color.Black);
-                StringFormat drawFormat = new StringFormat();
-                // drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
-                for (int i = 0; i < 12; i++)
-                {
-                    e.Graphics.DrawLine(new Pen(Color.Blue, 2), panel_time_line1.Width / 12 * i, 10, panel_time_line1.Width / 12 * i, panel_time_line1.Height - 20);
-                    e.Graphics.DrawString(7 + i + " Uhr", drawFont, drawBrush, 10 + panel_time_line1.Width / 12 * i, panel_time_line1.Height - 30, drawFormat);
-                }
-            }*/
+            LoadAutocomplete();
+        }
 
-            string[] subjectlist = new string[] { "Mathe", "Physik", "Deutsch", "Geschichte", "Englisch" };
-            cb_subject.Items.AddRange(subjectlist);
+        private void LoadAutocomplete()
+        {
+            //string[] subjectlist = new string[] { "Mathe", "Physik", "Deutsch", "Geschichte", "Englisch" };
+            LinkedList<string[]> subjectList = Program.database.GetAllSubjects();
+            string[] subjects = new string[subjectList.Count];
+            for (int i = 0; i < subjectList.Count; i++)
+                subjects[i] = subjectList.ElementAt(i)[0];
+            cb_subject.Items.AddRange(subjects);
             var autocomplete_student = new AutoCompleteStringCollection();
             LinkedList<string[]> allStudents = database.GetAllStudents();
             string[] students = new string[allStudents.Count];
@@ -80,7 +66,11 @@ namespace Pruefungen
             this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
             var autocomplete_exam_room = new AutoCompleteStringCollection();
-            autocomplete_exam_room.AddRange(new string[] { "O-201", "O-202", "O-203", "O-204", "O-205" });
+            LinkedList<string[]> examList = Program.database.GetAllRooms();
+            string[] rooms = new string[examList.Count];
+            for (int i = 0; i < examList.Count; i++)
+                rooms[i] = examList.ElementAt(i)[0];
+            autocomplete_exam_room.AddRange(rooms);
             this.tb_exam_room.AutoCompleteCustomSource = autocomplete_exam_room;
             this.tb_exam_room.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_exam_room.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -160,7 +150,7 @@ namespace Pruefungen
                 templastname += name.Split(' ')[name.Split(' ').Length - 1];
                 Console.WriteLine(" ===>>> " + database.GetStudent(tempfirstname, templastname, "Q2")[1]);
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
                 MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return;
             }
@@ -173,7 +163,7 @@ namespace Pruefungen
             if (id == 0)
                 database.AddExam(date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, "Q2")[0], teacher1, teacher2, teacher3, subject, duration);
             id = 0;
-            label_mode.Text = edit_mode[0];
+            lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
@@ -344,7 +334,7 @@ namespace Pruefungen
                 if (result == DialogResult.Yes)
                 {
                     id = Int32.Parse(exam[0]);
-                    label_mode.Text = edit_mode[1];
+                    lbl_mode.Text = edit_mode[1];
                     btn_add_exam.Text = add_mode[1];
                     this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
                     this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -559,38 +549,48 @@ namespace Pruefungen
 
         private void btn_delete_exam_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Prüfung löschen?", "Warnung!", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            if (id != 0)
             {
-                database.DeleteExam(id);
-                id = 0;
-                label_mode.Text = edit_mode[0];
-                btn_add_exam.Text = add_mode[0];
-                update_timeline();
-                if (this.cb_keep_data.Checked)
+                DialogResult result = MessageBox.Show("Prüfung löschen?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
-                    this.tb_student.Clear();
-                }
-                else
-                {
-                    this.tb_exam_room.Clear();
-                    this.tb_preparation_room.Clear();
-                    this.tb_student.Clear();
-                    this.cb_subject.SelectedItem = null;
-                    this.tb_teacher1.Clear();
-                    this.tb_teacher2.Clear();
-                    this.tb_teacher3.Clear();
+                    database.DeleteExam(id);
+                    id = 0;
+                    lbl_mode.Text = edit_mode[0];
+                    btn_add_exam.Text = add_mode[0];
+                    update_timeline();
+                    if (this.cb_keep_data.Checked)
+                    {
+                        this.tb_student.Clear();
+                    }
+                    else
+                    {
+                        this.tb_exam_room.Clear();
+                        this.tb_preparation_room.Clear();
+                        this.tb_student.Clear();
+                        this.cb_subject.SelectedItem = null;
+                        this.tb_teacher1.Clear();
+                        this.tb_teacher2.Clear();
+                        this.tb_teacher3.Clear();
+                    }
                 }
             }
         }
 
         private void btn_reuse_exam_Click(object sender, EventArgs e)
-        { id = 0; label_mode.Text = edit_mode[0]; btn_add_exam.Text = add_mode[0]; }
+        {
+            if (id != 0)
+            {
+                id = 0;
+                lbl_mode.Text = edit_mode[0];
+                btn_add_exam.Text = add_mode[0];
+            }
+        }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             id = 0;
-            label_mode.Text = edit_mode[0];
+            lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             if (this.cb_keep_data.Checked)
             { this.tb_student.Clear(); }
@@ -695,11 +695,17 @@ namespace Pruefungen
 
         private void tsmi_data_rooms_Click(object sender, EventArgs e)
         {
-            new FormRoomData().Show();
+            FormRoomData form = new FormRoomData();
+            form.Disposed += roomdata_Event;
+            form.Show();
+        }
+        void roomdata_Event(object sender, EventArgs a)
+        {
+            LoadAutocomplete();
         }
 
         private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
-        { 
+        {
             FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
             form.Disposed += changeroom_Event;
             form.Show();
@@ -712,7 +718,13 @@ namespace Pruefungen
 
         private void tsmi_data_subjects_Click(object sender, EventArgs e)
         {
-
+            FormSubjectData form = new FormSubjectData();
+            form.Disposed += subjectdata_Event;
+            form.Show();
+        }
+        void subjectdata_Event(object sender, EventArgs a)
+        {
+            LoadAutocomplete();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
