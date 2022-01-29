@@ -1,5 +1,5 @@
 ﻿
-namespace Pruefungen
+namespace ExamManager
 {
     partial class Form1
     {
@@ -791,7 +791,7 @@ namespace Pruefungen
             // 
             // btn_cancel
             // 
-            this.btn_cancel.BackgroundImage = global::Pruefungen.Properties.Resources.exit_ing;
+            this.btn_cancel.BackgroundImage = global::ExamManager.Properties.Resources.exit_ing;
             this.btn_cancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_cancel.Location = new System.Drawing.Point(103, 2);
             this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
@@ -803,7 +803,7 @@ namespace Pruefungen
             // 
             // btn_reuse_exam
             // 
-            this.btn_reuse_exam.BackgroundImage = global::Pruefungen.Properties.Resources.copy_img;
+            this.btn_reuse_exam.BackgroundImage = global::ExamManager.Properties.Resources.copy_img;
             this.btn_reuse_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
             this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
@@ -815,7 +815,7 @@ namespace Pruefungen
             // 
             // btn_delete_exam
             // 
-            this.btn_delete_exam.BackgroundImage = global::Pruefungen.Properties.Resources.trash_img;
+            this.btn_delete_exam.BackgroundImage = global::ExamManager.Properties.Resources.trash_img;
             this.btn_delete_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
             this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);

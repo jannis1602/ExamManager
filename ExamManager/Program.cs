@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Pruefungen
+namespace ExamManager
 {
     static class Program
     {
@@ -24,6 +24,7 @@ namespace Pruefungen
             // liste exportieren
 
             // TODO: Count exams per date in listview
+            // settings select database
         }
     }
 }

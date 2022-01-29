@@ -16,13 +16,19 @@
         "Entry"
         {
         "MsmKey" = "8:_00F3C16DA3C548A8497F705544F6C311"
-        "OwnerKey" = "8:_B2704282ADA04848BA431E33482B374C"
+        "OwnerKey" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2CC5EF9D645D2758C3247E0CF3E70574"
-        "OwnerKey" = "8:_B2704282ADA04848BA431E33482B374C"
+        "OwnerKey" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2DE4928CEA904E098285755235A59F9E"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,31 +39,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_318AEEDA3A004D3398AB7F7B69FA96E2"
+        "MsmKey" = "8:_3713FAFF757A4D3CB5057C7C84A4222A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_627B631AFDD44EFE9F8E0C7AA43210F0"
+        "MsmKey" = "8:_46574E68E8D4443C969639AC3BFC98C8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B2704282ADA04848BA431E33482B374C"
+        "MsmKey" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B38477902223499CAEA06E297FBFE55B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B9CBB6E5323E4932ACD340D89EF0E105"
+        "MsmKey" = "8:_F6F3D10A1C9C49D99CAD221D83D642B2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -70,7 +70,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B2704282ADA04848BA431E33482B374C"
+        "OwnerKey" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -236,6 +236,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2DE4928CEA904E098285755235A59F9E"
+            {
+            "SourcePath" = "8:..\\ExamManager\\bin\\Debug\\x64\\SQLite.Interop.dll"
+            "TargetName" = "8:SQLite.Interop.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_239FB6E37DDC44868B032A516C2B73CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_30F7289C9DB2434AB6D0C17B715D5027"
             {
             "SourcePath" = "8:..\\..\\..\\..\\Desktop\\school.ico"
@@ -256,9 +276,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_318AEEDA3A004D3398AB7F7B69FA96E2"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3713FAFF757A4D3CB5057C7C84A4222A"
             {
-            "SourcePath" = "8:..\\Pruefungen\\bin\\Debug\\x86\\SQLite.Interop.dll"
+            "SourcePath" = "8:..\\ExamManager\\bin\\Debug\\x86\\SQLite.Interop.dll"
             "TargetName" = "8:SQLite.Interop.dll"
             "Tag" = "8:"
             "Folder" = "8:_18EBED07815B43D39FE711763B08EB15"
@@ -276,52 +296,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_627B631AFDD44EFE9F8E0C7AA43210F0"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_46574E68E8D4443C969639AC3BFC98C8"
             {
-            "SourcePath" = "8:..\\Pruefungen\\bin\\Debug\\x86\\sqlite3.dll"
+            "SourcePath" = "8:..\\ExamManager\\bin\\Debug\\x64\\sqlite3.dll"
+            "TargetName" = "8:sqlite3.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_239FB6E37DDC44868B032A516C2B73CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F6F3D10A1C9C49D99CAD221D83D642B2"
+            {
+            "SourcePath" = "8:..\\ExamManager\\bin\\Debug\\x86\\sqlite3.dll"
             "TargetName" = "8:sqlite3.dll"
             "Tag" = "8:"
             "Folder" = "8:_18EBED07815B43D39FE711763B08EB15"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B38477902223499CAEA06E297FBFE55B"
-            {
-            "SourcePath" = "8:..\\Pruefungen\\bin\\Debug\\x64\\sqlite3.dll"
-            "TargetName" = "8:sqlite3.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_239FB6E37DDC44868B032A516C2B73CD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9CBB6E5323E4932ACD340D89EF0E105"
-            {
-            "SourcePath" = "8:..\\Pruefungen\\bin\\Debug\\x64\\SQLite.Interop.dll"
-            "TargetName" = "8:SQLite.Interop.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_239FB6E37DDC44868B032A516C2B73CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -535,29 +535,29 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_110ADD7B28BF4B29AF40B3769815BECB"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_84EE29321BB54E3AB902563FEF5A9755"
             {
-            "Name" = "8:ExamManager"
+            "Name" = "8:Exam Manager"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_B2704282ADA04848BA431E33482B374C"
+            "Target" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
             "Folder" = "8:_5E88FF7F03DA4F1785FDE65EFB546FD7"
             "WorkingFolder" = "8:_FBBA0D9E450942A997C0DF6B46416442"
             "Icon" = "8:_30F7289C9DB2434AB6D0C17B715D5027"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4C8F94F274914A7F87FB20C81F9B7CD1"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F550F9204AA64C87B8CD30F26CB29164"
             {
-            "Name" = "8:ExamManager"
+            "Name" = "8:Exam Manager"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_B2704282ADA04848BA431E33482B374C"
+            "Target" = "8:_6898A5CFFC3647309D6090C943DBDA5C"
             "Folder" = "8:_A2D2C06410D74A928EDEFBC083A252E6"
             "WorkingFolder" = "8:_FBBA0D9E450942A997C0DF6B46416442"
             "Icon" = "8:_30F7289C9DB2434AB6D0C17B715D5027"
@@ -962,9 +962,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B2704282ADA04848BA431E33482B374C"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6898A5CFFC3647309D6090C943DBDA5C"
             {
-            "SourcePath" = "8:..\\Pruefungen\\obj\\Debug\\Pruefungen.exe"
+            "SourcePath" = "8:..\\ExamManager\\obj\\Debug\\ExamManager.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FBBA0D9E450942A997C0DF6B46416442"

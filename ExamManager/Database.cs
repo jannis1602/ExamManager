@@ -4,7 +4,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Pruefungen
+namespace ExamManager
 {
     class Database // C:\Users\mattl\source\repos\Pruefungen\Pruefungen\bin\Debug\database.db
                    //  C:\Users\mattl\AppData\Roaming

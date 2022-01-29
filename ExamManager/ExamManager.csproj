@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1955CA21-DA79-4465-A1AE-CED6F318143A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Pruefungen</RootNamespace>
-    <AssemblyName>Pruefungen</AssemblyName>
+    <RootNamespace>ExamManager</RootNamespace>
+    <AssemblyName>ExamManager</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,8 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>school.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -73,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="Exam.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\exit_ing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="school.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

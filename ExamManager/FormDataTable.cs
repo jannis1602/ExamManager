@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Pruefungen
+namespace ExamManager
 {
     public partial class Form_grid : Form
     {

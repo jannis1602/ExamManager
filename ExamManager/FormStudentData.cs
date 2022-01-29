@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Pruefungen
+namespace ExamManager
 {
     public partial class FormStudentData : Form
     {

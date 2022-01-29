@@ -1,5 +1,5 @@
 ﻿
-namespace Pruefungen
+namespace ExamManager
 {
     partial class FormRoomData
     {

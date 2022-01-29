@@ -1,5 +1,5 @@
 ﻿
-namespace Pruefungen
+namespace ExamManager
 {
     partial class FormChangeRoom
     {
@@ -85,7 +85,7 @@ namespace Pruefungen
             // 
             // lbl_newroom
             // 
-            this.lbl_newroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lbl_newroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_newroom.AutoSize = true;
             this.lbl_newroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
@@ -121,7 +121,7 @@ namespace Pruefungen
             // 
             // lbl_oldroom
             // 
-            this.lbl_oldroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lbl_oldroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_oldroom.AutoSize = true;
             this.lbl_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
