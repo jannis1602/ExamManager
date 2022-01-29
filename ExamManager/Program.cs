@@ -30,6 +30,8 @@ namespace ExamManager
             // checked studentname and teacher
             // teacher kürzel in database exam
             // link autocomplete to id
+            // static form sizes
+            // lehrer doppelnamen 
         }
     }
 }

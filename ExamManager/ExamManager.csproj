@@ -105,6 +105,12 @@
     <Compile Include="FormDataTable.Designer.cs">
       <DependentUpon>FormDataTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDeleteGrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDeleteGrade.Designer.cs">
+      <DependentUpon>FormDeleteGrade.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormExamDateListView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDataTable.resx">
       <DependentUpon>FormDataTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDeleteGrade.resx">
+      <DependentUpon>FormDeleteGrade.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormExamDateListView.resx">
       <DependentUpon>FormExamDateListView.cs</DependentUpon>
