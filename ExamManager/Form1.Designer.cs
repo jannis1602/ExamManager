@@ -70,7 +70,6 @@ namespace ExamManager
             this.tb_teacher3 = new System.Windows.Forms.TextBox();
             this.lbl_teacher3 = new System.Windows.Forms.Label();
             this.tlp_teacher1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_teacher1 = new System.Windows.Forms.TextBox();
             this.lbl_teacher1 = new System.Windows.Forms.Label();
             this.tlp_teacher2 = new System.Windows.Forms.TableLayoutPanel();
             this.tb_teacher2 = new System.Windows.Forms.TextBox();
@@ -108,6 +107,10 @@ namespace ExamManager
             this.panel_side_room = new System.Windows.Forms.Panel();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_grade = new System.Windows.Forms.Label();
+            this.tb_teacher1 = new System.Windows.Forms.TextBox();
+            this.cb_grade = new System.Windows.Forms.ComboBox();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -131,6 +134,7 @@ namespace ExamManager
             this.tlp_time.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel_time_line.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -408,9 +412,10 @@ namespace ExamManager
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tlp_student, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.btn_add_exam, 2, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -435,7 +440,7 @@ namespace ExamManager
             this.tlp_student.Name = "tlp_student";
             this.tlp_student.RowCount = 1;
             this.tlp_student.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_student.Size = new System.Drawing.Size(382, 36);
+            this.tlp_student.Size = new System.Drawing.Size(400, 36);
             this.tlp_student.TabIndex = 4;
             // 
             // tb_student
@@ -444,7 +449,7 @@ namespace ExamManager
             this.tb_student.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_student.Location = new System.Drawing.Point(76, 7);
             this.tb_student.Name = "tb_student";
-            this.tb_student.Size = new System.Drawing.Size(303, 26);
+            this.tb_student.Size = new System.Drawing.Size(321, 26);
             this.tb_student.TabIndex = 2;
             this.tb_student.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_student_KeyPress);
             // 
@@ -546,16 +551,6 @@ namespace ExamManager
             this.tlp_teacher1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
             this.tlp_teacher1.TabIndex = 4;
-            // 
-            // tb_teacher1
-            // 
-            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.Name = "tb_teacher1";
-            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.TabIndex = 2;
             // 
             // lbl_teacher1
             // 
@@ -1065,6 +1060,57 @@ namespace ExamManager
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.Controls.Add(this.cb_grade, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lbl_grade, 0, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(405, 5);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(176, 36);
+            this.tableLayoutPanel4.TabIndex = 9;
+            // 
+            // lbl_grade
+            // 
+            this.lbl_grade.AutoSize = true;
+            this.lbl_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_grade.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.lbl_grade.Location = new System.Drawing.Point(3, 13);
+            this.lbl_grade.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_grade.Name = "lbl_grade";
+            this.lbl_grade.Size = new System.Drawing.Size(52, 20);
+            this.lbl_grade.TabIndex = 1;
+            this.lbl_grade.Text = "Stufe:";
+            this.lbl_grade.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tb_teacher1
+            // 
+            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
+            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.Name = "tb_teacher1";
+            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.TabIndex = 2;
+            // 
+            // cb_grade
+            // 
+            this.cb_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_grade.FormattingEnabled = true;
+            this.cb_grade.Location = new System.Drawing.Point(61, 5);
+            this.cb_grade.Name = "cb_grade";
+            this.cb_grade.Size = new System.Drawing.Size(112, 28);
+            this.cb_grade.TabIndex = 8;
+            this.cb_grade.SelectedIndexChanged += new System.EventHandler(this.cb_grade_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1112,6 +1158,8 @@ namespace ExamManager
             this.tlp_time.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel_time_line.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1132,7 +1180,6 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_subject;
         private System.Windows.Forms.TableLayoutPanel tlp_4;
         private System.Windows.Forms.TableLayoutPanel tlp_teacher1;
-        private System.Windows.Forms.TextBox tb_teacher1;
         private System.Windows.Forms.Label lbl_teacher1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tlp_student;
@@ -1195,6 +1242,10 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_examdates;
         private System.Windows.Forms.ToolStripMenuItem filedataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadstudents;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label lbl_grade;
+        private System.Windows.Forms.TextBox tb_teacher1;
+        private System.Windows.Forms.ComboBox cb_grade;
     }
 }
 

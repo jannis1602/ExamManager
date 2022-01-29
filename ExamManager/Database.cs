@@ -42,7 +42,6 @@ namespace ExamManager
             if (File.Exists("schueler.txt")) Console.WriteLine(" --- schueler.txt exists --- ");
             //InsertStudentFileIntoDB();
 
-
         }
 
 
@@ -218,6 +217,30 @@ namespace ExamManager
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM student";
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[6];
+                    for (int i = 0; i < 6; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
+        public LinkedList<string[]> GetAllStudentsFromGrade(string grade)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM student WHERE grade=@grade";
+            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {

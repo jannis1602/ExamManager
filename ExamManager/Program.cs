@@ -25,6 +25,12 @@ namespace ExamManager
 
             // TODO: Count exams per date in listview
             // settings select database
+            // mailgenerator settings
+            // teacher subject dropdown
+            // teacher nicht alle fächer
+            // daten refresh autocomplete
+            // checked studentname and teacher
+            //TODO: student autocomplete only from grade
         }
     }
 }
