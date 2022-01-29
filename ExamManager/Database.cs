@@ -41,11 +41,6 @@ namespace ExamManager
 
             if (File.Exists("schueler.txt")) Console.WriteLine(" --- schueler.txt exists --- ");
             //InsertStudentFileIntoDB();
-            AddTeacher("DÖ", "Anette", "Döding", "0", "Mathe", "Informatik", "Physik");
-            AddTeacher("DRN", "Gesine", "Dronsz", "0", "Englisch", "Geschichte", "ev.Religion");
-            AddTeacher("BRER", "Silke", "Breier", "0", "Deutsch", "Englisch");
-            AddTeacher("RE", "Nils", "Rehm", "0", "Deutsch", "Sowi");
-            AddTeacher("BS", "Kai", "Bechstein", "0", "Chemie", "Physik");
 
 
         }
