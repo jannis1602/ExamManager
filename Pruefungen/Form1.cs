@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -516,6 +517,9 @@ namespace Pruefungen
             StringFormat drawFormat = new StringFormat();
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+            Console.WriteLine("############################## " + student);
+            if (student == null)
+                student = new string[] { "0", "Name  not  found!", "  ", " - ", " - ", " - " };
             if (search != null)
                 if (search_index == 0)
                     if (search.Equals(student[1] + " " + student[2]))
@@ -694,12 +698,12 @@ namespace Pruefungen
 
         private void tsmi_table_students_Click(object sender, EventArgs e)
         {
-            new Form_grid(1).Show();
+            new Form_grid(2).Show();
         }
 
         private void tsmi_table_teacher_Click(object sender, EventArgs e)
         {
-            new Form_grid(2).Show();
+            new Form_grid(1).Show();
         }
 
         private void tsmi_search_teacher_Click(object sender, EventArgs e)
@@ -780,6 +784,26 @@ namespace Pruefungen
         private void tsmi_exam_examdates_Click(object sender, EventArgs e)
         {
             new FormExamDateListView(this).Show();
+        }
+
+        private void tsmi_data_loadstudents_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                //openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+                    var fileStream = openFileDialog.OpenFile();
+                    database.InsertStudentFileIntoDB(filePath);
+                }
+            }
+            LoadAutocomplete();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)

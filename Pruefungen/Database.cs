@@ -7,6 +7,8 @@ using System.Windows.Forms;
 namespace Pruefungen
 {
     class Database // C:\Users\mattl\source\repos\Pruefungen\Pruefungen\bin\Debug\database.db
+                   //  C:\Users\mattl\AppData\Roaming
+                   // Environment.ExpandEnvironmentVariables("%AppData%\\DateLinks.xml");
     {
 
         // #### TODO: conn.close ####
@@ -14,13 +16,14 @@ namespace Pruefungen
         SQLiteConnection connection;
         public Database()
         {
+            Console.WriteLine(Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager"));
             connection = CreateConnection();
             CreateStudentDB();
             CreateTeacherDB();
             CreateExamDB();
             CreateRoomDB();
             CreateSubjectDB();
-            InsertStudentFileIntoDB("schueler.txt");
+            //InsertStudentFileIntoDB("schueler.txt");
             // #####################################################################################
             /*SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "DROP TABLE IF EXISTS exam";
@@ -51,9 +54,10 @@ namespace Pruefungen
         private SQLiteConnection CreateConnection()
         {
             SQLiteConnection sqlite_conn;
-            if (!File.Exists("database.db")) SQLiteConnection.CreateFile("database.db");
+            string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
+            if (!File.Exists(path + "database.db")) { Directory.CreateDirectory(path); SQLiteConnection.CreateFile(path + "database.db"); }
             //Console.WriteLine("db-File Exists: " + File.Exists(".\\database.db"));
-            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = False; Compress = True; ");
+            sqlite_conn = new SQLiteConnection("Data Source=" + path + "database.db; Version = 3; New = False; Compress = True; ");
             try { sqlite_conn.Open(); } catch (Exception e) { Console.WriteLine(e.Message); }
             return sqlite_conn;
         }
@@ -77,7 +81,7 @@ namespace Pruefungen
             sqlite_cmd.ExecuteNonQuery();
             //conn.Close();  
         }
-        private void InsertStudentFileIntoDB(string file)
+        public void InsertStudentFileIntoDB(string file)
         {
             bool editDoppelnamen = false;
 

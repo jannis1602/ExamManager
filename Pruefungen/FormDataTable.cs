@@ -57,11 +57,11 @@ namespace Pruefungen
                 dataGridView_students.Size = new System.Drawing.Size(1000, 500);
                 this.Controls.Add(dataGridView_students);
                 List<string[]> data = new List<string[]>();
-                foreach (string[] s in Program.database.GetAllStudents())
+                foreach (string[] s in Program.database.GetAllTeachers())
                     data.Add(s);
                 foreach (string[] s in data)
                 {
-                    dataGridView_students.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5]);
+                    dataGridView_students.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5], s[6]);
                 }
                 dataGridView = dataGridView_students;
             }
