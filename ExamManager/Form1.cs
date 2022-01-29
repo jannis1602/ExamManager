@@ -550,11 +550,8 @@ namespace ExamManager
 
         private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
         {
-            //Console.WriteLine(panel_time_line.AutoScrollPosition.Y);
             if (panel_time_line.AutoScrollPosition.Y == 0)
                 this.panel_side_room.HorizontalScroll.Value = 0;
-            //panel_side_room.AutoScrollPosition = new Point(0, 0);
-            // für unten auch
             if (panel_time_line.AutoScrollPosition != panelScrollPos1)
             {
                 panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
@@ -570,9 +567,7 @@ namespace ExamManager
         private void tb_duration_TextChanged(object sender, EventArgs e)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
-            {
                 tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
-            }
             cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
         }
 
@@ -673,13 +668,15 @@ namespace ExamManager
 
         private void tsmi_data_editgrade_move_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("[DEVELOPMENT]", "Warnung!");
+            new FormRenameGrade().Show();
         }
         private void tsmi_data_editgrade_delete_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show("[DEVELOPMENT]", "Warnung!");
+            FormDeleteGrade form = new FormDeleteGrade();
+            form.Disposed += UpdateAutocomplete_Event;
+            form.Show();
             new FormDeleteGrade().Show();
-            // update all
+            // TODO: update all ################################################################################################################################
             // remove exams in grade
             //database.DeleteGrade();
         }
@@ -694,7 +691,6 @@ namespace ExamManager
             string filePath;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                //openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -702,10 +698,10 @@ namespace ExamManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog.FileName;
-                    database.InsertStudentFileIntoDB(filePath);
+                    database.InsertStudentFileIntoDB(filePath, "Q2");    // TODO: GRADE ##################################################################################
+                    LoadAutocomplete();
                 }
             }
-            LoadAutocomplete();
         }
 
         private void cb_grade_SelectedIndexChanged(object sender, EventArgs e)
@@ -746,7 +742,6 @@ namespace ExamManager
             string filePath = Properties.Settings.Default.databasePath;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                //openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -767,7 +762,6 @@ namespace ExamManager
             FormTeacherData formTeacherData = new FormTeacherData();
             formTeacherData.Disposed += UpdateAutocomplete_Event;
             formTeacherData.Show();
-
         }
     }
 }

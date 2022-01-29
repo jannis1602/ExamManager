@@ -16,22 +16,18 @@ namespace ExamManager
 
             // strg+enter -> add
             // rename form1 
-            // test if fach 1 null und fach 3 notnull
+            // check if fach 1 null und fach 3 notnull
             // show search string
             // room dropdown
             // tabindex
-            // nächste prüfungstage
             // liste exportieren
-
-            // TODO: Count exams per date in listview
-            // settings select database
+            // idea: Count exams per date in listviewexams
             // mailgenerator settings
             // teacher subject dropdown
-            // checked studentname and teacher
-            // teacher kürzel in database exam
-            // link autocomplete to id
+            // link autocomplete to id?
             // static form sizes
             // lehrer doppelnamen 
+            // insert file request grade
         }
     }
 }

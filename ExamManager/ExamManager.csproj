@@ -93,28 +93,28 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormChangeRoom.cs">
+    <Compile Include="Forms\FormChangeRoom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormChangeRoom.Designer.cs">
+    <Compile Include="Forms\FormChangeRoom.Designer.cs">
       <DependentUpon>FormChangeRoom.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDataTable.cs">
+    <Compile Include="Forms\FormDataTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDataTable.Designer.cs">
+    <Compile Include="Forms\FormDataTable.Designer.cs">
       <DependentUpon>FormDataTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDeleteGrade.cs">
+    <Compile Include="Forms\FormDeleteGrade.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDeleteGrade.Designer.cs">
+    <Compile Include="Forms\FormDeleteGrade.Designer.cs">
       <DependentUpon>FormDeleteGrade.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormExamDateListView.cs">
+    <Compile Include="Forms\FormExamDateListView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormExamDateListView.Designer.cs">
+    <Compile Include="Forms\FormExamDateListView.Designer.cs">
       <DependentUpon>FormExamDateListView.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRoomData.cs">
@@ -123,10 +123,10 @@
     <Compile Include="FormRoomData.Designer.cs">
       <DependentUpon>FormRoomData.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormSearch.cs">
+    <Compile Include="Forms\FormSearch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSearch.Designer.cs">
+    <Compile Include="Forms\FormSearch.Designer.cs">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="FormStudentData.cs">
@@ -141,6 +141,12 @@
     <Compile Include="FormSubjectData.Designer.cs">
       <DependentUpon>FormSubjectData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormRenameGrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormRenameGrade.Designer.cs">
+      <DependentUpon>FormRenameGrade.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTeacherData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,22 +158,22 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormChangeRoom.resx">
+    <EmbeddedResource Include="Forms\FormChangeRoom.resx">
       <DependentUpon>FormChangeRoom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDataTable.resx">
+    <EmbeddedResource Include="Forms\FormDataTable.resx">
       <DependentUpon>FormDataTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDeleteGrade.resx">
+    <EmbeddedResource Include="Forms\FormDeleteGrade.resx">
       <DependentUpon>FormDeleteGrade.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormExamDateListView.resx">
+    <EmbeddedResource Include="Forms\FormExamDateListView.resx">
       <DependentUpon>FormExamDateListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRoomData.resx">
       <DependentUpon>FormRoomData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormSearch.resx">
+    <EmbeddedResource Include="Forms\FormSearch.resx">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormStudentData.resx">
@@ -175,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSubjectData.resx">
       <DependentUpon>FormSubjectData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormRenameGrade.resx">
+      <DependentUpon>FormRenameGrade.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTeacherData.resx">
       <DependentUpon>FormTeacherData.cs</DependentUpon>
