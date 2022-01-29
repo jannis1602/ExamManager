@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Pruefungen
@@ -49,7 +44,6 @@ namespace Pruefungen
         private void LoadAllSubject()
         {
             LinkedList<string[]> list = Program.database.GetAllSubjects();
-
             string[] subjects = new string[list.Count];
             for (int i = 0; i < list.Count; i++)
             {

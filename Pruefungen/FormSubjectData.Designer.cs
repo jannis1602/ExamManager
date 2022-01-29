@@ -92,7 +92,7 @@ namespace Pruefungen
             this.ClientSize = new System.Drawing.Size(384, 211);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormSubjectData";
-            this.Text = "FormSubjectData";
+            this.Text = "Fach hinzufügen";
             this.Load += new System.EventHandler(this.FormSubjectData_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

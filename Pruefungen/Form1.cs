@@ -670,6 +670,11 @@ namespace Pruefungen
             cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
         }
 
+        public void SetDate(DateTime date)
+        {
+            dtp_timeline_date.Value = date;
+        }
+
         private void tsmi_table_exams_Click(object sender, EventArgs e)
         {
             new Form_grid(0).Show();
@@ -770,6 +775,11 @@ namespace Pruefungen
         {
             MessageBox.Show("[DEVELOPMENT]", "Warnung!");
             //database.DeleteGrade();
+        }
+
+        private void tsmi_exam_examdates_Click(object sender, EventArgs e)
+        {
+            new FormExamDateListView(this).Show();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
