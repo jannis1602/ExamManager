@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pruefungen", "Pruefungen\Pruefungen.csproj", "{1955CA21-DA79-4465-A1AE-CED6F318143A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamManager", "Pruefungen\ExamManager.csproj", "{1955CA21-DA79-4465-A1AE-CED6F318143A}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CA823B28-2F40-43F7-AF27-30D5D2624D0A}"
 EndProject
