@@ -27,10 +27,9 @@ namespace ExamManager
             // settings select database
             // mailgenerator settings
             // teacher subject dropdown
-            // teacher nicht alle fächer
-            // daten refresh autocomplete
             // checked studentname and teacher
-            //TODO: student autocomplete only from grade
+            // teacher kürzel in database exam
+            // link autocomplete to id
         }
     }
 }

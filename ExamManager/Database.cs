@@ -16,8 +16,18 @@ namespace ExamManager
         SQLiteConnection connection;
         public Database()
         {
-            Console.WriteLine(Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager"));
-            connection = CreateConnection();
+            string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
+            if (Properties.Settings.Default.databasePath == "default")
+            {
+                Console.WriteLine(Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager"));
+            }
+            else
+            {
+                Console.WriteLine(path);
+                path = Properties.Settings.Default.databasePath;
+            }
+
+            connection = CreateConnection(path);
             CreateStudentDB();
             CreateTeacherDB();
             CreateExamDB();
@@ -45,10 +55,9 @@ namespace ExamManager
         }
 
 
-        private SQLiteConnection CreateConnection()
+        private SQLiteConnection CreateConnection(string path)
         {
             SQLiteConnection sqlite_conn;
-            string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
             if (!File.Exists(path + "database.db")) { Directory.CreateDirectory(path); SQLiteConnection.CreateFile(path + "database.db"); }
             //Console.WriteLine("db-File Exists: " + File.Exists(".\\database.db"));
             sqlite_conn = new SQLiteConnection("Data Source=" + path + "database.db; Version = 3; New = False; Compress = True; ");
@@ -174,12 +183,12 @@ namespace ExamManager
             sqlite_cmd.CommandText = "SELECT * FROM student WHERE id = @id";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = new string[4];
+            string[] data = new string[6];
             if (reader.HasRows)                          // TODO if rows > 1 => ERROR
             {
                 while (reader.Read())
                 {
-                    for (int i = 0; i < 4; i++)               // ID ??? ------------ // oder student object erstellen?
+                    for (int i = 0; i < 6; i++)               // ID ??? ------------ // oder student object erstellen?
                         data[i] = reader.GetValue(i).ToString();
                 }
             }
@@ -361,6 +370,28 @@ namespace ExamManager
             else return null;
             return data;
         }
+
+        public string[] GetTeacherByName(string firstname, string lastname)
+        {
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE firstname = @firstname AND lastname = @lastname";
+            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+            reader = sqlite_cmd.ExecuteReader();
+            string[] data = new string[7];
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < 7; i++)
+                        data[i] = reader.GetValue(i).ToString();
+                }
+            }
+            else return null;
+            return data;
+        }
+
         public void DeleteTeacher(string short_name)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -699,7 +730,6 @@ namespace ExamManager
         // ID firstname lastname grade Email TelNummer
         private void CreateStudentDB()
         {
-            connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS student (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT NOT NULL, lastname TEXT NOT NULL, grade TEXT, email TEXT, phone_number TEXT)";
             sqlite_cmd.ExecuteNonQuery();
@@ -708,7 +738,6 @@ namespace ExamManager
         // Kürzel firstname lastname TelNummer Faecher
         private void CreateTeacherDB()
         {
-            connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
             sqlite_cmd.ExecuteNonQuery();
@@ -717,21 +746,18 @@ namespace ExamManager
         // ID student_ID VorsitzKuerzel PrueferKuerzel ProtokollKuerzel Fach Raum_Pruefung Raum_Vorbereitung Raum_Abholen DatumUhrzeit (Dauer+default) Schulstunden(get with time)
         private void CreateExamDB()
         {
-            connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student TEXT, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";
             sqlite_cmd.ExecuteNonQuery();
         }
         private void CreateRoomDB()
         {
-            connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS room (room_name TEXT NOT NULL)";
             sqlite_cmd.ExecuteNonQuery();
         }
         private void CreateSubjectDB()
         {
-            connection = CreateConnection();
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS subject (subject_name TEXT NOT NULL)";
             sqlite_cmd.ExecuteNonQuery();

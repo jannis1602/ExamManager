@@ -142,12 +142,12 @@ namespace ExamManager
             Button btn = sender as Button;
             edit_id = Int32.Parse(btn.Name);
             btn_add_student.Text = add_mode[1];
-            string[] t = database.GetTeacherByID(btn.Name);
-            tb_firstname.Text = t[0];
-            tb_lastname.Text = t[1];
-            tb_grade.Text = t[2];
-            tb_email.Text = t[3];
-            tb_phonenumber.Text = t[4];
+            string[] t = database.GetStudentByID(Int32.Parse(btn.Name));
+            tb_firstname.Text = t[1];
+            tb_lastname.Text = t[2];
+            tb_grade.Text = t[3];
+            tb_email.Text = t[4];
+            tb_phonenumber.Text = t[5];
         }
 
         private void btn_add_student_Click(object sender, EventArgs e)

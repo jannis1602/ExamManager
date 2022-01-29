@@ -114,6 +114,7 @@ namespace ExamManager
             if (result == DialogResult.Yes)
             {
                 database.DeleteTeacher(btn.Name);
+                UpdateTeacherList();
             }
         }
 
@@ -142,7 +143,7 @@ namespace ExamManager
             string subject1 = tb_subject1.Text;
             string subject2 = tb_subject2.Text;
             string subject3 = tb_subject3.Text;
-            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || phonenumber.Length == 0 || subject1.Length == 0)
+            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0) // phonenumber.Length == 0 ||
             {
                 MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return;
             }

@@ -59,8 +59,16 @@ namespace ExamManager
             this.tsmi_exam_examdates = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenBehaltenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_settings_mailgenerator = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_settings_changedb = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_settings_db_default = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_settings_db_localdb = new System.Windows.Forms.ToolStripMenuItem();
+            this.serverdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.cb_grade = new System.Windows.Forms.ComboBox();
+            this.lbl_grade = new System.Windows.Forms.Label();
             this.tlp_student = new System.Windows.Forms.TableLayoutPanel();
             this.tb_student = new System.Windows.Forms.TextBox();
             this.lbl_student = new System.Windows.Forms.Label();
@@ -70,6 +78,7 @@ namespace ExamManager
             this.tb_teacher3 = new System.Windows.Forms.TextBox();
             this.lbl_teacher3 = new System.Windows.Forms.Label();
             this.tlp_teacher1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tb_teacher1 = new System.Windows.Forms.TextBox();
             this.lbl_teacher1 = new System.Windows.Forms.Label();
             this.tlp_teacher2 = new System.Windows.Forms.TableLayoutPanel();
             this.tb_teacher2 = new System.Windows.Forms.TextBox();
@@ -79,10 +88,8 @@ namespace ExamManager
             this.lbl_subject = new System.Windows.Forms.Label();
             this.cb_subject = new System.Windows.Forms.ComboBox();
             this.tlp_preparation_room = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_preparation_room = new System.Windows.Forms.TextBox();
             this.lbl_preparation_room = new System.Windows.Forms.Label();
             this.tlp_exam_room = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_exam_room = new System.Windows.Forms.TextBox();
             this.lbl_exam_room = new System.Windows.Forms.Label();
             this.tlp_1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_mode = new System.Windows.Forms.Label();
@@ -107,15 +114,14 @@ namespace ExamManager
             this.panel_side_room = new System.Windows.Forms.Panel();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_grade = new System.Windows.Forms.Label();
-            this.tb_teacher1 = new System.Windows.Forms.TextBox();
-            this.cb_grade = new System.Windows.Forms.ComboBox();
+            this.cb_exam_room = new System.Windows.Forms.ComboBox();
+            this.cb_preparation_room = new System.Windows.Forms.ComboBox();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tlp_student.SuspendLayout();
             this.tlp_4.SuspendLayout();
             this.tlp_teacher3.SuspendLayout();
@@ -134,7 +140,6 @@ namespace ExamManager
             this.tlp_time.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel_time_line.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -173,7 +178,7 @@ namespace ExamManager
             this.dtp_timeline_date.Name = "dtp_timeline_date";
             this.dtp_timeline_date.Size = new System.Drawing.Size(100, 21);
             this.dtp_timeline_date.TabIndex = 3;
-            this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
+            this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 29, 0, 0, 0, 0);
             this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_time_line_date_ValueChanged);
             // 
             // menuStrip1
@@ -204,21 +209,21 @@ namespace ExamManager
             // tsmi_table_exams
             // 
             this.tsmi_table_exams.Name = "tsmi_table_exams";
-            this.tsmi_table_exams.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_exams.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_exams.Text = "Prüfungen";
             this.tsmi_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
             // tsmi_table_students
             // 
             this.tsmi_table_students.Name = "tsmi_table_students";
-            this.tsmi_table_students.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_students.Text = "Schüler";
             this.tsmi_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
             // tsmi_table_teacher
             // 
             this.tsmi_table_teacher.Name = "tsmi_table_teacher";
-            this.tsmi_table_teacher.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_table_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_table_teacher.Text = "Lehrer";
             this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
@@ -237,35 +242,35 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
             // raumToolStripMenuItem
             // 
             this.raumToolStripMenuItem.Name = "raumToolStripMenuItem";
-            this.raumToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.raumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.raumToolStripMenuItem.Text = "Raum";
             this.raumToolStripMenuItem.Click += new System.EventHandler(this.raumToolStripMenuItem_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -285,28 +290,28 @@ namespace ExamManager
             // tsmi_data_students
             // 
             this.tsmi_data_students.Name = "tsmi_data_students";
-            this.tsmi_data_students.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_students.Text = "Schüler";
             this.tsmi_data_students.Click += new System.EventHandler(this.tsmi_data_students_Click);
             // 
             // tsmi_data_teachers
             // 
             this.tsmi_data_teachers.Name = "tsmi_data_teachers";
-            this.tsmi_data_teachers.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_teachers.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_teachers.Text = "Lehrer";
             this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
             // 
             // tsmi_data_rooms
             // 
             this.tsmi_data_rooms.Name = "tsmi_data_rooms";
-            this.tsmi_data_rooms.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_rooms.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_rooms.Text = "Räume";
             this.tsmi_data_rooms.Click += new System.EventHandler(this.tsmi_data_rooms_Click);
             // 
             // tsmi_data_subjects
             // 
             this.tsmi_data_subjects.Name = "tsmi_data_subjects";
-            this.tsmi_data_subjects.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_subjects.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_subjects.Text = "Fächer";
             this.tsmi_data_subjects.Click += new System.EventHandler(this.tsmi_data_subjects_Click);
             // 
@@ -316,20 +321,20 @@ namespace ExamManager
             this.tsmi_data_editgrade_move,
             this.tsmi_data_editgrade_delete});
             this.stufeVerschiebenToolStripMenuItem.Name = "stufeVerschiebenToolStripMenuItem";
-            this.stufeVerschiebenToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.stufeVerschiebenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.stufeVerschiebenToolStripMenuItem.Text = "Stufe bearbeiten";
             // 
             // tsmi_data_editgrade_move
             // 
             this.tsmi_data_editgrade_move.Name = "tsmi_data_editgrade_move";
-            this.tsmi_data_editgrade_move.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_editgrade_move.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_editgrade_move.Text = "Stufe verschieben";
             this.tsmi_data_editgrade_move.Click += new System.EventHandler(this.tsmi_data_editgrade_move_Click);
             // 
             // tsmi_data_editgrade_delete
             // 
             this.tsmi_data_editgrade_delete.Name = "tsmi_data_editgrade_delete";
-            this.tsmi_data_editgrade_delete.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_data_editgrade_delete.Size = new System.Drawing.Size(180, 22);
             this.tsmi_data_editgrade_delete.Text = "Stufe Löschen";
             this.tsmi_data_editgrade_delete.Click += new System.EventHandler(this.tsmi_data_editgrade_delete_Click);
             // 
@@ -338,7 +343,7 @@ namespace ExamManager
             this.filedataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_data_loadstudents});
             this.filedataToolStripMenuItem.Name = "filedataToolStripMenuItem";
-            this.filedataToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.filedataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.filedataToolStripMenuItem.Text = "Datei Daten [DEV]";
             // 
             // tsmi_data_loadstudents
@@ -368,13 +373,15 @@ namespace ExamManager
             // 
             this.tsmi_exam_examdates.Name = "tsmi_exam_examdates";
             this.tsmi_exam_examdates.Size = new System.Drawing.Size(190, 22);
-            this.tsmi_exam_examdates.Text = "Prüfungstage";
+            this.tsmi_exam_examdates.Text = "Prüfungstage Liste";
             this.tsmi_exam_examdates.Click += new System.EventHandler(this.tsmi_exam_examdates_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.datenBehaltenToolStripMenuItem});
+            this.datenBehaltenToolStripMenuItem,
+            this.tsmi_settings_mailgenerator,
+            this.tsmi_settings_changedb});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
             this.settingsToolStripMenuItem.Text = "Einstellungen";
@@ -382,8 +389,44 @@ namespace ExamManager
             // datenBehaltenToolStripMenuItem
             // 
             this.datenBehaltenToolStripMenuItem.Name = "datenBehaltenToolStripMenuItem";
-            this.datenBehaltenToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.datenBehaltenToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.datenBehaltenToolStripMenuItem.Text = "Daten behalten [DEV]";
+            // 
+            // tsmi_settings_mailgenerator
+            // 
+            this.tsmi_settings_mailgenerator.Name = "tsmi_settings_mailgenerator";
+            this.tsmi_settings_mailgenerator.Size = new System.Drawing.Size(190, 22);
+            this.tsmi_settings_mailgenerator.Text = "Email Generator [DEV]";
+            // 
+            // tsmi_settings_changedb
+            // 
+            this.tsmi_settings_changedb.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_settings_db_default,
+            this.tsmi_settings_db_localdb,
+            this.serverdbToolStripMenuItem});
+            this.tsmi_settings_changedb.Name = "tsmi_settings_changedb";
+            this.tsmi_settings_changedb.Size = new System.Drawing.Size(190, 22);
+            this.tsmi_settings_changedb.Text = "Datenbank auswählen";
+            // 
+            // tsmi_settings_db_default
+            // 
+            this.tsmi_settings_db_default.Name = "tsmi_settings_db_default";
+            this.tsmi_settings_db_default.Size = new System.Drawing.Size(227, 22);
+            this.tsmi_settings_db_default.Text = "Standart Datenbank";
+            this.tsmi_settings_db_default.Click += new System.EventHandler(this.tsmi_settings_db_default_Click);
+            // 
+            // tsmi_settings_db_localdb
+            // 
+            this.tsmi_settings_db_localdb.Name = "tsmi_settings_db_localdb";
+            this.tsmi_settings_db_localdb.Size = new System.Drawing.Size(227, 22);
+            this.tsmi_settings_db_localdb.Text = "Lokale Datenbank auswählen";
+            this.tsmi_settings_db_localdb.Click += new System.EventHandler(this.tsmi_settings_db_localdb_Click);
+            // 
+            // serverdbToolStripMenuItem
+            // 
+            this.serverdbToolStripMenuItem.Name = "serverdbToolStripMenuItem";
+            this.serverdbToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.serverdbToolStripMenuItem.Text = "Server Datenbank [DEV]";
             // 
             // tableLayoutPanel2
             // 
@@ -427,6 +470,47 @@ namespace ExamManager
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(784, 50);
             this.tableLayoutPanel3.TabIndex = 8;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.Controls.Add(this.cb_grade, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lbl_grade, 0, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(405, 5);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(176, 36);
+            this.tableLayoutPanel4.TabIndex = 9;
+            // 
+            // cb_grade
+            // 
+            this.cb_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_grade.FormattingEnabled = true;
+            this.cb_grade.Location = new System.Drawing.Point(61, 5);
+            this.cb_grade.Name = "cb_grade";
+            this.cb_grade.Size = new System.Drawing.Size(112, 28);
+            this.cb_grade.TabIndex = 8;
+            this.cb_grade.SelectedIndexChanged += new System.EventHandler(this.cb_grade_SelectedIndexChanged);
+            // 
+            // lbl_grade
+            // 
+            this.lbl_grade.AutoSize = true;
+            this.lbl_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_grade.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.lbl_grade.Location = new System.Drawing.Point(3, 13);
+            this.lbl_grade.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_grade.Name = "lbl_grade";
+            this.lbl_grade.Size = new System.Drawing.Size(52, 20);
+            this.lbl_grade.TabIndex = 1;
+            this.lbl_grade.Text = "Stufe:";
+            this.lbl_grade.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_student
             // 
@@ -552,6 +636,16 @@ namespace ExamManager
             this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
             this.tlp_teacher1.TabIndex = 4;
             // 
+            // tb_teacher1
+            // 
+            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
+            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.Name = "tb_teacher1";
+            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
+            this.tb_teacher1.TabIndex = 2;
+            // 
             // lbl_teacher1
             // 
             this.lbl_teacher1.AutoSize = true;
@@ -652,13 +746,14 @@ namespace ExamManager
             // 
             // cb_subject
             // 
-            this.cb_subject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cb_subject.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.cb_subject.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_subject.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_subject.FormattingEnabled = true;
             this.cb_subject.Location = new System.Drawing.Point(58, 9);
+            this.cb_subject.MaximumSize = new System.Drawing.Size(180, 0);
             this.cb_subject.Name = "cb_subject";
-            this.cb_subject.Size = new System.Drawing.Size(160, 28);
+            this.cb_subject.Size = new System.Drawing.Size(180, 28);
             this.cb_subject.TabIndex = 7;
             // 
             // tlp_preparation_room
@@ -666,7 +761,7 @@ namespace ExamManager
             this.tlp_preparation_room.ColumnCount = 2;
             this.tlp_preparation_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_preparation_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_preparation_room.Controls.Add(this.tb_preparation_room, 1, 0);
+            this.tlp_preparation_room.Controls.Add(this.cb_preparation_room, 0, 0);
             this.tlp_preparation_room.Controls.Add(this.lbl_preparation_room, 0, 0);
             this.tlp_preparation_room.Location = new System.Drawing.Point(521, 5);
             this.tlp_preparation_room.Margin = new System.Windows.Forms.Padding(0);
@@ -675,17 +770,6 @@ namespace ExamManager
             this.tlp_preparation_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_preparation_room.Size = new System.Drawing.Size(258, 40);
             this.tlp_preparation_room.TabIndex = 6;
-            // 
-            // tb_preparation_room
-            // 
-            this.tb_preparation_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_preparation_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_preparation_room.Location = new System.Drawing.Point(158, 11);
-            this.tb_preparation_room.MaximumSize = new System.Drawing.Size(80, 26);
-            this.tb_preparation_room.Name = "tb_preparation_room";
-            this.tb_preparation_room.Size = new System.Drawing.Size(80, 26);
-            this.tb_preparation_room.TabIndex = 2;
-            this.tb_preparation_room.Text = "O-202";
             // 
             // lbl_preparation_room
             // 
@@ -705,7 +789,7 @@ namespace ExamManager
             this.tlp_exam_room.ColumnCount = 2;
             this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_exam_room.Controls.Add(this.tb_exam_room, 1, 0);
+            this.tlp_exam_room.Controls.Add(this.cb_exam_room, 0, 0);
             this.tlp_exam_room.Controls.Add(this.lbl_exam_room, 0, 0);
             this.tlp_exam_room.Location = new System.Drawing.Point(263, 5);
             this.tlp_exam_room.Margin = new System.Windows.Forms.Padding(0);
@@ -714,17 +798,6 @@ namespace ExamManager
             this.tlp_exam_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_exam_room.Size = new System.Drawing.Size(253, 40);
             this.tlp_exam_room.TabIndex = 5;
-            // 
-            // tb_exam_room
-            // 
-            this.tb_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_exam_room.Location = new System.Drawing.Point(122, 11);
-            this.tb_exam_room.MaximumSize = new System.Drawing.Size(80, 26);
-            this.tb_exam_room.Name = "tb_exam_room";
-            this.tb_exam_room.Size = new System.Drawing.Size(80, 26);
-            this.tb_exam_room.TabIndex = 2;
-            this.tb_exam_room.Text = "O-202";
             // 
             // lbl_exam_room
             // 
@@ -920,7 +993,7 @@ namespace ExamManager
             this.dtp_date.Name = "dtp_date";
             this.dtp_date.Size = new System.Drawing.Size(120, 26);
             this.dtp_date.TabIndex = 9;
-            this.dtp_date.Value = new System.DateTime(2022, 1, 25, 0, 0, 0, 0);
+            this.dtp_date.Value = new System.DateTime(2022, 1, 29, 0, 0, 0, 0);
             // 
             // tlp_duration
             // 
@@ -1060,56 +1133,29 @@ namespace ExamManager
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
-            // tableLayoutPanel4
+            // cb_exam_room
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.Controls.Add(this.cb_grade, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lbl_grade, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(405, 5);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(176, 36);
-            this.tableLayoutPanel4.TabIndex = 9;
+            this.cb_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_exam_room.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_exam_room.FormattingEnabled = true;
+            this.cb_exam_room.Location = new System.Drawing.Point(122, 9);
+            this.cb_exam_room.MaximumSize = new System.Drawing.Size(100, 0);
+            this.cb_exam_room.Name = "cb_exam_room";
+            this.cb_exam_room.Size = new System.Drawing.Size(100, 28);
+            this.cb_exam_room.TabIndex = 8;
             // 
-            // lbl_grade
+            // cb_preparation_room
             // 
-            this.lbl_grade.AutoSize = true;
-            this.lbl_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lbl_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_grade.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.lbl_grade.Location = new System.Drawing.Point(3, 13);
-            this.lbl_grade.Margin = new System.Windows.Forms.Padding(3);
-            this.lbl_grade.Name = "lbl_grade";
-            this.lbl_grade.Size = new System.Drawing.Size(52, 20);
-            this.lbl_grade.TabIndex = 1;
-            this.lbl_grade.Text = "Stufe:";
-            this.lbl_grade.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tb_teacher1
-            // 
-            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.Name = "tb_teacher1";
-            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.TabIndex = 2;
-            // 
-            // cb_grade
-            // 
-            this.cb_grade.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.cb_grade.FormattingEnabled = true;
-            this.cb_grade.Location = new System.Drawing.Point(61, 5);
-            this.cb_grade.Name = "cb_grade";
-            this.cb_grade.Size = new System.Drawing.Size(112, 28);
-            this.cb_grade.TabIndex = 8;
-            this.cb_grade.SelectedIndexChanged += new System.EventHandler(this.cb_grade_SelectedIndexChanged);
+            this.cb_preparation_room.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_preparation_room.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_preparation_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_preparation_room.FormattingEnabled = true;
+            this.cb_preparation_room.Location = new System.Drawing.Point(158, 9);
+            this.cb_preparation_room.MaximumSize = new System.Drawing.Size(100, 0);
+            this.cb_preparation_room.Name = "cb_preparation_room";
+            this.cb_preparation_room.Size = new System.Drawing.Size(97, 28);
+            this.cb_preparation_room.TabIndex = 8;
             // 
             // Form1
             // 
@@ -1128,6 +1174,8 @@ namespace ExamManager
             this.menuStrip1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tlp_student.ResumeLayout(false);
             this.tlp_student.PerformLayout();
             this.tlp_4.ResumeLayout(false);
@@ -1158,8 +1206,6 @@ namespace ExamManager
             this.tlp_time.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel_time_line.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1192,10 +1238,8 @@ namespace ExamManager
         private System.Windows.Forms.TextBox tb_teacher2;
         private System.Windows.Forms.Label lbl_teacher2;
         private System.Windows.Forms.TableLayoutPanel tlp_preparation_room;
-        private System.Windows.Forms.TextBox tb_preparation_room;
         private System.Windows.Forms.Label lbl_preparation_room;
         private System.Windows.Forms.TableLayoutPanel tlp_exam_room;
-        private System.Windows.Forms.TextBox tb_exam_room;
         private System.Windows.Forms.Label lbl_exam_room;
         private System.Windows.Forms.Button btn_add_exam;
         private System.Windows.Forms.DateTimePicker dtp_date;
@@ -1246,6 +1290,13 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_grade;
         private System.Windows.Forms.TextBox tb_teacher1;
         private System.Windows.Forms.ComboBox cb_grade;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_mailgenerator;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_changedb;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_db_default;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_db_localdb;
+        private System.Windows.Forms.ToolStripMenuItem serverdbToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cb_preparation_room;
+        private System.Windows.Forms.ComboBox cb_exam_room;
     }
 }
 

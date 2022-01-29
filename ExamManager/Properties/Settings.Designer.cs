@@ -22,5 +22,17 @@ namespace ExamManager.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("default")]
+        public string databasePath {
+            get {
+                return ((string)(this["databasePath"]));
+            }
+            set {
+                this["databasePath"] = value;
+            }
+        }
     }
 }

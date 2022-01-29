@@ -213,7 +213,7 @@ namespace ExamManager
             this.flowLayoutPanel3.Controls.Add(this.btn_email_generate);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(711, 32);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(763, 32);
             this.flowLayoutPanel3.TabIndex = 3;
             // 
             // lbl_phonenumber
@@ -251,14 +251,14 @@ namespace ExamManager
             this.tb_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_email.Location = new System.Drawing.Point(357, 3);
             this.tb_email.Name = "tb_email";
-            this.tb_email.Size = new System.Drawing.Size(200, 26);
+            this.tb_email.Size = new System.Drawing.Size(240, 26);
             this.tb_email.TabIndex = 5;
             // 
             // btn_email_generate
             // 
             this.btn_email_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_email_generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_email_generate.Location = new System.Drawing.Point(563, 3);
+            this.btn_email_generate.Location = new System.Drawing.Point(603, 3);
             this.btn_email_generate.Name = "btn_email_generate";
             this.btn_email_generate.Size = new System.Drawing.Size(124, 26);
             this.btn_email_generate.TabIndex = 6;
