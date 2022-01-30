@@ -136,7 +136,6 @@ namespace ExamManager
 
             foreach (Panel p in student_entity_list)
             {
-                Console.WriteLine(p.Name);
                 flp_student_entitys.Controls.Add(p);
                 this.flp_student_entitys.SetFlowBreak(p, true);
             }
@@ -231,6 +230,17 @@ namespace ExamManager
             {
                 p.Width = flp_student_entitys.Width - 10;
             }
+        }
+
+        private void tb_firstname_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_firstname.Text.Contains(' ')|| tb_lastname.Text.Contains(' '))
+                btn_hint.Visible = true;
+        }
+
+        private void btn_hint_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Lehrzeichen vermeiden!\nDoppelnamen: name_name2", "Hinweis");
         }
     }
 }

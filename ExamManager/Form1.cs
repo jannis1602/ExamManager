@@ -476,7 +476,7 @@ namespace ExamManager
             e.Graphics.DrawString(student[1] + " " + student[2], drawFont, Brushes.Black, rectL1, stringFormat);
             e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
-            e.Graphics.DrawString(exam[9] + " " + exam[3] + "  prep: " + exam[4], drawFont, Brushes.Black, rectL4, stringFormat);
+            e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4]+"]", drawFont, Brushes.Black, rectL4, stringFormat);
             // ## [DEV] ## TODO: startTime - end Time
 
         }
