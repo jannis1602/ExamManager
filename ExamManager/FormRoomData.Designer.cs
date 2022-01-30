@@ -78,10 +78,11 @@ namespace ExamManager
             // 
             // lb_roomlist
             // 
+            this.lb_roomlist.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lb_roomlist.FormattingEnabled = true;
             this.lb_roomlist.Location = new System.Drawing.Point(3, 3);
             this.lb_roomlist.Name = "lb_roomlist";
-            this.lb_roomlist.Size = new System.Drawing.Size(378, 95);
+            this.lb_roomlist.Size = new System.Drawing.Size(378, 99);
             this.lb_roomlist.TabIndex = 2;
             this.lb_roomlist.DoubleClick += new System.EventHandler(this.lb_roomlist_DoubleClick);
             // 
@@ -91,6 +92,7 @@ namespace ExamManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 211);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormRoomData";
             this.Text = "Raum hinzufügen";
             this.Load += new System.EventHandler(this.FormRoomData_Load);

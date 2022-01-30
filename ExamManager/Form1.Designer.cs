@@ -64,6 +64,7 @@ namespace ExamManager
             this.tsmi_settings_db_default = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_db_localdb = new System.Windows.Forms.ToolStripMenuItem();
             this.serverdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -113,7 +114,6 @@ namespace ExamManager
             this.panel_side_room = new System.Windows.Forms.Panel();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
-            this.tsmi_filter = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_reuse_exam = new System.Windows.Forms.Button();
             this.btn_delete_exam = new System.Windows.Forms.Button();
@@ -292,28 +292,28 @@ namespace ExamManager
             // tsmi_data_students
             // 
             this.tsmi_data_students.Name = "tsmi_data_students";
-            this.tsmi_data_students.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_students.Size = new System.Drawing.Size(188, 22);
             this.tsmi_data_students.Text = "Schüler";
             this.tsmi_data_students.Click += new System.EventHandler(this.tsmi_data_students_Click);
             // 
             // tsmi_data_teachers
             // 
             this.tsmi_data_teachers.Name = "tsmi_data_teachers";
-            this.tsmi_data_teachers.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_teachers.Size = new System.Drawing.Size(188, 22);
             this.tsmi_data_teachers.Text = "Lehrer";
             this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
             // 
             // tsmi_data_rooms
             // 
             this.tsmi_data_rooms.Name = "tsmi_data_rooms";
-            this.tsmi_data_rooms.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_rooms.Size = new System.Drawing.Size(188, 22);
             this.tsmi_data_rooms.Text = "Räume";
             this.tsmi_data_rooms.Click += new System.EventHandler(this.tsmi_data_rooms_Click);
             // 
             // tsmi_data_subjects
             // 
             this.tsmi_data_subjects.Name = "tsmi_data_subjects";
-            this.tsmi_data_subjects.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_subjects.Size = new System.Drawing.Size(188, 22);
             this.tsmi_data_subjects.Text = "Fächer";
             this.tsmi_data_subjects.Click += new System.EventHandler(this.tsmi_data_subjects_Click);
             // 
@@ -323,20 +323,20 @@ namespace ExamManager
             this.tsmi_data_editgrade_move,
             this.tsmi_data_editgrade_delete});
             this.stufeVerschiebenToolStripMenuItem.Name = "stufeVerschiebenToolStripMenuItem";
-            this.stufeVerschiebenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stufeVerschiebenToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.stufeVerschiebenToolStripMenuItem.Text = "Stufe bearbeiten";
             // 
             // tsmi_data_editgrade_move
             // 
             this.tsmi_data_editgrade_move.Name = "tsmi_data_editgrade_move";
-            this.tsmi_data_editgrade_move.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_editgrade_move.Size = new System.Drawing.Size(175, 22);
             this.tsmi_data_editgrade_move.Text = "Stufe umbenennen";
             this.tsmi_data_editgrade_move.Click += new System.EventHandler(this.tsmi_data_editgrade_move_Click);
             // 
             // tsmi_data_editgrade_delete
             // 
             this.tsmi_data_editgrade_delete.Name = "tsmi_data_editgrade_delete";
-            this.tsmi_data_editgrade_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_data_editgrade_delete.Size = new System.Drawing.Size(175, 22);
             this.tsmi_data_editgrade_delete.Text = "Stufe Löschen";
             this.tsmi_data_editgrade_delete.Click += new System.EventHandler(this.tsmi_data_editgrade_delete_Click);
             // 
@@ -345,8 +345,8 @@ namespace ExamManager
             this.filedataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_data_loadstudents});
             this.filedataToolStripMenuItem.Name = "filedataToolStripMenuItem";
-            this.filedataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.filedataToolStripMenuItem.Text = "Datei Daten";
+            this.filedataToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.filedataToolStripMenuItem.Text = "Daten aus Datei laden";
             // 
             // tsmi_data_loadstudents
             // 
@@ -399,6 +399,7 @@ namespace ExamManager
             this.tsmi_settings_mailgenerator.Name = "tsmi_settings_mailgenerator";
             this.tsmi_settings_mailgenerator.Size = new System.Drawing.Size(190, 22);
             this.tsmi_settings_mailgenerator.Text = "Email Generator [DEV]";
+            this.tsmi_settings_mailgenerator.Click += new System.EventHandler(this.tsmi_settings_mailgenerator_Click);
             // 
             // tsmi_settings_changedb
             // 
@@ -429,6 +430,12 @@ namespace ExamManager
             this.serverdbToolStripMenuItem.Name = "serverdbToolStripMenuItem";
             this.serverdbToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.serverdbToolStripMenuItem.Text = "Server Datenbank [DEV]";
+            // 
+            // tsmi_filter
+            // 
+            this.tsmi_filter.Name = "tsmi_filter";
+            this.tsmi_filter.Size = new System.Drawing.Size(77, 20);
+            this.tsmi_filter.Text = "Filter [DEV]";
             // 
             // tableLayoutPanel2
             // 
@@ -1122,12 +1129,6 @@ namespace ExamManager
             this.panel_side_time.Size = new System.Drawing.Size(0, 40);
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
-            // 
-            // tsmi_filter
-            // 
-            this.tsmi_filter.Name = "tsmi_filter";
-            this.tsmi_filter.Size = new System.Drawing.Size(77, 20);
-            this.tsmi_filter.Text = "Filter [DEV]";
             // 
             // btn_cancel
             // 

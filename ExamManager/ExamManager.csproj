@@ -93,6 +93,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormLoadStudents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormLoadStudents.Designer.cs">
+      <DependentUpon>FormLoadStudents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormChangeRoom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +169,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormLoadStudents.resx">
+      <DependentUpon>FormLoadStudents.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormChangeRoom.resx">
       <DependentUpon>FormChangeRoom.cs</DependentUpon>

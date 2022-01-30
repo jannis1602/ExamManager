@@ -33,7 +33,9 @@ namespace ExamManager
             foreach (string[] s in database.GetAllTeachers())
             {
                 FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
-                panel_teacher.Size = new Size(950, 80);
+                //panel_teacher.Size = new Size(950, 80);
+                panel_teacher.Height = 80;
+                panel_teacher.Width = flp_teacher_entitys.Width-10;
                 panel_teacher.Margin = new Padding(5);
                 panel_teacher.BackColor = Color.LightBlue;
                 // -- NAME --
@@ -188,5 +190,12 @@ namespace ExamManager
             tb_shortname.ReadOnly = false;
         }
 
+        private void flp_teacher_entitys_SizeChanged(object sender, EventArgs e)
+        {
+            foreach (Panel p in teacher_entity_list)
+            {
+                p.Width = flp_teacher_entitys.Width-10;
+            }
+        }
     }
 }

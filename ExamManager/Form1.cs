@@ -633,6 +633,7 @@ namespace ExamManager
         {
             FormStudentData formStudentData = new FormStudentData();
             formStudentData.Disposed += UpdateAutocomplete_Event;
+            //formStudentData.TopMost = true;
             formStudentData.Show();
         }
 
@@ -669,13 +670,14 @@ namespace ExamManager
         private void tsmi_data_editgrade_move_Click(object sender, EventArgs e)
         {
             new FormRenameGrade().Show();
+            // TODO: update all ################################################################################################################################
+
         }
         private void tsmi_data_editgrade_delete_Click(object sender, EventArgs e)
         {
             FormDeleteGrade form = new FormDeleteGrade();
             form.Disposed += UpdateAutocomplete_Event;
             form.Show();
-            new FormDeleteGrade().Show();
             // TODO: update all ################################################################################################################################
             // remove exams in grade
             //database.DeleteGrade();
@@ -688,20 +690,9 @@ namespace ExamManager
 
         private void tsmi_data_loadstudents_Click(object sender, EventArgs e)
         {
-            string filePath;
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = openFileDialog.FileName;
-                    database.InsertStudentFileIntoDB(filePath, "Q2");    // TODO: GRADE ##################################################################################
-                    LoadAutocomplete();
-                }
-            }
+            FormLoadStudents form = new FormLoadStudents();
+            form.Disposed += UpdateAutocomplete_Event;
+            form.Show();
         }
 
         private void cb_grade_SelectedIndexChanged(object sender, EventArgs e)
@@ -755,6 +746,11 @@ namespace ExamManager
                     LoadAutocomplete();
                 }
             }
+        }
+
+        private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
+        {
+            new FormSettings().Show();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)

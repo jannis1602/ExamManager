@@ -34,5 +34,17 @@ namespace ExamManager.Properties {
                 this["databasePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string email_domain {
+            get {
+                return ((string)(this["email_domain"]));
+            }
+            set {
+                this["email_domain"] = value;
+            }
+        }
     }
 }

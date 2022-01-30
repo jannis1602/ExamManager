@@ -50,6 +50,7 @@ namespace ExamManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(234, 261);
             this.Controls.Add(this.lb_exam_date);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormExamDateListView";
             this.Text = "Prüfungstage";
             this.ResumeLayout(false);

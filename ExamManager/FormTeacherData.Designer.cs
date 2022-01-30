@@ -31,6 +31,18 @@ namespace ExamManager
         {
             this.tableLayoutPanel_main = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_phonenumber = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_phonenumber = new System.Windows.Forms.Label();
+            this.tb_phonenumber = new System.Windows.Forms.TextBox();
+            this.btn_add_teacher = new System.Windows.Forms.Button();
+            this.flp_subjects = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_subject1 = new System.Windows.Forms.Label();
+            this.tb_subject1 = new System.Windows.Forms.TextBox();
+            this.lbl_subject2 = new System.Windows.Forms.Label();
+            this.tb_subject2 = new System.Windows.Forms.TextBox();
+            this.lbl_subject3 = new System.Windows.Forms.Label();
+            this.tb_subject3 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.flp_teacher_name = new System.Windows.Forms.FlowLayoutPanel();
@@ -40,26 +52,14 @@ namespace ExamManager
             this.tb_lastname = new System.Windows.Forms.TextBox();
             this.lbl_shortname = new System.Windows.Forms.Label();
             this.tb_shortname = new System.Windows.Forms.TextBox();
-            this.flp_subjects = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbl_subject1 = new System.Windows.Forms.Label();
-            this.tb_subject1 = new System.Windows.Forms.TextBox();
-            this.lbl_subject2 = new System.Windows.Forms.Label();
-            this.tb_subject2 = new System.Windows.Forms.TextBox();
-            this.lbl_subject3 = new System.Windows.Forms.Label();
-            this.tb_subject3 = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlp_phonenumber = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbl_phonenumber = new System.Windows.Forms.Label();
-            this.tb_phonenumber = new System.Windows.Forms.TextBox();
-            this.btn_add_teacher = new System.Windows.Forms.Button();
             this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.flp_teacher_name.SuspendLayout();
-            this.flp_subjects.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tlp_phonenumber.SuspendLayout();
+            this.flp_subjects.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flp_teacher_name.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel_main
@@ -95,6 +95,132 @@ namespace ExamManager
             this.tlp_edit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlp_edit.Size = new System.Drawing.Size(984, 120);
             this.tlp_edit.TabIndex = 1;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.tlp_phonenumber, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btn_add_teacher, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 80);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(984, 40);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // tlp_phonenumber
+            // 
+            this.tlp_phonenumber.Controls.Add(this.lbl_phonenumber);
+            this.tlp_phonenumber.Controls.Add(this.tb_phonenumber);
+            this.tlp_phonenumber.Location = new System.Drawing.Point(3, 3);
+            this.tlp_phonenumber.Name = "tlp_phonenumber";
+            this.tlp_phonenumber.Size = new System.Drawing.Size(781, 32);
+            this.tlp_phonenumber.TabIndex = 3;
+            // 
+            // lbl_phonenumber
+            // 
+            this.lbl_phonenumber.AutoSize = true;
+            this.lbl_phonenumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_phonenumber.Location = new System.Drawing.Point(3, 6);
+            this.lbl_phonenumber.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.lbl_phonenumber.Name = "lbl_phonenumber";
+            this.lbl_phonenumber.Size = new System.Drawing.Size(124, 20);
+            this.lbl_phonenumber.TabIndex = 0;
+            this.lbl_phonenumber.Text = "Telefonnummer:";
+            // 
+            // tb_phonenumber
+            // 
+            this.tb_phonenumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_phonenumber.Location = new System.Drawing.Point(133, 3);
+            this.tb_phonenumber.Name = "tb_phonenumber";
+            this.tb_phonenumber.Size = new System.Drawing.Size(160, 26);
+            this.tb_phonenumber.TabIndex = 10;
+            // 
+            // btn_add_teacher
+            // 
+            this.btn_add_teacher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_add_teacher.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_add_teacher.Location = new System.Drawing.Point(831, 3);
+            this.btn_add_teacher.Name = "btn_add_teacher";
+            this.btn_add_teacher.Size = new System.Drawing.Size(150, 34);
+            this.btn_add_teacher.TabIndex = 11;
+            this.btn_add_teacher.Text = "Lehrer hinzufügen";
+            this.btn_add_teacher.UseVisualStyleBackColor = true;
+            this.btn_add_teacher.Click += new System.EventHandler(this.btn_add_teacher_Click);
+            // 
+            // flp_subjects
+            // 
+            this.flp_subjects.Controls.Add(this.lbl_subject1);
+            this.flp_subjects.Controls.Add(this.tb_subject1);
+            this.flp_subjects.Controls.Add(this.lbl_subject2);
+            this.flp_subjects.Controls.Add(this.tb_subject2);
+            this.flp_subjects.Controls.Add(this.lbl_subject3);
+            this.flp_subjects.Controls.Add(this.tb_subject3);
+            this.flp_subjects.Location = new System.Drawing.Point(3, 43);
+            this.flp_subjects.Name = "flp_subjects";
+            this.flp_subjects.Size = new System.Drawing.Size(781, 32);
+            this.flp_subjects.TabIndex = 2;
+            // 
+            // lbl_subject1
+            // 
+            this.lbl_subject1.AutoSize = true;
+            this.lbl_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_subject1.Location = new System.Drawing.Point(3, 6);
+            this.lbl_subject1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.lbl_subject1.Name = "lbl_subject1";
+            this.lbl_subject1.Size = new System.Drawing.Size(62, 20);
+            this.lbl_subject1.TabIndex = 0;
+            this.lbl_subject1.Text = "Fach 1:";
+            // 
+            // tb_subject1
+            // 
+            this.tb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_subject1.Location = new System.Drawing.Point(71, 3);
+            this.tb_subject1.Name = "tb_subject1";
+            this.tb_subject1.Size = new System.Drawing.Size(140, 26);
+            this.tb_subject1.TabIndex = 7;
+            // 
+            // lbl_subject2
+            // 
+            this.lbl_subject2.AutoSize = true;
+            this.lbl_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_subject2.Location = new System.Drawing.Point(217, 6);
+            this.lbl_subject2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.lbl_subject2.Name = "lbl_subject2";
+            this.lbl_subject2.Size = new System.Drawing.Size(62, 20);
+            this.lbl_subject2.TabIndex = 5;
+            this.lbl_subject2.Text = "Fach 2:";
+            // 
+            // tb_subject2
+            // 
+            this.tb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_subject2.Location = new System.Drawing.Point(285, 3);
+            this.tb_subject2.Name = "tb_subject2";
+            this.tb_subject2.Size = new System.Drawing.Size(140, 26);
+            this.tb_subject2.TabIndex = 8;
+            // 
+            // lbl_subject3
+            // 
+            this.lbl_subject3.AutoSize = true;
+            this.lbl_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_subject3.Location = new System.Drawing.Point(431, 6);
+            this.lbl_subject3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.lbl_subject3.Name = "lbl_subject3";
+            this.lbl_subject3.Size = new System.Drawing.Size(62, 20);
+            this.lbl_subject3.TabIndex = 6;
+            this.lbl_subject3.Text = "Fach 3:";
+            // 
+            // tb_subject3
+            // 
+            this.tb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_subject3.Location = new System.Drawing.Point(499, 3);
+            this.tb_subject3.Name = "tb_subject3";
+            this.tb_subject3.Size = new System.Drawing.Size(140, 26);
+            this.tb_subject3.TabIndex = 9;
             // 
             // tableLayoutPanel1
             // 
@@ -195,132 +321,6 @@ namespace ExamManager
             this.tb_shortname.Size = new System.Drawing.Size(60, 26);
             this.tb_shortname.TabIndex = 6;
             // 
-            // flp_subjects
-            // 
-            this.flp_subjects.Controls.Add(this.lbl_subject1);
-            this.flp_subjects.Controls.Add(this.tb_subject1);
-            this.flp_subjects.Controls.Add(this.lbl_subject2);
-            this.flp_subjects.Controls.Add(this.tb_subject2);
-            this.flp_subjects.Controls.Add(this.lbl_subject3);
-            this.flp_subjects.Controls.Add(this.tb_subject3);
-            this.flp_subjects.Location = new System.Drawing.Point(3, 43);
-            this.flp_subjects.Name = "flp_subjects";
-            this.flp_subjects.Size = new System.Drawing.Size(781, 32);
-            this.flp_subjects.TabIndex = 2;
-            // 
-            // lbl_subject1
-            // 
-            this.lbl_subject1.AutoSize = true;
-            this.lbl_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject1.Location = new System.Drawing.Point(3, 6);
-            this.lbl_subject1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.lbl_subject1.Name = "lbl_subject1";
-            this.lbl_subject1.Size = new System.Drawing.Size(62, 20);
-            this.lbl_subject1.TabIndex = 0;
-            this.lbl_subject1.Text = "Fach 1:";
-            // 
-            // tb_subject1
-            // 
-            this.tb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject1.Location = new System.Drawing.Point(71, 3);
-            this.tb_subject1.Name = "tb_subject1";
-            this.tb_subject1.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject1.TabIndex = 7;
-            // 
-            // lbl_subject2
-            // 
-            this.lbl_subject2.AutoSize = true;
-            this.lbl_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject2.Location = new System.Drawing.Point(217, 6);
-            this.lbl_subject2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.lbl_subject2.Name = "lbl_subject2";
-            this.lbl_subject2.Size = new System.Drawing.Size(62, 20);
-            this.lbl_subject2.TabIndex = 5;
-            this.lbl_subject2.Text = "Fach 2:";
-            // 
-            // tb_subject2
-            // 
-            this.tb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject2.Location = new System.Drawing.Point(285, 3);
-            this.tb_subject2.Name = "tb_subject2";
-            this.tb_subject2.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject2.TabIndex = 8;
-            // 
-            // lbl_subject3
-            // 
-            this.lbl_subject3.AutoSize = true;
-            this.lbl_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject3.Location = new System.Drawing.Point(431, 6);
-            this.lbl_subject3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.lbl_subject3.Name = "lbl_subject3";
-            this.lbl_subject3.Size = new System.Drawing.Size(62, 20);
-            this.lbl_subject3.TabIndex = 6;
-            this.lbl_subject3.Text = "Fach 3:";
-            // 
-            // tb_subject3
-            // 
-            this.tb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject3.Location = new System.Drawing.Point(499, 3);
-            this.tb_subject3.Name = "tb_subject3";
-            this.tb_subject3.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject3.TabIndex = 9;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel3.Controls.Add(this.tlp_phonenumber, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.btn_add_teacher, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 80);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(984, 40);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // tlp_phonenumber
-            // 
-            this.tlp_phonenumber.Controls.Add(this.lbl_phonenumber);
-            this.tlp_phonenumber.Controls.Add(this.tb_phonenumber);
-            this.tlp_phonenumber.Location = new System.Drawing.Point(3, 3);
-            this.tlp_phonenumber.Name = "tlp_phonenumber";
-            this.tlp_phonenumber.Size = new System.Drawing.Size(781, 32);
-            this.tlp_phonenumber.TabIndex = 3;
-            // 
-            // lbl_phonenumber
-            // 
-            this.lbl_phonenumber.AutoSize = true;
-            this.lbl_phonenumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_phonenumber.Location = new System.Drawing.Point(3, 6);
-            this.lbl_phonenumber.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.lbl_phonenumber.Name = "lbl_phonenumber";
-            this.lbl_phonenumber.Size = new System.Drawing.Size(124, 20);
-            this.lbl_phonenumber.TabIndex = 0;
-            this.lbl_phonenumber.Text = "Telefonnummer:";
-            // 
-            // tb_phonenumber
-            // 
-            this.tb_phonenumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_phonenumber.Location = new System.Drawing.Point(133, 3);
-            this.tb_phonenumber.Name = "tb_phonenumber";
-            this.tb_phonenumber.Size = new System.Drawing.Size(160, 26);
-            this.tb_phonenumber.TabIndex = 10;
-            // 
-            // btn_add_teacher
-            // 
-            this.btn_add_teacher.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_add_teacher.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add_teacher.Location = new System.Drawing.Point(831, 3);
-            this.btn_add_teacher.Name = "btn_add_teacher";
-            this.btn_add_teacher.Size = new System.Drawing.Size(150, 34);
-            this.btn_add_teacher.TabIndex = 11;
-            this.btn_add_teacher.Text = "Lehrer hinzufügen";
-            this.btn_add_teacher.UseVisualStyleBackColor = true;
-            this.btn_add_teacher.Click += new System.EventHandler(this.btn_add_teacher_Click);
-            // 
             // flp_teacher_entitys
             // 
             this.flp_teacher_entitys.AutoScroll = true;
@@ -331,6 +331,7 @@ namespace ExamManager
             this.flp_teacher_entitys.Name = "flp_teacher_entitys";
             this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 381);
             this.flp_teacher_entitys.TabIndex = 20;
+            this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
             // 
             // FormTeacherData
             // 
@@ -338,19 +339,20 @@ namespace ExamManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 501);
             this.Controls.Add(this.tableLayoutPanel_main);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormTeacherData";
             this.Text = "Lehrer hinzufügen";
             this.Load += new System.EventHandler(this.FormTeacherData_Load);
             this.tableLayoutPanel_main.ResumeLayout(false);
             this.tlp_edit.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.flp_teacher_name.ResumeLayout(false);
-            this.flp_teacher_name.PerformLayout();
-            this.flp_subjects.ResumeLayout(false);
-            this.flp_subjects.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tlp_phonenumber.ResumeLayout(false);
             this.tlp_phonenumber.PerformLayout();
+            this.flp_subjects.ResumeLayout(false);
+            this.flp_subjects.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.flp_teacher_name.ResumeLayout(false);
+            this.flp_teacher_name.PerformLayout();
             this.ResumeLayout(false);
 
         }

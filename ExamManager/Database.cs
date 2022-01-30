@@ -52,18 +52,24 @@ namespace ExamManager
         // ID firstname lastname grade Email TelNummer
         public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = "0")
         {
-            if (email == null) email = firstname.Split(' ')[0] + "." + lastname.Replace(" ", ".") + "@gymrahden.de";
-            if (GetStudent(firstname, lastname, grade) != null) return;                     // TODO: ERROR Message
-            SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number); ";
-            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
-            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
-            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
-            sqlite_cmd.Parameters.AddWithValue("@email", email);
-            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
-            sqlite_cmd.ExecuteNonQuery();
+            string[] s = GetStudent(firstname, lastname, "-");
+            if (s != null)
+            {
+                DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + firstname + " " + lastname + " exestiert bereits in der Stufe " + s[3] +
+                    "!\nEinen weiteren in der Stufe " + grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result != DialogResult.Yes)
+                { return; }
+                SQLiteCommand sqlite_cmd = connection.CreateCommand();
+                sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number); ";
+                sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
+                sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+                sqlite_cmd.Parameters.AddWithValue("@grade", grade);
+                sqlite_cmd.Parameters.AddWithValue("@email", email);
+                sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
+                sqlite_cmd.ExecuteNonQuery();
+            }
         }
-        public void InsertStudentFileIntoDB(string file, string grade)
+        public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
         {
             bool editDoppelnamen = false;
 
@@ -83,7 +89,14 @@ namespace ExamManager
                                 tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
                                 string templastname = null;
                                 templastname += line.Split(' ')[line.Split(' ').Length - 1];
-                                AddStudent(tempfirstname, templastname, grade);
+                                if (mailgenerator)
+                                {
+                                    string domain = Properties.Settings.Default.email_domain;
+                                    string mail = tempfirstname.Replace(' ', '.') + "." + templastname.Replace(" ", ".") + "@" + domain;
+                                    AddStudent(tempfirstname, templastname, grade, mail);
+                                }
+                                else AddStudent(tempfirstname, templastname, grade);
+
                             }
                             else
                             {
@@ -97,11 +110,30 @@ namespace ExamManager
                                     for (int ln = i; ln < line.Split(' ').Length; ln++)
                                         templastname += line.Split(' ')[ln];
                                     DialogResult result = MessageBox.Show("Auswahl: " + tempfirstname + " - " + templastname, "Info!", MessageBoxButtons.YesNo);
-                                    if (result == DialogResult.Yes) { AddStudent(tempfirstname, templastname, grade); break; }
+                                    if (result == DialogResult.Yes)
+                                    {
+                                        if (mailgenerator)
+                                        {
+                                            string domain = Properties.Settings.Default.email_domain;
+                                            string mail = tempfirstname.Replace(' ', '.') + "." + templastname.Replace(" ", ".") + "@" + domain;
+                                            AddStudent(tempfirstname, templastname, grade, mail);
+                                        }
+                                        else AddStudent(tempfirstname, templastname, grade);
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        else AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade);
+                        else
+                        {
+                            if (mailgenerator)
+                            {
+                                string domain = Properties.Settings.Default.email_domain;
+                                string mail = line.Split(' ')[0].Replace(' ', '.') + "." + line.Split(' ')[1].Replace(" ", ".") + "@" + domain;
+                                AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail);
+                            }
+                            else AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade);
+                        }
                 }
             }
         }
@@ -110,7 +142,8 @@ namespace ExamManager
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname) AND grade = @grade";
+            if (grade == "-") sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";
+            else sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname) AND grade = @grade";
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
@@ -144,7 +177,7 @@ namespace ExamManager
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student";
+            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY lastname";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {

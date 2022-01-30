@@ -28,6 +28,12 @@ namespace ExamManager
             // static form sizes
             // lehrer doppelnamen 
             // insert file request grade
+            // open forms only once
+            // edit btn (klick-> show)
+            // add student grade select or autocomplete
+            // enter in textbox
+            // TODO Order students (/ teachers) by lastname
+            // check student with same name!
         }
     }
 }

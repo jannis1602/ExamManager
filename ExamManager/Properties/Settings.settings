@@ -5,5 +5,8 @@
     <Setting Name="databasePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">default</Value>
     </Setting>
+    <Setting Name="email_domain" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

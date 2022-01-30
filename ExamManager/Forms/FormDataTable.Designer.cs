@@ -36,6 +36,7 @@ namespace ExamManager
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 501);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Form_grid";
             this.Text = "Tabelle";
             this.Load += new System.EventHandler(this.Form_grid_Load);

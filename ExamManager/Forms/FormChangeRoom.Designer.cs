@@ -30,16 +30,16 @@ namespace ExamManager
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_oldroom = new System.Windows.Forms.Label();
+            this.tb_oldroom = new System.Windows.Forms.TextBox();
             this.btn_change = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_newroom = new System.Windows.Forms.Label();
             this.tb_newroom = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbl_oldroom = new System.Windows.Forms.Label();
-            this.tb_oldroom = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -59,6 +59,41 @@ namespace ExamManager
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 121);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.lbl_oldroom);
+            this.flowLayoutPanel2.Controls.Add(this.tb_oldroom);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(1, 1);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(382, 38);
+            this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // lbl_oldroom
+            // 
+            this.lbl_oldroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_oldroom.AutoSize = true;
+            this.lbl_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_oldroom.Location = new System.Drawing.Point(5, 5);
+            this.lbl_oldroom.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_oldroom.MinimumSize = new System.Drawing.Size(101, 0);
+            this.lbl_oldroom.Name = "lbl_oldroom";
+            this.lbl_oldroom.Size = new System.Drawing.Size(101, 28);
+            this.lbl_oldroom.TabIndex = 0;
+            this.lbl_oldroom.Text = "alter Raum:";
+            this.lbl_oldroom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tb_oldroom
+            // 
+            this.tb_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.tb_oldroom.Location = new System.Drawing.Point(113, 6);
+            this.tb_oldroom.Margin = new System.Windows.Forms.Padding(2, 6, 20, 6);
+            this.tb_oldroom.Name = "tb_oldroom";
+            this.tb_oldroom.Size = new System.Drawing.Size(108, 26);
+            this.tb_oldroom.TabIndex = 2;
             // 
             // btn_change
             // 
@@ -85,7 +120,7 @@ namespace ExamManager
             // 
             // lbl_newroom
             // 
-            this.lbl_newroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.lbl_newroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_newroom.AutoSize = true;
             this.lbl_newroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
@@ -108,54 +143,22 @@ namespace ExamManager
             this.tb_newroom.TabIndex = 2;
             this.tb_newroom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_newroom_KeyPress);
             // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.lbl_oldroom);
-            this.flowLayoutPanel2.Controls.Add(this.tb_oldroom);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(1, 1);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(382, 38);
-            this.flowLayoutPanel2.TabIndex = 3;
-            // 
-            // lbl_oldroom
-            // 
-            this.lbl_oldroom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbl_oldroom.AutoSize = true;
-            this.lbl_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lbl_oldroom.Location = new System.Drawing.Point(5, 5);
-            this.lbl_oldroom.Margin = new System.Windows.Forms.Padding(5);
-            this.lbl_oldroom.MinimumSize = new System.Drawing.Size(101, 0);
-            this.lbl_oldroom.Name = "lbl_oldroom";
-            this.lbl_oldroom.Size = new System.Drawing.Size(101, 28);
-            this.lbl_oldroom.TabIndex = 0;
-            this.lbl_oldroom.Text = "alter Raum:";
-            this.lbl_oldroom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tb_oldroom
-            // 
-            this.tb_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tb_oldroom.Location = new System.Drawing.Point(113, 6);
-            this.tb_oldroom.Margin = new System.Windows.Forms.Padding(2, 6, 20, 6);
-            this.tb_oldroom.Name = "tb_oldroom";
-            this.tb_oldroom.Size = new System.Drawing.Size(108, 26);
-            this.tb_oldroom.TabIndex = 2;
-            // 
             // FormChangeRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 121);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormChangeRoom";
             this.Text = "Raumwechsel";
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

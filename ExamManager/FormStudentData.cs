@@ -16,9 +16,21 @@ namespace ExamManager
         public FormStudentData()
         {
             database = Program.database;
+            LinkedList<string[]> allStudents = database.GetAllStudents();
             student_entity_list = new LinkedList<FlowLayoutPanel>();
             InitializeComponent();
             UpdateStudentList();
+            LinkedList<string> gradeList = new LinkedList<string>();
+            foreach (string[] s in allStudents)
+                if (!gradeList.Contains(s[3]))
+                    gradeList.AddLast(s[3]);
+            List<string> templist = new List<string>(gradeList);
+            templist = templist.OrderBy(x => x).ToList();
+            gradeList = new LinkedList<string>(templist);
+            string[] list = new string[gradeList.Count];
+            for (int i = 0; i < gradeList.Count; i++)
+                list[i] = gradeList.ElementAt(i);
+            cb_grade.Items.AddRange(list);
         }
 
         private void FormStudentData_Load(object sender, EventArgs e)
@@ -36,10 +48,14 @@ namespace ExamManager
             foreach (string[] s in database.GetAllStudents())
             {
                 FlowLayoutPanel panel_student = new FlowLayoutPanel();
-                panel_student.Size = new Size(950, 80);
+                //panel_student.Size = new Size(950, 80);
+                //panel_student.Dock = DockStyle.Top;
+                panel_student.Height = 80;
+                panel_student.Width = flp_student_entitys.Width - 10;
+                //panel_student.AutoSize = true;
                 panel_student.Margin = new Padding(5);
                 panel_student.BackColor = Color.LightBlue;
-                //panel_student.Name = room;
+                panel_student.Name = s[2];
                 // -- NAME --
                 Label lbl_student_name = new Label();
                 lbl_student_name.Size = new Size(140, panel_student.Height);
@@ -108,7 +124,7 @@ namespace ExamManager
                 panel_student.Controls.Add(btn_student_delete);
 
                 //
-                this.flp_teacher_entitys.HorizontalScroll.Value = 0;
+                this.flp_student_entitys.HorizontalScroll.Value = 0;
                 //flp_teacher_entitys.Controls.Add(panel_student);
                 panel_student.Name = s[2];
                 student_entity_list.AddLast(panel_student);
@@ -120,20 +136,22 @@ namespace ExamManager
 
             foreach (Panel p in student_entity_list)
             {
-                flp_teacher_entitys.Controls.Add(p);
-                this.flp_teacher_entitys.SetFlowBreak(p, true);
+                Console.WriteLine(p.Name);
+                flp_student_entitys.Controls.Add(p);
+                this.flp_student_entitys.SetFlowBreak(p, true);
             }
         }
 
         private void btn_student_delete_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            string[] t = database.GetTeacherByID(btn.Name);
+            string[] t = database.GetStudentByID(Int32.Parse(btn.Name));
             string name = t[1] + " " + t[2];
             DialogResult result = MessageBox.Show("Schüler " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                database.DeleteTeacher(btn.Name);
+                database.DeleteStudent(Int32.Parse(btn.Name));
+                UpdateStudentList();
             }
         }
 
@@ -145,7 +163,7 @@ namespace ExamManager
             string[] t = database.GetStudentByID(Int32.Parse(btn.Name));
             tb_firstname.Text = t[1];
             tb_lastname.Text = t[2];
-            tb_grade.Text = t[3];
+            cb_grade.Text = t[3];
             tb_email.Text = t[4];
             tb_phonenumber.Text = t[5];
         }
@@ -153,14 +171,15 @@ namespace ExamManager
         private void btn_add_student_Click(object sender, EventArgs e)
         {
             // TODO: check name?
-
             // TODO: Check if null #########################################################################################
 
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
-            string grade = tb_grade.Text;
+            string grade = cb_grade.Text;
             string email = tb_email.Text;
             string phonenumber = tb_phonenumber.Text;
+            if (firstname.Length == 0 || lastname.Length == 0 || grade.Length == 0 || grade.Length == 0)
+            { MessageBox.Show("Alle Felder mit * ausfüllen!", "Warnung"); return; }
             if (edit_id == 0)
             {
                 /*if (database.GetTeacherByID(shortname) != null)
@@ -174,34 +193,44 @@ namespace ExamManager
                 database.EditStudent(edit_id, firstname, lastname, grade, email, phonenumber);
             }
             UpdateStudentList();
-            // .Clear(); ?
-            tb_grade.Text = null;
-            tb_firstname.Text = null;
-            tb_lastname.Text = null;
-            tb_email.Text = null;
-            tb_phonenumber.Text = null;
+            //cb_grade.Text = null;
+            tb_firstname.Clear();
+            tb_lastname.Clear();
+            tb_email.Clear();
+            tb_phonenumber.Clear();
 
             edit_id = 0;
             btn_add_student.Text = add_mode[0];
-            tb_grade.ReadOnly = false;
+            //cb_grade.ReadOnly = false;
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            tb_grade.Text = null;
-            tb_firstname.Text = null;
-            tb_lastname.Text = null;
-            tb_email.Text = null;
-            tb_phonenumber.Text = null;
+            cb_grade.Text = null;
+            tb_firstname.Clear();
+            tb_lastname.Clear();
+            tb_email.Clear();
+            tb_phonenumber.Clear();
 
             edit_id = 0;
             btn_add_student.Text = add_mode[0];
-            tb_grade.ReadOnly = false;
+            //cb_grade.ReadOnly = false;
         }
 
         private void btn_email_generate_Click(object sender, EventArgs e)
         {
-            tb_email.Text = tb_firstname.Text + "." + tb_lastname.Text.Replace(" ", ".") + "@gymrahden.de";
+            string domain = Properties.Settings.Default.email_domain;
+                if (domain == null)
+                MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
+            tb_email.Text = tb_firstname.Text.Replace(' ','.') + "." + tb_lastname.Text.Replace(" ", ".") + "@"+domain;
+        }
+
+        private void flp_student_entitys_SizeChanged(object sender, EventArgs e)
+        {
+            foreach (Panel p in student_entity_list)
+            {
+                p.Width = flp_student_entitys.Width - 10;
+            }
         }
     }
 }

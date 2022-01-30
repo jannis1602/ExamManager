@@ -78,10 +78,11 @@ namespace ExamManager
             // 
             // lb_subjectlist
             // 
+            this.lb_subjectlist.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lb_subjectlist.FormattingEnabled = true;
             this.lb_subjectlist.Location = new System.Drawing.Point(3, 3);
             this.lb_subjectlist.Name = "lb_subjectlist";
-            this.lb_subjectlist.Size = new System.Drawing.Size(378, 95);
+            this.lb_subjectlist.Size = new System.Drawing.Size(378, 99);
             this.lb_subjectlist.TabIndex = 2;
             this.lb_subjectlist.DoubleClick += new System.EventHandler(this.lb_subjectlist_DoubleClick);
             // 
@@ -91,6 +92,7 @@ namespace ExamManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 211);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormSubjectData";
             this.Text = "Fach hinzufügen";
             this.Load += new System.EventHandler(this.FormSubjectData_Load);
