@@ -53,6 +53,7 @@ namespace ExamManager
             this.lbl_shortname = new System.Windows.Forms.Label();
             this.tb_shortname = new System.Windows.Forms.TextBox();
             this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_hint = new System.Windows.Forms.Button();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -259,6 +260,7 @@ namespace ExamManager
             this.flp_teacher_name.Controls.Add(this.tb_lastname);
             this.flp_teacher_name.Controls.Add(this.lbl_shortname);
             this.flp_teacher_name.Controls.Add(this.tb_shortname);
+            this.flp_teacher_name.Controls.Add(this.btn_hint);
             this.flp_teacher_name.Location = new System.Drawing.Point(3, 3);
             this.flp_teacher_name.Name = "flp_teacher_name";
             this.flp_teacher_name.Size = new System.Drawing.Size(781, 32);
@@ -282,6 +284,7 @@ namespace ExamManager
             this.tb_firstname.Name = "tb_firstname";
             this.tb_firstname.Size = new System.Drawing.Size(160, 26);
             this.tb_firstname.TabIndex = 4;
+            this.tb_firstname.TextChanged += new System.EventHandler(this.tb_firstname_TextChanged);
             // 
             // lbl_lastname
             // 
@@ -301,6 +304,7 @@ namespace ExamManager
             this.tb_lastname.Name = "tb_lastname";
             this.tb_lastname.Size = new System.Drawing.Size(160, 26);
             this.tb_lastname.TabIndex = 5;
+            this.tb_lastname.TextChanged += new System.EventHandler(this.tb_firstname_TextChanged);
             // 
             // lbl_shortname
             // 
@@ -332,6 +336,21 @@ namespace ExamManager
             this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 381);
             this.flp_teacher_entitys.TabIndex = 20;
             this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
+            // 
+            // btn_hint
+            // 
+            this.btn_hint.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_hint.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.btn_hint.FlatAppearance.BorderSize = 2;
+            this.btn_hint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_hint.Location = new System.Drawing.Point(644, 3);
+            this.btn_hint.Name = "btn_hint";
+            this.btn_hint.Size = new System.Drawing.Size(50, 26);
+            this.btn_hint.TabIndex = 8;
+            this.btn_hint.Text = "Tipp";
+            this.btn_hint.UseVisualStyleBackColor = false;
+            this.btn_hint.Visible = false;
+            this.btn_hint.Click += new System.EventHandler(this.btn_hint_Click);
             // 
             // FormTeacherData
             // 
@@ -383,5 +402,6 @@ namespace ExamManager
         private System.Windows.Forms.Button btn_add_teacher;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.Button btn_hint;
     }
 }

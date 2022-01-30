@@ -40,11 +40,19 @@ namespace ExamManager
                     DialogResult result = MessageBox.Show("Stufe " + newgrade + " exestiert!\nFortfahren?", "Warnung!", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        Program.database.ChangeGrade(oldgrade, newgrade);
+                        Program.database.ChangeGrade(oldgrade, newgrade); // .Remove(' ')
                         cb_grade.SelectedItem = null;
                         tb_new.Clear();
                         LoadAutocomplete();
                     }
+                }
+                else
+                {
+                    Program.database.ChangeGrade(oldgrade, newgrade); // .Remove(' ')
+                    cb_grade.SelectedItem = null;
+                    tb_new.Clear();
+                    LoadAutocomplete();
+                    // MessageBox.Show("Stufe " + oldgrade + " erfolgreich zu "+newgrade+" umbenannt!", "Warnung!");
                 }
         }
     }

@@ -38,6 +38,7 @@ namespace ExamManager
                 panel_teacher.Width = flp_teacher_entitys.Width-10;
                 panel_teacher.Margin = new Padding(5);
                 panel_teacher.BackColor = Color.LightBlue;
+                panel_teacher.Name = s[2];
                 // -- NAME --
                 Label lbl_teacher_name = new Label();
                 lbl_teacher_name.Size = new Size(140, panel_teacher.Height);
@@ -95,6 +96,7 @@ namespace ExamManager
                 panel_teacher.Name = s[2];
                 teacher_entity_list.AddLast(panel_teacher);
             }
+            flp_teacher_entitys.Controls.Add(teacher_entity_list.First());
 
             List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
             temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
@@ -138,7 +140,7 @@ namespace ExamManager
 
         private void btn_add_teacher_Click(object sender, EventArgs e)
         {
-            string shortname = tb_shortname.Text;
+            string shortname = tb_shortname.Text.Remove(' ');
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
             string phonenumber = tb_phonenumber.Text;
@@ -196,6 +198,17 @@ namespace ExamManager
             {
                 p.Width = flp_teacher_entitys.Width-10;
             }
+        }
+
+        private void tb_firstname_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_firstname.Text.Contains(' ') || tb_lastname.Text.Contains(' '))
+                btn_hint.Visible = true;
+        }
+
+        private void btn_hint_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Lehrzeichen vermeiden!\nDoppelnamen: name_name2", "Hinweis");
         }
     }
 }

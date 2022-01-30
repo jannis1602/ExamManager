@@ -107,6 +107,34 @@ namespace ExamManager
                 cb_search.Items.AddRange(rooms);
                 form.search_index = 3;
             }
+            else if (mode == 4) // grade
+            {
+                cb_search = new ComboBox();
+                cb_search.Dock = DockStyle.Fill;
+                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+                cb_search.Location = new System.Drawing.Point(30, 20);
+                cb_search.Margin = new Padding(30, 20, 30, 5);
+                cb_search.Name = "tb_search";
+                cb_search.Size = new System.Drawing.Size(324, 26);
+                cb_search.DropDownStyle = ComboBoxStyle.DropDownList;
+                cb_search.TabIndex = 0;
+                cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
+                tlp_main.Controls.Add(cb_search);
+                //cb_search
+                LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+                LinkedList<string> gradeList = new LinkedList<string>();
+                foreach (string[] s in allStudents)
+                    if (!gradeList.Contains(s[3]))
+                        gradeList.AddLast(s[3]);
+                List<string> templist = new List<string>(gradeList);
+                templist = templist.OrderBy(x => x).ToList();
+                gradeList = new LinkedList<string>(templist);
+                string[] list = new string[gradeList.Count];
+                for (int i = 0; i < gradeList.Count; i++)
+                    list[i] = gradeList.ElementAt(i);
+                cb_search.Items.AddRange(list);
+                form.search_index = 4;
+            }
         }
 
         private void FormSearch_Load(object sender, EventArgs e)

@@ -45,16 +45,17 @@ namespace ExamManager
             cb_subject.Items.AddRange(subjects);
             // students
             var autocomplete_student = new AutoCompleteStringCollection();
-            LinkedList<string[]> allStudents = database.GetAllStudents();
-            string[] students = new string[allStudents.Count];
-            for (int i = 0; i < allStudents.Count; i++)
-                students[i] = (allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2]);
+            LinkedList<string[]> allStudentsList = database.GetAllStudents();
+            string[] students = new string[allStudentsList.Count];
+            for (int i = 0; i < allStudentsList.Count; i++)
+                students[i] = (allStudentsList.ElementAt(i)[1] + " " + allStudentsList.ElementAt(i)[2]);
             autocomplete_student.AddRange(students);
             this.tb_student.AutoCompleteCustomSource = autocomplete_student;
             this.tb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
             // grade
             cb_grade.Items.Clear();
+            LinkedList<string[]> allStudents = database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
             foreach (string[] s in allStudents)
                 if (!gradeList.Contains(s[3]))
@@ -464,6 +465,15 @@ namespace ExamManager
                         Color.Red, 2, ButtonBorderStyle.Solid,
                         Color.Red, 2, ButtonBorderStyle.Solid);
                     }
+                if (search_index == 4)
+                    if (search.Equals(student[3]))
+                    {
+                        ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid,
+                        Color.Red, 2, ButtonBorderStyle.Solid);
+                    }
             }
 
             StringFormat stringFormat = new StringFormat();
@@ -476,7 +486,7 @@ namespace ExamManager
             e.Graphics.DrawString(student[1] + " " + student[2], drawFont, Brushes.Black, rectL1, stringFormat);
             e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
-            e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4]+"]", drawFont, Brushes.Black, rectL4, stringFormat);
+            e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4] + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             // ## [DEV] ## TODO: startTime - end Time
 
         }
@@ -617,11 +627,16 @@ namespace ExamManager
             new FormSearch(2, this).Show();
 
         }
-        private void raumToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void tsmi_search_room_Click(object sender, EventArgs e)
         {
             new FormSearch(3, this).Show();
-
         }
+        private void tsmi_search_grade_Click(object sender, EventArgs e)
+        {
+            new FormSearch(4, this).Show();
+        }
+
         private void tsmi_search_delete_Click(object sender, EventArgs e)
         {
             search = null;
@@ -631,16 +646,17 @@ namespace ExamManager
 
         private void tsmi_data_students_Click(object sender, EventArgs e)
         {
-            FormStudentData formStudentData = new FormStudentData();
-            formStudentData.Disposed += UpdateAutocomplete_Event;
-            //formStudentData.TopMost = true;
-            formStudentData.Show();
+            FormStudentData form = new FormStudentData();
+            form.Disposed += UpdateAutocomplete_Event;
+            form.TopMost = true;
+            form.Show();
         }
 
         private void tsmi_data_rooms_Click(object sender, EventArgs e)
         {
             FormRoomData form = new FormRoomData();
             form.Disposed += UpdateAutocomplete_Event;
+            form.TopMost = true;
             form.Show();
         }
 
@@ -648,6 +664,7 @@ namespace ExamManager
         {
             FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
             form.Disposed += changeroom_Event;
+            form.TopMost = true;
             form.Show();
         }
 
@@ -660,6 +677,7 @@ namespace ExamManager
         {
             FormSubjectData form = new FormSubjectData();
             form.Disposed += UpdateAutocomplete_Event;
+            form.TopMost = true;
             form.Show();
         }
         void UpdateAutocomplete_Event(object sender, EventArgs a)
@@ -677,10 +695,11 @@ namespace ExamManager
         {
             FormDeleteGrade form = new FormDeleteGrade();
             form.Disposed += UpdateAutocomplete_Event;
+            form.TopMost = true;
             form.Show();
             // TODO: update all ################################################################################################################################
             // remove exams in grade
-            //database.DeleteGrade();
+            // database.DeleteGrade();
         }
 
         private void tsmi_exam_examdates_Click(object sender, EventArgs e)
@@ -692,6 +711,7 @@ namespace ExamManager
         {
             FormLoadStudents form = new FormLoadStudents();
             form.Disposed += UpdateAutocomplete_Event;
+            form.TopMost = true;
             form.Show();
         }
 
@@ -734,7 +754,8 @@ namespace ExamManager
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.Title = "Lokale Datenbank auswählen";
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)

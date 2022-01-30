@@ -92,7 +92,7 @@ namespace ExamManager
                                 if (mailgenerator)
                                 {
                                     string domain = Properties.Settings.Default.email_domain;
-                                    string mail = tempfirstname.Replace(' ', '.') + "." + templastname.Replace(" ", ".") + "@" + domain;
+                                    string mail = tempfirstname.Replace(' ', '.').Replace('_', '.') + "." + templastname.Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                     AddStudent(tempfirstname, templastname, grade, mail);
                                 }
                                 else AddStudent(tempfirstname, templastname, grade);
@@ -115,7 +115,7 @@ namespace ExamManager
                                         if (mailgenerator)
                                         {
                                             string domain = Properties.Settings.Default.email_domain;
-                                            string mail = tempfirstname.Replace(' ', '.') + "." + templastname.Replace(" ", ".") + "@" + domain;
+                                            string mail = tempfirstname.Replace(' ', '.').Replace('_', '.') + "." + templastname.Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                             AddStudent(tempfirstname, templastname, grade, mail);
                                         }
                                         else AddStudent(tempfirstname, templastname, grade);
@@ -227,11 +227,11 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
             sqlite_cmd.ExecuteNonQuery();
         }
-        public void ChangeGrade(string grade, string old_grade)
+        public void ChangeGrade(string old_grade, string new_grade)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "UPDATE student SET grade=@grade WHERE grade = @old_grade";
-            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
+            sqlite_cmd.Parameters.AddWithValue("@grade", new_grade);
             sqlite_cmd.Parameters.AddWithValue("@old_grade", old_grade);
             sqlite_cmd.ExecuteNonQuery();
         }

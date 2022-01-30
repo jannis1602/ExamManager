@@ -43,16 +43,12 @@ namespace ExamManager
             foreach (FlowLayoutPanel p in student_entity_list) p.Dispose();
             student_entity_list.Clear();
 
-            //TODO Order by lastname
-
             foreach (string[] s in database.GetAllStudents())
             {
                 FlowLayoutPanel panel_student = new FlowLayoutPanel();
                 //panel_student.Size = new Size(950, 80);
-                //panel_student.Dock = DockStyle.Top;
                 panel_student.Height = 80;
                 panel_student.Width = flp_student_entitys.Width - 10;
-                //panel_student.AutoSize = true;
                 panel_student.Margin = new Padding(5);
                 panel_student.BackColor = Color.LightBlue;
                 panel_student.Name = s[2];
@@ -88,18 +84,6 @@ namespace ExamManager
                     lbl_student_phone.Text = "-";
                 lbl_student_phone.TextAlign = ContentAlignment.MiddleLeft;
                 panel_student.Controls.Add(lbl_student_phone);
-                /* // -- subjects --
-                for (int i = 0; i < 3; i++)
-                {
-                    Label lbl_teacher_subject = new Label();
-                    lbl_teacher_subject.Size = new Size(100, panel_student.Height);
-                    lbl_teacher_subject.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                    //lbl_teacher_phone.Location = new Point(0, 0);
-                    //lbl_room.Margin = new Padding(3);
-                    lbl_teacher_subject.Text = s[4 + i];
-                    lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
-                    panel_student.Controls.Add(lbl_teacher_subject);
-                }*/
                 // -- BTN edit --
                 Button btn_student_edit = new Button();
                 btn_student_edit.Size = new Size(100, panel_student.Height - 40);
@@ -136,7 +120,7 @@ namespace ExamManager
 
             foreach (Panel p in student_entity_list)
             {
-                flp_student_entitys.Controls.Add(p);
+                this.flp_student_entitys.Controls.Add(p);
                 this.flp_student_entitys.SetFlowBreak(p, true);
             }
         }
@@ -192,7 +176,6 @@ namespace ExamManager
                 database.EditStudent(edit_id, firstname, lastname, grade, email, phonenumber);
             }
             UpdateStudentList();
-            //cb_grade.Text = null;
             tb_firstname.Clear();
             tb_lastname.Clear();
             tb_email.Clear();
@@ -219,9 +202,9 @@ namespace ExamManager
         private void btn_email_generate_Click(object sender, EventArgs e)
         {
             string domain = Properties.Settings.Default.email_domain;
-                if (domain == null)
+            if (domain == null)
                 MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
-            tb_email.Text = tb_firstname.Text.Replace(' ','.') + "." + tb_lastname.Text.Replace(" ", ".") + "@"+domain;
+            tb_email.Text = tb_firstname.Text.Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
 
         private void flp_student_entitys_SizeChanged(object sender, EventArgs e)
@@ -234,7 +217,7 @@ namespace ExamManager
 
         private void tb_firstname_TextChanged(object sender, EventArgs e)
         {
-            if (tb_firstname.Text.Contains(' ')|| tb_lastname.Text.Contains(' '))
+            if (tb_firstname.Text.Contains(' ') || tb_lastname.Text.Contains(' '))
                 btn_hint.Visible = true;
         }
 

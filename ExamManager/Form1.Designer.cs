@@ -42,7 +42,7 @@ namespace ExamManager
             this.tsmi_search_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_subject = new System.Windows.Forms.ToolStripMenuItem();
-            this.raumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_room = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +117,7 @@ namespace ExamManager
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_reuse_exam = new System.Windows.Forms.Button();
             this.btn_delete_exam = new System.Windows.Forms.Button();
+            this.tsmi_search_grade = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -235,7 +236,8 @@ namespace ExamManager
             this.tsmi_search_teacher,
             this.tsmi_search_student,
             this.tsmi_search_subject,
-            this.raumToolStripMenuItem,
+            this.tsmi_search_room,
+            this.tsmi_search_grade,
             this.tsmi_search_delete});
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             this.searchToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
@@ -244,35 +246,35 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
-            // raumToolStripMenuItem
+            // tsmi_search_room
             // 
-            this.raumToolStripMenuItem.Name = "raumToolStripMenuItem";
-            this.raumToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.raumToolStripMenuItem.Text = "Raum";
-            this.raumToolStripMenuItem.Click += new System.EventHandler(this.raumToolStripMenuItem_Click);
+            this.tsmi_search_room.Name = "tsmi_search_room";
+            this.tsmi_search_room.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_room.Text = "Raum";
+            this.tsmi_search_room.Click += new System.EventHandler(this.tsmi_search_room_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -1166,6 +1168,13 @@ namespace ExamManager
             this.btn_delete_exam.UseVisualStyleBackColor = true;
             this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
             // 
+            // tsmi_search_grade
+            // 
+            this.tsmi_search_grade.Name = "tsmi_search_grade";
+            this.tsmi_search_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_grade.Text = "Stufe";
+            this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1291,7 +1300,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_editgrade_delete;
         private System.Windows.Forms.ToolStripMenuItem examToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_changeroom;
-        private System.Windows.Forms.ToolStripMenuItem raumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_room;
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_examdates;
         private System.Windows.Forms.ToolStripMenuItem filedataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadstudents;
@@ -1307,6 +1316,7 @@ namespace ExamManager
         private System.Windows.Forms.ComboBox cb_preparation_room;
         private System.Windows.Forms.ComboBox cb_exam_room;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_grade;
     }
 }
 
