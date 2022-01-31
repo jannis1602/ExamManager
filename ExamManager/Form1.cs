@@ -50,9 +50,19 @@ namespace ExamManager
             for (int i = 0; i < allStudentsList.Count; i++)
                 students[i] = (allStudentsList.ElementAt(i)[1] + " " + allStudentsList.ElementAt(i)[2]);
             autocomplete_student.AddRange(students);
-            this.tb_student.AutoCompleteCustomSource = autocomplete_student;
-            this.tb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_student.AutoCompleteCustomSource = autocomplete_student;
+            this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            //
+            cb_student.Items.Clear();
+            LinkedList<string[]> studentList = new LinkedList<string[]>();
+            List<string[]> tempStudentList = new List<string[]>(allStudentsList);
+            tempStudentList = tempStudentList.OrderBy(x => x[2]).ToList();
+            studentList = new LinkedList<string[]>(tempStudentList);
+            string[] listStudent = new string[studentList.Count];
+            for (int i = 0; i < studentList.Count; i++)
+                listStudent[i] = studentList.ElementAt(i)[1] + " " + studentList.ElementAt(i)[2];
+            cb_student.Items.AddRange(listStudent);
             // grade
             cb_grade.Items.Clear();
             LinkedList<string[]> allStudents = database.GetAllStudents();
@@ -63,26 +73,41 @@ namespace ExamManager
             List<string> templist = new List<string>(gradeList);
             templist = templist.OrderBy(x => x).ToList(); // .ThenBy( x => x.Bar)
             gradeList = new LinkedList<string>(templist);
-            string[] list = new string[gradeList.Count];
+            string[] listGrade = new string[gradeList.Count];
             for (int i = 0; i < gradeList.Count; i++)
-                list[i] = gradeList.ElementAt(i);
-            cb_grade.Items.AddRange(list);
+                listGrade[i] = gradeList.ElementAt(i);
+            cb_grade.Items.AddRange(listGrade);
             // teacher
             var autocomplete_teacher = new AutoCompleteStringCollection();
-            LinkedList<string[]> teacherList = database.GetAllTeachers();
-            string[] teacher = new string[teacherList.Count];
-            for (int i = 0; i < teacherList.Count; i++)
-                teacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
+            LinkedList<string[]> teacherList1 = database.GetAllTeachers();
+            string[] teacher = new string[teacherList1.Count];
+            for (int i = 0; i < teacherList1.Count; i++)
+                teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
             autocomplete_teacher.AddRange(teacher);
-            this.tb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-            this.tb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.tb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.tb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-            this.tb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.tb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.tb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-            this.tb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.tb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            // 
+            cb_teacher1.Items.Clear();
+            cb_teacher2.Items.Clear();
+            cb_teacher3.Items.Clear();
+            LinkedList<string[]> allTeachers = database.GetAllTeachers();
+            LinkedList<string[]> teacherList = new LinkedList<string[]>();
+            List<string[]> tempTeacherList = new List<string[]>(allTeachers);
+            tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
+            teacherList = new LinkedList<string[]>(tempTeacherList);
+            string[] listTeacher = new string[teacherList.Count];
+            for (int i = 0; i < teacherList.Count; i++)
+                listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
+            cb_teacher1.Items.AddRange(listTeacher);
+            cb_teacher2.Items.AddRange(listTeacher);
+            cb_teacher3.Items.AddRange(listTeacher);
             // exam_room & prep_room
             cb_exam_room.Items.Clear();
             cb_preparation_room.Items.Clear();
@@ -119,15 +144,19 @@ namespace ExamManager
         }
         private void AddExam()
         {
+            if (cb_exam_room.SelectedItem == null || cb_preparation_room.SelectedItem == null)
+            { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             string time = this.dtp_time.Value.ToString("HH:mm");
             string exam_room = cb_exam_room.SelectedItem.ToString();
             string preparation_room = cb_preparation_room.SelectedItem.ToString();
-            string student = tb_student.Text;
-            string grade = cb_grade.SelectedItem.ToString();
-            string teacher1 = database.GetTeacherByName(tb_teacher1.Text.Split(' ')[0], tb_teacher1.Text.Split(' ')[1])[0];
-            string teacher2 = database.GetTeacherByName(tb_teacher2.Text.Split(' ')[0], tb_teacher2.Text.Split(' ')[1])[0];
-            string teacher3 = database.GetTeacherByName(tb_teacher3.Text.Split(' ')[0], tb_teacher3.Text.Split(' ')[1])[0];
+            string student = cb_student.Text;
+            string grade = "-";
+            if (cb_grade.SelectedItem != null) // TEST -----------------------------------------
+                grade = cb_grade.SelectedItem.ToString();
+            string teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1])[0];
+            string teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1])[0];
+            string teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1])[0];
 
             string subject = cb_subject.Text;
             int duration = Int32.Parse(tb_duration.Text);
@@ -168,11 +197,11 @@ namespace ExamManager
             { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
             if (database.GetStudent(tempfirstname, templastname, grade)[0] == null)
             { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
-            if (database.GetTeacherByName(teacher1.Split(' ')[0], teacher1.Split(' ')[teacher1.Split(' ').Length]) == null)
+            if (database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]) == null) // teacher1.Split(' ')[0], teacher1.Split(' ')[teacher1.Split(' ').Length - 1]) == null)
             { MessageBox.Show("Lehrer1 nicht gefunden!", "Warnung"); return; }
-            if (database.GetTeacherByName(teacher2.Split(' ')[0], teacher2.Split(' ')[teacher2.Split(' ').Length]) == null)
+            if (database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer2 nicht gefunden!", "Warnung"); return; }
-            if (database.GetTeacherByName(teacher3.Split(' ')[0], teacher3.Split(' ')[teacher3.Split(' ').Length]) == null)
+            if (database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer3 nicht gefunden!", "Warnung"); return; }
             if (id != 0)
                 database.EditExam(id, date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, grade)[0], teacher1, teacher2, teacher3, subject, duration);
@@ -183,17 +212,17 @@ namespace ExamManager
             btn_add_exam.Text = add_mode[0];
             update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
-            if (this.cb_keep_data.Checked) { this.tb_student.Clear(); }
+            if (this.cb_keep_data.Checked) { this.cb_student.SelectedItem = null; }
             else
             {
                 this.cb_exam_room.SelectedItem = null;
                 this.cb_preparation_room.SelectedItem = null;
                 this.cb_grade.SelectedItem = null;
                 this.cb_subject.SelectedItem = null;
-                this.tb_student.Clear();
-                this.tb_teacher1.Clear();
-                this.tb_teacher2.Clear();
-                this.tb_teacher3.Clear();
+                this.cb_student.SelectedItem = null;
+                this.cb_teacher1.SelectedItem = null;
+                this.cb_teacher2.SelectedItem = null;
+                this.cb_teacher3.SelectedItem = null;
             }
         }
         private void btn_grid_view_Click(object sender, EventArgs e)
@@ -307,11 +336,11 @@ namespace ExamManager
                     this.cb_exam_room.SelectedItem = exam[3];
                     this.cb_preparation_room.SelectedItem = exam[4];
                     string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
-                    this.tb_student.Text = st[1] + " " + st[2];
+                    this.cb_student.Text = st[1] + " " + st[2];
                     this.cb_grade.SelectedItem = st[3];
-                    this.tb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
-                    this.tb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
-                    this.tb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
+                    this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+                    this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+                    this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
                     this.cb_subject.Text = exam[9];
                     this.tb_duration.Text = exam[10];
                 }
@@ -426,7 +455,7 @@ namespace ExamManager
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             if (student == null)
-                student = new string[] { "0", "Name  not  found!", "  ", " - ", " - ", " - " };
+                student = new string[] { "0", "Schüler nicht gefunden!", "  ", " - ", " - ", " - " };
             if (search != null)
             {
                 if (search_index == 0)
@@ -483,11 +512,11 @@ namespace ExamManager
             Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            e.Graphics.DrawString(student[1] + " " + student[2], drawFont, Brushes.Black, rectL1, stringFormat);
+            e.Graphics.DrawString(student[1] + " " + student[2] + "  [" + student[3] + "]", drawFont, Brushes.Black, rectL1, stringFormat);
             e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
             e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4] + "]", drawFont, Brushes.Black, rectL4, stringFormat);
-            // ## [DEV] ## TODO: startTime - end Time
+            // ## [DEV] ## TODO: startTime - end Time?
 
         }
 
@@ -505,18 +534,18 @@ namespace ExamManager
                     update_timeline();
                     if (this.cb_keep_data.Checked)
                     {
-                        this.tb_student.Clear();
+                        this.cb_student.SelectedItem = null;
                     }
                     else
                     {
                         this.cb_exam_room.SelectedItem = null;
                         this.cb_preparation_room.SelectedItem = null;
-                        this.tb_student.Clear();
+                        this.cb_student.SelectedItem = null;
                         this.cb_grade.SelectedItem = null;
                         this.cb_subject.SelectedItem = null;
-                        this.tb_teacher1.Clear();
-                        this.tb_teacher2.Clear();
-                        this.tb_teacher3.Clear();
+                        this.cb_teacher1.SelectedItem = null;
+                        this.cb_teacher2.SelectedItem = null;
+                        this.cb_teacher3.SelectedItem = null;
                     }
                 }
             }
@@ -538,17 +567,17 @@ namespace ExamManager
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             if (this.cb_keep_data.Checked)
-            { this.tb_student.Clear(); }
+            { this.cb_student.SelectedItem = null; }
             else
             {
                 this.cb_exam_room.SelectedItem = null;
                 this.cb_preparation_room.SelectedItem = null;
-                this.tb_student.Clear();
+                this.cb_student.SelectedItem = null;
                 this.cb_grade.SelectedItem = null;
                 this.cb_subject.SelectedItem = null;
-                this.tb_teacher1.Clear();
-                this.tb_teacher2.Clear();
-                this.tb_teacher3.Clear();
+                this.cb_teacher1.SelectedItem = null;
+                this.cb_teacher2.SelectedItem = null;
+                this.cb_teacher3.SelectedItem = null;
             }
         }
 
@@ -704,7 +733,8 @@ namespace ExamManager
 
         private void tsmi_exam_examdates_Click(object sender, EventArgs e)
         {
-            new FormExamDateListView(this).Show();
+            FormExamDateListView form = new FormExamDateListView(this);
+            form.ShowDialog(this);
         }
 
         private void tsmi_data_loadstudents_Click(object sender, EventArgs e)
@@ -712,7 +742,7 @@ namespace ExamManager
             FormLoadStudents form = new FormLoadStudents();
             form.Disposed += UpdateAutocomplete_Event;
             form.TopMost = true;
-            form.Show();
+            form.ShowDialog();
         }
 
         private void cb_grade_SelectedIndexChanged(object sender, EventArgs e)
@@ -725,9 +755,20 @@ namespace ExamManager
                 for (int i = 0; i < allStudents.Count; i++)
                     students[i] = (allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2]);
                 autocomplete_student.AddRange(students);
-                this.tb_student.AutoCompleteCustomSource = autocomplete_student;
-                this.tb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_student.AutoCompleteCustomSource = autocomplete_student;
+                this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                //
+                cb_student.Items.Clear();
+                LinkedList<string[]> studentList = new LinkedList<string[]>();
+                LinkedList<string[]> allStudentsList = database.GetAllStudentsFromGrade(cb_grade.SelectedItem.ToString());
+                List<string[]> tempStudentList = new List<string[]>(allStudentsList);
+                tempStudentList = tempStudentList.OrderBy(x => x[2]).ToList();
+                studentList = new LinkedList<string[]>(tempStudentList);
+                string[] listStudent = new string[studentList.Count];
+                for (int i = 0; i < studentList.Count; i++)
+                    listStudent[i] = studentList.ElementAt(i)[1] + " " + studentList.ElementAt(i)[2];
+                cb_student.Items.AddRange(listStudent);
             }
             else
             {
@@ -737,9 +778,19 @@ namespace ExamManager
                 for (int i = 0; i < allStudents.Count; i++)
                     students[i] = (allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2]);
                 autocomplete_student.AddRange(students);
-                this.tb_student.AutoCompleteCustomSource = autocomplete_student;
-                this.tb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.tb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_student.AutoCompleteCustomSource = autocomplete_student;
+                this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                //
+                cb_student.Items.Clear();
+                LinkedList<string[]> studentList = new LinkedList<string[]>();
+                List<string[]> tempStudentList = new List<string[]>(allStudents);
+                tempStudentList = tempStudentList.OrderBy(x => x[2]).ToList();
+                studentList = new LinkedList<string[]>(tempStudentList);
+                string[] listStudent = new string[studentList.Count];
+                for (int i = 0; i < studentList.Count; i++)
+                    listStudent[i] = studentList.ElementAt(i)[1] + " " + studentList.ElementAt(i)[2];
+                cb_student.Items.AddRange(listStudent);
             }
         }
 
@@ -771,14 +822,15 @@ namespace ExamManager
 
         private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
         {
-            new FormSettings().Show();
+            FormSettings form = new FormSettings();
+            form.ShowDialog(this);
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
         {
             FormTeacherData formTeacherData = new FormTeacherData();
             formTeacherData.Disposed += UpdateAutocomplete_Event;
-            formTeacherData.Show();
+            formTeacherData.ShowDialog();
         }
     }
 }

@@ -33,11 +33,6 @@ namespace ExamManager
             cb_grade.Items.AddRange(list);
         }
 
-        private void FormStudentData_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void UpdateStudentList()
         {
             foreach (FlowLayoutPanel p in student_entity_list) p.Dispose();
@@ -48,7 +43,7 @@ namespace ExamManager
                 FlowLayoutPanel panel_student = new FlowLayoutPanel();
                 //panel_student.Size = new Size(950, 80);
                 panel_student.Height = 80;
-                panel_student.Width = flp_student_entitys.Width - 10;
+                panel_student.Width = flp_student_entitys.Width - 28;
                 panel_student.Margin = new Padding(5);
                 panel_student.BackColor = Color.LightBlue;
                 panel_student.Name = s[2];
@@ -211,7 +206,7 @@ namespace ExamManager
         {
             foreach (Panel p in student_entity_list)
             {
-                p.Width = flp_student_entitys.Width - 10;
+                p.Width = flp_student_entitys.Width - 28;
             }
         }
 

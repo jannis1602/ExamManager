@@ -43,6 +43,7 @@ namespace ExamManager
             this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_subject = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_room = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_grade = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,18 +72,14 @@ namespace ExamManager
             this.cb_grade = new System.Windows.Forms.ComboBox();
             this.lbl_grade = new System.Windows.Forms.Label();
             this.tlp_student = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_student = new System.Windows.Forms.TextBox();
             this.lbl_student = new System.Windows.Forms.Label();
             this.btn_add_exam = new System.Windows.Forms.Button();
             this.tlp_4 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_teacher3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_teacher3 = new System.Windows.Forms.TextBox();
             this.lbl_teacher3 = new System.Windows.Forms.Label();
             this.tlp_teacher1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_teacher1 = new System.Windows.Forms.TextBox();
             this.lbl_teacher1 = new System.Windows.Forms.Label();
             this.tlp_teacher2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_teacher2 = new System.Windows.Forms.TextBox();
             this.lbl_teacher2 = new System.Windows.Forms.Label();
             this.tlp_3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_subject = new System.Windows.Forms.TableLayoutPanel();
@@ -97,6 +94,9 @@ namespace ExamManager
             this.tlp_1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_mode = new System.Windows.Forms.Label();
             this.flp_edit_btns = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_cancel = new System.Windows.Forms.Button();
+            this.btn_reuse_exam = new System.Windows.Forms.Button();
+            this.btn_delete_exam = new System.Windows.Forms.Button();
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
@@ -114,10 +114,10 @@ namespace ExamManager
             this.panel_side_room = new System.Windows.Forms.Panel();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
-            this.btn_cancel = new System.Windows.Forms.Button();
-            this.btn_reuse_exam = new System.Windows.Forms.Button();
-            this.btn_delete_exam = new System.Windows.Forms.Button();
-            this.tsmi_search_grade = new System.Windows.Forms.ToolStripMenuItem();
+            this.cb_teacher1 = new System.Windows.Forms.ComboBox();
+            this.cb_teacher2 = new System.Windows.Forms.ComboBox();
+            this.cb_teacher3 = new System.Windows.Forms.ComboBox();
+            this.cb_student = new System.Windows.Forms.ComboBox();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -195,7 +195,7 @@ namespace ExamManager
             this.menuStrip1.Location = new System.Drawing.Point(106, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(520, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(400, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -246,35 +246,42 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
             // tsmi_search_room
             // 
             this.tsmi_search_room.Name = "tsmi_search_room";
-            this.tsmi_search_room.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_room.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_room.Text = "Raum";
             this.tsmi_search_room.Click += new System.EventHandler(this.tsmi_search_room_Click);
+            // 
+            // tsmi_search_grade
+            // 
+            this.tsmi_search_grade.Name = "tsmi_search_grade";
+            this.tsmi_search_grade.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_grade.Text = "Stufe";
+            this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -528,7 +535,7 @@ namespace ExamManager
             this.tlp_student.ColumnCount = 2;
             this.tlp_student.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_student.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_student.Controls.Add(this.tb_student, 1, 0);
+            this.tlp_student.Controls.Add(this.cb_student, 0, 0);
             this.tlp_student.Controls.Add(this.lbl_student, 0, 0);
             this.tlp_student.Location = new System.Drawing.Point(5, 5);
             this.tlp_student.Margin = new System.Windows.Forms.Padding(0);
@@ -537,16 +544,6 @@ namespace ExamManager
             this.tlp_student.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_student.Size = new System.Drawing.Size(400, 36);
             this.tlp_student.TabIndex = 4;
-            // 
-            // tb_student
-            // 
-            this.tb_student.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_student.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_student.Location = new System.Drawing.Point(76, 7);
-            this.tb_student.Name = "tb_student";
-            this.tb_student.Size = new System.Drawing.Size(321, 26);
-            this.tb_student.TabIndex = 2;
-            this.tb_student.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_student_KeyPress);
             // 
             // lbl_student
             // 
@@ -599,7 +596,7 @@ namespace ExamManager
             this.tlp_teacher3.ColumnCount = 2;
             this.tlp_teacher3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_teacher3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_teacher3.Controls.Add(this.tb_teacher3, 1, 0);
+            this.tlp_teacher3.Controls.Add(this.cb_teacher3, 0, 0);
             this.tlp_teacher3.Controls.Add(this.lbl_teacher3, 0, 0);
             this.tlp_teacher3.Location = new System.Drawing.Point(521, 5);
             this.tlp_teacher3.Margin = new System.Windows.Forms.Padding(0);
@@ -608,16 +605,6 @@ namespace ExamManager
             this.tlp_teacher3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_teacher3.Size = new System.Drawing.Size(258, 40);
             this.tlp_teacher3.TabIndex = 6;
-            // 
-            // tb_teacher3
-            // 
-            this.tb_teacher3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher3.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher3.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher3.Name = "tb_teacher3";
-            this.tb_teacher3.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher3.TabIndex = 2;
             // 
             // lbl_teacher3
             // 
@@ -637,7 +624,7 @@ namespace ExamManager
             this.tlp_teacher1.ColumnCount = 2;
             this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_teacher1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_teacher1.Controls.Add(this.tb_teacher1, 1, 0);
+            this.tlp_teacher1.Controls.Add(this.cb_teacher1, 0, 0);
             this.tlp_teacher1.Controls.Add(this.lbl_teacher1, 0, 0);
             this.tlp_teacher1.Location = new System.Drawing.Point(5, 5);
             this.tlp_teacher1.Margin = new System.Windows.Forms.Padding(0);
@@ -646,16 +633,6 @@ namespace ExamManager
             this.tlp_teacher1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
             this.tlp_teacher1.TabIndex = 4;
-            // 
-            // tb_teacher1
-            // 
-            this.tb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher1.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher1.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.Name = "tb_teacher1";
-            this.tb_teacher1.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher1.TabIndex = 2;
             // 
             // lbl_teacher1
             // 
@@ -675,7 +652,7 @@ namespace ExamManager
             this.tlp_teacher2.ColumnCount = 2;
             this.tlp_teacher2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_teacher2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlp_teacher2.Controls.Add(this.tb_teacher2, 1, 0);
+            this.tlp_teacher2.Controls.Add(this.cb_teacher2, 0, 0);
             this.tlp_teacher2.Controls.Add(this.lbl_teacher2, 0, 0);
             this.tlp_teacher2.Location = new System.Drawing.Point(263, 5);
             this.tlp_teacher2.Margin = new System.Windows.Forms.Padding(0);
@@ -684,16 +661,6 @@ namespace ExamManager
             this.tlp_teacher2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_teacher2.Size = new System.Drawing.Size(253, 40);
             this.tlp_teacher2.TabIndex = 5;
-            // 
-            // tb_teacher2
-            // 
-            this.tb_teacher2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_teacher2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_teacher2.Location = new System.Drawing.Point(68, 11);
-            this.tb_teacher2.MaximumSize = new System.Drawing.Size(150, 26);
-            this.tb_teacher2.Name = "tb_teacher2";
-            this.tb_teacher2.Size = new System.Drawing.Size(150, 26);
-            this.tb_teacher2.TabIndex = 2;
             // 
             // lbl_teacher2
             // 
@@ -891,6 +858,42 @@ namespace ExamManager
             this.flp_edit_btns.Name = "flp_edit_btns";
             this.flp_edit_btns.Size = new System.Drawing.Size(150, 48);
             this.flp_edit_btns.TabIndex = 13;
+            // 
+            // btn_cancel
+            // 
+            this.btn_cancel.BackgroundImage = global::ExamManager.Properties.Resources.exit_ing;
+            this.btn_cancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_cancel.Location = new System.Drawing.Point(103, 2);
+            this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(45, 44);
+            this.btn_cancel.TabIndex = 10;
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
+            // btn_reuse_exam
+            // 
+            this.btn_reuse_exam.BackgroundImage = global::ExamManager.Properties.Resources.copy_img;
+            this.btn_reuse_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
+            this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_reuse_exam.Name = "btn_reuse_exam";
+            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
+            this.btn_reuse_exam.TabIndex = 12;
+            this.btn_reuse_exam.UseVisualStyleBackColor = true;
+            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
+            // 
+            // btn_delete_exam
+            // 
+            this.btn_delete_exam.BackgroundImage = global::ExamManager.Properties.Resources.trash_img;
+            this.btn_delete_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
+            this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_delete_exam.Name = "btn_delete_exam";
+            this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
+            this.btn_delete_exam.TabIndex = 11;
+            this.btn_delete_exam.UseVisualStyleBackColor = true;
+            this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
             // 
             // tlp_config
             // 
@@ -1128,52 +1131,53 @@ namespace ExamManager
             this.panel_side_time.Margin = new System.Windows.Forms.Padding(0);
             this.panel_side_time.MaximumSize = new System.Drawing.Size(0, 40);
             this.panel_side_time.Name = "panel_side_time";
-            this.panel_side_time.Size = new System.Drawing.Size(0, 40);
+            this.panel_side_time.Size = new System.Drawing.Size(664, 40);
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
-            // btn_cancel
+            // cb_teacher1
             // 
-            this.btn_cancel.BackgroundImage = global::ExamManager.Properties.Resources.exit_ing;
-            this.btn_cancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_cancel.Location = new System.Drawing.Point(103, 2);
-            this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(45, 44);
-            this.btn_cancel.TabIndex = 10;
-            this.btn_cancel.UseVisualStyleBackColor = true;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            this.cb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_teacher1.FormattingEnabled = true;
+            this.cb_teacher1.Location = new System.Drawing.Point(68, 9);
+            this.cb_teacher1.MaximumSize = new System.Drawing.Size(150, 0);
+            this.cb_teacher1.Name = "cb_teacher1";
+            this.cb_teacher1.Size = new System.Drawing.Size(150, 28);
+            this.cb_teacher1.TabIndex = 8;
             // 
-            // btn_reuse_exam
+            // cb_teacher2
             // 
-            this.btn_reuse_exam.BackgroundImage = global::ExamManager.Properties.Resources.copy_img;
-            this.btn_reuse_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
-            this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_reuse_exam.Name = "btn_reuse_exam";
-            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
-            this.btn_reuse_exam.TabIndex = 12;
-            this.btn_reuse_exam.UseVisualStyleBackColor = true;
-            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
+            this.cb_teacher2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_teacher2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_teacher2.FormattingEnabled = true;
+            this.cb_teacher2.Location = new System.Drawing.Point(68, 9);
+            this.cb_teacher2.MaximumSize = new System.Drawing.Size(150, 0);
+            this.cb_teacher2.Name = "cb_teacher2";
+            this.cb_teacher2.Size = new System.Drawing.Size(150, 28);
+            this.cb_teacher2.TabIndex = 9;
             // 
-            // btn_delete_exam
+            // cb_teacher3
             // 
-            this.btn_delete_exam.BackgroundImage = global::ExamManager.Properties.Resources.trash_img;
-            this.btn_delete_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
-            this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_delete_exam.Name = "btn_delete_exam";
-            this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
-            this.btn_delete_exam.TabIndex = 11;
-            this.btn_delete_exam.UseVisualStyleBackColor = true;
-            this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
+            this.cb_teacher3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_teacher3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_teacher3.FormattingEnabled = true;
+            this.cb_teacher3.Location = new System.Drawing.Point(68, 9);
+            this.cb_teacher3.MaximumSize = new System.Drawing.Size(150, 0);
+            this.cb_teacher3.Name = "cb_teacher3";
+            this.cb_teacher3.Size = new System.Drawing.Size(150, 28);
+            this.cb_teacher3.TabIndex = 9;
             // 
-            // tsmi_search_grade
+            // cb_student
             // 
-            this.tsmi_search_grade.Name = "tsmi_search_grade";
-            this.tsmi_search_grade.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_search_grade.Text = "Stufe";
-            this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
+            this.cb_student.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_student.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_student.FormattingEnabled = true;
+            this.cb_student.Location = new System.Drawing.Point(76, 5);
+            this.cb_student.MaximumSize = new System.Drawing.Size(300, 0);
+            this.cb_student.Name = "cb_student";
+            this.cb_student.Size = new System.Drawing.Size(300, 28);
+            this.cb_student.TabIndex = 9;
             // 
             // Form1
             // 
@@ -1247,13 +1251,10 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_teacher1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tlp_student;
-        private System.Windows.Forms.TextBox tb_student;
         private System.Windows.Forms.Label lbl_student;
         private System.Windows.Forms.TableLayoutPanel tlp_teacher3;
-        private System.Windows.Forms.TextBox tb_teacher3;
         private System.Windows.Forms.Label lbl_teacher3;
         private System.Windows.Forms.TableLayoutPanel tlp_teacher2;
-        private System.Windows.Forms.TextBox tb_teacher2;
         private System.Windows.Forms.Label lbl_teacher2;
         private System.Windows.Forms.TableLayoutPanel tlp_preparation_room;
         private System.Windows.Forms.Label lbl_preparation_room;
@@ -1306,7 +1307,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadstudents;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lbl_grade;
-        private System.Windows.Forms.TextBox tb_teacher1;
         private System.Windows.Forms.ComboBox cb_grade;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_mailgenerator;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_changedb;
@@ -1317,6 +1317,10 @@ namespace ExamManager
         private System.Windows.Forms.ComboBox cb_exam_room;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_grade;
+        private System.Windows.Forms.ComboBox cb_teacher1;
+        private System.Windows.Forms.ComboBox cb_teacher3;
+        private System.Windows.Forms.ComboBox cb_teacher2;
+        private System.Windows.Forms.ComboBox cb_student;
     }
 }
 

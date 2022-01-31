@@ -35,7 +35,7 @@ namespace ExamManager
                 FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
                 //panel_teacher.Size = new Size(950, 80);
                 panel_teacher.Height = 80;
-                panel_teacher.Width = flp_teacher_entitys.Width-10;
+                panel_teacher.Width = flp_teacher_entitys.Width-28;
                 panel_teacher.Margin = new Padding(5);
                 panel_teacher.BackColor = Color.LightBlue;
                 panel_teacher.Name = s[2];
@@ -196,7 +196,7 @@ namespace ExamManager
         {
             foreach (Panel p in teacher_entity_list)
             {
-                p.Width = flp_teacher_entitys.Width-10;
+                p.Width = flp_teacher_entitys.Width-28;
             }
         }
 

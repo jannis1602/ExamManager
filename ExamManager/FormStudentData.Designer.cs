@@ -30,6 +30,7 @@ namespace ExamManager
         private void InitializeComponent()
         {
             this.tableLayoutPanel_main = new System.Windows.Forms.TableLayoutPanel();
+            this.flp_student_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_cancel = new System.Windows.Forms.Button();
@@ -49,7 +50,6 @@ namespace ExamManager
             this.tb_email = new System.Windows.Forms.TextBox();
             this.btn_email_generate = new System.Windows.Forms.Button();
             this.btn_add_student = new System.Windows.Forms.Button();
-            this.flp_student_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -73,6 +73,18 @@ namespace ExamManager
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 501);
             this.tableLayoutPanel_main.TabIndex = 1;
+            // 
+            // flp_student_entitys
+            // 
+            this.flp_student_entitys.AutoScroll = true;
+            this.flp_student_entitys.BackColor = System.Drawing.Color.Silver;
+            this.flp_student_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flp_student_entitys.Location = new System.Drawing.Point(0, 0);
+            this.flp_student_entitys.Margin = new System.Windows.Forms.Padding(0);
+            this.flp_student_entitys.Name = "flp_student_entitys";
+            this.flp_student_entitys.Size = new System.Drawing.Size(984, 421);
+            this.flp_student_entitys.TabIndex = 21;
+            this.flp_student_entitys.SizeChanged += new System.EventHandler(this.flp_student_entitys_SizeChanged);
             // 
             // tlp_edit
             // 
@@ -302,28 +314,14 @@ namespace ExamManager
             this.btn_add_student.UseVisualStyleBackColor = true;
             this.btn_add_student.Click += new System.EventHandler(this.btn_add_student_Click);
             // 
-            // flp_student_entitys
-            // 
-            this.flp_student_entitys.AutoScroll = true;
-            this.flp_student_entitys.BackColor = System.Drawing.Color.Silver;
-            this.flp_student_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp_student_entitys.Location = new System.Drawing.Point(0, 0);
-            this.flp_student_entitys.Margin = new System.Windows.Forms.Padding(0);
-            this.flp_student_entitys.Name = "flp_student_entitys";
-            this.flp_student_entitys.Size = new System.Drawing.Size(984, 421);
-            this.flp_student_entitys.TabIndex = 21;
-            this.flp_student_entitys.SizeChanged += new System.EventHandler(this.flp_student_entitys_SizeChanged);
-            // 
             // FormStudentData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 501);
             this.Controls.Add(this.tableLayoutPanel_main);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormStudentData";
             this.Text = "Schüler hinzufügen";
-            this.Load += new System.EventHandler(this.FormStudentData_Load);
             this.tableLayoutPanel_main.ResumeLayout(false);
             this.tlp_edit.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

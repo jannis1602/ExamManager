@@ -59,15 +59,15 @@ namespace ExamManager
                     "!\nEinen weiteren in der Stufe " + grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNo);
                 if (result != DialogResult.Yes)
                 { return; }
-                SQLiteCommand sqlite_cmd = connection.CreateCommand();
-                sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number); ";
-                sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
-                sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
-                sqlite_cmd.Parameters.AddWithValue("@grade", grade);
-                sqlite_cmd.Parameters.AddWithValue("@email", email);
-                sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
-                sqlite_cmd.ExecuteNonQuery();
             }
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number) ";
+            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
+            sqlite_cmd.Parameters.AddWithValue("@email", email);
+            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
+            sqlite_cmd.ExecuteNonQuery();
         }
         public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
         {
@@ -307,7 +307,7 @@ namespace ExamManager
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE firstname = @firstname AND lastname = @lastname";
+            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             reader = sqlite_cmd.ExecuteReader();
