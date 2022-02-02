@@ -50,9 +50,9 @@ namespace ExamManager
 
         // ---- STUDENT ---- ########################################################################################################################## 
         // ID firstname lastname grade Email TelNummer
-        public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = "0")
+        public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
-            string[] s = GetStudent(firstname, lastname, "-");
+            string[] s = GetStudent(firstname, lastname);
             if (s != null)
             {
                 DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + firstname + " " + lastname + " exestiert bereits in der Stufe " + s[3] +
@@ -72,14 +72,14 @@ namespace ExamManager
         public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
         {
             bool editDoppelnamen = false;
-
+            LinkedList<int> studentIdList = new LinkedList<int>();
             if (File.Exists(file))
             {
                 string[] lines = File.ReadAllLines(file);
                 foreach (string line in lines)
                 {
                     if (!line[0].Equals('#'))
-                        if (line.Split(' ').Length > 2)
+                        if (line.Split(' ').Length > 2) // Doppelnamen
                         {
                             if (!editDoppelnamen)   // TODO: Abfrage am Anfang!
                             {
@@ -94,8 +94,13 @@ namespace ExamManager
                                     string domain = Properties.Settings.Default.email_domain;
                                     string mail = tempfirstname.Replace(' ', '.').Replace('_', '.') + "." + templastname.Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                     AddStudent(tempfirstname, templastname, grade, mail);
+                                    //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
                                 }
-                                else AddStudent(tempfirstname, templastname, grade);
+                                else
+                                {
+                                    AddStudent(tempfirstname, templastname, grade);
+                                    //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                }
 
                             }
                             else
@@ -125,24 +130,31 @@ namespace ExamManager
                             }
                         }
                         else
-                        {
+                        {       // kein doppelnamen
                             if (mailgenerator)
                             {
                                 string domain = Properties.Settings.Default.email_domain;
-                                string mail = line.Split(' ')[0].Replace(' ', '.') + "." + line.Split(' ')[1].Replace(" ", ".") + "@" + domain;
+                                string mail = line.Split(' ')[0].Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail);
+                                studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
                             }
-                            else AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade);
+                            else
+                            {
+                                AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade);
+                                studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                            }
                         }
                 }
+                FormStudentData form = new FormStudentData(studentIdList);
+                form.ShowDialog();
             }
         }
 
-        public string[] GetStudent(string firstname, string lastname, string grade)
+        public string[] GetStudent(string firstname, string lastname, string grade = null)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            if (grade == "-") sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";
+            if (grade == null) sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";
             else sqlite_cmd.CommandText = "SELECT * FROM student WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname) AND grade = @grade";
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
@@ -271,7 +283,7 @@ namespace ExamManager
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM teacher";
+            sqlite_cmd.CommandText = "SELECT * FROM teacher ORDER BY lastname";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {

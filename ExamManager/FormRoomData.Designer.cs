@@ -50,13 +50,14 @@ namespace ExamManager
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 211);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 261);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // btn_add
             // 
             this.btn_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_add.Location = new System.Drawing.Point(50, 171);
+            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_add.Location = new System.Drawing.Point(50, 221);
             this.btn_add.Margin = new System.Windows.Forms.Padding(50, 10, 50, 10);
             this.btn_add.Name = "btn_add";
             this.btn_add.Size = new System.Drawing.Size(284, 30);
@@ -69,7 +70,7 @@ namespace ExamManager
             // 
             this.tb_add.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tb_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tb_add.Location = new System.Drawing.Point(30, 120);
+            this.tb_add.Location = new System.Drawing.Point(30, 170);
             this.tb_add.Margin = new System.Windows.Forms.Padding(30, 15, 30, 15);
             this.tb_add.Name = "tb_add";
             this.tb_add.Size = new System.Drawing.Size(324, 26);
@@ -79,10 +80,12 @@ namespace ExamManager
             // lb_roomlist
             // 
             this.lb_roomlist.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lb_roomlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_roomlist.FormattingEnabled = true;
+            this.lb_roomlist.ItemHeight = 16;
             this.lb_roomlist.Location = new System.Drawing.Point(3, 3);
             this.lb_roomlist.Name = "lb_roomlist";
-            this.lb_roomlist.Size = new System.Drawing.Size(378, 99);
+            this.lb_roomlist.Size = new System.Drawing.Size(378, 149);
             this.lb_roomlist.TabIndex = 2;
             this.lb_roomlist.DoubleClick += new System.EventHandler(this.lb_roomlist_DoubleClick);
             // 
@@ -90,7 +93,7 @@ namespace ExamManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 211);
+            this.ClientSize = new System.Drawing.Size(384, 261);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormRoomData";

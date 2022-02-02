@@ -19,50 +19,59 @@ namespace ExamManager
                 // ## [DEV] ##
                 // TODO TEACHER
                 //
-                tb_search = new TextBox();
-                tb_search.Dock = DockStyle.Fill;
-                tb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                tb_search.Location = new System.Drawing.Point(30, 20);
-                tb_search.Margin = new Padding(30, 20, 30, 5);
-                tb_search.Name = "tb_search";
-                tb_search.Size = new System.Drawing.Size(324, 26);
-                tb_search.TabIndex = 0;
-                tb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
-                tlp_main.Controls.Add(tb_search);
+                cb_search = new ComboBox();
+                cb_search.Dock = DockStyle.Fill;
+                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+                cb_search.Location = new System.Drawing.Point(30, 20);
+                cb_search.Margin = new Padding(30, 20, 30, 5);
+                cb_search.Name = "tb_search";
+                cb_search.Size = new System.Drawing.Size(324, 26);
+                cb_search.DropDownStyle = ComboBoxStyle.DropDown;
+                cb_search.TabIndex = 0;
+                cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
+                tlp_main.Controls.Add(cb_search);
+                //
+                LinkedList<string[]> allTeachers = Program.database.GetAllTeachers();
+                string[] teacher = new string[allTeachers.Count];
+                for (int i = 0; i < allTeachers.Count; i++)
+                    teacher[i] = allTeachers.ElementAt(i)[1] + " " + allTeachers.ElementAt(i)[2];
+                cb_search.Items.AddRange(teacher);
                 //
                 var autocomplete_teacher = new AutoCompleteStringCollection();
-                LinkedList<string[]> allTeachers = Program.database.GetAllTeachers();
                 string[] students = new string[allTeachers.Count];
                 for (int i = 0; i < allTeachers.Count; i++)
                     students[i] = (allTeachers.ElementAt(i)[1] + " " + allTeachers.ElementAt(i)[2]);
                 autocomplete_teacher.AddRange(students);
-                tb_search.AutoCompleteCustomSource = autocomplete_teacher;
-                tb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                tb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                cb_search.AutoCompleteCustomSource = autocomplete_teacher;
+                cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
                 form.search_index = 0;
             }
             else if (mode == 1) // student
             {
-                tb_search = new TextBox();
-                tb_search.Dock = DockStyle.Fill;
-                tb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                tb_search.Location = new System.Drawing.Point(30, 20);
-                tb_search.Margin = new Padding(30, 20, 30, 5);
-                tb_search.Name = "tb_search";
-                tb_search.Size = new System.Drawing.Size(324, 26);
-                tb_search.TabIndex = 0;
-                tb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
-                tlp_main.Controls.Add(tb_search);
+                cb_search = new ComboBox();
+                cb_search.Dock = DockStyle.Fill;
+                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+                cb_search.Location = new System.Drawing.Point(30, 20);
+                cb_search.Margin = new Padding(30, 20, 30, 5);
+                cb_search.Name = "tb_search";
+                cb_search.Size = new System.Drawing.Size(324, 26);
+                cb_search.DropDownStyle = ComboBoxStyle.DropDown;
+                cb_search.TabIndex = 0;
+                cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
+                tlp_main.Controls.Add(cb_search);
                 //
-                var autocomplete_student = new AutoCompleteStringCollection();
                 LinkedList<string[]> allStudents = Program.database.GetAllStudents();
                 string[] students = new string[allStudents.Count];
                 for (int i = 0; i < allStudents.Count; i++)
-                    students[i] = (allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2]);
+                    students[i] = allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2];
+                cb_search.Items.AddRange(students);
+                //
+                var autocomplete_student = new AutoCompleteStringCollection();
                 autocomplete_student.AddRange(students);
-                tb_search.AutoCompleteCustomSource = autocomplete_student;
-                tb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                tb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                cb_search.AutoCompleteCustomSource = autocomplete_student;
+                cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
                 form.search_index = 1;
             }
             else if (mode == 2) // subject
@@ -142,7 +151,7 @@ namespace ExamManager
 
         }
 
-        private void btn_search_Click(object sender, EventArgs e)
+        private void search()
         {
             if (tb_search != null)
                 if (tb_search.Text.Length > 0)
@@ -161,28 +170,14 @@ namespace ExamManager
                     this.Dispose();
                 }
         }
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            search();
+        }
 
         private void tb_search_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (tb_search != null)
-                    if (tb_search.Text.Length > 0)
-                    {
-                        tb_search.Select(tb_search.Text.Length - 1, 0);
-                        form.search = tb_search.Text.First().ToString().ToUpper() + (tb_search.Text.Substring(1));
-                        form.update_timeline();
-                        this.Dispose();
-                    }
-                if (cb_search != null)
-                    if (cb_search.Text.Length > 0)
-                    {
-                        cb_search.Select(cb_search.Text.Length - 1, 0);
-                        form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        form.update_timeline();
-                        this.Dispose();
-                    }
-            }
+            if (e.KeyCode == Keys.Enter) search();
         }
     }
 }

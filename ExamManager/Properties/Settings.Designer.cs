@@ -46,5 +46,17 @@ namespace ExamManager.Properties {
                 this["email_domain"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string timeline_date {
+            get {
+                return ((string)(this["timeline_date"]));
+            }
+            set {
+                this["timeline_date"] = value;
+            }
+        }
     }
 }

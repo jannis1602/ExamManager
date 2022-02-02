@@ -38,11 +38,8 @@ namespace ExamManager
             this.btn_add_teacher = new System.Windows.Forms.Button();
             this.flp_subjects = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_subject1 = new System.Windows.Forms.Label();
-            this.tb_subject1 = new System.Windows.Forms.TextBox();
             this.lbl_subject2 = new System.Windows.Forms.Label();
-            this.tb_subject2 = new System.Windows.Forms.TextBox();
             this.lbl_subject3 = new System.Windows.Forms.Label();
-            this.tb_subject3 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.flp_teacher_name = new System.Windows.Forms.FlowLayoutPanel();
@@ -52,8 +49,11 @@ namespace ExamManager
             this.tb_lastname = new System.Windows.Forms.TextBox();
             this.lbl_shortname = new System.Windows.Forms.Label();
             this.tb_shortname = new System.Windows.Forms.TextBox();
-            this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_hint = new System.Windows.Forms.Button();
+            this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_subject1 = new System.Windows.Forms.ComboBox();
+            this.cb_subject2 = new System.Windows.Forms.ComboBox();
+            this.cb_subject3 = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -156,11 +156,11 @@ namespace ExamManager
             // flp_subjects
             // 
             this.flp_subjects.Controls.Add(this.lbl_subject1);
-            this.flp_subjects.Controls.Add(this.tb_subject1);
+            this.flp_subjects.Controls.Add(this.cb_subject1);
             this.flp_subjects.Controls.Add(this.lbl_subject2);
-            this.flp_subjects.Controls.Add(this.tb_subject2);
+            this.flp_subjects.Controls.Add(this.cb_subject2);
             this.flp_subjects.Controls.Add(this.lbl_subject3);
-            this.flp_subjects.Controls.Add(this.tb_subject3);
+            this.flp_subjects.Controls.Add(this.cb_subject3);
             this.flp_subjects.Location = new System.Drawing.Point(3, 43);
             this.flp_subjects.Name = "flp_subjects";
             this.flp_subjects.Size = new System.Drawing.Size(781, 32);
@@ -177,51 +177,27 @@ namespace ExamManager
             this.lbl_subject1.TabIndex = 0;
             this.lbl_subject1.Text = "Fach 1:";
             // 
-            // tb_subject1
-            // 
-            this.tb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject1.Location = new System.Drawing.Point(71, 3);
-            this.tb_subject1.Name = "tb_subject1";
-            this.tb_subject1.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject1.TabIndex = 7;
-            // 
             // lbl_subject2
             // 
             this.lbl_subject2.AutoSize = true;
             this.lbl_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject2.Location = new System.Drawing.Point(217, 6);
+            this.lbl_subject2.Location = new System.Drawing.Point(257, 6);
             this.lbl_subject2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_subject2.Name = "lbl_subject2";
             this.lbl_subject2.Size = new System.Drawing.Size(62, 20);
             this.lbl_subject2.TabIndex = 5;
             this.lbl_subject2.Text = "Fach 2:";
             // 
-            // tb_subject2
-            // 
-            this.tb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject2.Location = new System.Drawing.Point(285, 3);
-            this.tb_subject2.Name = "tb_subject2";
-            this.tb_subject2.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject2.TabIndex = 8;
-            // 
             // lbl_subject3
             // 
             this.lbl_subject3.AutoSize = true;
             this.lbl_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject3.Location = new System.Drawing.Point(431, 6);
+            this.lbl_subject3.Location = new System.Drawing.Point(511, 6);
             this.lbl_subject3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_subject3.Name = "lbl_subject3";
             this.lbl_subject3.Size = new System.Drawing.Size(62, 20);
             this.lbl_subject3.TabIndex = 6;
             this.lbl_subject3.Text = "Fach 3:";
-            // 
-            // tb_subject3
-            // 
-            this.tb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_subject3.Location = new System.Drawing.Point(499, 3);
-            this.tb_subject3.Name = "tb_subject3";
-            this.tb_subject3.Size = new System.Drawing.Size(140, 26);
-            this.tb_subject3.TabIndex = 9;
             // 
             // tableLayoutPanel1
             // 
@@ -325,18 +301,6 @@ namespace ExamManager
             this.tb_shortname.Size = new System.Drawing.Size(60, 26);
             this.tb_shortname.TabIndex = 6;
             // 
-            // flp_teacher_entitys
-            // 
-            this.flp_teacher_entitys.AutoScroll = true;
-            this.flp_teacher_entitys.BackColor = System.Drawing.Color.Silver;
-            this.flp_teacher_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp_teacher_entitys.Location = new System.Drawing.Point(0, 0);
-            this.flp_teacher_entitys.Margin = new System.Windows.Forms.Padding(0);
-            this.flp_teacher_entitys.Name = "flp_teacher_entitys";
-            this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 381);
-            this.flp_teacher_entitys.TabIndex = 20;
-            this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
-            // 
             // btn_hint
             // 
             this.btn_hint.BackColor = System.Drawing.SystemColors.Control;
@@ -351,6 +315,57 @@ namespace ExamManager
             this.btn_hint.UseVisualStyleBackColor = false;
             this.btn_hint.Visible = false;
             this.btn_hint.Click += new System.EventHandler(this.btn_hint_Click);
+            // 
+            // flp_teacher_entitys
+            // 
+            this.flp_teacher_entitys.AutoScroll = true;
+            this.flp_teacher_entitys.BackColor = System.Drawing.Color.Silver;
+            this.flp_teacher_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flp_teacher_entitys.Location = new System.Drawing.Point(0, 0);
+            this.flp_teacher_entitys.Margin = new System.Windows.Forms.Padding(0);
+            this.flp_teacher_entitys.Name = "flp_teacher_entitys";
+            this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 381);
+            this.flp_teacher_entitys.TabIndex = 20;
+            this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
+            // 
+            // cb_subject1
+            // 
+            this.cb_subject1.DropDownHeight = 100;
+            this.cb_subject1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject1.FormattingEnabled = true;
+            this.cb_subject1.IntegralHeight = false;
+            this.cb_subject1.Location = new System.Drawing.Point(71, 3);
+            this.cb_subject1.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject1.Name = "cb_subject1";
+            this.cb_subject1.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject1.TabIndex = 10;
+            // 
+            // cb_subject2
+            // 
+            this.cb_subject2.DropDownHeight = 100;
+            this.cb_subject2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject2.FormattingEnabled = true;
+            this.cb_subject2.IntegralHeight = false;
+            this.cb_subject2.Location = new System.Drawing.Point(325, 3);
+            this.cb_subject2.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject2.Name = "cb_subject2";
+            this.cb_subject2.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject2.TabIndex = 11;
+            // 
+            // cb_subject3
+            // 
+            this.cb_subject3.DropDownHeight = 100;
+            this.cb_subject3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject3.FormattingEnabled = true;
+            this.cb_subject3.IntegralHeight = false;
+            this.cb_subject3.Location = new System.Drawing.Point(579, 3);
+            this.cb_subject3.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject3.Name = "cb_subject3";
+            this.cb_subject3.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject3.TabIndex = 12;
             // 
             // FormTeacherData
             // 
@@ -390,11 +405,8 @@ namespace ExamManager
         private System.Windows.Forms.TextBox tb_shortname;
         private System.Windows.Forms.FlowLayoutPanel tlp_phonenumber;
         private System.Windows.Forms.Label lbl_subject1;
-        private System.Windows.Forms.TextBox tb_subject1;
         private System.Windows.Forms.Label lbl_subject2;
-        private System.Windows.Forms.TextBox tb_subject2;
         private System.Windows.Forms.Label lbl_subject3;
-        private System.Windows.Forms.TextBox tb_subject3;
         private System.Windows.Forms.FlowLayoutPanel flp_teacher_name;
         private System.Windows.Forms.TextBox tb_phonenumber;
         private System.Windows.Forms.Label lbl_phonenumber;
@@ -403,5 +415,8 @@ namespace ExamManager
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.Button btn_hint;
+        private System.Windows.Forms.ComboBox cb_subject1;
+        private System.Windows.Forms.ComboBox cb_subject2;
+        private System.Windows.Forms.ComboBox cb_subject3;
     }
 }

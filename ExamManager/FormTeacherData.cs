@@ -18,6 +18,16 @@ namespace ExamManager
             teacher_entity_list = new LinkedList<FlowLayoutPanel>();
             InitializeComponent();
             UpdateTeacherList();
+            cb_subject1.Items.Add("");
+            cb_subject2.Items.Add("");
+            cb_subject3.Items.Add("");
+            LinkedList<string[]> subjectList = Program.database.GetAllSubjects();
+            string[] subjects = new string[subjectList.Count];
+            for (int i = 0; i < subjectList.Count; i++)
+                subjects[i] = subjectList.ElementAt(i)[0];
+            cb_subject1.Items.AddRange(subjects);
+            cb_subject2.Items.AddRange(subjects);
+            cb_subject3.Items.AddRange(subjects);
         }
 
         private void FormTeacherData_Load(object sender, EventArgs e)
@@ -35,7 +45,7 @@ namespace ExamManager
                 FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
                 //panel_teacher.Size = new Size(950, 80);
                 panel_teacher.Height = 80;
-                panel_teacher.Width = flp_teacher_entitys.Width-28;
+                panel_teacher.Width = flp_teacher_entitys.Width - 28;
                 panel_teacher.Margin = new Padding(5);
                 panel_teacher.BackColor = Color.LightBlue;
                 panel_teacher.Name = s[2];
@@ -133,20 +143,20 @@ namespace ExamManager
             tb_firstname.Text = t[1];
             tb_lastname.Text = t[2];
             tb_phonenumber.Text = t[3];
-            tb_subject1.Text = t[4];
-            tb_subject2.Text = t[5];
-            tb_subject3.Text = t[6];
+            cb_subject1.Text = t[4];
+            cb_subject2.Text = t[5];
+            cb_subject3.Text = t[6];
         }
 
         private void btn_add_teacher_Click(object sender, EventArgs e)
         {
-            string shortname = tb_shortname.Text.Remove(' ');
+            string shortname = tb_shortname.Text.Replace(" ", "");
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
             string phonenumber = tb_phonenumber.Text;
-            string subject1 = tb_subject1.Text;
-            string subject2 = tb_subject2.Text;
-            string subject3 = tb_subject3.Text;
+            string subject1 = cb_subject1.Text;
+            string subject2 = cb_subject2.Text;
+            string subject3 = cb_subject3.Text;
             if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0) // phonenumber.Length == 0 ||
             {
                 MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return;
@@ -168,9 +178,9 @@ namespace ExamManager
             tb_firstname.Clear();
             tb_lastname.Clear();
             tb_phonenumber.Clear();
-            tb_subject1.Clear();
-            tb_subject2.Clear();
-            tb_subject3.Clear();
+            cb_subject1.SelectedItem = null;
+            cb_subject2.SelectedItem = null;
+            cb_subject3.SelectedItem = null;
 
             edit_id = null;
             btn_add_teacher.Text = add_mode[0];
@@ -183,9 +193,9 @@ namespace ExamManager
             tb_firstname.Clear();
             tb_lastname.Clear();
             tb_phonenumber.Clear();
-            tb_subject1.Clear();
-            tb_subject2.Clear();
-            tb_subject3.Clear();
+            cb_subject1.SelectedItem = null;
+            cb_subject2.SelectedItem = null;
+            cb_subject3.SelectedItem = null;
 
             edit_id = null;
             btn_add_teacher.Text = add_mode[0];
@@ -196,7 +206,7 @@ namespace ExamManager
         {
             foreach (Panel p in teacher_entity_list)
             {
-                p.Width = flp_teacher_entitys.Width-28;
+                p.Width = flp_teacher_entitys.Width - 28;
             }
         }
 
@@ -204,6 +214,7 @@ namespace ExamManager
         {
             if (tb_firstname.Text.Contains(' ') || tb_lastname.Text.Contains(' '))
                 btn_hint.Visible = true;
+            else btn_hint.Visible = false;
         }
 
         private void btn_hint_Click(object sender, EventArgs e)

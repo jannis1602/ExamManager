@@ -366,7 +366,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_FBBA0D9E450942A997C0DF6B46416442"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
+            "DefaultLocation" = "8:[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -415,7 +415,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ExamManager"
         "ProductCode" = "8:{DB79A6B9-F905-4303-8504-CBF858268007}"
-        "PackageCode" = "8:{D700E45C-4C3C-4146-B0D3-23127E158BB4}"
+        "PackageCode" = "8:{3FE057DE-1F12-4859-BAE3-CCF3D5606650}"
         "UpgradeCode" = "8:{93EF40F8-C0A8-471E-8884-0A00A504EE18}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -964,7 +964,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6898A5CFFC3647309D6090C943DBDA5C"
             {
-            "SourcePath" = "8:..\\ExamManager\\obj\\Debug\\ExamManager.exe"
+            "SourcePath" = "8:..\\ExamManager\\obj\\Release\\ExamManager.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FBBA0D9E450942A997C0DF6B46416442"

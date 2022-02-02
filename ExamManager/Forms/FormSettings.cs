@@ -21,7 +21,7 @@ namespace ExamManager
         private void btn_set_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.email_domain = tb_maildomain.Text;
-            this.Dispose();
+            Properties.Settings.Default.Save();
         }
     }
 }

@@ -30,6 +30,12 @@ namespace ExamManager
             time_line_room_list = new LinkedList<Panel>();
             WindowState = FormWindowState.Maximized;
             InitializeComponent();
+            dtp_date.Value = DateTime.Now;
+            if (Properties.Settings.Default.timeline_date.Length > 2)
+                dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.timeline_date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            if (database.GetAllExamsAtDate(date).Count < 1)
+                dtp_timeline_date.Value = DateTime.Now;
             update_timeline();
             LoadAutocomplete();
         }
@@ -108,6 +114,8 @@ namespace ExamManager
             cb_teacher1.Items.AddRange(listTeacher);
             cb_teacher2.Items.AddRange(listTeacher);
             cb_teacher3.Items.AddRange(listTeacher);
+            cb_teacher2.Items.Add("");
+            cb_teacher3.Items.Add("");
             // exam_room & prep_room
             cb_exam_room.Items.Clear();
             cb_preparation_room.Items.Clear();
@@ -154,6 +162,8 @@ namespace ExamManager
             string grade = "-";
             if (cb_grade.SelectedItem != null) // TEST -----------------------------------------
                 grade = cb_grade.SelectedItem.ToString();
+            if (cb_teacher1.Text.Length < 1 || cb_teacher2.Text.Length < 1 || cb_teacher3.Text.Length < 1)
+            { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             string teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1])[0];
             string teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1])[0];
             string teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1])[0];
@@ -316,6 +326,8 @@ namespace ExamManager
                 foreach (Panel p in time_line_list)
                     if (p.Name.Equals(s[3])) p.Controls.Add(panel_tl_entity);
             }
+            if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_side_empty.BackColor = Color.Yellow; }
+            else { lbl_search.Text = null; panel_side_empty.BackColor = panel_side_room.BackColor; }
         }
         private void panel_tl_entity_double_click(object sender, MouseEventArgs e)
         {
@@ -517,6 +529,12 @@ namespace ExamManager
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
             e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4] + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             // ## [DEV] ## TODO: startTime - end Time?
+            string line1 = student[1] + " " + student[2] + "  [" + student[3] + "]\n";
+            string line2 = exam[2] + "     " + exam[10] + "min\n";
+            string line3 = exam[6] + "  " + exam[7] + "  " + exam[8] + "\n";
+            string line4 = exam[9] + "  " + exam[3] + "  [" + exam[4] + "]";
+            ToolTip sfToolTip1 = new ToolTip();
+            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
 
         }
 
@@ -613,57 +631,47 @@ namespace ExamManager
         public void SetDate(DateTime date)
         {
             dtp_timeline_date.Value = date;
+            Properties.Settings.Default.timeline_date = date.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
         }
 
         private void tsmi_table_exams_Click(object sender, EventArgs e)
         {
-            new Form_grid(0).Show();
-
-            /*if (form_grid == null)
-            {
-                form_grid = new Form_grid(0);
-                form_grid.Show();
-            }
-
-            if (form_grid.IsDisposed)
-            {
-                form_grid = new Form_grid(0);
-                form_grid.Show();
-            }*/
+            new Form_grid(0).ShowDialog();
         }
 
         private void tsmi_table_students_Click(object sender, EventArgs e)
         {
-            new Form_grid(2).Show();
+            new Form_grid(2).ShowDialog();
         }
 
         private void tsmi_table_teacher_Click(object sender, EventArgs e)
         {
-            new Form_grid(1).Show();
+            new Form_grid(1).ShowDialog();
         }
 
         private void tsmi_search_teacher_Click(object sender, EventArgs e)
         {
-            new FormSearch(0, this).Show();
+            new FormSearch(0, this).ShowDialog();
         }
 
         private void tsmi_search_student_Click(object sender, EventArgs e)
         {
-            new FormSearch(1, this).Show();
+            new FormSearch(1, this).ShowDialog();
         }
         private void tsmi_search_subject_Click(object sender, EventArgs e)
         {
-            new FormSearch(2, this).Show();
+            new FormSearch(2, this).ShowDialog();
 
         }
 
         private void tsmi_search_room_Click(object sender, EventArgs e)
         {
-            new FormSearch(3, this).Show();
+            new FormSearch(3, this).ShowDialog();
         }
         private void tsmi_search_grade_Click(object sender, EventArgs e)
         {
-            new FormSearch(4, this).Show();
+            new FormSearch(4, this).ShowDialog();
         }
 
         private void tsmi_search_delete_Click(object sender, EventArgs e)
@@ -676,25 +684,22 @@ namespace ExamManager
         private void tsmi_data_students_Click(object sender, EventArgs e)
         {
             FormStudentData form = new FormStudentData();
-            form.Disposed += UpdateAutocomplete_Event;
-            form.TopMost = true;
-            form.Show();
+            form.FormClosed += UpdateAutocomplete_Event;
+            form.ShowDialog();
         }
 
         private void tsmi_data_rooms_Click(object sender, EventArgs e)
         {
             FormRoomData form = new FormRoomData();
-            form.Disposed += UpdateAutocomplete_Event;
-            form.TopMost = true;
-            form.Show();
+            form.FormClosed += UpdateAutocomplete_Event;
+            form.ShowDialog();
         }
 
         private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
         {
             FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
-            form.Disposed += changeroom_Event;
-            form.TopMost = true;
-            form.Show();
+            form.FormClosed += changeroom_Event;
+            form.ShowDialog();
         }
 
         void changeroom_Event(object sender, EventArgs a)
@@ -705,9 +710,8 @@ namespace ExamManager
         private void tsmi_data_subjects_Click(object sender, EventArgs e)
         {
             FormSubjectData form = new FormSubjectData();
-            form.Disposed += UpdateAutocomplete_Event;
-            form.TopMost = true;
-            form.Show();
+            form.FormClosed += UpdateAutocomplete_Event;
+            form.ShowDialog();
         }
         void UpdateAutocomplete_Event(object sender, EventArgs a)
         {
@@ -716,16 +720,18 @@ namespace ExamManager
 
         private void tsmi_data_editgrade_move_Click(object sender, EventArgs e)
         {
-            new FormRenameGrade().Show();
-            // TODO: update all ################################################################################################################################
+            FormRenameGrade form = new FormRenameGrade();
+            form.FormClosed += UpdateAutocomplete_Event;
+            form.ShowDialog();
+            // TODO: update all? ##################################################################################
 
         }
         private void tsmi_data_editgrade_delete_Click(object sender, EventArgs e)
         {
             FormDeleteGrade form = new FormDeleteGrade();
-            form.Disposed += UpdateAutocomplete_Event;
-            form.TopMost = true;
-            form.Show();
+            form.FormClosed += UpdateAutocomplete_Event;
+            form.ShowDialog();
+            // yesno dialog
             // TODO: update all ################################################################################################################################
             // remove exams in grade
             // database.DeleteGrade();
@@ -740,8 +746,7 @@ namespace ExamManager
         private void tsmi_data_loadstudents_Click(object sender, EventArgs e)
         {
             FormLoadStudents form = new FormLoadStudents();
-            form.Disposed += UpdateAutocomplete_Event;
-            form.TopMost = true;
+            form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
 
@@ -797,6 +802,7 @@ namespace ExamManager
         private void tsmi_settings_db_default_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.databasePath = "default";
+            Properties.Settings.Default.Save();
         }
 
         private void tsmi_settings_db_localdb_Click(object sender, EventArgs e)
@@ -813,6 +819,7 @@ namespace ExamManager
                 {
                     filePath = openFileDialog.FileName;
                     Properties.Settings.Default.databasePath = filePath;
+                    Properties.Settings.Default.Save();
                     Program.database = new Database();
                     update_timeline();
                     LoadAutocomplete();
@@ -826,10 +833,17 @@ namespace ExamManager
             form.ShowDialog(this);
         }
 
+        private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
+        {
+            update_timeline();
+            Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
+        }
+
         private void tsmi_data_teachers_Click(object sender, EventArgs e)
         {
             FormTeacherData formTeacherData = new FormTeacherData();
-            formTeacherData.Disposed += UpdateAutocomplete_Event;
+            formTeacherData.FormClosed += UpdateAutocomplete_Event;
             formTeacherData.ShowDialog();
         }
     }

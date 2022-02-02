@@ -17,30 +17,34 @@ namespace ExamManager
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);
 
-            // strg+enter -> add
-            // rename form1 
-            // check if fach 1 null und fach 3 notnull
             // show search string
             // tabindex
-            // liste exportieren
+            // daten als liste exportieren
             // idea: Count exams per date in listviewexams
             // teacher subject dropdown
             // link autocomplete to id?
             // (lehrer doppelnamen)
             // insert file request grade
-            // open forms only once
             // editexam btn left top (1klick-> show exam(-> block boxes))
             // entertaste in textbox
             // doppelnamen filter -> fehlersuche
-            // lehrer und schüler nur in einem raum zur zeit
+            // check lehrer und schüler nur in einem raum zur zeit
             // Add Schüler Form nach loadlist nur mit neuen
             // Lehrzeichen plathalter
-            // allstudents filter + better layout
-            // teacher exam dropdown
-            // exam students dropdown abc sortiert
-            // switch grade and student 
-            // delete old funktion
-            // form showdialog
+            // allstudents filter/order + better layout
+            // delete old exams funktion
+            // box always generate mail?
+            // daten -> rename to "hinzufügen" (schueler/lehrer...)
+            // prep room can be null
+            // start -> date today
+            // color theme
+            // load teacher from file
+            // export data to txt file
+            // getStudent (grade=null)
+            // if get student > 1 -> error! + Message
+            // connection status?
+            // suche tooltipp -> more info
+            // settings keep last date after closing
         }
     }
 }
