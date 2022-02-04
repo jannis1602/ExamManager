@@ -159,7 +159,7 @@ namespace ExamManager
             string exam_room = cb_exam_room.SelectedItem.ToString();
             string preparation_room = cb_preparation_room.SelectedItem.ToString();
             string student = cb_student.Text;
-            string grade = "-";
+            string grade = null;
             if (cb_grade.SelectedItem != null) // TEST -----------------------------------------
                 grade = cb_grade.SelectedItem.ToString();
             if (cb_teacher1.Text.Length < 1 || cb_teacher2.Text.Length < 1 || cb_teacher3.Text.Length < 1)
@@ -167,13 +167,13 @@ namespace ExamManager
             string teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1])[0];
             string teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1])[0];
             string teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1])[0];
-
             string subject = cb_subject.Text;
             int duration = Int32.Parse(tb_duration.Text);
 
-            if (exam_room.Length == 0 || preparation_room.Length == 0 || student.Length == 0 || grade.Length == 0 || teacher1.Length == 0 || teacher2.Length == 0 || teacher3.Length == 0 || subject.Length == 0 || duration == 0)
+            if (exam_room.Length == 0 || preparation_room.Length == 0 || student.Length == 0 || teacher1.Length == 0 || teacher2.Length == 0 || teacher3.Length == 0 || subject.Length == 0 || duration == 0)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
 
+            // check room
             if (id == 0)
             {
                 if (database.CheckTimeAndRoom(date, time, exam_room))
@@ -184,35 +184,72 @@ namespace ExamManager
                     DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
                     DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-
                     if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
-                    {
-                        MessageBox.Show("Raum besetzt!", "Warnung");
-                        return;
-                    }
+                    { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
                 }
             }
 
-            string name = student;
+            // check names in database
             string tempfirstname = null;
             string templastname = null;
             try
             {
-                for (int i = 0; i < name.Split(' ').Length - 1; i++)
-                    tempfirstname += name.Split(' ')[i] += " ";
+                for (int i = 0; i < student.Split(' ').Length - 1; i++)
+                    tempfirstname += student.Split(' ')[i] += " ";
                 tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                templastname += name.Split(' ')[name.Split(' ').Length - 1];
+                templastname += student.Split(' ')[student.Split(' ').Length - 1];
             }
             catch (NullReferenceException)
             { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
             if (database.GetStudent(tempfirstname, templastname, grade)[0] == null)
             { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
-            if (database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]) == null) // teacher1.Split(' ')[0], teacher1.Split(' ')[teacher1.Split(' ').Length - 1]) == null)
-            { MessageBox.Show("Lehrer1 nicht gefunden!", "Warnung"); return; }
+            if (database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]) == null)
+            { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]) == null)
-            { MessageBox.Show("Lehrer2 nicht gefunden!", "Warnung"); return; }
+            { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]) == null)
-            { MessageBox.Show("Lehrer3 nicht gefunden!", "Warnung"); return; }
+            { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
+
+            // check teacher
+            foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher1))
+            {
+                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                { MessageBox.Show(database.GetTeacherByID(teacher1)[1] + " " + database.GetTeacherByID(teacher1)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
+            }
+            foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher2))
+            {
+                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                { MessageBox.Show(database.GetTeacherByID(teacher2)[1] + " " + database.GetTeacherByID(teacher2)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
+            }
+            foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher3))
+            {
+                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                { MessageBox.Show(database.GetTeacherByID(teacher3)[1] + " " + database.GetTeacherByID(teacher3)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
+            }
+            // check student 
+            foreach (string[] s in database.GetAllExamsFromStudentAtDate(date, database.GetStudent(tempfirstname, templastname, grade)[0]))
+            {
+                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                { MessageBox.Show(student + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
+            }
+
+            ////
             if (id != 0)
                 database.EditExam(id, date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, grade)[0], teacher1, teacher2, teacher3, subject, duration);
             if (id == 0)
@@ -220,6 +257,10 @@ namespace ExamManager
             id = 0;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
+
+            this.dtp_timeline_date.Value = this.dtp_date.Value;
+            Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
             update_timeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
             if (this.cb_keep_data.Checked) { this.cb_student.SelectedItem = null; }
@@ -235,6 +276,7 @@ namespace ExamManager
                 this.cb_teacher3.SelectedItem = null;
             }
         }
+
         private void btn_grid_view_Click(object sender, EventArgs e)
         {
             if (form_grid == null)
@@ -374,25 +416,11 @@ namespace ExamManager
             if (e.Button == MouseButtons.Left)
             {
                 Panel p = sender as Panel;
-                //string[] exam = database.GetExamById(Int32.Parse(p.Name));
-                //string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             }
             else if (e.Button == MouseButtons.Right)
             {
-                //Panel p = sender as Panel;
-                /*ContextMenuStrip cm = new ContextMenuStrip();
-                cm.Name = Program.database.GetExamById(Int32.Parse(p.Name))[0];
-                cm.Items.Add("Item 1");
-                cm.Items.Add("Item 2");
-                cm.Show(p, new Point(e.X, e.Y));
-                cm.ItemClicked += new ToolStripItemClickedEventHandler(Item_Click);*/
             }
         }
-        /*private void Item_Click(object sender, ToolStripItemClickedEventArgs e)
-        {
-            if (e.ClickedItem.Text == "Delete")
-            {//ContextMenuStrip cm = sender as ContextMenuStrip;}
-        }*/
 
         private void panel_side_room_Paint(object sender, PaintEventArgs e)
         {

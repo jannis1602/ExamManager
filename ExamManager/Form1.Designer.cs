@@ -126,7 +126,7 @@ namespace ExamManager
             this.lbl_search = new System.Windows.Forms.Label();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
-            this.toolTip_copy = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -979,7 +979,7 @@ namespace ExamManager
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(45, 44);
             this.btn_cancel.TabIndex = 10;
-            this.toolTip_copy.SetToolTip(this.btn_cancel, "Abbrechen");
+            this.toolTip.SetToolTip(this.btn_cancel, "Abbrechen");
             this.btn_cancel.UseVisualStyleBackColor = true;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
@@ -992,7 +992,7 @@ namespace ExamManager
             this.btn_reuse_exam.Name = "btn_reuse_exam";
             this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
             this.btn_reuse_exam.TabIndex = 12;
-            this.toolTip_copy.SetToolTip(this.btn_reuse_exam, "Kopieren");
+            this.toolTip.SetToolTip(this.btn_reuse_exam, "Kopieren");
             this.btn_reuse_exam.UseVisualStyleBackColor = true;
             this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
             // 
@@ -1005,7 +1005,7 @@ namespace ExamManager
             this.btn_delete_exam.Name = "btn_delete_exam";
             this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
             this.btn_delete_exam.TabIndex = 11;
-            this.toolTip_copy.SetToolTip(this.btn_delete_exam, "Löschen");
+            this.toolTip.SetToolTip(this.btn_delete_exam, "Löschen");
             this.btn_delete_exam.UseVisualStyleBackColor = true;
             this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
             // 
@@ -1271,9 +1271,9 @@ namespace ExamManager
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
-            // toolTip_copy
+            // toolTip
             // 
-            this.toolTip_copy.Tag = "";
+            this.toolTip.Tag = "";
             // 
             // Form1
             // 
@@ -1421,7 +1421,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_deleteOldExams;
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_info_keys;
-        private System.Windows.Forms.ToolTip toolTip_copy;
+        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_exams;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_students;

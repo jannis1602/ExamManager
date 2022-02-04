@@ -226,7 +226,6 @@ namespace ExamManager
             }
             return data;
         }
-
         public void EditStudent(int id, string firstname, string lastname, string grade, string email, string phone_number)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -467,6 +466,69 @@ namespace ExamManager
             }
             return data;
         }
+        public LinkedList<string[]> GetAllExamsFromTeacherAtDate(string date, string teacher)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND (teacher_vorsitz=@teacher OR teacher_pruefer=@teacher OR teacher_protokoll=@teacher)";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@teacher", teacher);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rowData[i] = rowData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rowData[i] = rowData[i].Split(' ')[1];
+                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+        public LinkedList<string[]> GetAllExamsFromStudentAtDate(string date, string student)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND student = @student";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@student", student);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rowData[i] = rowData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rowData[i] = rowData[i].Split(' ')[1];
+                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
         public LinkedList<string[]> GetAllExamsAtDateAndRoom(string date, string exam_room)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
