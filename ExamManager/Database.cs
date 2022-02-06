@@ -53,6 +53,11 @@ namespace ExamManager
         public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             string[] s = GetStudent(firstname, lastname);
+            if (firstname.Contains(" ") || lastname.Contains(" "))
+            {
+                Console.WriteLine("Space!>>> " + firstname + " " + lastname);
+                // replace " " with "_"
+            }
             if (s != null)
             {
                 DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + firstname + " " + lastname + " exestiert bereits in der Stufe " + s[3] +

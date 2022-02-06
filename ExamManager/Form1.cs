@@ -11,6 +11,7 @@ namespace ExamManager
         public string search = null;
         public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room
 
+
         Database database;
         Form_grid form_grid;
         int id = 0;
@@ -133,7 +134,6 @@ namespace ExamManager
             cb_exam_room.Items.AddRange(item_list);
             cb_preparation_room.Items.AddRange(item_list);
         }
-
         private void btn_add_exam_Click(object sender, EventArgs e)
         {
             AddExam();
@@ -276,7 +276,6 @@ namespace ExamManager
                 this.cb_teacher3.SelectedItem = null;
             }
         }
-
         private void btn_grid_view_Click(object sender, EventArgs e)
         {
             if (form_grid == null)
@@ -315,7 +314,6 @@ namespace ExamManager
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
         }
-
         public void update_timeline()
         {
             if (panel_empty != null) panel_side_room.Controls.Remove(panel_empty);
@@ -363,13 +361,88 @@ namespace ExamManager
                 panel_tl_entity.Name = s[0];
                 panel_tl_entity.BackColor = Color.LightBlue;
                 panel_tl_entity.Paint += panel_time_line_entity_Paint;
-                panel_tl_entity.MouseClick += panel_tl_entity_click;
+                //panel_tl_entity.MouseClick += panel_tl_entity_click;
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
+
+                ContextMenuStrip mnu = new ContextMenuStrip();
+                ToolStripMenuItem mnuEdit = new ToolStripMenuItem("Bearbeiten");
+                ToolStripMenuItem mnuCopy = new ToolStripMenuItem("Kopieren");
+                ToolStripMenuItem mnuDelete = new ToolStripMenuItem("Löschen");
+                mnuEdit.Click += new EventHandler(panel_menu_click_edit);
+                mnuCopy.Click += new EventHandler(panel_menu_click_copy);
+                mnuDelete.Click += new EventHandler(panel_menu_click_delete);
+                mnuEdit.Name = s[0];
+                mnuCopy.Name = s[0];
+                mnuDelete.Name = s[0];
+                mnu.Items.AddRange(new ToolStripItem[] { mnuEdit, mnuCopy, mnuDelete });
+                panel_tl_entity.ContextMenuStrip = mnu;
+
                 foreach (Panel p in time_line_list)
                     if (p.Name.Equals(s[3])) p.Controls.Add(panel_tl_entity);
             }
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_side_empty.BackColor = Color.Yellow; }
             else { lbl_search.Text = null; panel_side_empty.BackColor = panel_side_room.BackColor; }
+        }
+        private void panel_menu_click_copy(object sender, EventArgs e)
+        {
+            ToolStripMenuItem itm = sender as ToolStripMenuItem;
+            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
+            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+
+            lbl_mode.Text = edit_mode[1];
+            btn_add_exam.Text = add_mode[1];
+            this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+            this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            this.cb_exam_room.SelectedItem = exam[3];
+            this.cb_preparation_room.SelectedItem = exam[4];
+            string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
+            this.cb_student.Text = st[1] + " " + st[2];
+            this.cb_grade.SelectedItem = st[3];
+            this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+            this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+            this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
+            this.cb_subject.Text = exam[9];
+            this.tb_duration.Text = exam[10];
+            id = 0;
+            lbl_mode.Text = edit_mode[0];
+            btn_add_exam.Text = add_mode[0];
+        }
+        private void panel_menu_click_edit(object sender, EventArgs e)
+        {
+            ToolStripMenuItem itm = sender as ToolStripMenuItem;
+            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
+            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+
+            DialogResult result = MessageBox.Show("Prüfung von " + student[1] + " " + student[2] + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                id = Int32.Parse(exam[0]);
+                lbl_mode.Text = edit_mode[1];
+                btn_add_exam.Text = add_mode[1];
+                this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+                this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                this.cb_exam_room.SelectedItem = exam[3];
+                this.cb_preparation_room.SelectedItem = exam[4];
+                string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
+                this.cb_student.Text = st[1] + " " + st[2];
+                this.cb_grade.SelectedItem = st[3];
+                this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+                this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+                this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
+                this.cb_subject.Text = exam[9];
+                this.tb_duration.Text = exam[10];
+            }
+        }
+        private void panel_menu_click_delete(object sender, EventArgs e)
+        {
+            ToolStripMenuItem itm = sender as ToolStripMenuItem;
+            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
+            DialogResult result = MessageBox.Show("Prüfung löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                database.DeleteExam(Int32.Parse(exam[0]));
+                update_timeline();
+            }
         }
         private void panel_tl_entity_double_click(object sender, MouseEventArgs e)
         {
@@ -401,24 +474,14 @@ namespace ExamManager
             }
             else if (e.Button == MouseButtons.Right)
             {
-                Panel p = sender as Panel;
+                /*Panel p = sender as Panel;
                 string[] exam = database.GetExamById(Int32.Parse(p.Name));
                 DialogResult result = MessageBox.Show("Prüfung löschen?", "Warnung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     database.DeleteExam(Int32.Parse(exam[0]));
                     update_timeline();
-                }
-            }
-        }
-        private void panel_tl_entity_click(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Panel p = sender as Panel;
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
+                }*/
             }
         }
 
@@ -690,9 +753,7 @@ namespace ExamManager
         private void tsmi_search_subject_Click(object sender, EventArgs e)
         {
             new FormSearch(2, this).ShowDialog();
-
         }
-
         private void tsmi_search_room_Click(object sender, EventArgs e)
         {
             new FormSearch(3, this).ShowDialog();
@@ -708,33 +769,28 @@ namespace ExamManager
             search_index = 0;
             update_timeline();
         }
-
         private void tsmi_data_students_Click(object sender, EventArgs e)
         {
             FormStudentData form = new FormStudentData();
             form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
-
         private void tsmi_data_rooms_Click(object sender, EventArgs e)
         {
             FormRoomData form = new FormRoomData();
             form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
-
         private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
         {
             FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
             form.FormClosed += changeroom_Event;
             form.ShowDialog();
         }
-
         void changeroom_Event(object sender, EventArgs a)
         {
             update_timeline();
         }
-
         private void tsmi_data_subjects_Click(object sender, EventArgs e)
         {
             FormSubjectData form = new FormSubjectData();
@@ -866,6 +922,11 @@ namespace ExamManager
             update_timeline();
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
+        }
+
+        private void tsmi_filter_grade_Click(object sender, EventArgs e)
+        {
+            new FormFilterGrade().ShowDialog();
         }
 
         private void tsmi_data_teachers_Click(object sender, EventArgs e)

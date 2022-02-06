@@ -39,6 +39,14 @@ namespace ExamManager
             // connection status?
             // suche tooltipp -> more info
             // settings keep last date after closing
+            // check if vorbereitungsraum is empty
+            // remove addexam if id=null
+            // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
+            // exam doppelclick -> open edit and mark exam in timeline
+
+            // getstudentbyname: -> remove  " " and "_"
+            // SELECT CONCAT('SQL', ' is', ' fun!');
+            // Filter in einem Fenster grade etc.
         }
     }
 }
