@@ -52,6 +52,7 @@ namespace ExamManager
             // show filter
             // filter teacher
             // hide timelines without exams in filter
+            // switch option
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');

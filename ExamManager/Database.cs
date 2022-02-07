@@ -646,7 +646,94 @@ namespace ExamManager
             return data;
         }
 
-        public void EditExam(int id, string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
+        public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, string student = null, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            /*sqlite_cmd.CommandText = "UPDATE exam SET date=@date, time=@time, exam_room=@exam_room, preparation_room=@preparation_room, student=@student, teacher_vorsitz=@teacher_vorsitz, teacher_pruefer=@teacher_pruefer, teacher_protokoll=@teacher_protokoll, subject=@subject, duration=@duration WHERE id = @id";
+            sqlite_cmd.Parameters.AddWithValue("@id", id);
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@time", time);
+            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
+            sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
+            sqlite_cmd.Parameters.AddWithValue("@student", student);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
+            sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
+            sqlite_cmd.Parameters.AddWithValue("@subject", subject);
+            sqlite_cmd.Parameters.AddWithValue("@duration", duration);
+            sqlite_cmd.ExecuteNonQuery();*/
+            if (date != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET date=@date WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@date", date);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (time != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET time=@time WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@time", time);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (exam_room != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET exam_room=@exam_room WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (preparation_room != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET preparation_room=@preparation_room WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (student != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET student=@student WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@student", student);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (t1 != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET teacher_vorsitz=@teacher_vorsitz WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (t2 != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET teacher_pruefer=@teacher_pruefer WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (t3 != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET teacher_protokoll=@teacher_protokoll WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (subject != null)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET subject=@subject WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@subject", subject);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (duration != 0)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET duration=@duration WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@duration", duration);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+        }
+        /*public void EditExam(int id, string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "UPDATE exam SET date=@date, time=@time, exam_room=@exam_room, preparation_room=@preparation_room, student=@student, teacher_vorsitz=@teacher_vorsitz, teacher_pruefer=@teacher_pruefer, teacher_protokoll=@teacher_protokoll, subject=@subject, duration=@duration WHERE id = @id";
@@ -662,7 +749,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject", subject);
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
-        }
+        }*/
 
         public void EditExamRoom(string date, string old_exam_room, string exam_room)
         {
