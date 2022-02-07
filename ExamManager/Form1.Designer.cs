@@ -69,6 +69,7 @@ namespace ExamManager
             this.tsmi_settings_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter_grade = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
@@ -130,7 +131,6 @@ namespace ExamManager
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmi_filter_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -212,7 +212,7 @@ namespace ExamManager
             this.menuStrip1.Location = new System.Drawing.Point(104, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(576, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(456, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -479,14 +479,21 @@ namespace ExamManager
             // tsmi_filter_grade
             // 
             this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(144, 22);
             this.tsmi_filter_grade.Text = "Stufe";
             this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
+            // 
+            // tsmi_filter_teacher
+            // 
+            this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_teacher.Text = "Lehrer [DEV]";
+            this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // tsmi_filter_all
             // 
             this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_all.Size = new System.Drawing.Size(144, 22);
             this.tsmi_filter_all.Text = "Filter löschen";
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
             // 
@@ -1316,13 +1323,6 @@ namespace ExamManager
             // toolTip
             // 
             this.toolTip.Tag = "";
-            // 
-            // tsmi_filter_teacher
-            // 
-            this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_filter_teacher.Text = "Lehrer [DEV]";
-            this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // Form1
             // 

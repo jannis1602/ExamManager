@@ -50,6 +50,9 @@ namespace ExamManager
 
         // ---- STUDENT ---- ########################################################################################################################## 
         // ID firstname lastname grade Email TelNummer
+
+        /// <summary>adds a new student to the database</summary>
+        /// <param name="firstname">Describe parameter.</param>
         public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             string[] s = GetStudent(firstname, lastname);
@@ -154,7 +157,8 @@ namespace ExamManager
                 form.ShowDialog();
             }
         }
-
+        /// <summary>Searches the student by firstname, lastname and grade in the database.</summary>
+        /// <returns>If the student exists, it is returned as a string array, otherwise null is returned</returns>
         public string[] GetStudent(string firstname, string lastname, string grade = null)
         {
             SQLiteDataReader reader;
@@ -173,6 +177,8 @@ namespace ExamManager
             else return null;
             return data;
         }
+        /// <summary>Searches the student by id in the database.</summary>
+        /// <returns>If the student exists, it is returned as a string array, otherwise null is returned</returns>
         public string[] GetStudentByID(int id)
         {
             SQLiteDataReader reader;
@@ -188,13 +194,14 @@ namespace ExamManager
             else return null;
             return data;
         }
-
+        /// <summary>Returns all students from the database as an array in a list.</summary>
+        /// <returns> LinkedList with string[] </returns>
         public LinkedList<string[]> GetAllStudents()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY lastname";
+            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade DESC, lastname ASC";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -209,7 +216,8 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Returns all students of a grade from the database as an array in a list.</summary>
+        /// <returns> LinkedList with string[] </returns>
         public LinkedList<string[]> GetAllStudentsFromGrade(string grade)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();

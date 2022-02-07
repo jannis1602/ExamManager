@@ -29,15 +29,12 @@ namespace ExamManager
             // Lehrzeichen Plathalter
             // allstudents filter/order + better layout
             // delete old exams funktion
-            // box always generate mail?
-            // daten -> rename to "hinzufügen" (schueler/lehrer...)
             // prep room can be null
             // color theme
             // export data to txt file
             // if get student > 1 -> error! + Message
             // connection status?
             // suche tooltipp -> more info
-            // settings keep last date after closing
             // check if vorbereitungsraum is empty
             // remove addexam if id=null
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
@@ -52,7 +49,10 @@ namespace ExamManager
             // show filter
             // filter teacher
             // hide timelines without exams in filter
-            // switch option
+            // rerender timeline
+            // editstudent = null etc. (teacher)
+            // getallstudents order first grade then lastname
+            // studentlist per grade
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');

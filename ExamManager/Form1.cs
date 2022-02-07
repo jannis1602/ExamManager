@@ -330,7 +330,8 @@ namespace ExamManager
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
         }
-        public void update_timeline()
+        /// <summary>Updates the timeline for all rooms on the day</summary>
+        public void update_timeline() 
         {
             if (panel_empty != null) panel_side_room.Controls.Remove(panel_empty);
             if (panel_top == null) panel_top = new Panel();
@@ -423,7 +424,6 @@ namespace ExamManager
                             p.Controls.Add(panel_tl_entity);
                             time_line_entity_list.AddLast(panel_tl_entity);
                         }
-                        //else time_line_entity_list.Remove(panel_tl_entity);
                     }
                 }
 

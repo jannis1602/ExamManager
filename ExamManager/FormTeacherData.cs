@@ -38,12 +38,10 @@ namespace ExamManager
             flp_teacher_entitys.Controls.Clear();
 
             teacher_entity_list.Clear();
-            long starttime = DateTime.Now.Millisecond;
             foreach (string[] s in database.GetAllTeachers())
             {
                 if ((teacherIdList != null && teacherIdList.Contains(s[0])) || teacherIdList == null)
                 {
-
                     FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
                     //panel_teacher.Height = 80;
                     panel_teacher.Width = flp_teacher_entitys.Width - 28;
@@ -110,26 +108,20 @@ namespace ExamManager
                     teacher_entity_list.AddLast(panel_teacher);
                 }
             }
-            Console.Write("UpdateTeacherList time[ms]: >>>>>>>>>>>>>>> ");
-            Console.WriteLine(DateTime.Now.Millisecond - starttime);
-            starttime = DateTime.Now.Millisecond;
-            List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
+            /*List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
             temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
-            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);
+            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);*/
 
             foreach (Panel p in teacher_entity_list)
             {
                 flp_teacher_entitys.Controls.Add(p);
                 this.flp_teacher_entitys.SetFlowBreak(p, true);
             }
-            Console.Write("UpdateTeacherListFull time[ms]: >>>>>>>>>>>>>>> ");
-            Console.WriteLine(DateTime.Now.Millisecond - starttime);
         }
 
         private void AddTeacherEntity(string id) //TODO ################################################################
         {
             string[] s = database.GetTeacherByID(id.ToString());
-            long starttime = DateTime.Now.Millisecond;
             FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
             panel_teacher.Width = flp_teacher_entitys.Width - 28;
             panel_teacher.Margin = new Padding(5);
@@ -192,22 +184,16 @@ namespace ExamManager
             panel_teacher.Controls.Add(btn_teacher_delete);
             teacher_entity_list.AddLast(panel_teacher);
 
-            Console.Write("UpdateTeacherList time[ms]: >>>>>>>>>>>>>>> ");
-            Console.WriteLine(DateTime.Now.Millisecond - starttime);
-
-            long starttime2 = DateTime.Now.Millisecond;
-            List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
+            /*List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
             temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
-            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);
+            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);*/
             flp_teacher_entitys.Controls.Clear();
             //foreach (FlowLayoutPanel p in teacher_entity_list) p.Dispose();
             foreach (Panel p in teacher_entity_list)
             {
-                flp_teacher_entitys.Controls.Add(p);
+                this.flp_teacher_entitys.Controls.Add(p);
                 this.flp_teacher_entitys.SetFlowBreak(p, true);
             }
-            Console.Write("UpdateTeacherListFull time[ms]: >>>>>>>>>>>>>>> ");
-            Console.WriteLine(DateTime.Now.Millisecond - starttime2);
         }
 
         private void btn_teacher_delete_Click(object sender, EventArgs e)
