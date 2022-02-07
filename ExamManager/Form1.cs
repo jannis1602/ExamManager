@@ -415,12 +415,13 @@ namespace ExamManager
                         if (filterMode == Filter.all)
                         {
                             p.Controls.Add(panel_tl_entity);
-
+                            time_line_entity_list.AddLast(panel_tl_entity);
                         }
                         else if (filterMode == Filter.grade && student[3].Equals(filter))
                         {
                             tempRoomFilterList.AddLast(exam[3]);
                             p.Controls.Add(panel_tl_entity);
+                            time_line_entity_list.AddLast(panel_tl_entity);
                         }
                         //else time_line_entity_list.Remove(panel_tl_entity);
                     }
@@ -436,16 +437,24 @@ namespace ExamManager
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
             string[] exam = database.GetExamById(Int32.Parse(itm.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-            if (swapExam != 0)
+            if (swapExam == 0)
+            {
+                swapExam = Int32.Parse(itm.Name);
+                foreach (Panel p in time_line_entity_list)
+                {
+                    if (Int32.Parse(p.Name) == swapExam)
+                    { p.Refresh(); break; }
+                }
+            }
+            else if (swapExam != 0)
             {
                 string[] e1 = database.GetExamById(swapExam);
                 string[] e2 = database.GetExamById(Int32.Parse(itm.Name));
+                if (e1[0] == e2[0]) { swapExam = 0; return; }
                 foreach (Panel p in time_line_entity_list)
                 {
-                    Console.WriteLine(p.Name);
                     if (p.Name == e1[0]) p.Refresh();
                 }
-                if (e1[0] == e2[0]) { swapExam = 0; return; }
                 DialogResult result = MessageBox.Show("Prüfung Tauschen?", "Warnung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
@@ -454,16 +463,10 @@ namespace ExamManager
                     swapExam = 0;
                     update_timeline();
                 }
-            }
-            else
-            {
-                swapExam = Int32.Parse(itm.Name);
-                Console.WriteLine("----------- " + swapExam);
-                foreach (Panel p in time_line_entity_list)
+                else
                 {
-                    Console.WriteLine(" #### #### " + p.Name);
-                    if (Int32.Parse(p.Name) == swapExam)
-                    { Console.WriteLine(" #### #### " + p.Name); p.Refresh(); break; }
+                    swapExam = 0;
+                    foreach (Panel p in time_line_entity_list) { p.Refresh(); }
                 }
             }
         }
@@ -514,6 +517,8 @@ namespace ExamManager
             else this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
             this.cb_subject.Text = exam[9];
             this.tb_duration.Text = exam[10];
+
+            foreach (Panel p in time_line_entity_list) { p.Refresh(); }
 
 
             if (cb_show_subjectteacher.Checked)
@@ -761,13 +766,21 @@ namespace ExamManager
                         Color.Red, 2, ButtonBorderStyle.Solid);
                     }
             }
-            if (swapExam.ToString() == panel_tl_entity.Name)
+            if (swapExam == Int32.Parse(panel_tl_entity.Name))
             {
                 ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
                 Color.Orange, 3, ButtonBorderStyle.Dashed,
                 Color.Orange, 3, ButtonBorderStyle.Dashed,
                 Color.Orange, 3, ButtonBorderStyle.Dashed,
                 Color.Orange, 3, ButtonBorderStyle.Dashed);
+            }
+            if (id == Int32.Parse(panel_tl_entity.Name))
+            {
+                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed);
             }
 
             StringFormat stringFormat = new StringFormat();
