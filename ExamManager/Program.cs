@@ -33,7 +33,6 @@ namespace ExamManager
             // daten -> rename to "hinzufügen" (schueler/lehrer...)
             // prep room can be null
             // color theme
-            // load teacher from file
             // export data to txt file
             // if get student > 1 -> error! + Message
             // connection status?
@@ -43,6 +42,16 @@ namespace ExamManager
             // remove addexam if id=null
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
             // exam doppelclick -> open edit and mark exam in timeline
+            // teacher email
+            // exam gleicher lehrer
+            // fächer lehrer filtern -> WARNUNG -> +ausnahmen
+            // edit students form faster load
+            // readteacherfile -> add subject
+            // select teacher -> delete multiple
+            // filter grade order abc
+            // show filter
+            // filter teacher
+            // hide timelines without exams in filter
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');

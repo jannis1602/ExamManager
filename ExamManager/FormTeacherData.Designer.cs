@@ -29,6 +29,7 @@ namespace ExamManager
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTeacherData));
             this.tableLayoutPanel_main = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -38,8 +39,11 @@ namespace ExamManager
             this.btn_add_teacher = new System.Windows.Forms.Button();
             this.flp_subjects = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_subject1 = new System.Windows.Forms.Label();
+            this.cb_subject1 = new System.Windows.Forms.ComboBox();
             this.lbl_subject2 = new System.Windows.Forms.Label();
+            this.cb_subject2 = new System.Windows.Forms.ComboBox();
             this.lbl_subject3 = new System.Windows.Forms.Label();
+            this.cb_subject3 = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.flp_teacher_name = new System.Windows.Forms.FlowLayoutPanel();
@@ -51,9 +55,6 @@ namespace ExamManager
             this.tb_shortname = new System.Windows.Forms.TextBox();
             this.btn_hint = new System.Windows.Forms.Button();
             this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
-            this.cb_subject1 = new System.Windows.Forms.ComboBox();
-            this.cb_subject2 = new System.Windows.Forms.ComboBox();
-            this.cb_subject3 = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -173,31 +174,70 @@ namespace ExamManager
             this.lbl_subject1.Location = new System.Drawing.Point(3, 6);
             this.lbl_subject1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_subject1.Name = "lbl_subject1";
-            this.lbl_subject1.Size = new System.Drawing.Size(62, 20);
+            this.lbl_subject1.Size = new System.Drawing.Size(68, 20);
             this.lbl_subject1.TabIndex = 0;
-            this.lbl_subject1.Text = "Fach 1:";
+            this.lbl_subject1.Text = "Fach 1*:";
+            // 
+            // cb_subject1
+            // 
+            this.cb_subject1.DropDownHeight = 100;
+            this.cb_subject1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject1.FormattingEnabled = true;
+            this.cb_subject1.IntegralHeight = false;
+            this.cb_subject1.Location = new System.Drawing.Point(77, 3);
+            this.cb_subject1.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject1.Name = "cb_subject1";
+            this.cb_subject1.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject1.TabIndex = 10;
             // 
             // lbl_subject2
             // 
             this.lbl_subject2.AutoSize = true;
             this.lbl_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject2.Location = new System.Drawing.Point(257, 6);
+            this.lbl_subject2.Location = new System.Drawing.Point(263, 6);
             this.lbl_subject2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_subject2.Name = "lbl_subject2";
             this.lbl_subject2.Size = new System.Drawing.Size(62, 20);
             this.lbl_subject2.TabIndex = 5;
             this.lbl_subject2.Text = "Fach 2:";
             // 
+            // cb_subject2
+            // 
+            this.cb_subject2.DropDownHeight = 100;
+            this.cb_subject2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject2.FormattingEnabled = true;
+            this.cb_subject2.IntegralHeight = false;
+            this.cb_subject2.Location = new System.Drawing.Point(331, 3);
+            this.cb_subject2.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject2.Name = "cb_subject2";
+            this.cb_subject2.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject2.TabIndex = 11;
+            // 
             // lbl_subject3
             // 
             this.lbl_subject3.AutoSize = true;
             this.lbl_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_subject3.Location = new System.Drawing.Point(511, 6);
+            this.lbl_subject3.Location = new System.Drawing.Point(517, 6);
             this.lbl_subject3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_subject3.Name = "lbl_subject3";
             this.lbl_subject3.Size = new System.Drawing.Size(62, 20);
             this.lbl_subject3.TabIndex = 6;
             this.lbl_subject3.Text = "Fach 3:";
+            // 
+            // cb_subject3
+            // 
+            this.cb_subject3.DropDownHeight = 100;
+            this.cb_subject3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_subject3.FormattingEnabled = true;
+            this.cb_subject3.IntegralHeight = false;
+            this.cb_subject3.Location = new System.Drawing.Point(585, 3);
+            this.cb_subject3.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_subject3.Name = "cb_subject3";
+            this.cb_subject3.Size = new System.Drawing.Size(180, 28);
+            this.cb_subject3.TabIndex = 12;
             // 
             // tableLayoutPanel1
             // 
@@ -249,14 +289,14 @@ namespace ExamManager
             this.lbl_firstname.Location = new System.Drawing.Point(3, 6);
             this.lbl_firstname.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_firstname.Name = "lbl_firstname";
-            this.lbl_firstname.Size = new System.Drawing.Size(78, 20);
+            this.lbl_firstname.Size = new System.Drawing.Size(84, 20);
             this.lbl_firstname.TabIndex = 0;
-            this.lbl_firstname.Text = "Vorname:";
+            this.lbl_firstname.Text = "Vorname*:";
             // 
             // tb_firstname
             // 
             this.tb_firstname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_firstname.Location = new System.Drawing.Point(87, 3);
+            this.tb_firstname.Location = new System.Drawing.Point(93, 3);
             this.tb_firstname.Name = "tb_firstname";
             this.tb_firstname.Size = new System.Drawing.Size(160, 26);
             this.tb_firstname.TabIndex = 4;
@@ -266,17 +306,17 @@ namespace ExamManager
             // 
             this.lbl_lastname.AutoSize = true;
             this.lbl_lastname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_lastname.Location = new System.Drawing.Point(253, 6);
+            this.lbl_lastname.Location = new System.Drawing.Point(259, 6);
             this.lbl_lastname.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_lastname.Name = "lbl_lastname";
-            this.lbl_lastname.Size = new System.Drawing.Size(90, 20);
+            this.lbl_lastname.Size = new System.Drawing.Size(96, 20);
             this.lbl_lastname.TabIndex = 0;
-            this.lbl_lastname.Text = "Nachname:";
+            this.lbl_lastname.Text = "Nachname*:";
             // 
             // tb_lastname
             // 
             this.tb_lastname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_lastname.Location = new System.Drawing.Point(349, 3);
+            this.tb_lastname.Location = new System.Drawing.Point(361, 3);
             this.tb_lastname.Name = "tb_lastname";
             this.tb_lastname.Size = new System.Drawing.Size(160, 26);
             this.tb_lastname.TabIndex = 5;
@@ -286,17 +326,17 @@ namespace ExamManager
             // 
             this.lbl_shortname.AutoSize = true;
             this.lbl_shortname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_shortname.Location = new System.Drawing.Point(515, 6);
+            this.lbl_shortname.Location = new System.Drawing.Point(527, 6);
             this.lbl_shortname.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.lbl_shortname.Name = "lbl_shortname";
-            this.lbl_shortname.Size = new System.Drawing.Size(57, 20);
+            this.lbl_shortname.Size = new System.Drawing.Size(63, 20);
             this.lbl_shortname.TabIndex = 0;
-            this.lbl_shortname.Text = "Kürzel:";
+            this.lbl_shortname.Text = "Kürzel*:";
             // 
             // tb_shortname
             // 
             this.tb_shortname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_shortname.Location = new System.Drawing.Point(578, 3);
+            this.tb_shortname.Location = new System.Drawing.Point(596, 3);
             this.tb_shortname.Name = "tb_shortname";
             this.tb_shortname.Size = new System.Drawing.Size(60, 26);
             this.tb_shortname.TabIndex = 6;
@@ -307,7 +347,7 @@ namespace ExamManager
             this.btn_hint.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.btn_hint.FlatAppearance.BorderSize = 2;
             this.btn_hint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_hint.Location = new System.Drawing.Point(644, 3);
+            this.btn_hint.Location = new System.Drawing.Point(662, 3);
             this.btn_hint.Name = "btn_hint";
             this.btn_hint.Size = new System.Drawing.Size(50, 26);
             this.btn_hint.TabIndex = 8;
@@ -328,55 +368,15 @@ namespace ExamManager
             this.flp_teacher_entitys.TabIndex = 20;
             this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
             // 
-            // cb_subject1
-            // 
-            this.cb_subject1.DropDownHeight = 100;
-            this.cb_subject1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_subject1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.cb_subject1.FormattingEnabled = true;
-            this.cb_subject1.IntegralHeight = false;
-            this.cb_subject1.Location = new System.Drawing.Point(71, 3);
-            this.cb_subject1.MaximumSize = new System.Drawing.Size(180, 0);
-            this.cb_subject1.Name = "cb_subject1";
-            this.cb_subject1.Size = new System.Drawing.Size(180, 28);
-            this.cb_subject1.TabIndex = 10;
-            // 
-            // cb_subject2
-            // 
-            this.cb_subject2.DropDownHeight = 100;
-            this.cb_subject2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_subject2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.cb_subject2.FormattingEnabled = true;
-            this.cb_subject2.IntegralHeight = false;
-            this.cb_subject2.Location = new System.Drawing.Point(325, 3);
-            this.cb_subject2.MaximumSize = new System.Drawing.Size(180, 0);
-            this.cb_subject2.Name = "cb_subject2";
-            this.cb_subject2.Size = new System.Drawing.Size(180, 28);
-            this.cb_subject2.TabIndex = 11;
-            // 
-            // cb_subject3
-            // 
-            this.cb_subject3.DropDownHeight = 100;
-            this.cb_subject3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_subject3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.cb_subject3.FormattingEnabled = true;
-            this.cb_subject3.IntegralHeight = false;
-            this.cb_subject3.Location = new System.Drawing.Point(579, 3);
-            this.cb_subject3.MaximumSize = new System.Drawing.Size(180, 0);
-            this.cb_subject3.Name = "cb_subject3";
-            this.cb_subject3.Size = new System.Drawing.Size(180, 28);
-            this.cb_subject3.TabIndex = 12;
-            // 
             // FormTeacherData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 501);
             this.Controls.Add(this.tableLayoutPanel_main);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormTeacherData";
             this.Text = "Lehrer hinzufügen";
-            this.Load += new System.EventHandler(this.FormTeacherData_Load);
             this.tableLayoutPanel_main.ResumeLayout(false);
             this.tlp_edit.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

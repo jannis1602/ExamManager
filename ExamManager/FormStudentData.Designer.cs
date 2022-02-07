@@ -29,6 +29,7 @@ namespace ExamManager
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormStudentData));
             this.tableLayoutPanel_main = new System.Windows.Forms.TableLayoutPanel();
             this.flp_student_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
@@ -320,6 +321,7 @@ namespace ExamManager
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 501);
             this.Controls.Add(this.tableLayoutPanel_main);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormStudentData";
             this.Text = "Schüler hinzufügen";
             this.tableLayoutPanel_main.ResumeLayout(false);

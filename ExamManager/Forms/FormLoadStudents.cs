@@ -43,7 +43,6 @@ namespace ExamManager
             if (cb_existinggrade.SelectedIndex == 0)
                 grade = tb_newgrade.Text;
             else grade = cb_existinggrade.SelectedItem.ToString();
-            Console.WriteLine(grade);
             if (grade.Length < 1)
                 return;
             this.Dispose();

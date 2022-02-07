@@ -8,12 +8,13 @@ namespace ExamManager
     public partial class FormSearch : Form
     {
         Form1 form;
-        TextBox tb_search;
         ComboBox cb_search;
+        int searchmode = 0;
         public FormSearch(int mode, Form1 form)
         {
             this.form = form;
             InitializeComponent();
+            this.searchmode = mode;
             if (mode == 0)
             {
                 // ## [DEV] ##
@@ -153,21 +154,27 @@ namespace ExamManager
 
         private void search()
         {
-            if (tb_search != null)
-                if (tb_search.Text.Length > 0)
-                {
-                    this.tb_search.Select(this.tb_search.Text.Length - 1, 0);
-                    form.search = tb_search.Text.First().ToString().ToUpper() + (tb_search.Text.Substring(1));
-                    form.update_timeline();
-                    this.Dispose();
-                }
             if (cb_search != null)
                 if (cb_search.Text.Length > 0)
                 {
-                    this.cb_search.Select(this.cb_search.Text.Length - 1, 0);
-                    form.search = cb_search.Text;
-                    form.update_timeline();
-                    this.Dispose();
+                    if (searchmode == 0)    // teacher
+                    {
+                        form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
+                        form.update_timeline();
+                        this.Dispose();
+                    }
+                    else if (searchmode == 1)  // student
+                    {
+                        form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
+                        form.update_timeline();
+                        this.Dispose();
+                    }
+                    else
+                    {
+                        form.search = cb_search.Text;
+                        form.update_timeline();
+                        this.Dispose();
+                    }
                 }
         }
         private void btn_search_Click(object sender, EventArgs e)

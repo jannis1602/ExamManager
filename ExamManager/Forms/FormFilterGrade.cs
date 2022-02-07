@@ -12,8 +12,10 @@ namespace ExamManager
 {
     public partial class FormFilterGrade : Form
     {
-        public FormFilterGrade()
+        Form1 form;
+        public FormFilterGrade(Form1 form)
         {
+            this.form = form;
             InitializeComponent();
             LinkedList<string[]> allStudents = Program.database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
@@ -33,7 +35,11 @@ namespace ExamManager
         {
             if (cb_grade.SelectedItem.ToString() != null)
             {
-                cb_grade.SelectedItem = null;
+                Console.WriteLine("FILTER: "+cb_grade.SelectedItem.ToString());
+                form.filterMode = Form1.Filter.grade;
+                form.filter = cb_grade.SelectedItem.ToString();
+
+                /*cb_grade.SelectedItem = null;
                 cb_grade.Items.Clear();
                 LinkedList<string[]> allStudents = Program.database.GetAllStudents();
                 LinkedList<string> gradeList = new LinkedList<string>();
@@ -46,7 +52,7 @@ namespace ExamManager
                 string[] list = new string[gradeList.Count];
                 for (int i = 0; i < gradeList.Count; i++)
                     list[i] = gradeList.ElementAt(i);
-                cb_grade.Items.AddRange(list);
+                cb_grade.Items.AddRange(list);*/
                 this.Dispose();
             }
         }

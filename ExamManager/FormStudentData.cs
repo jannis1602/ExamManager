@@ -46,14 +46,14 @@ namespace ExamManager
                 {
                     FlowLayoutPanel panel_student = new FlowLayoutPanel();
                     //panel_student.Size = new Size(950, 80);
-                    panel_student.Height = 80;
-                    panel_student.Width = flp_student_entitys.Width - 28;
+                    //panel_student.Height = 80;
+                    //panel_student.Width = flp_student_entitys.Width - 28;
                     panel_student.Margin = new Padding(5);
                     panel_student.BackColor = Color.LightBlue;
                     panel_student.Name = s[2];
                     // -- NAME --
                     Label lbl_student_name = new Label();
-                    lbl_student_name.Size = new Size(140, panel_student.Height);
+                    lbl_student_name.Size = new Size(180, panel_student.Height);
                     lbl_student_name.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                     lbl_student_name.Text = s[1] + " " + s[2];
                     lbl_student_name.TextAlign = ContentAlignment.MiddleLeft;
@@ -134,7 +134,15 @@ namespace ExamManager
             if (result == DialogResult.Yes)
             {
                 database.DeleteStudent(Int32.Parse(btn.Name));
-                UpdateStudentList();
+                foreach (FlowLayoutPanel flp in student_entity_list)
+                {
+                    if (flp.Name == btn.Name)
+                    {
+                        flp_student_entitys.Controls.Remove(flp);
+                        flp_student_entitys.Update();
+                    }
+                }
+                //UpdateStudentList();
             }
         }
 
@@ -205,7 +213,7 @@ namespace ExamManager
             string domain = Properties.Settings.Default.email_domain;
             if (domain.Length < 2)
                 MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
-            tb_email.Text = tb_firstname.Text.Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.Replace(" ", ".").Replace('_', '.') + "@" + domain;
+            tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
 
         private void flp_student_entitys_SizeChanged(object sender, EventArgs e)
@@ -220,6 +228,7 @@ namespace ExamManager
         {
             if (tb_firstname.Text.Contains(' ') || tb_lastname.Text.Contains(' '))
                 btn_hint.Visible = true;
+            else btn_hint.Visible = false;
         }
 
         private void btn_hint_Click(object sender, EventArgs e)

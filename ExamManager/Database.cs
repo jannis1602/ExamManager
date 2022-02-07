@@ -97,7 +97,7 @@ namespace ExamManager
                                 if (mailgenerator)
                                 {
                                     string domain = Properties.Settings.Default.email_domain;
-                                    string mail = tempfirstname.Replace(' ', '.').Replace('_', '.') + "." + templastname.Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                    string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                     AddStudent(tempfirstname, templastname, grade, mail);
                                     //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
                                 }
@@ -125,7 +125,7 @@ namespace ExamManager
                                         if (mailgenerator)
                                         {
                                             string domain = Properties.Settings.Default.email_domain;
-                                            string mail = tempfirstname.Replace(' ', '.').Replace('_', '.') + "." + templastname.Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                            string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                             AddStudent(tempfirstname, templastname, grade, mail);
                                         }
                                         else AddStudent(tempfirstname, templastname, grade);
@@ -139,7 +139,7 @@ namespace ExamManager
                             if (mailgenerator)
                             {
                                 string domain = Properties.Settings.Default.email_domain;
-                                string mail = line.Split(' ')[0].Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail);
                                 studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
                             }
@@ -281,6 +281,63 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
             sqlite_cmd.ExecuteNonQuery();
         }
+        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen?  // Herr vor nach short M, EK, SP
+        {
+            //bool editDoppelnamen = false;
+            LinkedList<string> teacherIdList = new LinkedList<string>();
+            if (File.Exists(file))
+            {
+                string[] lines = File.ReadAllLines(file);
+                foreach (string line in lines)
+                {
+                    if (!line[0].Equals('#'))
+                        if (line.Split(' ').Length > 2) // .Replace("\t", " ")
+                        {       // kein doppelnamen
+                            string[] t = line.Replace("dr.", "").Replace(",", "").Split(' ');
+                            if (mailgenerator)
+                            {
+                                string domain = Properties.Settings.Default.email_domain;
+                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                if (t.Length == 5)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4]);
+                                else if (t.Length == 6)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5]);
+                                else if (t.Length == 7)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5], t[6]);
+                                teacherIdList.AddLast(t[3]);
+                            }
+                            else
+                            {
+                                if (t.Length == 5)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4]);
+                                else if (t.Length == 6)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5]);
+                                else if (t.Length == 7)
+                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5], t[6]);
+                                teacherIdList.AddLast(t[3]);
+                            }
+                            if (t.Length >= 5)
+                            {
+                                if (GetSubject(t[4]).Length == 0)
+                                    AddSubject(t[4]);
+                            }
+                            if (t.Length >= 6)
+                            {
+                                if (GetSubject(t[5]).Length == 0)
+                                    AddSubject(t[5]);
+                            }
+                            if (t.Length == 7)
+                            {
+                                if (GetSubject(t[6]).Length == 0)
+                                    AddSubject(t[6]);
+                            }
+
+                        }
+                }
+            }
+            FormTeacherData form = new FormTeacherData(teacherIdList);
+            form.ShowDialog();
+        }
 
         public LinkedList<string[]> GetAllTeachers()
         {
@@ -318,6 +375,29 @@ namespace ExamManager
             else return null;
             return data;
         }
+
+        public LinkedList<string[]> GetTeacherBySubject(string subject)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE subject1 = @subject OR subject2 = @subject OR subject3 = @subject";
+            sqlite_cmd.Parameters.AddWithValue("@subject", subject);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[7];
+                    for (int i = 0; i < 7; i++)
+                        rowData[i] = reader.GetValue(i).ToString();
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
+
 
         public string[] GetTeacherByName(string firstname, string lastname)
         {
