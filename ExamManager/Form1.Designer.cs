@@ -1,4 +1,3 @@
-﻿
 namespace ExamManager
 {
     partial class Form1
@@ -73,6 +72,7 @@ namespace ExamManager
             this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_tools_extra = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_info_keys = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -174,7 +174,7 @@ namespace ExamManager
             this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.tlp_main.Size = new System.Drawing.Size(784, 411);
+            this.tlp_main.Size = new System.Drawing.Size(944, 501);
             this.tlp_main.TabIndex = 2;
             // 
             // flowLayoutPanel_menu
@@ -500,7 +500,8 @@ namespace ExamManager
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_tools_deleteOldExams});
+            this.tsmi_tools_deleteOldExams,
+            this.tsmi_tools_extra});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
             this.toolsToolStripMenuItem.Text = "Tools [DEV]";
@@ -510,6 +511,12 @@ namespace ExamManager
             this.tsmi_tools_deleteOldExams.Name = "tsmi_tools_deleteOldExams";
             this.tsmi_tools_deleteOldExams.Size = new System.Drawing.Size(228, 22);
             this.tsmi_tools_deleteOldExams.Text = "alte Prüfungen löschen [DEV]";
+            // 
+            // tsmi_tools_extra
+            // 
+            this.tsmi_tools_extra.Name = "tsmi_tools_extra";
+            this.tsmi_tools_extra.Size = new System.Drawing.Size(228, 22);
+            this.tsmi_tools_extra.Text = "Extras [DEV]";
             // 
             // infoToolStripMenuItem
             // 
@@ -537,7 +544,7 @@ namespace ExamManager
             this.tableLayoutPanel2.Controls.Add(this.tlp_1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tlp_2, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 161);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 251);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
@@ -546,15 +553,15 @@ namespace ExamManager
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(784, 250);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(944, 250);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel3.Controls.Add(this.btn_add_exam, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.tlp_student, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
@@ -565,14 +572,14 @@ namespace ExamManager
             this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(5);
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(784, 50);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(944, 50);
             this.tableLayoutPanel3.TabIndex = 8;
             // 
             // btn_add_exam
             // 
             this.btn_add_exam.Dock = System.Windows.Forms.DockStyle.Right;
             this.btn_add_exam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add_exam.Location = new System.Drawing.Point(593, 5);
+            this.btn_add_exam.Location = new System.Drawing.Point(753, 5);
             this.btn_add_exam.Margin = new System.Windows.Forms.Padding(0);
             this.btn_add_exam.Name = "btn_add_exam";
             this.btn_add_exam.Size = new System.Drawing.Size(186, 40);
@@ -593,7 +600,7 @@ namespace ExamManager
             this.tlp_student.Name = "tlp_student";
             this.tlp_student.RowCount = 1;
             this.tlp_student.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_student.Size = new System.Drawing.Size(400, 36);
+            this.tlp_student.Size = new System.Drawing.Size(442, 36);
             this.tlp_student.TabIndex = 4;
             // 
             // cb_student
@@ -683,7 +690,7 @@ namespace ExamManager
             this.tlp_4.Padding = new System.Windows.Forms.Padding(5);
             this.tlp_4.RowCount = 1;
             this.tlp_4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_4.Size = new System.Drawing.Size(784, 50);
+            this.tlp_4.Size = new System.Drawing.Size(944, 50);
             this.tlp_4.TabIndex = 7;
             // 
             // tlp_teacher3
@@ -693,12 +700,12 @@ namespace ExamManager
             this.tlp_teacher3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_teacher3.Controls.Add(this.cb_teacher3, 0, 0);
             this.tlp_teacher3.Controls.Add(this.lbl_teacher3, 0, 0);
-            this.tlp_teacher3.Location = new System.Drawing.Point(521, 5);
+            this.tlp_teacher3.Location = new System.Drawing.Point(627, 5);
             this.tlp_teacher3.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_teacher3.Name = "tlp_teacher3";
             this.tlp_teacher3.RowCount = 1;
             this.tlp_teacher3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_teacher3.Size = new System.Drawing.Size(258, 40);
+            this.tlp_teacher3.Size = new System.Drawing.Size(312, 40);
             this.tlp_teacher3.TabIndex = 6;
             // 
             // cb_teacher3
@@ -708,10 +715,11 @@ namespace ExamManager
             this.cb_teacher3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher3.FormattingEnabled = true;
             this.cb_teacher3.IntegralHeight = false;
-            this.cb_teacher3.Location = new System.Drawing.Point(68, 9);
-            this.cb_teacher3.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_teacher3.Location = new System.Drawing.Point(139, 9);
+            this.cb_teacher3.MaximumSize = new System.Drawing.Size(220, 0);
+            this.cb_teacher3.MinimumSize = new System.Drawing.Size(150, 0);
             this.cb_teacher3.Name = "cb_teacher3";
-            this.cb_teacher3.Size = new System.Drawing.Size(180, 28);
+            this.cb_teacher3.Size = new System.Drawing.Size(170, 28);
             this.cb_teacher3.TabIndex = 9;
             // 
             // lbl_teacher3
@@ -722,9 +730,9 @@ namespace ExamManager
             this.lbl_teacher3.Location = new System.Drawing.Point(3, 17);
             this.lbl_teacher3.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_teacher3.Name = "lbl_teacher3";
-            this.lbl_teacher3.Size = new System.Drawing.Size(59, 20);
+            this.lbl_teacher3.Size = new System.Drawing.Size(130, 20);
             this.lbl_teacher3.TabIndex = 1;
-            this.lbl_teacher3.Text = "Lehrer:";
+            this.lbl_teacher3.Text = "Lehrer(Protokoll):";
             this.lbl_teacher3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_teacher1
@@ -739,7 +747,7 @@ namespace ExamManager
             this.tlp_teacher1.Name = "tlp_teacher1";
             this.tlp_teacher1.RowCount = 1;
             this.tlp_teacher1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_teacher1.Size = new System.Drawing.Size(253, 40);
+            this.tlp_teacher1.Size = new System.Drawing.Size(311, 40);
             this.tlp_teacher1.TabIndex = 4;
             // 
             // cb_teacher1
@@ -749,10 +757,11 @@ namespace ExamManager
             this.cb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher1.FormattingEnabled = true;
             this.cb_teacher1.IntegralHeight = false;
-            this.cb_teacher1.Location = new System.Drawing.Point(68, 9);
-            this.cb_teacher1.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_teacher1.Location = new System.Drawing.Point(127, 9);
+            this.cb_teacher1.MaximumSize = new System.Drawing.Size(220, 0);
+            this.cb_teacher1.MinimumSize = new System.Drawing.Size(100, 0);
             this.cb_teacher1.Name = "cb_teacher1";
-            this.cb_teacher1.Size = new System.Drawing.Size(180, 28);
+            this.cb_teacher1.Size = new System.Drawing.Size(181, 28);
             this.cb_teacher1.TabIndex = 8;
             // 
             // lbl_teacher1
@@ -763,9 +772,9 @@ namespace ExamManager
             this.lbl_teacher1.Location = new System.Drawing.Point(3, 17);
             this.lbl_teacher1.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_teacher1.Name = "lbl_teacher1";
-            this.lbl_teacher1.Size = new System.Drawing.Size(59, 20);
+            this.lbl_teacher1.Size = new System.Drawing.Size(118, 20);
             this.lbl_teacher1.TabIndex = 1;
-            this.lbl_teacher1.Text = "Lehrer:";
+            this.lbl_teacher1.Text = "Lehrer(Vorsitz):";
             this.lbl_teacher1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_teacher2
@@ -775,12 +784,12 @@ namespace ExamManager
             this.tlp_teacher2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_teacher2.Controls.Add(this.cb_teacher2, 0, 0);
             this.tlp_teacher2.Controls.Add(this.lbl_teacher2, 0, 0);
-            this.tlp_teacher2.Location = new System.Drawing.Point(263, 5);
+            this.tlp_teacher2.Location = new System.Drawing.Point(316, 5);
             this.tlp_teacher2.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_teacher2.Name = "tlp_teacher2";
             this.tlp_teacher2.RowCount = 1;
             this.tlp_teacher2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_teacher2.Size = new System.Drawing.Size(253, 40);
+            this.tlp_teacher2.Size = new System.Drawing.Size(311, 40);
             this.tlp_teacher2.TabIndex = 5;
             // 
             // cb_teacher2
@@ -790,10 +799,11 @@ namespace ExamManager
             this.cb_teacher2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher2.FormattingEnabled = true;
             this.cb_teacher2.IntegralHeight = false;
-            this.cb_teacher2.Location = new System.Drawing.Point(68, 9);
-            this.cb_teacher2.MaximumSize = new System.Drawing.Size(180, 0);
+            this.cb_teacher2.Location = new System.Drawing.Point(121, 9);
+            this.cb_teacher2.MaximumSize = new System.Drawing.Size(220, 0);
+            this.cb_teacher2.MinimumSize = new System.Drawing.Size(150, 0);
             this.cb_teacher2.Name = "cb_teacher2";
-            this.cb_teacher2.Size = new System.Drawing.Size(180, 28);
+            this.cb_teacher2.Size = new System.Drawing.Size(187, 28);
             this.cb_teacher2.TabIndex = 9;
             // 
             // lbl_teacher2
@@ -804,9 +814,9 @@ namespace ExamManager
             this.lbl_teacher2.Location = new System.Drawing.Point(3, 17);
             this.lbl_teacher2.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_teacher2.Name = "lbl_teacher2";
-            this.lbl_teacher2.Size = new System.Drawing.Size(59, 20);
+            this.lbl_teacher2.Size = new System.Drawing.Size(112, 20);
             this.lbl_teacher2.TabIndex = 1;
-            this.lbl_teacher2.Text = "Lehrer:";
+            this.lbl_teacher2.Text = "Lehrer(Prüfer):";
             this.lbl_teacher2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlp_3
@@ -825,7 +835,7 @@ namespace ExamManager
             this.tlp_3.Padding = new System.Windows.Forms.Padding(5);
             this.tlp_3.RowCount = 1;
             this.tlp_3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_3.Size = new System.Drawing.Size(784, 50);
+            this.tlp_3.Size = new System.Drawing.Size(944, 50);
             this.tlp_3.TabIndex = 6;
             // 
             // tlp_subject
@@ -840,7 +850,7 @@ namespace ExamManager
             this.tlp_subject.Name = "tlp_subject";
             this.tlp_subject.RowCount = 1;
             this.tlp_subject.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_subject.Size = new System.Drawing.Size(253, 40);
+            this.tlp_subject.Size = new System.Drawing.Size(311, 40);
             this.tlp_subject.TabIndex = 4;
             // 
             // lbl_subject
@@ -878,12 +888,12 @@ namespace ExamManager
             this.tlp_preparation_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_preparation_room.Controls.Add(this.cb_preparation_room, 0, 0);
             this.tlp_preparation_room.Controls.Add(this.lbl_preparation_room, 0, 0);
-            this.tlp_preparation_room.Location = new System.Drawing.Point(521, 5);
+            this.tlp_preparation_room.Location = new System.Drawing.Point(627, 5);
             this.tlp_preparation_room.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_preparation_room.Name = "tlp_preparation_room";
             this.tlp_preparation_room.RowCount = 1;
             this.tlp_preparation_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_preparation_room.Size = new System.Drawing.Size(258, 40);
+            this.tlp_preparation_room.Size = new System.Drawing.Size(312, 40);
             this.tlp_preparation_room.TabIndex = 6;
             // 
             // cb_preparation_room
@@ -920,12 +930,12 @@ namespace ExamManager
             this.tlp_exam_room.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_exam_room.Controls.Add(this.cb_exam_room, 0, 0);
             this.tlp_exam_room.Controls.Add(this.lbl_exam_room, 0, 0);
-            this.tlp_exam_room.Location = new System.Drawing.Point(263, 5);
+            this.tlp_exam_room.Location = new System.Drawing.Point(316, 5);
             this.tlp_exam_room.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_exam_room.Name = "tlp_exam_room";
             this.tlp_exam_room.RowCount = 1;
             this.tlp_exam_room.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_exam_room.Size = new System.Drawing.Size(253, 40);
+            this.tlp_exam_room.Size = new System.Drawing.Size(311, 40);
             this.tlp_exam_room.TabIndex = 5;
             // 
             // cb_exam_room
@@ -972,7 +982,7 @@ namespace ExamManager
             this.tlp_1.Name = "tlp_1";
             this.tlp_1.RowCount = 1;
             this.tlp_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_1.Size = new System.Drawing.Size(784, 50);
+            this.tlp_1.Size = new System.Drawing.Size(944, 50);
             this.tlp_1.TabIndex = 0;
             // 
             // lbl_mode
@@ -995,7 +1005,7 @@ namespace ExamManager
             this.flp_edit_btns.Controls.Add(this.btn_reuse_exam);
             this.flp_edit_btns.Controls.Add(this.btn_delete_exam);
             this.flp_edit_btns.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flp_edit_btns.Location = new System.Drawing.Point(633, 1);
+            this.flp_edit_btns.Location = new System.Drawing.Point(793, 1);
             this.flp_edit_btns.Margin = new System.Windows.Forms.Padding(1);
             this.flp_edit_btns.Name = "flp_edit_btns";
             this.flp_edit_btns.Size = new System.Drawing.Size(150, 48);
@@ -1099,6 +1109,7 @@ namespace ExamManager
             this.cb_show_subjectteacher.TabIndex = 7;
             this.cb_show_subjectteacher.Text = "Nur Fachlehrer anzeigen";
             this.cb_show_subjectteacher.UseVisualStyleBackColor = true;
+            this.cb_show_subjectteacher.CheckedChanged += new System.EventHandler(this.cb_show_subjectteacher_CheckedChanged);
             // 
             // tlp_2
             // 
@@ -1116,7 +1127,7 @@ namespace ExamManager
             this.tlp_2.Padding = new System.Windows.Forms.Padding(5);
             this.tlp_2.RowCount = 1;
             this.tlp_2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_2.Size = new System.Drawing.Size(784, 50);
+            this.tlp_2.Size = new System.Drawing.Size(944, 50);
             this.tlp_2.TabIndex = 1;
             // 
             // tlp_date
@@ -1131,7 +1142,7 @@ namespace ExamManager
             this.tlp_date.Name = "tlp_date";
             this.tlp_date.RowCount = 1;
             this.tlp_date.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_date.Size = new System.Drawing.Size(253, 40);
+            this.tlp_date.Size = new System.Drawing.Size(311, 40);
             this.tlp_date.TabIndex = 3;
             // 
             // lbl_date
@@ -1167,12 +1178,12 @@ namespace ExamManager
             this.tlp_duration.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_duration.Controls.Add(this.tb_duration, 1, 0);
             this.tlp_duration.Controls.Add(this.lbl_duration, 0, 0);
-            this.tlp_duration.Location = new System.Drawing.Point(521, 5);
+            this.tlp_duration.Location = new System.Drawing.Point(627, 5);
             this.tlp_duration.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_duration.Name = "tlp_duration";
             this.tlp_duration.RowCount = 1;
             this.tlp_duration.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_duration.Size = new System.Drawing.Size(258, 40);
+            this.tlp_duration.Size = new System.Drawing.Size(312, 40);
             this.tlp_duration.TabIndex = 5;
             // 
             // tb_duration
@@ -1207,12 +1218,12 @@ namespace ExamManager
             this.tlp_time.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlp_time.Controls.Add(this.dtp_time, 0, 0);
             this.tlp_time.Controls.Add(this.lbl_time, 0, 0);
-            this.tlp_time.Location = new System.Drawing.Point(263, 5);
+            this.tlp_time.Location = new System.Drawing.Point(316, 5);
             this.tlp_time.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_time.Name = "tlp_time";
             this.tlp_time.RowCount = 1;
             this.tlp_time.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_time.Size = new System.Drawing.Size(253, 40);
+            this.tlp_time.Size = new System.Drawing.Size(311, 40);
             this.tlp_time.TabIndex = 4;
             // 
             // dtp_time
@@ -1258,7 +1269,7 @@ namespace ExamManager
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 135);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(944, 225);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // panel_side_room
@@ -1270,7 +1281,7 @@ namespace ExamManager
             this.panel_side_room.Location = new System.Drawing.Point(0, 0);
             this.panel_side_room.Margin = new System.Windows.Forms.Padding(0);
             this.panel_side_room.Name = "panel_side_room";
-            this.panel_side_room.Size = new System.Drawing.Size(120, 135);
+            this.panel_side_room.Size = new System.Drawing.Size(120, 225);
             this.panel_side_room.TabIndex = 0;
             this.panel_side_room.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_room_Paint);
             // 
@@ -1304,7 +1315,7 @@ namespace ExamManager
             this.panel_time_line.Location = new System.Drawing.Point(120, 0);
             this.panel_time_line.Margin = new System.Windows.Forms.Padding(0);
             this.panel_time_line.Name = "panel_time_line";
-            this.panel_time_line.Size = new System.Drawing.Size(664, 135);
+            this.panel_time_line.Size = new System.Drawing.Size(824, 225);
             this.panel_time_line.TabIndex = 2;
             this.panel_time_line.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_time_line_master_Paint);
             // 
@@ -1316,7 +1327,7 @@ namespace ExamManager
             this.panel_side_time.Margin = new System.Windows.Forms.Padding(0);
             this.panel_side_time.MaximumSize = new System.Drawing.Size(0, 40);
             this.panel_side_time.Name = "panel_side_time";
-            this.panel_side_time.Size = new System.Drawing.Size(664, 40);
+            this.panel_side_time.Size = new System.Drawing.Size(824, 40);
             this.panel_side_time.TabIndex = 9;
             this.panel_side_time.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_time_Paint);
             // 
@@ -1328,7 +1339,7 @@ namespace ExamManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 411);
+            this.ClientSize = new System.Drawing.Size(944, 501);
             this.Controls.Add(this.tlp_main);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -1481,6 +1492,6 @@ namespace ExamManager
         private System.Windows.Forms.CheckBox cb_show_subjectteacher;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_all;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_teacher;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_tools_extra;
     }
 }
-

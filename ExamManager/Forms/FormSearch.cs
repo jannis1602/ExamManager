@@ -7,12 +7,10 @@ namespace ExamManager
 {
     public partial class FormSearch : Form
     {
-        Form1 form;
         ComboBox cb_search;
         int searchmode = 0;
-        public FormSearch(int mode, Form1 form)
+        public FormSearch(int mode)
         {
-            this.form = form;
             InitializeComponent();
             this.searchmode = mode;
             if (mode == 0)
@@ -46,7 +44,6 @@ namespace ExamManager
                 cb_search.AutoCompleteCustomSource = autocomplete_teacher;
                 cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                 cb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                form.search_index = 0;
             }
             else if (mode == 1) // student
             {
@@ -73,7 +70,6 @@ namespace ExamManager
                 cb_search.AutoCompleteCustomSource = autocomplete_student;
                 cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                 cb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                form.search_index = 1;
             }
             else if (mode == 2) // subject
             {
@@ -94,7 +90,6 @@ namespace ExamManager
                 for (int i = 0; i < subjectList.Count; i++)
                     subjects[i] = subjectList.ElementAt(i)[0];
                 cb_search.Items.AddRange(subjects);
-                form.search_index = 2;
             }
             else if (mode == 3) // room
             {
@@ -115,7 +110,6 @@ namespace ExamManager
                 for (int i = 0; i < roomList.Count; i++)
                     rooms[i] = roomList.ElementAt(i)[0];
                 cb_search.Items.AddRange(rooms);
-                form.search_index = 3;
             }
             else if (mode == 4) // grade
             {
@@ -143,7 +137,6 @@ namespace ExamManager
                 for (int i = 0; i < gradeList.Count; i++)
                     list[i] = gradeList.ElementAt(i);
                 cb_search.Items.AddRange(list);
-                form.search_index = 4;
             }
         }
 
@@ -159,28 +152,30 @@ namespace ExamManager
                 {
                     if (searchmode == 0)    // teacher
                     {
-                        form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        form.update_timeline();
+                        string s = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
+                        string tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1])[0];
+                        UpdateSearch.Invoke(tid, null);
+                        //form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
+                        //form.update_timeline();
                         this.Dispose();
                     }
                     else if (searchmode == 1)  // student
                     {
-                        form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        form.update_timeline();
+                        string s = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
+                        UpdateSearch.Invoke(s, null);
                         this.Dispose();
                     }
                     else
                     {
-                        form.search = cb_search.Text;
-                        form.update_timeline();
+                        string s = cb_search.Text;
+                        UpdateSearch.Invoke(s, null);
                         this.Dispose();
                     }
                 }
         }
+        public event EventHandler UpdateSearch;
         private void btn_search_Click(object sender, EventArgs e)
-        {
-            search();
-        }
+        { search(); }
 
         private void tb_search_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

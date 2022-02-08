@@ -51,12 +51,17 @@ namespace ExamManager
             this.tb_email = new System.Windows.Forms.TextBox();
             this.btn_email_generate = new System.Windows.Forms.Button();
             this.btn_add_student = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.tsmi_search = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_firstname = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_lastname = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flp_teacher_name.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel_main
@@ -66,13 +71,13 @@ namespace ExamManager
             this.tableLayoutPanel_main.Controls.Add(this.flp_student_entitys, 0, 0);
             this.tableLayoutPanel_main.Controls.Add(this.tlp_edit, 0, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.RowCount = 2;
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 501);
+            this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 477);
             this.tableLayoutPanel_main.TabIndex = 1;
             // 
             // flp_student_entitys
@@ -83,7 +88,7 @@ namespace ExamManager
             this.flp_student_entitys.Location = new System.Drawing.Point(0, 0);
             this.flp_student_entitys.Margin = new System.Windows.Forms.Padding(0);
             this.flp_student_entitys.Name = "flp_student_entitys";
-            this.flp_student_entitys.Size = new System.Drawing.Size(984, 421);
+            this.flp_student_entitys.Size = new System.Drawing.Size(984, 397);
             this.flp_student_entitys.TabIndex = 21;
             this.flp_student_entitys.SizeChanged += new System.EventHandler(this.flp_student_entitys_SizeChanged);
             // 
@@ -95,7 +100,7 @@ namespace ExamManager
             this.tlp_edit.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlp_edit.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tlp_edit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_edit.Location = new System.Drawing.Point(0, 421);
+            this.tlp_edit.Location = new System.Drawing.Point(0, 397);
             this.tlp_edit.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_edit.Name = "tlp_edit";
             this.tlp_edit.RowCount = 2;
@@ -315,13 +320,46 @@ namespace ExamManager
             this.btn_add_student.UseVisualStyleBackColor = true;
             this.btn_add_student.Click += new System.EventHandler(this.btn_add_student_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_search});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // tsmi_search
+            // 
+            this.tsmi_search.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_search_firstname,
+            this.tsmi_search_lastname});
+            this.tsmi_search.Name = "tsmi_search";
+            this.tsmi_search.Size = new System.Drawing.Size(51, 20);
+            this.tsmi_search.Text = "Suche";
+            // 
+            // tsmi_search_firstname
+            // 
+            this.tsmi_search_firstname.Name = "tsmi_search_firstname";
+            this.tsmi_search_firstname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_firstname.Text = "Vorname";
+            // 
+            // tsmi_search_lastname
+            // 
+            this.tsmi_search_lastname.Name = "tsmi_search_lastname";
+            this.tsmi_search_lastname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_lastname.Text = "Nachname";
+            // 
             // FormStudentData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 501);
             this.Controls.Add(this.tableLayoutPanel_main);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormStudentData";
             this.Text = "Schüler hinzufügen";
             this.tableLayoutPanel_main.ResumeLayout(false);
@@ -332,7 +370,10 @@ namespace ExamManager
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -359,5 +400,9 @@ namespace ExamManager
         private System.Windows.Forms.ComboBox cb_grade;
         private System.Windows.Forms.Button btn_hint;
         private System.Windows.Forms.FlowLayoutPanel flp_student_entitys;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_firstname;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_lastname;
     }
 }

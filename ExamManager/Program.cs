@@ -53,6 +53,8 @@ namespace ExamManager
             // editstudent = null etc. (teacher)
             // getallstudents order first grade then lastname
             // studentlist per grade
+            // Tools - Extras: load exel file
+            // formfilter -> action...
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');

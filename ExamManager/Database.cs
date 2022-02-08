@@ -53,7 +53,7 @@ namespace ExamManager
 
         /// <summary>adds a new student to the database</summary>
         /// <param name="firstname">Describe parameter.</param>
-        public void AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
+        public bool AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             string[] s = GetStudent(firstname, lastname);
             if (firstname.Contains(" ") || lastname.Contains(" "))
@@ -64,9 +64,11 @@ namespace ExamManager
             if (s != null)
             {
                 DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + firstname + " " + lastname + " exestiert bereits in der Stufe " + s[3] +
-                    "!\nEinen weiteren in der Stufe " + grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNo);
+                    "!\nEinen weiteren in der Stufe " + grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNoCancel);
+                if (result == DialogResult.Cancel)
+                { return false; }
                 if (result != DialogResult.Yes)
-                { return; }
+                { return true; }
             }
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number) ";
@@ -76,6 +78,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@email", email);
             sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
             sqlite_cmd.ExecuteNonQuery();
+            return true;
         }
         public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
         {
@@ -101,12 +104,14 @@ namespace ExamManager
                                 {
                                     string domain = Properties.Settings.Default.email_domain;
                                     string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                    AddStudent(tempfirstname, templastname, grade, mail);
+                                    if (!AddStudent(tempfirstname, templastname, grade, mail))
+                                        break;
                                     //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
                                 }
                                 else
                                 {
-                                    AddStudent(tempfirstname, templastname, grade);
+                                    if (!AddStudent(tempfirstname, templastname, grade))
+                                        break;
                                     //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
                                 }
 

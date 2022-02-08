@@ -13,20 +13,18 @@ namespace ExamManager
         public string filter = null;
         public enum Filter { all, grade, teacher, student }
         public Filter filterMode = Filter.all;
-
         private int swapExam = 0;
 
-        Database database;
-        Form_grid form_grid;
-        int id = 0;
-        LinkedList<Panel> time_line_list;
-        LinkedList<Panel> time_line_entity_list;
-        LinkedList<Panel> time_line_room_list;
-        string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
-        string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
-        Point panelScrollPos1 = new Point();
-        Point panelScrollPos2 = new Point();
-        Panel panel_empty, panel_top;
+        private Database database;
+        private int id = 0;
+        private LinkedList<Panel> time_line_list;
+        private LinkedList<Panel> time_line_entity_list;
+        private LinkedList<Panel> time_line_room_list;
+        private string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
+        private string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
+        private Point panelScrollPos1 = new Point();
+        private Point panelScrollPos2 = new Point();
+        private Panel panel_empty, panel_top;
         public Form1()
         {
             database = Program.database;
@@ -37,15 +35,14 @@ namespace ExamManager
             InitializeComponent();
             dtp_date.Value = DateTime.Now;
             if (Properties.Settings.Default.timeline_date.Length > 2)
-                dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.timeline_date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+                dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.timeline_date, "dd.MM.yyyy", null);
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            if (database.GetAllExamsAtDate(date).Count < 1)
-                dtp_timeline_date.Value = DateTime.Now;
+            if (database.GetAllExamsAtDate(date).Count < 1) dtp_timeline_date.Value = DateTime.Now;
             update_timeline();
-            LoadAutocomplete();
+            UpdateAutocomplete();
         }
-
-        private void LoadAutocomplete()
+        /// <summary>reloads the autocomplete and dropdownlist</summary>
+        private void UpdateAutocomplete()
         {
             // subjects
             cb_subject.Items.Clear();
@@ -127,8 +124,7 @@ namespace ExamManager
             LinkedList<string> roomList = new LinkedList<string>();
             LinkedList<string[]> rooms = database.GetAllRooms();
             foreach (string[] s in rooms)
-                if (!roomList.Contains(s[0]))
-                    roomList.AddLast(s[0]);
+                if (!roomList.Contains(s[0])) roomList.AddLast(s[0]);
             List<string> temproomlist = new List<string>(roomList);
             temproomlist = temproomlist.OrderBy(x => x).ToList();
             roomList = new LinkedList<string>(temproomlist);
@@ -138,22 +134,7 @@ namespace ExamManager
             cb_exam_room.Items.AddRange(item_list);
             cb_preparation_room.Items.AddRange(item_list);
         }
-        private void btn_add_exam_Click(object sender, EventArgs e)
-        {
-            AddExam();
-            if (form_grid != null && !form_grid.IsDisposed)
-                form_grid.Data_update();
-        }
-        private void tb_student_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Return)
-            {
-                AddExam();
-                if (form_grid != null && !form_grid.IsDisposed)
-                    form_grid.Data_update();
-                e.Handled = true;
-            }
-        }
+        /// <summary>Checks the entered values ​​and adds an exam to the database</summary>
         private void AddExam()
         {
             if (cb_exam_room.SelectedItem == null || cb_preparation_room.SelectedItem == null)
@@ -164,8 +145,7 @@ namespace ExamManager
             string preparation_room = cb_preparation_room.SelectedItem.ToString();
             string student = cb_student.Text;
             string grade = null;
-            if (cb_grade.SelectedItem != null) // TEST -----------------------------------------
-                grade = cb_grade.SelectedItem.ToString();
+            if (cb_grade.SelectedItem != null) grade = cb_grade.SelectedItem.ToString();
             if (cb_teacher1.Text.Length < 1 || cb_teacher2.Text.Length < 1 || cb_teacher3.Text.Length < 1)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             string teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1])[0];
@@ -173,26 +153,24 @@ namespace ExamManager
             string teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1])[0];
             string subject = cb_subject.Text;
             int duration = Int32.Parse(tb_duration.Text);
-
+            // check if not empty
             if (exam_room.Length == 0 || preparation_room.Length == 0 || student.Length == 0 || teacher1.Length == 0 || teacher2.Length == 0 || teacher3.Length == 0 || subject.Length == 0 || duration == 0)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
-
             // check room
-            if (id == 0)
+            //if (id == 0)
+            //{
+            if (database.CheckTimeAndRoom(date, time, exam_room))
+            { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
+            foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
             {
-                if (database.CheckTimeAndRoom(date, time, exam_room))
+                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
                 { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-                foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
-                {
-                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
-                    DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                    if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
-                    { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-                }
             }
-
+            // }
             // check names in database
             string tempfirstname = null;
             string templastname = null;
@@ -214,58 +192,72 @@ namespace ExamManager
             if (database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
 
-            // check teacher
+            bool checkTimeIsFree(string t, string d)
+            {
+                DateTime start = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(d));
+                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                    return false;
+                return true;
+            }
+            // check teacher in other rooms
             foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher1))
             {
-                if (id == 0 || exam_room != s[3])
+                if (id == 0 || (exam_room != s[3] && s[3] != database.GetExamById(id)[3]))
                 {
-                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    /*DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
                     DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))*/
+                    if (!checkTimeIsFree(s[2], s[10]))
                     { MessageBox.Show(database.GetTeacherByID(teacher1)[1] + " " + database.GetTeacherByID(teacher1)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
                 }
             }
             foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher2))
             {
-                if (id == 0 || exam_room != s[3])
+                if (id == 0 || (exam_room != s[3] && s[3] != database.GetExamById(id)[3]))
                 {
-                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    /*DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
                     DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))*/
+                    if (!checkTimeIsFree(s[2], s[10]))
                     { MessageBox.Show(database.GetTeacherByID(teacher2)[1] + " " + database.GetTeacherByID(teacher2)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
                 }
             }
             foreach (string[] s in database.GetAllExamsFromTeacherAtDate(date, teacher3))
             {
-                if (id == 0 || exam_room != s[3])
+                if (id == 0 || (exam_room != s[3] && s[3] != database.GetExamById(id)[3]))
                 {
-                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    /*DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
                     DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))*/
+                    if (!checkTimeIsFree(s[2], s[10]))
                     { MessageBox.Show(database.GetTeacherByID(teacher3)[1] + " " + database.GetTeacherByID(teacher3)[2] + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
                 }
             }
-            // check student 
+            // check student in other rooms
             foreach (string[] s in database.GetAllExamsFromStudentAtDate(date, database.GetStudent(tempfirstname, templastname, grade)[0]))
             {
-                if (id == 0 || exam_room != s[3])
+                if (id == 0 || (exam_room != s[3] && s[3] != database.GetExamById(id)[3]))
                 {
-                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    /*DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
                     DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))*/
+                    if (!checkTimeIsFree(s[2], s[10]))
                     { MessageBox.Show(student + " befindet sich in einem anderem Raum: " + s[3], "Warnung"); return; }
                 }
             }
 
-            ////
+            // Add / Edit / Clear
             if (id != 0)
                 database.EditExam(id, date, time, exam_room, preparation_room, database.GetStudent(tempfirstname, templastname, grade)[0], teacher1, teacher2, teacher3, subject, duration);
             if (id == 0)
@@ -273,7 +265,6 @@ namespace ExamManager
             id = 0;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
-
             this.dtp_timeline_date.Value = this.dtp_date.Value;
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
@@ -292,13 +283,7 @@ namespace ExamManager
                 this.cb_teacher3.Text = null;
             }
         }
-        private void btn_grid_view_Click(object sender, EventArgs e)
-        {
-            if (form_grid == null)
-            { form_grid = new Form_grid(1); form_grid.Show(); }
-            if (form_grid.IsDisposed)
-            { form_grid = new Form_grid(1); form_grid.Show(); }
-        }
+        /// <summary>Adds a timeline for a room</summary>
         public void AddTimeline(string room)
         {
             // -- roomlist --
@@ -331,7 +316,7 @@ namespace ExamManager
             time_line_list.AddLast(panel_tl);
         }
         /// <summary>Updates the timeline for all rooms on the day</summary>
-        public void update_timeline() 
+        public void update_timeline()
         {
             if (panel_empty != null) panel_side_room.Controls.Remove(panel_empty);
             if (panel_top == null) panel_top = new Panel();
@@ -380,7 +365,7 @@ namespace ExamManager
                 panel_tl_entity.Paint += panel_time_line_entity_Paint;
                 //panel_tl_entity.MouseClick += panel_tl_entity_click;
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
-
+                // ---------- context menu ----------
                 ContextMenuStrip mnu = new ContextMenuStrip();
                 ToolStripMenuItem mnuEdit = new ToolStripMenuItem("Bearbeiten");
                 ToolStripMenuItem mnuCopy = new ToolStripMenuItem("Kopieren");
@@ -396,16 +381,6 @@ namespace ExamManager
                 mnuDelete.Name = s[0];
                 mnu.Items.AddRange(new ToolStripItem[] { mnuEdit, mnuCopy, mnuSwap, mnuDelete });
                 panel_tl_entity.ContextMenuStrip = mnu;
-                /*foreach (Panel p in time_line_list)
-                {
-                    Console.WriteLine(p.Name);
-                    string[] exam = database.GetExamById(Int32.Parse(p.Name));
-                    string[] student = database.GetStudentByID(Int32.Parse(database.GetExamById(Int32.Parse(p.Name))[5]));
-                    if (filterMode == Filter.grade && !student[3].Equals(filter))
-                        time_line_list.Remove(p);
-                    //else if (filterMode == Filter.student && !database.GetExamById(Int32.Parse(p.Name)).Equals(filter))
-                    //    time_line_list.Remove(p);
-                }*/
                 LinkedList<string> tempRoomFilterList = new LinkedList<string>();
                 foreach (Panel p in time_line_list)
                 {
@@ -426,11 +401,139 @@ namespace ExamManager
                         }
                     }
                 }
-
             }
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_side_empty.BackColor = Color.Yellow; }
             else if (filter != null && filter.Length >= 1) { lbl_search.Text = "Filter:\n" + filter; panel_side_empty.BackColor = Color.Yellow; }
             else { lbl_search.Text = null; panel_side_empty.BackColor = panel_side_room.BackColor; }
+        }
+        // ----------------- panel menu -----------------
+        private void panel_menu_click_copy(object sender, EventArgs e)
+        {
+            ToolStripMenuItem itm = sender as ToolStripMenuItem;
+            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
+            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+
+            lbl_mode.Text = edit_mode[1];
+            btn_add_exam.Text = add_mode[1];
+            this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+            this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            this.cb_exam_room.SelectedItem = exam[3];
+            this.cb_preparation_room.SelectedItem = exam[4];
+            string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
+            if (st == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
+            else { this.cb_student.Text = st[1] + " " + st[2]; this.cb_grade.SelectedItem = st[3]; }
+            if (database.GetTeacherByID(exam[6]) == null) this.cb_teacher1.Text = "";
+            else this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+            if (database.GetTeacherByID(exam[7]) == null) this.cb_teacher2.Text = "";
+            else this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+            if (database.GetTeacherByID(exam[8]) == null) this.cb_teacher3.Text = "";
+            else this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
+            /*this.cb_student.Text = st[1] + " " + st[2];
+            this.cb_grade.SelectedItem = st[3];
+            this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+            this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+            this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];*/
+            this.cb_subject.Text = exam[9];
+            this.tb_duration.Text = exam[10];
+            id = 0;
+            lbl_mode.Text = edit_mode[0];
+            btn_add_exam.Text = add_mode[0];
+        }
+        private void panel_menu_click_edit(object sender, EventArgs e)
+        {
+            ToolStripMenuItem itm = sender as ToolStripMenuItem;
+            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
+            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+            id = Int32.Parse(exam[0]);
+            lbl_mode.Text = edit_mode[1];
+            btn_add_exam.Text = add_mode[1];
+            this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
+            this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            this.cb_exam_room.SelectedItem = exam[3];
+            this.cb_preparation_room.SelectedItem = exam[4];
+            string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
+            if (st == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
+            else { this.cb_student.Text = st[1] + " " + st[2]; this.cb_grade.SelectedItem = st[3]; }
+            if (database.GetTeacherByID(exam[6]) == null) this.cb_teacher1.Text = "";
+            else this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
+            if (database.GetTeacherByID(exam[7]) == null) this.cb_teacher2.Text = "";
+            else this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
+            if (database.GetTeacherByID(exam[8]) == null) this.cb_teacher3.Text = "";
+            else this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
+            this.cb_subject.Text = exam[9];
+            this.tb_duration.Text = exam[10];
+
+            foreach (Panel p in time_line_entity_list) { p.Refresh(); }
+            if (cb_show_subjectteacher.Checked)
+            {
+                var autocomplete_teacher = new AutoCompleteStringCollection();
+                LinkedList<string[]> teacherList1 = database.GetTeacherBySubject(exam[9]);
+                string[] teacher = new string[teacherList1.Count];
+                for (int i = 0; i < teacherList1.Count; i++)
+                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
+                autocomplete_teacher.AddRange(teacher);
+                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+                cb_teacher1.Items.Clear();
+                cb_teacher2.Items.Clear();
+                cb_teacher3.Items.Clear();
+                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
+                LinkedList<string[]> teacherList = new LinkedList<string[]>();
+                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
+                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
+                teacherList = new LinkedList<string[]>(tempTeacherList);
+                string[] listTeacher = new string[teacherList.Count];
+                for (int i = 0; i < teacherList.Count; i++)
+                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
+                cb_teacher1.Items.AddRange(listTeacher);
+                cb_teacher2.Items.AddRange(listTeacher);
+                cb_teacher3.Items.AddRange(listTeacher);
+                cb_teacher2.Items.Add("");
+                cb_teacher3.Items.Add("");
+            }
+            else
+            {
+                var autocomplete_teacher = new AutoCompleteStringCollection();
+                LinkedList<string[]> teacherList1 = database.GetAllTeachers();
+                string[] teacher = new string[teacherList1.Count];
+                for (int i = 0; i < teacherList1.Count; i++)
+                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
+                autocomplete_teacher.AddRange(teacher);
+                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
+                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+                cb_teacher1.Items.Clear();
+                cb_teacher2.Items.Clear();
+                cb_teacher3.Items.Clear();
+                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
+                LinkedList<string[]> teacherList = new LinkedList<string[]>();
+                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
+                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
+                teacherList = new LinkedList<string[]>(tempTeacherList);
+                string[] listTeacher = new string[teacherList.Count];
+                for (int i = 0; i < teacherList.Count; i++)
+                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
+                cb_teacher1.Items.AddRange(listTeacher);
+                cb_teacher2.Items.AddRange(listTeacher);
+                cb_teacher3.Items.AddRange(listTeacher);
+                cb_teacher2.Items.Add("");
+                cb_teacher3.Items.Add("");
+            }
         }
         private void panel_menu_click_swap(object sender, EventArgs e)
         {
@@ -470,130 +573,6 @@ namespace ExamManager
                 }
             }
         }
-        private void panel_menu_click_copy(object sender, EventArgs e)
-        {
-            ToolStripMenuItem itm = sender as ToolStripMenuItem;
-            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
-            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-
-            lbl_mode.Text = edit_mode[1];
-            btn_add_exam.Text = add_mode[1];
-            this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
-            this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            this.cb_exam_room.SelectedItem = exam[3];
-            this.cb_preparation_room.SelectedItem = exam[4];
-            string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
-            this.cb_student.Text = st[1] + " " + st[2];
-            this.cb_grade.SelectedItem = st[3];
-            this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
-            this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
-            this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
-            this.cb_subject.Text = exam[9];
-            this.tb_duration.Text = exam[10];
-            id = 0;
-            lbl_mode.Text = edit_mode[0];
-            btn_add_exam.Text = add_mode[0];
-        }
-        private void panel_menu_click_edit(object sender, EventArgs e)
-        {
-            ToolStripMenuItem itm = sender as ToolStripMenuItem;
-            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
-            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-            id = Int32.Parse(exam[0]);
-            lbl_mode.Text = edit_mode[1];
-            btn_add_exam.Text = add_mode[1];
-            this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
-            this.dtp_time.Value = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            this.cb_exam_room.SelectedItem = exam[3];
-            this.cb_preparation_room.SelectedItem = exam[4];
-            string[] st = database.GetStudentByID(Int32.Parse(exam[5]));
-            this.cb_student.Text = st[1] + " " + st[2];
-            this.cb_grade.SelectedItem = st[3];
-            if (database.GetTeacherByID(exam[6]) == null) this.cb_teacher1.Text = "";
-            else this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
-            if (database.GetTeacherByID(exam[7]) == null) this.cb_teacher2.Text = "";
-            else this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
-            if (database.GetTeacherByID(exam[8]) == null) this.cb_teacher3.Text = "";
-            else this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
-            this.cb_subject.Text = exam[9];
-            this.tb_duration.Text = exam[10];
-
-            foreach (Panel p in time_line_entity_list) { p.Refresh(); }
-
-
-            if (cb_show_subjectteacher.Checked)
-            {
-                var autocomplete_teacher = new AutoCompleteStringCollection();
-                LinkedList<string[]> teacherList1 = database.GetTeacherBySubject(exam[9]);
-                string[] teacher = new string[teacherList1.Count];
-                for (int i = 0; i < teacherList1.Count; i++)
-                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
-                autocomplete_teacher.AddRange(teacher);
-                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-
-                cb_teacher1.Items.Clear();
-                cb_teacher2.Items.Clear();
-                cb_teacher3.Items.Clear();
-                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
-                LinkedList<string[]> teacherList = new LinkedList<string[]>();
-                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
-                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
-                teacherList = new LinkedList<string[]>(tempTeacherList);
-                string[] listTeacher = new string[teacherList.Count];
-                for (int i = 0; i < teacherList.Count; i++)
-                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
-                cb_teacher1.Items.AddRange(listTeacher);
-                cb_teacher2.Items.AddRange(listTeacher);
-                cb_teacher3.Items.AddRange(listTeacher);
-                cb_teacher2.Items.Add("");
-                cb_teacher3.Items.Add("");
-            }
-            else
-            {
-                var autocomplete_teacher = new AutoCompleteStringCollection();
-                LinkedList<string[]> teacherList1 = database.GetAllTeachers();
-                string[] teacher = new string[teacherList1.Count];
-                for (int i = 0; i < teacherList1.Count; i++)
-                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
-                autocomplete_teacher.AddRange(teacher);
-                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-
-                cb_teacher1.Items.Clear();
-                cb_teacher2.Items.Clear();
-                cb_teacher3.Items.Clear();
-                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
-                LinkedList<string[]> teacherList = new LinkedList<string[]>();
-                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
-                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
-                teacherList = new LinkedList<string[]>(tempTeacherList);
-                string[] listTeacher = new string[teacherList.Count];
-                for (int i = 0; i < teacherList.Count; i++)
-                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
-                cb_teacher1.Items.AddRange(listTeacher);
-                cb_teacher2.Items.AddRange(listTeacher);
-                cb_teacher3.Items.AddRange(listTeacher);
-                cb_teacher2.Items.Add("");
-                cb_teacher3.Items.Add("");
-            }
-        }
         private void panel_menu_click_delete(object sender, EventArgs e)
         {
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
@@ -605,6 +584,7 @@ namespace ExamManager
                 update_timeline();
             }
         }
+        // ----------------- panel click -----------------
         private void panel_tl_entity_double_click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -646,6 +626,7 @@ namespace ExamManager
                     }*/
             }
         }
+        // ----------------- paint -----------------
         private void panel_side_room_Paint(object sender, PaintEventArgs e)
         {
             if (panel_time_line.AutoScrollPosition != panelScrollPos1)
@@ -756,7 +737,7 @@ namespace ExamManager
                         Color.Red, 2, ButtonBorderStyle.Solid,
                         Color.Red, 2, ButtonBorderStyle.Solid);
                     }
-                if (search_index == 4)
+                if (search_index == 4) // grade
                     if (search.Equals(student[3]))
                     {
                         ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
@@ -794,16 +775,59 @@ namespace ExamManager
             e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
             e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
             e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4] + "]", drawFont, Brushes.Black, rectL4, stringFormat);
-            // ## [DEV] ## TODO: startTime - end Time
             string line1 = student[1] + " " + student[2] + "  [" + student[3] + "]\n";
             string line2 = exam[2] + "     " + exam[10] + "min\n";
             string line3 = exam[6] + "  " + exam[7] + "  " + exam[8] + "\n";
             string line4 = exam[9] + "  " + exam[3] + "  [" + exam[4] + "]";
             ToolTip sfToolTip1 = new ToolTip();
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
-
         }
-
+        // ----------------- methods -----------------
+        private void panel_time_line_Move(object sender, EventArgs e)
+        {
+            Panel p = sender as Panel;
+            Console.WriteLine(p.AutoScrollPosition.Y);
+        }
+        private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
+        {
+            if (panel_time_line.AutoScrollPosition.Y == 0)
+                this.panel_side_room.HorizontalScroll.Value = 0;
+            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            {
+                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
+                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+            }
+            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            {
+                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
+                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+            }
+        }
+        private void tb_duration_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
+                tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
+            cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
+        }
+        private void UpdateAutocomplete_Event(object sender, EventArgs a)
+        {
+            UpdateAutocomplete();
+        }
+        public void SetDate(DateTime date)
+        {
+            dtp_timeline_date.Value = date;
+            Properties.Settings.Default.timeline_date = date.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
+        }
+        private void update_timeline_Event(object sender, EventArgs a)
+        {
+            update_timeline();
+        }
+        // ----------------- BTNs -----------------
+        private void btn_add_exam_Click(object sender, EventArgs e)
+        {
+            AddExam();
+        }
         private void btn_delete_exam_Click(object sender, EventArgs e)
         {
             if (id != 0)
@@ -848,6 +872,7 @@ namespace ExamManager
             id = 0;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[1];
+            foreach (Panel p in time_line_entity_list) { p.Refresh(); }
             /*if (this.cb_keep_data.Checked)
         { this.cb_student.SelectedItem = ""; }
         else
@@ -870,38 +895,7 @@ namespace ExamManager
         this.cb_teacher3.SelectedItem = "";*/
 
         }
-        private void panel_time_line_Move(object sender, EventArgs e)
-        {
-            Panel p = sender as Panel;
-            Console.WriteLine(p.AutoScrollPosition.Y);
-        }
-        private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
-        {
-            if (panel_time_line.AutoScrollPosition.Y == 0)
-                this.panel_side_room.HorizontalScroll.Value = 0;
-            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
-            {
-                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
-                panelScrollPos1 = panel_side_room.AutoScrollPosition;
-            }
-            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
-            {
-                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
-                panelScrollPos2 = panel_side_room.AutoScrollPosition;
-            }
-        }
-        private void tb_duration_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
-                tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
-            cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
-        }
-        public void SetDate(DateTime date)
-        {
-            dtp_timeline_date.Value = date;
-            Properties.Settings.Default.timeline_date = date.ToString("dd.MM.yyyy");
-            Properties.Settings.Default.Save();
-        }
+        // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)
         {
             new Form_grid(0).ShowDialog();
@@ -914,25 +908,45 @@ namespace ExamManager
         {
             new Form_grid(1).ShowDialog();
         }
+        // ----------------- tsmi search -----------------
+        private void update_search_Event(object sender, EventArgs e)
+        {
+            string s = sender as string;
+            search = s;
+            update_timeline();
+        }
         private void tsmi_search_teacher_Click(object sender, EventArgs e)
         {
-            new FormSearch(0, this).ShowDialog();
+            FormSearch form = new FormSearch(0);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog();
+            search_index = 0;
         }
         private void tsmi_search_student_Click(object sender, EventArgs e)
         {
-            new FormSearch(1, this).ShowDialog();
+            FormSearch form = new FormSearch(1);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog(); search_index = 1;
         }
         private void tsmi_search_subject_Click(object sender, EventArgs e)
         {
-            new FormSearch(2, this).ShowDialog();
+            FormSearch form = new FormSearch(2);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog(); search_index = 2;
+
         }
         private void tsmi_search_room_Click(object sender, EventArgs e)
         {
-            new FormSearch(3, this).ShowDialog();
+            FormSearch form = new FormSearch(3);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog(); search_index = 3;
         }
         private void tsmi_search_grade_Click(object sender, EventArgs e)
         {
-            new FormSearch(4, this).ShowDialog();
+            FormSearch form = new FormSearch(0);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog();
+            search_index = 4;
         }
         private void tsmi_search_delete_Click(object sender, EventArgs e)
         {
@@ -940,6 +954,7 @@ namespace ExamManager
             search_index = 0;
             update_timeline();
         }
+        // ----------------- tsmi data -----------------
         private void tsmi_data_students_Click(object sender, EventArgs e)
         {
             FormStudentData form = new FormStudentData();
@@ -952,27 +967,18 @@ namespace ExamManager
             form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
-        private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
-        {
-            FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
-            form.FormClosed += update_timeline_Event;
-            form.ShowDialog();
-        }
-        private void update_timeline_Event(object sender, EventArgs a)
-        {
-            update_timeline();
-        }
         private void tsmi_data_subjects_Click(object sender, EventArgs e)
         {
             FormSubjectData form = new FormSubjectData();
             form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
-        private void UpdateAutocomplete_Event(object sender, EventArgs a)
+        private void tsmi_data_teachers_Click(object sender, EventArgs e)
         {
-            LoadAutocomplete();
+            FormTeacherData formTeacherData = new FormTeacherData();
+            formTeacherData.FormClosed += UpdateAutocomplete_Event;
+            formTeacherData.ShowDialog();
         }
-
         private void tsmi_data_editgrade_move_Click(object sender, EventArgs e)
         {
             FormRenameGrade form = new FormRenameGrade();
@@ -991,20 +997,93 @@ namespace ExamManager
             // remove exams in grade
             // database.DeleteGrade();
         }
-
-        private void tsmi_exam_examdates_Click(object sender, EventArgs e)
+        private void tsmi_data_loadteacher_Click(object sender, EventArgs e)
         {
-            FormExamDateListView form = new FormExamDateListView(this);
-            form.ShowDialog(this);
-        }
+            string filePath;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
 
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+                    Console.WriteLine(filePath);
+                    Program.database.InsertTeacherFileIntoDB(filePath, false);
+                }
+            }
+        }
         private void tsmi_data_loadstudents_Click(object sender, EventArgs e)
         {
             FormLoadStudents form = new FormLoadStudents();
             form.FormClosed += UpdateAutocomplete_Event;
             form.ShowDialog();
         }
+        // ----------------- tsmi exam -----------------
+        private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
+        {
+            FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
+            form.FormClosed += update_timeline_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_exam_examdates_Click(object sender, EventArgs e)
+        {
+            FormExamDateListView form = new FormExamDateListView(this);
+            form.ShowDialog();
+        }
+        // ----------------- tsmi settings -----------------
+        private void tsmi_settings_db_default_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.databasePath = "default";
+            Properties.Settings.Default.Save();
+        }
+        private void tsmi_settings_db_localdb_Click(object sender, EventArgs e)
+        {
+            string filePath = Properties.Settings.Default.databasePath;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.Title = "Lokale Datenbank auswählen";
+                openFileDialog.RestoreDirectory = true;
 
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+                    Properties.Settings.Default.databasePath = filePath;
+                    Properties.Settings.Default.Save();
+                    Program.database = new Database();
+                    update_timeline();
+                    UpdateAutocomplete();
+                }
+            }
+        }
+        private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
+        {
+            FormSettings form = new FormSettings();
+            form.ShowDialog(this);
+        }
+        // ----------------- tsmi filter -----------------
+        private void tsmi_filter_grade_Click(object sender, EventArgs e)
+        {
+            FormFilterGrade form = new FormFilterGrade(this);
+            form.FormClosed += update_timeline_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_filter_all_Click(object sender, EventArgs e)
+        {
+            filterMode = Filter.all;
+            filter = null;
+            update_timeline();
+        }
+        private void tsmi_filter_teacher_Click(object sender, EventArgs e)
+        {
+            // TODO
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void cb_grade_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cb_grade.SelectedItem != null && cb_grade.SelectedItem.ToString() != null)
@@ -1053,70 +1132,8 @@ namespace ExamManager
                 cb_student.Items.AddRange(listStudent);
             }
         }
-
-        private void tsmi_settings_db_default_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.databasePath = "default";
-            Properties.Settings.Default.Save();
-        }
-        private void tsmi_settings_db_localdb_Click(object sender, EventArgs e)
-        {
-            string filePath = Properties.Settings.Default.databasePath;
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.Title = "Lokale Datenbank auswählen";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = openFileDialog.FileName;
-                    Properties.Settings.Default.databasePath = filePath;
-                    Properties.Settings.Default.Save();
-                    Program.database = new Database();
-                    update_timeline();
-                    LoadAutocomplete();
-                }
-            }
-        }
-        private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
-        {
-            FormSettings form = new FormSettings();
-            form.ShowDialog(this);
-        }
-        private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
-        {
-            update_timeline();
-            Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
-            Properties.Settings.Default.Save();
-        }
-        private void tsmi_filter_grade_Click(object sender, EventArgs e)
-        {
-            FormFilterGrade form = new FormFilterGrade(this);
-            form.FormClosed += update_timeline_Event;
-            form.ShowDialog();
-        }
-        private void tsmi_data_loadteacher_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = openFileDialog.FileName;
-                    Console.WriteLine(filePath);
-                    Program.database.InsertTeacherFileIntoDB(filePath, false);
-                }
-            }
-        }
         private void cb_subject_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // cb_show_subjecttea
             if (cb_show_subjectteacher.Checked)
             {
                 var autocomplete_teacher = new AutoCompleteStringCollection();
@@ -1190,24 +1207,46 @@ namespace ExamManager
                 cb_teacher3.Items.Add("");
             }
         }
-
-        private void tsmi_filter_all_Click(object sender, EventArgs e)
+        private void cb_show_subjectteacher_CheckedChanged(object sender, EventArgs e)
         {
-            filterMode = Filter.all;
-            filter = null;
+            var autocomplete_teacher = new AutoCompleteStringCollection();
+            LinkedList<string[]> teacherList1 = database.GetAllTeachers();
+            string[] teacher = new string[teacherList1.Count];
+            for (int i = 0; i < teacherList1.Count; i++)
+                teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
+            autocomplete_teacher.AddRange(teacher);
+            this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            // 
+            cb_teacher1.Items.Clear();
+            cb_teacher2.Items.Clear();
+            cb_teacher3.Items.Clear();
+            LinkedList<string[]> allTeachers = database.GetAllTeachers();
+            LinkedList<string[]> teacherList = new LinkedList<string[]>();
+            List<string[]> tempTeacherList = new List<string[]>(allTeachers);
+            tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
+            teacherList = new LinkedList<string[]>(tempTeacherList);
+            string[] listTeacher = new string[teacherList.Count];
+            for (int i = 0; i < teacherList.Count; i++)
+                listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
+            cb_teacher1.Items.AddRange(listTeacher);
+            cb_teacher2.Items.AddRange(listTeacher);
+            cb_teacher3.Items.AddRange(listTeacher);
+            cb_teacher2.Items.Add("");
+            cb_teacher3.Items.Add("");
+        }
+        private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
+        {
             update_timeline();
-        }
-
-        private void tsmi_filter_teacher_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tsmi_data_teachers_Click(object sender, EventArgs e)
-        {
-            FormTeacherData formTeacherData = new FormTeacherData();
-            formTeacherData.FormClosed += UpdateAutocomplete_Event;
-            formTeacherData.ShowDialog();
+            Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
         }
 
     }

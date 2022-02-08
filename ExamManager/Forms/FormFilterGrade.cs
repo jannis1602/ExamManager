@@ -35,7 +35,7 @@ namespace ExamManager
         {
             if (cb_grade.SelectedItem.ToString() != null)
             {
-                Console.WriteLine("FILTER: "+cb_grade.SelectedItem.ToString());
+                Console.WriteLine("FILTER: " + cb_grade.SelectedItem.ToString());
                 form.filterMode = Form1.Filter.grade;
                 form.filter = cb_grade.SelectedItem.ToString();
 
