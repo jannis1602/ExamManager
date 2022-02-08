@@ -37,8 +37,7 @@ namespace ExamManager
             // Console.WriteLine("alle student: " + getAllstudent().Count);
 
         }
-
-
+        /// <summary>Creates a connection to the sqlite database</summary>
         private SQLiteConnection CreateConnection(string path)
         {
             SQLiteConnection sqlite_conn;
@@ -50,9 +49,7 @@ namespace ExamManager
 
         // ---- STUDENT ---- ########################################################################################################################## 
         // ID firstname lastname grade Email TelNummer
-
-        /// <summary>adds a new student to the database</summary>
-        /// <param name="firstname">Describe parameter.</param>
+        /// <summary>Adds a new student to the database</summary>
         public bool AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             string[] s = GetStudent(firstname, lastname);
@@ -80,6 +77,7 @@ namespace ExamManager
             sqlite_cmd.ExecuteNonQuery();
             return true;
         }
+        /// <summary>Adds all students from a file into the database.</summary>
         public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
         {
             bool editDoppelnamen = false;
@@ -162,8 +160,8 @@ namespace ExamManager
                 form.ShowDialog();
             }
         }
-        /// <summary>Searches the student by firstname, lastname and grade in the database.</summary>
-        /// <returns>If the student exists, it is returned as a string array, otherwise null is returned</returns>
+        /// <summary>Searches a student by firstname and lastname (and grade) in the database.</summary>
+        /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
         public string[] GetStudent(string firstname, string lastname, string grade = null)
         {
             SQLiteDataReader reader;
@@ -182,8 +180,8 @@ namespace ExamManager
             else return null;
             return data;
         }
-        /// <summary>Searches the student by id in the database.</summary>
-        /// <returns>If the student exists, it is returned as a string array, otherwise null is returned</returns>
+        /// <summary>Searches a student in the database.</summary>
+        /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
         public string[] GetStudentByID(int id)
         {
             SQLiteDataReader reader;
@@ -199,8 +197,8 @@ namespace ExamManager
             else return null;
             return data;
         }
-        /// <summary>Returns all students from the database as an array in a list.</summary>
-        /// <returns> LinkedList with string[] </returns>
+        /// <summary>Searches all students in the database.</summary>
+        /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllStudents()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -221,8 +219,8 @@ namespace ExamManager
             }
             return data;
         }
-        /// <summary>Returns all students of a grade from the database as an array in a list.</summary>
-        /// <returns> LinkedList with string[] </returns>
+        /// <summary>Searches all students in the database.</summary>
+        /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllStudentsFromGrade(string grade)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -244,6 +242,7 @@ namespace ExamManager
             }
             return data;
         }
+        /// <summary>Edits a student in the database.</summary>
         public void EditStudent(int id, string firstname, string lastname, string grade, string email, string phone_number)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -256,6 +255,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
             sqlite_cmd.ExecuteNonQuery();
         }
+        /// <summary>Changes the grade of all students in a grade from the database.</summary>
         public void ChangeGrade(string old_grade, string new_grade)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -264,6 +264,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@old_grade", old_grade);
             sqlite_cmd.ExecuteNonQuery();
         }
+        /// <summary>Removes a student from the database.</summary>
         public void DeleteStudent(int id)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -271,6 +272,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             sqlite_cmd.ExecuteNonQuery();
         }
+        /// <summary>Removes all students in a grade from the database.</summary>
         public void DeleteGrade(string grade)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -280,6 +282,7 @@ namespace ExamManager
         }
         // ---- TEACHER ---- ##########################################################################################################################
         // Kürzel firstname lastname TelNummer Faecher
+        /// <summary>Adds s teacher to the database.</summary>
         public void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
         {
             if (GetTeacherByID(short_name) != null) { return; }
@@ -294,7 +297,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
             sqlite_cmd.ExecuteNonQuery();
         }
-        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen?  // Herr vor nach short M, EK, SP
+        /// <summary>Adds all teachers from a file into the database.</summary>
+        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen?
         {
             //bool editDoppelnamen = false;
             LinkedList<string> teacherIdList = new LinkedList<string>();
@@ -344,14 +348,14 @@ namespace ExamManager
                                 if (GetSubject(t[6]).Length == 0)
                                     AddSubject(t[6]);
                             }
-
                         }
                 }
             }
             FormTeacherData form = new FormTeacherData(teacherIdList);
             form.ShowDialog();
         }
-
+        /// <summary>Searches all teachers in the database.</summary>
+        /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllTeachers()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -372,7 +376,8 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Searches a teacher by shortname in the database.</summary>
+        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
         public string[] GetTeacherByID(string short_name)
         {
             SQLiteDataReader reader;
@@ -388,7 +393,8 @@ namespace ExamManager
             else return null;
             return data;
         }
-
+        /// <summary>Searches a teacher by subject in the database.</summary>
+        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetTeacherBySubject(string subject)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -410,8 +416,8 @@ namespace ExamManager
             }
             return data;
         }
-
-
+        /// <summary>Searches a teacher by firstname and lastname in the database.</summary>
+        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
         public string[] GetTeacherByName(string firstname, string lastname)
         {
             SQLiteDataReader reader;
@@ -432,6 +438,7 @@ namespace ExamManager
             else return null;
             return data;
         }
+        /// <summary>Edits a teacher in the database.</summary>
         public void EditTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -445,7 +452,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
             sqlite_cmd.ExecuteNonQuery();
         }
-
+        /// <summary>Removes a teacher from the database.</summary>
         public void DeleteTeacher(string short_name)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -456,6 +463,7 @@ namespace ExamManager
 
         // ---- EXAM ---- ##################################################################################################################################
         // ID student_ID VorsitzKuerzel PrueferKuerzel ProtokollKuerzel Fach Raum_Pruefung Raum_Vorbereitung Raum_Abholen Datum Uhrzeit Schulstunden
+        /// <summary>Adds an exam to the database.</summary>
         public void AddExam(string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion = 45)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -472,13 +480,14 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
         }
-
+        /// <summary>Searches all exams in the database.</summary>
+        /// <returns>Returns all exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExams()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam ";
+            sqlite_cmd.CommandText = "SELECT * FROM exam";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -503,7 +512,8 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Searches a exam by id in the database.</summary>
+        /// <returns>Returns the exam as <see cref="string"/> <see cref="Array"/></returns>
         public string[] GetExamById(int id)
         {
             SQLiteDataReader reader;
@@ -534,7 +544,8 @@ namespace ExamManager
             else { return null; }
             return data;
         }
-
+        /// <summary>Searches all exams at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsAtDate(string date)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -565,6 +576,8 @@ namespace ExamManager
             }
             return data;
         }
+        /// <summary>Searches all exams of a teacher at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsFromTeacherAtDate(string date, string teacher)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -596,6 +609,8 @@ namespace ExamManager
             }
             return data;
         }
+        /// <summary>Searches all exams of a student at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsFromStudentAtDate(string date, string student)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -627,7 +642,8 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Searches all exams in a room at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsAtDateAndRoom(string date, string exam_room)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -659,23 +675,10 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Edits an exam in the database.</summary>
         public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, string student = null, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            /*sqlite_cmd.CommandText = "UPDATE exam SET date=@date, time=@time, exam_room=@exam_room, preparation_room=@preparation_room, student=@student, teacher_vorsitz=@teacher_vorsitz, teacher_pruefer=@teacher_pruefer, teacher_protokoll=@teacher_protokoll, subject=@subject, duration=@duration WHERE id = @id";
-            sqlite_cmd.Parameters.AddWithValue("@id", id);
-            sqlite_cmd.Parameters.AddWithValue("@date", date);
-            sqlite_cmd.Parameters.AddWithValue("@time", time);
-            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
-            sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
-            sqlite_cmd.Parameters.AddWithValue("@student", student);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
-            sqlite_cmd.Parameters.AddWithValue("@subject", subject);
-            sqlite_cmd.Parameters.AddWithValue("@duration", duration);
-            sqlite_cmd.ExecuteNonQuery();*/
             if (date != null)
             {
                 sqlite_cmd.CommandText = "UPDATE exam SET date=@date WHERE id = @id";
@@ -747,6 +750,7 @@ namespace ExamManager
                 sqlite_cmd.ExecuteNonQuery();
             }
         }
+
         /*public void EditExam(int id, string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -764,7 +768,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
         }*/
-
+        /// <summary>Changes the room of all exams at one date in the database.</summary>
         public void EditExamRoom(string date, string old_exam_room, string exam_room)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -774,7 +778,7 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             sqlite_cmd.ExecuteNonQuery();
         }
-
+        /// <summary>Removes an Exam from the database.</summary>
         public void DeleteExam(int id)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -782,7 +786,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             sqlite_cmd.ExecuteNonQuery();
         }
-
+        /// <summary>Checks if a room is empty in the database.</summary>
+        /// <returns>Returns the room state as a <see cref="bool"/></returns>
         public bool CheckTimeAndRoom(string date, string time, string exam_room)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -796,7 +801,7 @@ namespace ExamManager
         }
 
         // ---- room ---- #############################################################################################################################
-
+        /// <summary>Adds an room to the database.</summary>
         public void AddRoom(string room_name)
         {
             if (GetRoom(room_name) == null)
@@ -807,7 +812,8 @@ namespace ExamManager
                 sqlite_cmd.ExecuteNonQuery();
             }
         }
-
+        /// <summary>Searches a room by roomname in the database.</summary>
+        /// <returns>Returns the rooms as <see cref="string"/> <see cref="Array"/></returns>
         public string[] GetRoom(string room_name)
         {
             SQLiteDataReader reader;
@@ -823,7 +829,8 @@ namespace ExamManager
             else return null;
             return data;
         }
-
+        /// <summary>Searches all rooms in the database.</summary>
+        /// <returns>Returns the rooms as <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllRooms()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -844,7 +851,7 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Removes a room from the database.</summary>
         public void DeleteRoom(string room_name)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -854,7 +861,7 @@ namespace ExamManager
         }
 
         // ---- subject ---- ######################################################################################################################
-
+        /// <summary>Adds an subject to the database.</summary>
         public void AddSubject(string subject_name)
         {
             if (GetSubject(subject_name) == null)
@@ -865,7 +872,8 @@ namespace ExamManager
                 sqlite_cmd.ExecuteNonQuery();
             }
         }
-
+        /// <summary>Searches a subject by subjectname in the database.</summary>
+        /// <returns>Returns the subject as <see cref="string"/> <see cref="Array"/></returns>
         public string[] GetSubject(string subject_name)
         {
             SQLiteDataReader reader;
@@ -881,7 +889,8 @@ namespace ExamManager
             else return null;
             return data;
         }
-
+        /// <summary>Searches all subjects in the database.</summary>
+        /// <returns>Returns the subjects as <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllSubjects()
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
@@ -902,7 +911,7 @@ namespace ExamManager
             }
             return data;
         }
-
+        /// <summary>Removes a subject from the database</summary>
         public void DeleteSubject(string subject_name)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();

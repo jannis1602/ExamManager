@@ -50,12 +50,13 @@ namespace ExamManager
             // filter teacher
             // hide timelines without exams in filter
             // rerender timeline
-            // editstudent = null etc. (teacher)
+            // editteacher = null etc. (teacher)
             // getallstudents order first grade then lastname
             // studentlist per grade
             // Tools - Extras: load exel file
             // formfilter -> action...
             // Search index -> enum
+            // InsertTeacherFileIntoDB -> return idlist -> openform
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');
