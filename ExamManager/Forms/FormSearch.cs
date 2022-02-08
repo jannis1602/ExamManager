@@ -140,11 +140,6 @@ namespace ExamManager
             }
         }
 
-        private void FormSearch_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void search()
         {
             if (cb_search != null)
@@ -155,8 +150,6 @@ namespace ExamManager
                         string s = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
                         string tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1])[0];
                         UpdateSearch.Invoke(tid, null);
-                        //form.search = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        //form.update_timeline();
                         this.Dispose();
                     }
                     else if (searchmode == 1)  // student

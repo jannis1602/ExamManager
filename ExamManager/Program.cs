@@ -55,6 +55,7 @@ namespace ExamManager
             // studentlist per grade
             // Tools - Extras: load exel file
             // formfilter -> action...
+            // Search index -> enum
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');

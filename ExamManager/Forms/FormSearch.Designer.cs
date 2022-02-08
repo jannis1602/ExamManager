@@ -73,7 +73,6 @@ namespace ExamManager
             this.MinimumSize = new System.Drawing.Size(400, 150);
             this.Name = "FormSearch";
             this.Text = "Suche";
-            this.Load += new System.EventHandler(this.FormSearch_Load);
             this.tlp_main.ResumeLayout(false);
             this.ResumeLayout(false);
 

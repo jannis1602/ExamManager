@@ -30,7 +30,7 @@ namespace ExamManager
             if (lb_exam_date.SelectedItem != null)
             {
                 form.SetDate(DateTime.ParseExact(lb_exam_date.SelectedItem.ToString(), "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None));
-                this.Dispose();
+                //this.Dispose();
             }
         }
     }

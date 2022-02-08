@@ -126,7 +126,7 @@ namespace ExamManager
             this.lbl_time = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel_side_room = new System.Windows.Forms.Panel();
-            this.panel_side_empty = new System.Windows.Forms.Panel();
+            this.panel_sidetop_empty = new System.Windows.Forms.Panel();
             this.lbl_search = new System.Windows.Forms.Label();
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
@@ -155,7 +155,7 @@ namespace ExamManager
             this.tlp_time.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel_side_room.SuspendLayout();
-            this.panel_side_empty.SuspendLayout();
+            this.panel_sidetop_empty.SuspendLayout();
             this.panel_time_line.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1276,7 +1276,7 @@ namespace ExamManager
             // 
             this.panel_side_room.AutoScroll = true;
             this.panel_side_room.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel_side_room.Controls.Add(this.panel_side_empty);
+            this.panel_side_room.Controls.Add(this.panel_sidetop_empty);
             this.panel_side_room.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_side_room.Location = new System.Drawing.Point(0, 0);
             this.panel_side_room.Margin = new System.Windows.Forms.Padding(0);
@@ -1285,15 +1285,15 @@ namespace ExamManager
             this.panel_side_room.TabIndex = 0;
             this.panel_side_room.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_side_room_Paint);
             // 
-            // panel_side_empty
+            // panel_sidetop_empty
             // 
-            this.panel_side_empty.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel_side_empty.Controls.Add(this.lbl_search);
-            this.panel_side_empty.Location = new System.Drawing.Point(0, 0);
-            this.panel_side_empty.Margin = new System.Windows.Forms.Padding(0, 0, 17, 0);
-            this.panel_side_empty.Name = "panel_side_empty";
-            this.panel_side_empty.Size = new System.Drawing.Size(103, 40);
-            this.panel_side_empty.TabIndex = 0;
+            this.panel_sidetop_empty.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel_sidetop_empty.Controls.Add(this.lbl_search);
+            this.panel_sidetop_empty.Location = new System.Drawing.Point(0, 0);
+            this.panel_sidetop_empty.Margin = new System.Windows.Forms.Padding(0, 0, 17, 0);
+            this.panel_sidetop_empty.Name = "panel_sidetop_empty";
+            this.panel_sidetop_empty.Size = new System.Drawing.Size(103, 40);
+            this.panel_sidetop_empty.TabIndex = 0;
             // 
             // lbl_search
             // 
@@ -1345,6 +1345,7 @@ namespace ExamManager
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Prüfungen";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tlp_main.ResumeLayout(false);
             this.flowLayoutPanel_menu.ResumeLayout(false);
             this.flowLayoutPanel_menu.PerformLayout();
@@ -1384,8 +1385,8 @@ namespace ExamManager
             this.tlp_time.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel_side_room.ResumeLayout(false);
-            this.panel_side_empty.ResumeLayout(false);
-            this.panel_side_empty.PerformLayout();
+            this.panel_sidetop_empty.ResumeLayout(false);
+            this.panel_sidetop_empty.PerformLayout();
             this.panel_time_line.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1486,7 +1487,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_exams;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_students;
         private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_teacher;
-        private System.Windows.Forms.Panel panel_side_empty;
+        private System.Windows.Forms.Panel panel_sidetop_empty;
         private System.Windows.Forms.Label lbl_search;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadteacher;
         private System.Windows.Forms.CheckBox cb_show_subjectteacher;

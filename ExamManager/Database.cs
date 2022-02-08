@@ -487,6 +487,7 @@ namespace ExamManager
                     string[] rowData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
+                        Console.WriteLine(reader.GetValue(i));
                         rowData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
                             rowData[i] = rowData[i].Split(' ')[0];
