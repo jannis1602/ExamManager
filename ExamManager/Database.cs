@@ -10,7 +10,7 @@ namespace ExamManager
     {
         // #### TODO: conn.close ####
 
-        SQLiteConnection connection;
+        readonly SQLiteConnection connection;
         public Database()
         {
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
@@ -40,6 +40,29 @@ namespace ExamManager
         /// <summary>Creates a connection to the sqlite database</summary>
         private SQLiteConnection CreateConnection(string path)
         {
+            if (!File.Exists(path + "database.db"))
+            {
+                DialogResult result = MessageBox.Show("Existierende Datenbank wählen?", "Achtung", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    string filePath = Properties.Settings.Default.databasePath;
+                    using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                    {
+                        openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
+                        openFileDialog.FilterIndex = 1;
+                        openFileDialog.Title = "Lokale Datenbank auswählen";
+                        openFileDialog.RestoreDirectory = true;
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            filePath = openFileDialog.FileName;
+                            Properties.Settings.Default.databasePath = filePath;
+                            Properties.Settings.Default.Save();
+                            Program.database = new Database();
+                        }
+                    }
+                }
+            }
             SQLiteConnection sqlite_conn;
             if (!File.Exists(path + "database.db")) { Directory.CreateDirectory(path); SQLiteConnection.CreateFile(path + "database.db"); }
             sqlite_conn = new SQLiteConnection("Data Source=" + path + "database.db; Version = 3; New = False; Compress = True; ");
@@ -49,7 +72,8 @@ namespace ExamManager
 
         // ---- STUDENT ---- ########################################################################################################################## 
         // ID firstname lastname grade Email TelNummer
-        /// <summary>Adds a new student to the database</summary>
+        /// <summary>Adds a new student to the database.</summary>
+        /// <returns>returns <see langword="true"/> if the student was added successfully</returns>
         public bool AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             string[] s = GetStudent(firstname, lastname);
@@ -98,19 +122,21 @@ namespace ExamManager
                                 tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
                                 string templastname = null;
                                 templastname += line.Split(' ')[line.Split(' ').Length - 1];
+                                tempfirstname = tempfirstname.Replace(' ', '_');
+                                templastname = templastname.Replace(' ', '_');
                                 if (mailgenerator)
                                 {
                                     string domain = Properties.Settings.Default.email_domain;
                                     string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                    if (!AddStudent(tempfirstname, templastname, grade, mail))
-                                        break;
-                                    //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    if (AddStudent(tempfirstname, templastname, grade, mail))
+                                        studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    else break;
                                 }
                                 else
                                 {
-                                    if (!AddStudent(tempfirstname, templastname, grade))
-                                        break;
-                                    //studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    if (AddStudent(tempfirstname, templastname, grade))
+                                        studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    else break;
                                 }
 
                             }
@@ -146,18 +172,23 @@ namespace ExamManager
                             {
                                 string domain = Properties.Settings.Default.email_domain;
                                 string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail);
-                                studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                if (AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail))
+                                    studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                else break;
                             }
                             else
                             {
-                                AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade);
-                                studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                if (AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade))
+                                    studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                else break;
                             }
                         }
                 }
-                FormStudentData form = new FormStudentData(studentIdList);
-                form.ShowDialog();
+                if (studentIdList.Count > 0)
+                {
+                    FormStudentData form = new FormStudentData(studentIdList);
+                    form.ShowDialog();
+                }
             }
         }
         /// <summary>Searches a student by firstname and lastname (and grade) in the database.</summary>
@@ -204,7 +235,7 @@ namespace ExamManager
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade DESC, lastname ASC";
+            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade ASC, lastname ASC";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {

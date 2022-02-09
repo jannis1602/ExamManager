@@ -9,9 +9,9 @@ namespace ExamManager
         [STAThread]
         static void Main()
         {
-            database = new Database();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            database = new Database();
             Application.Run(new Form1());
 
             //public event EventHandler UpdateList;
@@ -58,6 +58,15 @@ namespace ExamManager
             // formfilter -> action...
             // Search index -> enum
             // InsertTeacherFileIntoDB -> return idlist -> openform
+            // delete filter -> show search
+            // mouse un filter -> show both
+            // duche dropdown check
+            // Studentdata search string (tsmi_box?) -> hide others
+            // teacherdata menubar
+
+            // student/teacher object
+            // namen mit _
+            // studentdata max entities -> multiple sides
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');
