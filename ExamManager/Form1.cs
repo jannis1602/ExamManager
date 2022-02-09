@@ -156,17 +156,19 @@ namespace ExamManager
             if (exam_room.Length == 0 || preparation_room.Length == 0 || student.Length == 0 || teacher1.Length == 0 || teacher2.Length == 0 || teacher3.Length == 0 || subject.Length == 0 || duration == 0)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             // check room
-            if (database.CheckTimeAndRoom(date, time, exam_room))
-            { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-            foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
-            {
-                DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
-                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
-                { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-            }
+            //if (database.CheckTimeAndRoom(date, time, exam_room))
+            //{ MessageBox.Show("Raum besetzt", "Warnung"); return; }
+            if (time != database.GetExamById(id)[2] || date != database.GetExamById(id)[1])
+                foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
+                    if (id != Int32.Parse(s[0]))
+                    {
+                        DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                        DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                        if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
+                        { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
+                    }
             // check names in database
             string tempfirstname = null;
             string templastname = null;
@@ -259,7 +261,7 @@ namespace ExamManager
                 this.cb_teacher3.Text = null;
             }
         }
-        /// <summary>Adds a timeline for a room</summary>
+        /// <summary>Adds a timeline for a <paramref name="room"/></summary>
         public void AddTimeline(string room)
         {
             // -- roomlist --

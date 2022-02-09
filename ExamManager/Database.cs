@@ -180,7 +180,7 @@ namespace ExamManager
             else return null;
             return data;
         }
-        /// <summary>Searches a student in the database.</summary>
+        /// <summary>Searches a student by <paramref name="id"/> in the database.</summary>
         /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
         public string[] GetStudentByID(int id)
         {

@@ -17,6 +17,7 @@ namespace ExamManager
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);
 
+            // student/teacher object
             // tabindex
             // daten als liste exportieren
             // idea: Count exams per date in listviewexams
