@@ -388,6 +388,7 @@ namespace ExamManager
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormStudentData";
             this.Text = "Schüler hinzufügen";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanel_main.ResumeLayout(false);
             this.tlp_edit.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

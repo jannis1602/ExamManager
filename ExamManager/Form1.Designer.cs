@@ -35,6 +35,10 @@ namespace ExamManager
             this.dtp_timeline_date = new System.Windows.Forms.DateTimePicker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_teachers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_rooms = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_data_subjects = new System.Windows.Forms.ToolStripMenuItem();
             this.stufeVerschiebenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_editgrade_move = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_editgrade_delete = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,6 +107,9 @@ namespace ExamManager
             this.tlp_1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_mode = new System.Windows.Forms.Label();
             this.flp_edit_btns = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_cancel = new System.Windows.Forms.Button();
+            this.btn_reuse_exam = new System.Windows.Forms.Button();
+            this.btn_delete_exam = new System.Windows.Forms.Button();
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
@@ -124,13 +131,7 @@ namespace ExamManager
             this.panel_time_line = new System.Windows.Forms.Panel();
             this.panel_side_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmi_data_students = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_teachers = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_rooms = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_subjects = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_cancel = new System.Windows.Forms.Button();
-            this.btn_reuse_exam = new System.Windows.Forms.Button();
-            this.btn_delete_exam = new System.Windows.Forms.Button();
+            this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -228,6 +229,34 @@ namespace ExamManager
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.dataToolStripMenuItem.Text = "Daten";
+            // 
+            // tsmi_data_students
+            // 
+            this.tsmi_data_students.Name = "tsmi_data_students";
+            this.tsmi_data_students.Size = new System.Drawing.Size(188, 22);
+            this.tsmi_data_students.Text = "Schüler";
+            this.tsmi_data_students.Click += new System.EventHandler(this.tsmi_data_students_Click);
+            // 
+            // tsmi_data_teachers
+            // 
+            this.tsmi_data_teachers.Name = "tsmi_data_teachers";
+            this.tsmi_data_teachers.Size = new System.Drawing.Size(188, 22);
+            this.tsmi_data_teachers.Text = "Lehrer";
+            this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
+            // 
+            // tsmi_data_rooms
+            // 
+            this.tsmi_data_rooms.Name = "tsmi_data_rooms";
+            this.tsmi_data_rooms.Size = new System.Drawing.Size(188, 22);
+            this.tsmi_data_rooms.Text = "Räume";
+            this.tsmi_data_rooms.Click += new System.EventHandler(this.tsmi_data_rooms_Click);
+            // 
+            // tsmi_data_subjects
+            // 
+            this.tsmi_data_subjects.Name = "tsmi_data_subjects";
+            this.tsmi_data_subjects.Size = new System.Drawing.Size(188, 22);
+            this.tsmi_data_subjects.Text = "Fächer";
+            this.tsmi_data_subjects.Click += new System.EventHandler(this.tsmi_data_subjects_Click);
             // 
             // stufeVerschiebenToolStripMenuItem
             // 
@@ -420,21 +449,21 @@ namespace ExamManager
             // tsmi_settings_table_exams
             // 
             this.tsmi_settings_table_exams.Name = "tsmi_settings_table_exams";
-            this.tsmi_settings_table_exams.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_exams.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_exams.Text = "Prüfungen";
             this.tsmi_settings_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
             // tsmi_settings_table_students
             // 
             this.tsmi_settings_table_students.Name = "tsmi_settings_table_students";
-            this.tsmi_settings_table_students.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_students.Text = "Schüler";
             this.tsmi_settings_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
             // tsmi_settings_table_teacher
             // 
             this.tsmi_settings_table_teacher.Name = "tsmi_settings_table_teacher";
-            this.tsmi_settings_table_teacher.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_teacher.Text = "Lehrer";
             this.tsmi_settings_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
@@ -983,6 +1012,45 @@ namespace ExamManager
             this.flp_edit_btns.Size = new System.Drawing.Size(150, 48);
             this.flp_edit_btns.TabIndex = 13;
             // 
+            // btn_cancel
+            // 
+            this.btn_cancel.BackgroundImage = global::ExamManager.Properties.Resources.exit_ing;
+            this.btn_cancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_cancel.Location = new System.Drawing.Point(103, 2);
+            this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(45, 44);
+            this.btn_cancel.TabIndex = 10;
+            this.toolTip.SetToolTip(this.btn_cancel, "Abbrechen");
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
+            // btn_reuse_exam
+            // 
+            this.btn_reuse_exam.BackgroundImage = global::ExamManager.Properties.Resources.copy_img;
+            this.btn_reuse_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
+            this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_reuse_exam.Name = "btn_reuse_exam";
+            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
+            this.btn_reuse_exam.TabIndex = 12;
+            this.toolTip.SetToolTip(this.btn_reuse_exam, "Kopieren");
+            this.btn_reuse_exam.UseVisualStyleBackColor = true;
+            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
+            // 
+            // btn_delete_exam
+            // 
+            this.btn_delete_exam.BackgroundImage = global::ExamManager.Properties.Resources.trash_img;
+            this.btn_delete_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
+            this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_delete_exam.Name = "btn_delete_exam";
+            this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
+            this.btn_delete_exam.TabIndex = 11;
+            this.toolTip.SetToolTip(this.btn_delete_exam, "Löschen");
+            this.btn_delete_exam.UseVisualStyleBackColor = true;
+            this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
+            // 
             // tlp_config
             // 
             this.tlp_config.ColumnCount = 2;
@@ -1006,7 +1074,7 @@ namespace ExamManager
             this.cb_add_next_time.AutoSize = true;
             this.cb_add_next_time.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.cb_add_next_time.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cb_add_next_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.cb_add_next_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.cb_add_next_time.Location = new System.Drawing.Point(1, 26);
             this.cb_add_next_time.Margin = new System.Windows.Forms.Padding(1);
             this.cb_add_next_time.Name = "cb_add_next_time";
@@ -1268,73 +1336,6 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
-            // tsmi_data_students
-            // 
-            this.tsmi_data_students.Name = "tsmi_data_students";
-            this.tsmi_data_students.Size = new System.Drawing.Size(188, 22);
-            this.tsmi_data_students.Text = "Schüler";
-            this.tsmi_data_students.Click += new System.EventHandler(this.tsmi_data_students_Click);
-            // 
-            // tsmi_data_teachers
-            // 
-            this.tsmi_data_teachers.Name = "tsmi_data_teachers";
-            this.tsmi_data_teachers.Size = new System.Drawing.Size(188, 22);
-            this.tsmi_data_teachers.Text = "Lehrer";
-            this.tsmi_data_teachers.Click += new System.EventHandler(this.tsmi_data_teachers_Click);
-            // 
-            // tsmi_data_rooms
-            // 
-            this.tsmi_data_rooms.Name = "tsmi_data_rooms";
-            this.tsmi_data_rooms.Size = new System.Drawing.Size(188, 22);
-            this.tsmi_data_rooms.Text = "Räume";
-            this.tsmi_data_rooms.Click += new System.EventHandler(this.tsmi_data_rooms_Click);
-            // 
-            // tsmi_data_subjects
-            // 
-            this.tsmi_data_subjects.Name = "tsmi_data_subjects";
-            this.tsmi_data_subjects.Size = new System.Drawing.Size(188, 22);
-            this.tsmi_data_subjects.Text = "Fächer";
-            this.tsmi_data_subjects.Click += new System.EventHandler(this.tsmi_data_subjects_Click);
-            // 
-            // btn_cancel
-            // 
-            this.btn_cancel.BackgroundImage = global::ExamManager.Properties.Resources.exit_ing;
-            this.btn_cancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_cancel.Location = new System.Drawing.Point(103, 2);
-            this.btn_cancel.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(45, 44);
-            this.btn_cancel.TabIndex = 10;
-            this.toolTip.SetToolTip(this.btn_cancel, "Abbrechen");
-            this.btn_cancel.UseVisualStyleBackColor = true;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
-            // 
-            // btn_reuse_exam
-            // 
-            this.btn_reuse_exam.BackgroundImage = global::ExamManager.Properties.Resources.copy_img;
-            this.btn_reuse_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_reuse_exam.Location = new System.Drawing.Point(55, 2);
-            this.btn_reuse_exam.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_reuse_exam.Name = "btn_reuse_exam";
-            this.btn_reuse_exam.Size = new System.Drawing.Size(44, 44);
-            this.btn_reuse_exam.TabIndex = 12;
-            this.toolTip.SetToolTip(this.btn_reuse_exam, "Kopieren");
-            this.btn_reuse_exam.UseVisualStyleBackColor = true;
-            this.btn_reuse_exam.Click += new System.EventHandler(this.btn_reuse_exam_Click);
-            // 
-            // btn_delete_exam
-            // 
-            this.btn_delete_exam.BackgroundImage = global::ExamManager.Properties.Resources.trash_img;
-            this.btn_delete_exam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_delete_exam.Location = new System.Drawing.Point(7, 2);
-            this.btn_delete_exam.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_delete_exam.Name = "btn_delete_exam";
-            this.btn_delete_exam.Size = new System.Drawing.Size(44, 44);
-            this.btn_delete_exam.TabIndex = 11;
-            this.toolTip.SetToolTip(this.btn_delete_exam, "Löschen");
-            this.btn_delete_exam.UseVisualStyleBackColor = true;
-            this.btn_delete_exam.Click += new System.EventHandler(this.btn_delete_exam_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1494,5 +1495,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_all;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_teacher;
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_extra;
+        private System.Windows.Forms.ToolTip tooltip_search_filter;
     }
 }

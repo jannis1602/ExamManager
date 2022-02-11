@@ -138,6 +138,7 @@ namespace ExamManager
         {
             if (cb_exam_room.SelectedItem == null || cb_preparation_room.SelectedItem == null)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
+            //if (cb_student.SelectedItem == null) return;
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             string time = this.dtp_time.Value.ToString("HH:mm");
             string exam_room = cb_exam_room.SelectedItem.ToString();
@@ -158,17 +159,30 @@ namespace ExamManager
             // check room
             //if (database.CheckTimeAndRoom(date, time, exam_room))
             //{ MessageBox.Show("Raum besetzt", "Warnung"); return; }
-            if (time != database.GetExamById(id)[2] || date != database.GetExamById(id)[1])
+            if (id != 0)
+            {
+                if (time != database.GetExamById(id)[2] || date != database.GetExamById(id)[1])
+                    foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
+                        if (id != Int32.Parse(s[0]))
+                        {
+                            DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                            DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                            DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                            DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                            if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
+                            { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
+                        }
+            }
+            else
                 foreach (string[] s in database.GetAllExamsAtDateAndRoom(date, exam_room))
-                    if (id != Int32.Parse(s[0]))
-                    {
-                        DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                        DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
-                        DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                        DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                        if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
-                        { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-                    }
+                {
+                    DateTime start = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime end = DateTime.ParseExact(s[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(s[10]));
+                    DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
+                    if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
+                    { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
+                }
             // check names in database
             string tempfirstname = null;
             string templastname = null;
@@ -181,7 +195,7 @@ namespace ExamManager
             }
             catch (NullReferenceException)
             { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
-            if (database.GetStudent(tempfirstname, templastname, grade)[0] == null)
+            if (database.GetStudent(tempfirstname, templastname, grade) == null)
             { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
@@ -373,7 +387,10 @@ namespace ExamManager
             }
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_sidetop_empty.BackColor = Color.Yellow; }
             else if (filter != null && filter.Length >= 1) { lbl_search.Text = "Filter:\n" + filter; panel_sidetop_empty.BackColor = Color.Yellow; }
-            else { lbl_search.Text = null; panel_sidetop_empty.BackColor = panel_side_room.BackColor; }
+            else { lbl_search.Text = null; panel_sidetop_empty.BackColor = panel_side_room.BackColor; } // panel_sidetop_empty
+            if ((search != null && search.Length >= 1) && (filter != null && filter.Length >= 1)) tooltip_search_filter.SetToolTip(lbl_search, "Suche: " + search + "\nFilter: " + filter);
+            else if (search != null && search.Length >= 1) tooltip_search_filter.SetToolTip(lbl_search, "Suche: " + search);
+            else if (filter != null && filter.Length >= 1) tooltip_search_filter.SetToolTip(lbl_search, "Filter: " + filter);
         }
         // ----------------- panel menu -----------------
         private void panel_menu_click_copy(object sender, EventArgs e)
@@ -967,6 +984,10 @@ namespace ExamManager
         }
         private void UpdateAutocompleteTeacher(LinkedList<string[]> list)
         {
+            Console.WriteLine(list.Count());
+            cb_teacher1.Items.Clear();
+            cb_teacher2.Items.Clear();
+            cb_teacher3.Items.Clear();
             var autocomplete_teacher = new AutoCompleteStringCollection();
             string[] teacher = new string[list.Count];
             for (int i = 0; i < list.Count; i++)
@@ -981,12 +1002,9 @@ namespace ExamManager
             this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
             this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            cb_teacher1.Items.Clear();
-            cb_teacher2.Items.Clear();
-            cb_teacher3.Items.Clear();
-            LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
-            LinkedList<string[]> teacherList = new LinkedList<string[]>();
-            List<string[]> tempTeacherList = new List<string[]>(allTeachers);
+            //
+            LinkedList<string[]> teacherList = new LinkedList<string[]>(list);
+            List<string[]> tempTeacherList = new List<string[]>(list);
             tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
             teacherList = new LinkedList<string[]>(tempTeacherList);
             string[] listTeacher = new string[teacherList.Count];
@@ -999,11 +1017,6 @@ namespace ExamManager
             cb_teacher3.Items.Add("");
         }
         // ----------------- events -----------------
-        private void panel_time_line_Move(object sender, EventArgs e)
-        {
-            Panel p = sender as Panel;
-            Console.WriteLine(p.AutoScrollPosition.Y);
-        }
         private void tb_duration_TextChanged(object sender, EventArgs e)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
@@ -1072,81 +1085,14 @@ namespace ExamManager
         private void cb_subject_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cb_show_subjectteacher.Checked)
-            {
-                var autocomplete_teacher = new AutoCompleteStringCollection();
-                LinkedList<string[]> teacherList1 = database.GetTeacherBySubject(cb_subject.Text);
-                string[] teacher = new string[teacherList1.Count];
-                for (int i = 0; i < teacherList1.Count; i++)
-                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
-                autocomplete_teacher.AddRange(teacher);
-                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-
-                cb_teacher1.Items.Clear();
-                cb_teacher2.Items.Clear();
-                cb_teacher3.Items.Clear();
-                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
-                LinkedList<string[]> teacherList = new LinkedList<string[]>();
-                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
-                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
-                teacherList = new LinkedList<string[]>(tempTeacherList);
-                string[] listTeacher = new string[teacherList.Count];
-                for (int i = 0; i < teacherList.Count; i++)
-                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
-                cb_teacher1.Items.AddRange(listTeacher);
-                cb_teacher2.Items.AddRange(listTeacher);
-                cb_teacher3.Items.AddRange(listTeacher);
-                cb_teacher2.Items.Add("");
-                cb_teacher3.Items.Add("");
-            }
-            else
-            {
-                var autocomplete_teacher = new AutoCompleteStringCollection();
-                LinkedList<string[]> teacherList1 = database.GetAllTeachers();
-                string[] teacher = new string[teacherList1.Count];
-                for (int i = 0; i < teacherList1.Count; i++)
-                    teacher[i] = teacherList1.ElementAt(i)[1] + " " + teacherList1.ElementAt(i)[2];
-                autocomplete_teacher.AddRange(teacher);
-                this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-                this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
-
-                cb_teacher1.Items.Clear();
-                cb_teacher2.Items.Clear();
-                cb_teacher3.Items.Clear();
-                LinkedList<string[]> allTeachers = database.GetTeacherBySubject(cb_subject.Text);
-                LinkedList<string[]> teacherList = new LinkedList<string[]>();
-                List<string[]> tempTeacherList = new List<string[]>(allTeachers);
-                tempTeacherList = tempTeacherList.OrderBy(x => x[2]).ToList();
-                teacherList = new LinkedList<string[]>(tempTeacherList);
-                string[] listTeacher = new string[teacherList.Count];
-                for (int i = 0; i < teacherList.Count; i++)
-                    listTeacher[i] = teacherList.ElementAt(i)[1] + " " + teacherList.ElementAt(i)[2];
-                cb_teacher1.Items.AddRange(listTeacher);
-                cb_teacher2.Items.AddRange(listTeacher);
-                cb_teacher3.Items.AddRange(listTeacher);
-                cb_teacher2.Items.Add("");
-                cb_teacher3.Items.Add("");
-            }
+                UpdateAutocompleteTeacher(database.GetTeacherBySubject(cb_subject.Text));
+            else UpdateAutocompleteTeacher(database.GetAllTeachers());
         }
         private void cb_show_subjectteacher_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateAutocompleteTeacher(database.GetAllTeachers());
+            if (cb_show_subjectteacher.Checked)
+                UpdateAutocompleteTeacher(database.GetTeacherBySubject(cb_subject.Text));
+            else UpdateAutocompleteTeacher(database.GetAllTeachers());
         }
         private void dtp_timeline_date_ValueChanged(object sender, EventArgs e)
         {
@@ -1154,6 +1100,5 @@ namespace ExamManager
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
         }
-
     }
 }

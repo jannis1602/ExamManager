@@ -32,11 +32,11 @@ namespace ExamManager
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_oldroom = new System.Windows.Forms.Label();
-            this.tb_oldroom = new System.Windows.Forms.TextBox();
             this.btn_change = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_newroom = new System.Windows.Forms.Label();
-            this.tb_newroom = new System.Windows.Forms.TextBox();
+            this.cb_oldroom = new System.Windows.Forms.ComboBox();
+            this.cb_newroom = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -63,7 +63,7 @@ namespace ExamManager
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.lbl_oldroom);
-            this.flowLayoutPanel2.Controls.Add(this.tb_oldroom);
+            this.flowLayoutPanel2.Controls.Add(this.cb_oldroom);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(1, 1);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
@@ -81,19 +81,10 @@ namespace ExamManager
             this.lbl_oldroom.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_oldroom.MinimumSize = new System.Drawing.Size(101, 0);
             this.lbl_oldroom.Name = "lbl_oldroom";
-            this.lbl_oldroom.Size = new System.Drawing.Size(101, 28);
+            this.lbl_oldroom.Size = new System.Drawing.Size(101, 24);
             this.lbl_oldroom.TabIndex = 0;
             this.lbl_oldroom.Text = "alter Raum:";
             this.lbl_oldroom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tb_oldroom
-            // 
-            this.tb_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tb_oldroom.Location = new System.Drawing.Point(113, 6);
-            this.tb_oldroom.Margin = new System.Windows.Forms.Padding(2, 6, 20, 6);
-            this.tb_oldroom.Name = "tb_oldroom";
-            this.tb_oldroom.Size = new System.Drawing.Size(108, 26);
-            this.tb_oldroom.TabIndex = 2;
             // 
             // btn_change
             // 
@@ -110,7 +101,7 @@ namespace ExamManager
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.lbl_newroom);
-            this.flowLayoutPanel1.Controls.Add(this.tb_newroom);
+            this.flowLayoutPanel1.Controls.Add(this.cb_newroom);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(1, 41);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
@@ -128,20 +119,38 @@ namespace ExamManager
             this.lbl_newroom.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_newroom.MinimumSize = new System.Drawing.Size(101, 0);
             this.lbl_newroom.Name = "lbl_newroom";
-            this.lbl_newroom.Size = new System.Drawing.Size(101, 28);
+            this.lbl_newroom.Size = new System.Drawing.Size(101, 24);
             this.lbl_newroom.TabIndex = 0;
             this.lbl_newroom.Text = "neuer Raum:";
             this.lbl_newroom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tb_newroom
+            // cb_oldroom
             // 
-            this.tb_newroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tb_newroom.Location = new System.Drawing.Point(113, 6);
-            this.tb_newroom.Margin = new System.Windows.Forms.Padding(2, 6, 20, 6);
-            this.tb_newroom.Name = "tb_newroom";
-            this.tb_newroom.Size = new System.Drawing.Size(108, 26);
-            this.tb_newroom.TabIndex = 2;
-            this.tb_newroom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_newroom_KeyPress);
+            this.cb_oldroom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_oldroom.DropDownHeight = 100;
+            this.cb_oldroom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_oldroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_oldroom.FormattingEnabled = true;
+            this.cb_oldroom.IntegralHeight = false;
+            this.cb_oldroom.Location = new System.Drawing.Point(114, 3);
+            this.cb_oldroom.MaximumSize = new System.Drawing.Size(90, 0);
+            this.cb_oldroom.Name = "cb_oldroom";
+            this.cb_oldroom.Size = new System.Drawing.Size(90, 28);
+            this.cb_oldroom.TabIndex = 9;
+            // 
+            // cb_newroom
+            // 
+            this.cb_newroom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_newroom.DropDownHeight = 100;
+            this.cb_newroom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_newroom.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_newroom.FormattingEnabled = true;
+            this.cb_newroom.IntegralHeight = false;
+            this.cb_newroom.Location = new System.Drawing.Point(114, 3);
+            this.cb_newroom.MaximumSize = new System.Drawing.Size(90, 0);
+            this.cb_newroom.Name = "cb_newroom";
+            this.cb_newroom.Size = new System.Drawing.Size(90, 28);
+            this.cb_newroom.TabIndex = 9;
             // 
             // FormChangeRoom
             // 
@@ -153,7 +162,7 @@ namespace ExamManager
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormChangeRoom";
-            this.Text = "Raumwechsel";
+            this.Text = "Raumwechsel (Prüfungsraum)";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
@@ -169,9 +178,9 @@ namespace ExamManager
         private System.Windows.Forms.Button btn_change;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label lbl_oldroom;
-        private System.Windows.Forms.TextBox tb_oldroom;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label lbl_newroom;
-        private System.Windows.Forms.TextBox tb_newroom;
+        private System.Windows.Forms.ComboBox cb_oldroom;
+        private System.Windows.Forms.ComboBox cb_newroom;
     }
 }

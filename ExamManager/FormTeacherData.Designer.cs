@@ -377,6 +377,7 @@ namespace ExamManager
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormTeacherData";
             this.Text = "Lehrer hinzufügen";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanel_main.ResumeLayout(false);
             this.tlp_edit.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

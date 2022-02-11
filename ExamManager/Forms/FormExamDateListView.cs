@@ -12,7 +12,7 @@ namespace ExamManager
         {
             this.form = form;
             InitializeComponent();
-            LinkedList<string> list = new LinkedList<string>();
+            /*LinkedList<string> list = new LinkedList<string>();
             foreach (string[] s in Program.database.GetAllExams())
             {
                 if (!list.Contains(s[1]))
@@ -22,15 +22,45 @@ namespace ExamManager
             for (int i = 0; i < list.Count; i++)
                 dates[i] = list.ElementAt(i);
             lb_exam_date.Items.Clear();
+            lb_exam_date.Items.AddRange(dates);*/
+
+            LinkedList<Item> list = new LinkedList<Item>();
+            foreach (string[] s in Program.database.GetAllExams())
+            {
+                if (!list.Any(n => n.date == s[1]))
+                {
+                    DateTime dt = DateTime.ParseExact(s[1], "dd.MM.yyyy", null);
+                    list.AddLast(new Item(s[1], s[1] + "  ->  " + Program.database.GetAllExamsAtDate(dt.ToString("yyyy-MM-dd")).Count().ToString() + " Prüfungen"));
+                }
+            }
+            Item[] dates = new Item[list.Count];
+            for (int i = 0; i < list.Count; i++)
+                dates[i] = list.ElementAt(i);
+            lb_exam_date.DisplayMember = nameof(Item.title);
+            lb_exam_date.Items.Clear();
             lb_exam_date.Items.AddRange(dates);
+
+            List<Item> item = new List<Item>();
+        }
+        class Item
+        {
+            public string date { get; }
+            public string title { get; }
+
+            public Item(string date, string title)
+            {
+                this.date = date;
+                this.title = title;
+            }
         }
 
         private void lb_exam_date_DoubleClick(object sender, EventArgs e)
         {
             if (lb_exam_date.SelectedItem != null)
             {
-                form.SetDate(DateTime.ParseExact(lb_exam_date.SelectedItem.ToString(), "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None));
-                //this.Dispose();
+                Item itm = lb_exam_date.SelectedItem as Item;  // lb_exam_date.SelectedItem.ToString()
+                form.SetDate(DateTime.ParseExact(itm.date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None));
+                this.Dispose();
             }
         }
     }

@@ -431,7 +431,7 @@ namespace ExamManager
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE subject1 = @subject OR subject2 = @subject OR subject3 = @subject";
+            sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE subject1 = @subject OR subject2 = @subject OR subject3 = @subject ORDER BY lastname";
             sqlite_cmd.Parameters.AddWithValue("@subject", subject);
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
@@ -527,7 +527,6 @@ namespace ExamManager
                     string[] rowData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        Console.WriteLine(reader.GetValue(i));
                         rowData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
                             rowData[i] = rowData[i].Split(' ')[0];
@@ -579,6 +578,8 @@ namespace ExamManager
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsAtDate(string date)
         {
+            //DateTime dt = DateTime.ParseExact(date, "dd.MM.yyyy", null);
+            //date = dt.ToString("yyyy-MM-dd");
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
