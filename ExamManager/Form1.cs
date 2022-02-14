@@ -9,7 +9,7 @@ namespace ExamManager
     public partial class Form1 : Form
     {
         public string search = null;
-        public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room //TODO: ENUM
+        public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room // TODO: ENUM
         public string filter = null;
         public enum Filter { all, grade, teacher, student }
         public Filter filterMode = Filter.all;
@@ -414,11 +414,6 @@ namespace ExamManager
             else this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
             if (database.GetTeacherByID(exam[8]) == null) this.cb_teacher3.Text = "";
             else this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];
-            /*this.cb_student.Text = st[1] + " " + st[2];
-            this.cb_grade.SelectedItem = st[3];
-            this.cb_teacher1.Text = database.GetTeacherByID(exam[6])[1] + " " + database.GetTeacherByID(exam[6])[2];
-            this.cb_teacher2.Text = database.GetTeacherByID(exam[7])[1] + " " + database.GetTeacherByID(exam[7])[2];
-            this.cb_teacher3.Text = database.GetTeacherByID(exam[8])[1] + " " + database.GetTeacherByID(exam[8])[2];*/
             this.cb_subject.Text = exam[9];
             this.tb_duration.Text = exam[10];
             id = 0;
@@ -900,7 +895,6 @@ namespace ExamManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog.FileName;
-                    Console.WriteLine(filePath);
                     Program.database.InsertTeacherFileIntoDB(filePath, false);
                 }
             }
@@ -984,7 +978,6 @@ namespace ExamManager
         }
         private void UpdateAutocompleteTeacher(LinkedList<string[]> list)
         {
-            Console.WriteLine(list.Count());
             cb_teacher1.Items.Clear();
             cb_teacher2.Items.Clear();
             cb_teacher3.Items.Clear();

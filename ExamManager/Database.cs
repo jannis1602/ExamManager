@@ -14,10 +14,8 @@ namespace ExamManager
         public Database()
         {
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
-            if (Properties.Settings.Default.databasePath == "default")
-                Console.WriteLine(Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager"));
-            else
-            { Console.WriteLine(path); path = Properties.Settings.Default.databasePath; }
+            if (Properties.Settings.Default.databasePath != "default")
+            { path = Properties.Settings.Default.databasePath; }
 
             connection = CreateConnection(path);
             CreateStudentDB();
@@ -79,8 +77,8 @@ namespace ExamManager
             string[] s = GetStudent(firstname, lastname);
             if (firstname.Contains(" ") || lastname.Contains(" "))
             {
-                Console.WriteLine("Space!>>> " + firstname + " " + lastname);
-                // replace " " with "_"
+                Console.WriteLine("Space!>>> " + firstname + " - " + lastname);
+                // TODO: replace " " with "_"
             }
             if (s != null)
             {
@@ -230,12 +228,13 @@ namespace ExamManager
         }
         /// <summary>Searches all students in the database.</summary>
         /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllStudents()
+        public LinkedList<string[]> GetAllStudents(bool orderFirstname = false)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade ASC, lastname ASC";
+            if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade ASC, firstname ASC";
+            else sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade ASC, lastname ASC";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -252,12 +251,13 @@ namespace ExamManager
         }
         /// <summary>Searches all students in the database.</summary>
         /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllStudentsFromGrade(string grade)
+        public LinkedList<string[]> GetAllStudentsFromGrade(string grade, bool orderFirstname = false)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM student WHERE grade=@grade";
+            if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM student WHERE grade=@grade ORDER BY grade ASC, firstname ASC";
+            else sqlite_cmd.CommandText = "SELECT * FROM student WHERE grade=@grade ORDER BY grade ASC, lastname ASC";
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
@@ -387,12 +387,13 @@ namespace ExamManager
         }
         /// <summary>Searches all teachers in the database.</summary>
         /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllTeachers()
+        public LinkedList<string[]> GetAllTeachers(bool orderFirstname = false)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM teacher ORDER BY lastname";
+            if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM teacher ORDER BY firstname ASC";
+            else sqlite_cmd.CommandText = "SELECT * FROM teacher ORDER BY lastname ASC";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {

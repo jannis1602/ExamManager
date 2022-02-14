@@ -44,13 +44,13 @@ namespace ExamManager
             // Tools - Extras: load exel file
             // formfilter -> action...
             // Search index -> enum
-            // InsertTeacherFileIntoDB -> return idlist -> openform
-            // (suche dropdown check)
             // Studentdata search string (tsmi_box?) -> hide others
             // teacherdata menubar
             // class for filereader + formart manager
             // data -> expand default
             // studentdata menu: load from file?
+            // studentdata order firstname
+            // student/teacherdata -> tableview edit/delet
 
             // student/teacher object
             // namen mit _

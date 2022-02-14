@@ -53,11 +53,13 @@ namespace ExamManager
             this.btn_add_student = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmi_grade = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_sort = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_sort_firstname = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_sort_lastname = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_firstname = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_lastname = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_sort = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_sort_lastname = new System.Windows.Forms.ToolStripMenuItem();
+            this.tstb_search = new System.Windows.Forms.ToolStripTextBox();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -74,13 +76,13 @@ namespace ExamManager
             this.tableLayoutPanel_main.Controls.Add(this.flp_student_entitys, 0, 0);
             this.tableLayoutPanel_main.Controls.Add(this.tlp_edit, 0, 1);
             this.tableLayoutPanel_main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 24);
+            this.tableLayoutPanel_main.Location = new System.Drawing.Point(0, 27);
             this.tableLayoutPanel_main.Name = "tableLayoutPanel_main";
             this.tableLayoutPanel_main.RowCount = 2;
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 477);
+            this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 474);
             this.tableLayoutPanel_main.TabIndex = 1;
             // 
             // flp_student_entitys
@@ -91,7 +93,7 @@ namespace ExamManager
             this.flp_student_entitys.Location = new System.Drawing.Point(0, 0);
             this.flp_student_entitys.Margin = new System.Windows.Forms.Padding(0);
             this.flp_student_entitys.Name = "flp_student_entitys";
-            this.flp_student_entitys.Size = new System.Drawing.Size(984, 397);
+            this.flp_student_entitys.Size = new System.Drawing.Size(984, 394);
             this.flp_student_entitys.TabIndex = 21;
             this.flp_student_entitys.SizeChanged += new System.EventHandler(this.flp_student_entitys_SizeChanged);
             // 
@@ -103,7 +105,7 @@ namespace ExamManager
             this.tlp_edit.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlp_edit.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tlp_edit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_edit.Location = new System.Drawing.Point(0, 397);
+            this.tlp_edit.Location = new System.Drawing.Point(0, 394);
             this.tlp_edit.Margin = new System.Windows.Forms.Padding(0);
             this.tlp_edit.Name = "tlp_edit";
             this.tlp_edit.RowCount = 2;
@@ -327,19 +329,43 @@ namespace ExamManager
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_grade,
+            this.tsmi_sort,
             this.tsmi_search,
-            this.tsmi_sort});
+            this.tstb_search});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 27);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // tsmi_grade
             // 
             this.tsmi_grade.Name = "tsmi_grade";
-            this.tsmi_grade.Size = new System.Drawing.Size(46, 20);
+            this.tsmi_grade.Size = new System.Drawing.Size(46, 23);
             this.tsmi_grade.Text = "Stufe";
+            // 
+            // tsmi_sort
+            // 
+            this.tsmi_sort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_sort_firstname,
+            this.tsmi_sort_lastname});
+            this.tsmi_sort.Name = "tsmi_sort";
+            this.tsmi_sort.Size = new System.Drawing.Size(66, 23);
+            this.tsmi_sort.Text = "Sortieren";
+            // 
+            // tsmi_sort_firstname
+            // 
+            this.tsmi_sort_firstname.Name = "tsmi_sort_firstname";
+            this.tsmi_sort_firstname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_firstname.Text = "Vorname";
+            this.tsmi_sort_firstname.Click += new System.EventHandler(this.tsmi_sort_firstname_Click);
+            // 
+            // tsmi_sort_lastname
+            // 
+            this.tsmi_sort_lastname.Name = "tsmi_sort_lastname";
+            this.tsmi_sort_lastname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_lastname.Text = "Nachname";
+            this.tsmi_sort_lastname.Click += new System.EventHandler(this.tsmi_sort_lastname_Click);
             // 
             // tsmi_search
             // 
@@ -347,35 +373,27 @@ namespace ExamManager
             this.tsmi_search_firstname,
             this.tsmi_search_lastname});
             this.tsmi_search.Name = "tsmi_search";
-            this.tsmi_search.Size = new System.Drawing.Size(51, 20);
+            this.tsmi_search.Size = new System.Drawing.Size(51, 23);
             this.tsmi_search.Text = "Suche";
             // 
             // tsmi_search_firstname
             // 
             this.tsmi_search_firstname.Name = "tsmi_search_firstname";
-            this.tsmi_search_firstname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_firstname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_firstname.Text = "Vorname [DEV]";
             // 
             // tsmi_search_lastname
             // 
             this.tsmi_search_lastname.Name = "tsmi_search_lastname";
-            this.tsmi_search_lastname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_lastname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_lastname.Text = "Nachname [DEV]";
             // 
-            // tsmi_sort
+            // tstb_search
             // 
-            this.tsmi_sort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_sort_lastname});
-            this.tsmi_sort.Name = "tsmi_sort";
-            this.tsmi_sort.Size = new System.Drawing.Size(66, 20);
-            this.tsmi_sort.Text = "Sortieren";
-            // 
-            // tsmi_sort_lastname
-            // 
-            this.tsmi_sort_lastname.Name = "tsmi_sort_lastname";
-            this.tsmi_sort_lastname.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_sort_lastname.Text = "Nachname";
-            this.tsmi_sort_lastname.Click += new System.EventHandler(this.tsmi_sort_lastname_Click);
+            this.tstb_search.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstb_search.Name = "tstb_search";
+            this.tstb_search.Size = new System.Drawing.Size(200, 23);
+            this.tstb_search.TextChanged += new System.EventHandler(this.tstb_search_TextChanged);
             // 
             // FormStudentData
             // 
@@ -434,5 +452,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_grade;
         private System.Windows.Forms.ToolStripMenuItem tsmi_sort;
         private System.Windows.Forms.ToolStripMenuItem tsmi_sort_lastname;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_sort_firstname;
+        private System.Windows.Forms.ToolStripTextBox tstb_search;
     }
 }
