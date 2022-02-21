@@ -9,6 +9,10 @@ namespace ExamManager
         [STAThread]
         static void Main()
         {
+            if (Properties.Settings.Default.color_theme == 0)
+                Colors.ColorTheme(Colors.Theme.dark);
+            else if (Properties.Settings.Default.color_theme == 1)
+                Colors.ColorTheme(Colors.Theme.light);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             database = new Database();
@@ -20,43 +24,29 @@ namespace ExamManager
             // student/teacher object
             // tabindex
             // export data to txt file
-            // entertaste in textbox
-            // delete old exams funktion + Form
             // color theme
             // connection status?
-            // remove addexam if id=null ?
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
             // teacher email ?
             // exam gleicher lehrer
-            // edit students form faster load
-            // select teacher -> delete multiple
-            // filter grade order abc
-            // filter teacher
-            // hide timelines without exams in filter
-            // rerender timeline
+            // edit_students_form faster load
+            // teacherData filter subject
+            // hide timelines without exams in filter...
             // editteacher = null etc. (teacher)
-            // Tools - Extras: load exel file
-            // formfilter -> action...
             // Search index -> enum
             // class for filereader + formart manager
             // data -> expand default
             // studentdata menu: load from file?
             // studentdata order firstname
             // student/teacherdata -> tableview edit/delet
-
             // readonly mode
-            // export timeline view as image
-            // zeit/raum liste für lehrer
             // autocomplete lastname
-
             // namen immer mit mit _
-            // studentdata max entities -> multiple sides
-
-            // getstudentbyname: -> remove  " " and "_"
-            // SELECT CONCAT('SQL', ' is', ' fun!');
-            // Filter in einem Fenster grade etc.
-
+            // studentdata max entities -> multiple pages
             // list clear thread: create new pannels add...
+            // search etc. in taskbar(top)
+
+
 
 
             /*LinkedList<Item> list = new LinkedList<Item>();

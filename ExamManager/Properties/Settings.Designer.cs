@@ -58,5 +58,17 @@ namespace ExamManager.Properties {
                 this["timeline_date"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int color_theme {
+            get {
+                return ((int)(this["color_theme"]));
+            }
+            set {
+                this["color_theme"] = value;
+            }
+        }
     }
 }
