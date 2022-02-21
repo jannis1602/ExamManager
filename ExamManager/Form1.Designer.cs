@@ -52,6 +52,10 @@ namespace ExamManager
             this.tsmi_search_room = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_grade = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter_grade = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter_teacher = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
             this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_examdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,12 +70,10 @@ namespace ExamManager
             this.tsmi_settings_table_exams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_students = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_filter = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_filter_grade = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_filter_teacher = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_tools_exportexamday = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_info_keys = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -110,6 +112,7 @@ namespace ExamManager
             this.btn_reuse_exam = new System.Windows.Forms.Button();
             this.btn_delete_exam = new System.Windows.Forms.Button();
             this.tlp_config = new System.Windows.Forms.TableLayoutPanel();
+            this.cb_student_onetime = new System.Windows.Forms.CheckBox();
             this.cb_add_next_time = new System.Windows.Forms.CheckBox();
             this.cb_keep_data = new System.Windows.Forms.CheckBox();
             this.cb_show_subjectteacher = new System.Windows.Forms.CheckBox();
@@ -131,10 +134,6 @@ namespace ExamManager
             this.panel_side_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
-            this.cb_student_onetime = new System.Windows.Forms.CheckBox();
-            this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_tools_export_teacher_timeroom = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_tools_exportexamday = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flowLayoutPanel_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -362,6 +361,37 @@ namespace ExamManager
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
+            // tsmi_filter
+            // 
+            this.tsmi_filter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_filter_grade,
+            this.tsmi_filter_teacher,
+            this.tsmi_filter_all});
+            this.tsmi_filter.Name = "tsmi_filter";
+            this.tsmi_filter.Size = new System.Drawing.Size(45, 20);
+            this.tsmi_filter.Text = "Filter";
+            // 
+            // tsmi_filter_grade
+            // 
+            this.tsmi_filter_grade.Name = "tsmi_filter_grade";
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_grade.Text = "Stufe";
+            this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
+            // 
+            // tsmi_filter_teacher
+            // 
+            this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_teacher.Text = "Lehrer";
+            this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
+            // 
+            // tsmi_filter_all
+            // 
+            this.tsmi_filter_all.Name = "tsmi_filter_all";
+            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_all.Text = "Filter löschen";
+            this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
+            // 
             // examToolStripMenuItem
             // 
             this.examToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -470,43 +500,11 @@ namespace ExamManager
             this.tsmi_settings_table_teacher.Text = "Lehrer";
             this.tsmi_settings_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
-            // tsmi_filter
-            // 
-            this.tsmi_filter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_filter_grade,
-            this.tsmi_filter_teacher,
-            this.tsmi_filter_all});
-            this.tsmi_filter.Name = "tsmi_filter";
-            this.tsmi_filter.Size = new System.Drawing.Size(45, 20);
-            this.tsmi_filter.Text = "Filter";
-            // 
-            // tsmi_filter_grade
-            // 
-            this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_filter_grade.Text = "Stufe";
-            this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
-            // 
-            // tsmi_filter_teacher
-            // 
-            this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_filter_teacher.Text = "Lehrer";
-            this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
-            // 
-            // tsmi_filter_all
-            // 
-            this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_filter_all.Text = "Filter löschen";
-            this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
-            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_tools_deleteOldExams,
             this.tsmi_tools_export,
-            this.tsmi_tools_export_teacher_timeroom,
             this.tsmi_tools_exportexamday});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
@@ -518,6 +516,20 @@ namespace ExamManager
             this.tsmi_tools_deleteOldExams.Size = new System.Drawing.Size(251, 22);
             this.tsmi_tools_deleteOldExams.Text = "alte Prüfungen löschen";
             this.tsmi_tools_deleteOldExams.Click += new System.EventHandler(this.tsmi_tools_deleteOldExams_Click);
+            // 
+            // tsmi_tools_export
+            // 
+            this.tsmi_tools_export.Name = "tsmi_tools_export";
+            this.tsmi_tools_export.Size = new System.Drawing.Size(251, 22);
+            this.tsmi_tools_export.Text = "Zeitachse exportieren (png) [DEV]";
+            this.tsmi_tools_export.Click += new System.EventHandler(this.tsmi_tools_export_Click);
+            // 
+            // tsmi_tools_exportexamday
+            // 
+            this.tsmi_tools_exportexamday.Name = "tsmi_tools_exportexamday";
+            this.tsmi_tools_exportexamday.Size = new System.Drawing.Size(251, 22);
+            this.tsmi_tools_exportexamday.Text = "Prüfungstag exportieren (csv)";
+            this.tsmi_tools_exportexamday.Click += new System.EventHandler(this.tsmi_tools_exportexamday_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -1070,6 +1082,21 @@ namespace ExamManager
             this.tlp_config.Size = new System.Drawing.Size(340, 50);
             this.tlp_config.TabIndex = 7;
             // 
+            // cb_student_onetime
+            // 
+            this.cb_student_onetime.Checked = true;
+            this.cb_student_onetime.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_student_onetime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cb_student_onetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.cb_student_onetime.Location = new System.Drawing.Point(145, 26);
+            this.cb_student_onetime.Margin = new System.Windows.Forms.Padding(1);
+            this.cb_student_onetime.Name = "cb_student_onetime";
+            this.cb_student_onetime.Size = new System.Drawing.Size(194, 23);
+            this.cb_student_onetime.TabIndex = 10;
+            this.cb_student_onetime.Text = "Schüler nur 1x pro Tag";
+            this.cb_student_onetime.UseVisualStyleBackColor = true;
+            this.cb_student_onetime.CheckedChanged += new System.EventHandler(this.update_autocomplete_Event);
+            // 
             // cb_add_next_time
             // 
             this.cb_add_next_time.AutoSize = true;
@@ -1337,42 +1364,6 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
-            // cb_student_onetime
-            // 
-            this.cb_student_onetime.Checked = true;
-            this.cb_student_onetime.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_student_onetime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cb_student_onetime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.cb_student_onetime.Location = new System.Drawing.Point(145, 26);
-            this.cb_student_onetime.Margin = new System.Windows.Forms.Padding(1);
-            this.cb_student_onetime.Name = "cb_student_onetime";
-            this.cb_student_onetime.Size = new System.Drawing.Size(194, 23);
-            this.cb_student_onetime.TabIndex = 10;
-            this.cb_student_onetime.Text = "Schüler nur 1x pro Tag";
-            this.cb_student_onetime.UseVisualStyleBackColor = true;
-            this.cb_student_onetime.CheckedChanged += new System.EventHandler(this.update_autocomplete_Event);
-            // 
-            // tsmi_tools_export
-            // 
-            this.tsmi_tools_export.Name = "tsmi_tools_export";
-            this.tsmi_tools_export.Size = new System.Drawing.Size(251, 22);
-            this.tsmi_tools_export.Text = "Zeitachse exportieren (png) [DEV]";
-            this.tsmi_tools_export.Click += new System.EventHandler(this.tsmi_tools_export_Click);
-            // 
-            // tsmi_tools_export_teacher_timeroom
-            // 
-            this.tsmi_tools_export_teacher_timeroom.Name = "tsmi_tools_export_teacher_timeroom";
-            this.tsmi_tools_export_teacher_timeroom.Size = new System.Drawing.Size(251, 22);
-            this.tsmi_tools_export_teacher_timeroom.Text = "Prüfungsliste exportieren (csv)";
-            this.tsmi_tools_export_teacher_timeroom.Click += new System.EventHandler(this.tsmi_tools_export_teacher_timeroom_Click);
-            // 
-            // tsmi_tools_exportexamday
-            // 
-            this.tsmi_tools_exportexamday.Name = "tsmi_tools_exportexamday";
-            this.tsmi_tools_exportexamday.Size = new System.Drawing.Size(251, 22);
-            this.tsmi_tools_exportexamday.Text = "Prüfungstag exportieren (csv)";
-            this.tsmi_tools_exportexamday.Click += new System.EventHandler(this.tsmi_tools_exportexamday_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1534,7 +1525,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolTip tooltip_search_filter;
         private System.Windows.Forms.CheckBox cb_student_onetime;
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_export;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_tools_export_teacher_timeroom;
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_exportexamday;
     }
 }

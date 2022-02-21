@@ -7,8 +7,8 @@ namespace ExamManager
 {
     public partial class FormSearch : Form
     {
-        ComboBox cb_search;
-        int searchmode = 0;
+        readonly ComboBox cb_search;
+        readonly int searchmode = 0;
         public FormSearch(int mode)
         {
             InitializeComponent();
@@ -18,15 +18,17 @@ namespace ExamManager
                 // ## [DEV] ##
                 // TODO TEACHER
                 //
-                cb_search = new ComboBox();
-                cb_search.Dock = DockStyle.Fill;
-                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                cb_search.Location = new System.Drawing.Point(30, 20);
-                cb_search.Margin = new Padding(30, 20, 30, 5);
-                cb_search.Name = "tb_search";
-                cb_search.Size = new System.Drawing.Size(324, 26);
-                cb_search.DropDownStyle = ComboBoxStyle.DropDown;
-                cb_search.TabIndex = 0;
+                cb_search = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Microsoft Sans Serif", 12F),
+                    Location = new System.Drawing.Point(30, 20),
+                    Margin = new Padding(30, 20, 30, 5),
+                    Name = "tb_search",
+                    Size = new System.Drawing.Size(324, 26),
+                    DropDownStyle = ComboBoxStyle.DropDown,
+                    TabIndex = 0
+                };
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //
@@ -47,15 +49,17 @@ namespace ExamManager
             }
             else if (mode == 1) // student
             {
-                cb_search = new ComboBox();
-                cb_search.Dock = DockStyle.Fill;
-                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                cb_search.Location = new System.Drawing.Point(30, 20);
-                cb_search.Margin = new Padding(30, 20, 30, 5);
-                cb_search.Name = "tb_search";
-                cb_search.Size = new System.Drawing.Size(324, 26);
-                cb_search.DropDownStyle = ComboBoxStyle.DropDown;
-                cb_search.TabIndex = 0;
+                cb_search = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Microsoft Sans Serif", 12F),
+                    Location = new System.Drawing.Point(30, 20),
+                    Margin = new Padding(30, 20, 30, 5),
+                    Name = "tb_search",
+                    Size = new System.Drawing.Size(324, 26),
+                    DropDownStyle = ComboBoxStyle.DropDown,
+                    TabIndex = 0
+                };
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //
@@ -73,15 +77,17 @@ namespace ExamManager
             }
             else if (mode == 2) // subject
             {
-                cb_search = new ComboBox();
-                cb_search.Dock = DockStyle.Fill;
-                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                cb_search.Location = new System.Drawing.Point(30, 20);
-                cb_search.Margin = new Padding(30, 20, 30, 5);
-                cb_search.Name = "tb_search";
-                cb_search.Size = new System.Drawing.Size(324, 26);
-                cb_search.DropDownStyle = ComboBoxStyle.DropDownList;
-                cb_search.TabIndex = 0;
+                cb_search = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Microsoft Sans Serif", 12F),
+                    Location = new System.Drawing.Point(30, 20),
+                    Margin = new Padding(30, 20, 30, 5),
+                    Name = "tb_search",
+                    Size = new System.Drawing.Size(324, 26),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    TabIndex = 0
+                };
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //cb_search
@@ -93,15 +99,17 @@ namespace ExamManager
             }
             else if (mode == 3) // room
             {
-                cb_search = new ComboBox();
-                cb_search.Dock = DockStyle.Fill;
-                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                cb_search.Location = new System.Drawing.Point(30, 20);
-                cb_search.Margin = new Padding(30, 20, 30, 5);
-                cb_search.Name = "tb_search";
-                cb_search.Size = new System.Drawing.Size(324, 26);
-                cb_search.DropDownStyle = ComboBoxStyle.DropDownList;
-                cb_search.TabIndex = 0;
+                cb_search = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Microsoft Sans Serif", 12F),
+                    Location = new System.Drawing.Point(30, 20),
+                    Margin = new Padding(30, 20, 30, 5),
+                    Name = "tb_search",
+                    Size = new System.Drawing.Size(324, 26),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    TabIndex = 0
+                };
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //cb_search
@@ -113,15 +121,17 @@ namespace ExamManager
             }
             else if (mode == 4) // grade
             {
-                cb_search = new ComboBox();
-                cb_search.Dock = DockStyle.Fill;
-                cb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-                cb_search.Location = new System.Drawing.Point(30, 20);
-                cb_search.Margin = new Padding(30, 20, 30, 5);
-                cb_search.Name = "tb_search";
-                cb_search.Size = new System.Drawing.Size(324, 26);
-                cb_search.DropDownStyle = ComboBoxStyle.DropDownList;
-                cb_search.TabIndex = 0;
+                cb_search = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Microsoft Sans Serif", 12F),
+                    Location = new System.Drawing.Point(30, 20),
+                    Margin = new Padding(30, 20, 30, 5),
+                    Name = "tb_search",
+                    Size = new System.Drawing.Size(324, 26),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    TabIndex = 0
+                };
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //cb_search

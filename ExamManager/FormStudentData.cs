@@ -212,7 +212,6 @@ namespace ExamManager
 
         private void btn_add_student_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
             string grade = cb_grade.Text;

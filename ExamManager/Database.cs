@@ -44,7 +44,6 @@ namespace ExamManager
                 DialogResult result = MessageBox.Show("Existierende Datenbank wählen?", "Achtung", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    string filePath = Properties.Settings.Default.databasePath;
                     using (OpenFileDialog openFileDialog = new OpenFileDialog())
                     {
                         openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
@@ -54,7 +53,7 @@ namespace ExamManager
 
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            filePath = openFileDialog.FileName;
+                            string filePath = openFileDialog.FileName;
                             Properties.Settings.Default.databasePath = filePath;
                             Properties.Settings.Default.Save();
                             Program.database = new Database();
@@ -340,13 +339,14 @@ namespace ExamManager
                 foreach (string line in lines)
                 {
                     if (!line[0].Equals('#'))
-                        if (line.Split(' ').Length > 2) // .Replace("\t", " ")
+                        if (line.Split(' ').Length > 2)
                         {       // kein doppelnamen
                             string[] t = line.Replace("dr.", "").Replace(",", "").Split(' ');
                             if (mailgenerator)
                             {
-                                string domain = Properties.Settings.Default.email_domain;
-                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                //string domain = Properties.Settings.Default.email_domain;
+                                // TODO teacher mail?
+                                // string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (t.Length == 5)
                                     AddTeacher(t[3], t[1], t[2], null, t[4]);
                                 else if (t.Length == 6)

@@ -293,18 +293,22 @@ namespace ExamManager
         public void AddTimeline(string room)
         {
             // -- roomlist --
-            Panel panel_room = new Panel();
-            panel_room.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
-            panel_room.Size = new Size(panel_side_room.Width - 17, 80);
-            panel_room.BackColor = Color.LightBlue;
-            panel_room.Name = room;
-            Label lbl_room = new Label();
-            lbl_room.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_room.Location = new Point(0, 0);
-            lbl_room.Dock = DockStyle.Fill;
-            lbl_room.Name = "lbl_room";
-            lbl_room.Text = room;
-            lbl_room.TextAlign = ContentAlignment.MiddleCenter;
+            Panel panel_room = new Panel
+            {
+                Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count),
+                Size = new Size(panel_side_room.Width - 17, 80),
+                BackColor = Color.LightBlue,
+                Name = room
+            };
+            Label lbl_room = new Label
+            {
+                Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
+                Location = new Point(0, 0),
+                Dock = DockStyle.Fill,
+                Name = "lbl_room",
+                Text = room,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
             panel_room.Controls.Add(lbl_room);
             this.panel_side_room.HorizontalScroll.Value = 0;
             panel_side_room.Controls.Add(panel_room);
@@ -312,11 +316,13 @@ namespace ExamManager
             panel_side_room.Refresh();
             // -- timeline --
             this.panel_time_line.HorizontalScroll.Value = 0;
-            Panel panel_tl = new Panel();
-            panel_tl.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
-            panel_tl.Name = room;
-            panel_tl.Size = new Size(2400, 80);
-            panel_tl.BackColor = Color.Gray;
+            Panel panel_tl = new Panel
+            {
+                Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count),
+                Name = room,
+                Size = new Size(2400, 80),
+                BackColor = Color.Gray
+            };
             panel_tl.Paint += panel_time_line_Paint;
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
@@ -324,6 +330,7 @@ namespace ExamManager
         /// <summary>Updates the timeline for all rooms of the day</summary>
         public void UpdateTimeline()
         {
+            if (filter == null || filter.Length == 0) filterMode = Filter.all;
             if (panel_empty != null) panel_side_room.Controls.Remove(panel_empty);
             foreach (Panel p in time_line_list) p.Dispose();
             foreach (Panel p in time_line_entity_list) p.Dispose();
@@ -406,14 +413,10 @@ namespace ExamManager
                     }
                 }
             }
-            if (filterMode != Filter.all)
+            if (filterMode != Filter.all)       // TODO
             {
-                foreach (string p in tempRoomFilterList)
-                    Console.WriteLine("temp: " + p);
-                Console.WriteLine("---------------------------");
                 foreach (Panel p in time_line_list)
                 {
-                    Console.WriteLine(p.Name);
                     if (!tempRoomFilterList.Contains(p.Name))
                         p.Visible = false;
                 }
@@ -431,8 +434,6 @@ namespace ExamManager
         {
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
             string[] exam = database.GetExamById(Int32.Parse(itm.Name));
-            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-
             lbl_mode.Text = edit_mode[1];
             btn_add_exam.Text = add_mode[1];
             this.dtp_date.Value = DateTime.ParseExact(exam[1], "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
@@ -458,7 +459,6 @@ namespace ExamManager
         {
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
             string[] exam = database.GetExamById(Int32.Parse(itm.Name));
-            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             id = Int32.Parse(exam[0]);
             lbl_mode.Text = edit_mode[1];
             btn_add_exam.Text = add_mode[1];
@@ -486,8 +486,6 @@ namespace ExamManager
         private void panel_menu_click_swap(object sender, EventArgs e)
         {
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
-            string[] exam = database.GetExamById(Int32.Parse(itm.Name));
-            string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             if (swapExam == 0)
             {
                 swapExam = Int32.Parse(itm.Name);
@@ -962,7 +960,6 @@ namespace ExamManager
         }
         private void tsmi_settings_db_localdb_Click(object sender, EventArgs e)
         {
-            string filePath = Properties.Settings.Default.databasePath;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
@@ -972,7 +969,7 @@ namespace ExamManager
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    filePath = openFileDialog.FileName;
+                    string filePath = openFileDialog.FileName;
                     Properties.Settings.Default.databasePath = filePath;
                     Properties.Settings.Default.Save();
                     Program.database = new Database();
@@ -989,9 +986,14 @@ namespace ExamManager
         // ----------------- tsmi filter -----------------
         private void tsmi_filter_grade_Click(object sender, EventArgs e)
         {
-            filterMode = Filter.grade;
+            /*filterMode = Filter.grade;
             FormFilterGrade form = new FormFilterGrade(this);
             form.FormClosed += update_timeline_Event;
+            form.ShowDialog();*/
+
+            filterMode = Filter.grade;
+            FormSearch form = new FormSearch(4);
+            form.UpdateSearch += update_filter_Event;
             form.ShowDialog();
         }
         private void tsmi_filter_all_Click(object sender, EventArgs e)
@@ -1150,79 +1152,54 @@ namespace ExamManager
 
         private void tsmi_tools_export_Click(object sender, EventArgs e)
         {
-            //CreatePanelBitmap(panel_time_line).Save(@"C:\\Users\\mattl\\Desktop\\image.png", ImageFormat.Png);
-
-            /*int width = tlp_timeline_view.Size.Width;
-            int height = tlp_timeline_view.Size.Height;
-            Bitmap bm = new Bitmap(width, height);
-            tlp_timeline_view.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
-            string file = "C:\\Users\\mattl\\Desktop\\Prüfungen-" + dtp_timeline_date.Value.ToString("dd.MM.yyyy") + ".png";
-            bm.Save(@file, ImageFormat.Png);*/
-            //DialogResult result = MessageBox.Show("Zeitachse gespeichert:\n" + file, "Info", MessageBoxButtons.OK); // yes/no -> open?
-
-            this.WindowState = FormWindowState.Normal;
-            this.Width = this.Width - panel_time_line.Size.Width + 2400 + 18;
-            this.Height = this.Height - panel_time_line.Size.Height + panel_side_time.Height + 5 + 85 * time_line_list.Count + 18;
-            Console.WriteLine(this.Height);
-            CreatePanelBitmap(tlp_timeline_view).Save(@"C:\\Users\\mattl\\Desktop\\Prüfungen-" + dtp_timeline_date.Value.ToString("dd.MM.yyyy") + ".png", ImageFormat.Png);
-            this.Width = 960;
-            this.Height = 540;
-            this.WindowState = FormWindowState.Maximized;
-        }
-
-        private void tsmi_tools_export_teacher_timeroom_Click(object sender, EventArgs e)
-        {
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            string csvPath = "C:\\Users\\mattl\\Desktop\\Prüfungen-" + date + ".csv";
-            if (File.Exists(csvPath))
+            lbl_search.Text = date;
+            Panel tempPanel = new Panel();
+            tempPanel.Width = panel_side_room.Width + 2400;
+            tempPanel.Height = panel_side_time.Height + 5 + 85 * time_line_list.Count + 15;
+            tempPanel.Controls.Add(tlp_timeline_view);
+            Bitmap bmp = new Bitmap(tempPanel.Width, tempPanel.Height - 20);
+            tempPanel.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+            lbl_search.Text = null;
+            this.tlp_main.Controls.Add(this.tlp_timeline_view, 0, 1);
+            SaveFileDialog sfd = new SaveFileDialog
             {
-                DialogResult result = MessageBox.Show("Datei überschreiben?", "Warnung!", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes) File.Delete(csvPath);
-                else return;
-            }
-            if (!File.Exists(csvPath))
-            {
-                var csv = new StringBuilder();
-                /*string line1 = student[1] + " " + student[2] + "  [" + student[3] + "]\n";
-                string line2 = exam[2] + "     " + exam[10] + "min\n";
-                string line3 = exam[6] + "  " + exam[7] + "  " + exam[8] + "\n";
-                string line4 = exam[9] + "  " + exam[3] + "  [" + exam[4] + "]";*/
-                foreach (string[] teacher in database.GetAllTeachers())
-                    foreach (string[] exam in database.GetAllExamsFromTeacherAtDate(date, teacher[0]))
-                    {
-                        string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-                        DateTime start = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                        DateTime end = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(exam[10]));
-                        var newLine = string.Format("{0},{1},{2},{3}", teacher[1] + " " + teacher[2], start.ToString("hh:mm") + " - " + end.ToString("hh:mm"), exam[3], student[1] + " " + student[2]);
-                        csv.AppendLine(newLine);
-                    }
-                File.WriteAllText(csvPath, csv.ToString());
-            }
-            MessageBox.Show("Liste gespeichert:\n" + csvPath, "Info", MessageBoxButtons.OK);
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Save Timeline",
+                FileName = "Prüfungen-" + date + ".png",
+                DefaultExt = "png",
+                Filter = "Image files (*.png)|*.png|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            Console.WriteLine(sfd.FileName);
+            bmp.Save(sfd.FileName, ImageFormat.Png);
         }
 
         private void tsmi_tools_deleteOldExams_Click(object sender, EventArgs e)
         {
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
             DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsBeforeDate(date).Count() + " Prüfungen vor dem " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                database.DeleteOldExams(date);
-            }
+            if (result == DialogResult.Yes) database.DeleteOldExams(date);
             else return;
         }
 
         private void tsmi_tools_exportexamday_Click(object sender, EventArgs e)
         {
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            string csvPath = "C:\\Users\\mattl\\Desktop\\Prüfungstag-" + date + ".csv";
-            if (File.Exists(csvPath))
+            SaveFileDialog sfd = new SaveFileDialog
             {
-                DialogResult result = MessageBox.Show("Datei überschreiben?", "Warnung!", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes) File.Delete(csvPath);
-                else return;
-            }
-            if (!File.Exists(csvPath))
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Prüfungstag speichern",
+                FileName = "Prüfungstag-" + date + ".csv",
+                DefaultExt = "csv",
+                Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            if (!File.Exists(sfd.FileName))
             {
                 var csv = new StringBuilder();
                 var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach");
@@ -1237,9 +1214,8 @@ namespace ExamManager
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", teacher[1] + " " + teacher[2], time, exam[3], exam[4], student[1] + " " + student[2], exam[6], exam[7], exam[8], exam[9]);
                         csv.AppendLine(newLine);
                     }
-                File.WriteAllText(csvPath, csv.ToString());
+                File.WriteAllText(sfd.FileName, csv.ToString());
             }
-            MessageBox.Show("Liste gespeichert:\n" + csvPath, "Info", MessageBoxButtons.OK);
         }
     }
 }

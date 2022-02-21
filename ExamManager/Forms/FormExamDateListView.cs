@@ -7,7 +7,7 @@ namespace ExamManager
 {
     public partial class FormExamDateListView : Form
     {
-        Form1 form;
+        readonly Form1 form;
         public FormExamDateListView(Form1 form)
         {
             this.form = form;
