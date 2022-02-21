@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -10,6 +13,8 @@ namespace ExamManager
     {
         public string search = null;
         public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room // TODO: ENUM
+        //public enum Search { all, student, teacher, subject, room }
+        //public Search searchMode = Search.all;
         public string filter = null;
         public enum Filter { all, grade, teacher, student }
         public Filter filterMode = Filter.all;
@@ -53,6 +58,15 @@ namespace ExamManager
             // students
             var autocomplete_student = new AutoCompleteStringCollection();
             LinkedList<string[]> allStudentsList = database.GetAllStudents();
+            if (cb_student_onetime.Checked)
+            {
+                LinkedList<string[]> tempAllStudentsList = new LinkedList<string[]>();
+                string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+                foreach (string[] s in database.GetAllStudents())
+                    if (database.GetAllExamsFromStudentAtDate(date, s[0]).Count == 0)
+                        tempAllStudentsList.AddLast(s);
+                allStudentsList = tempAllStudentsList;
+            }
             string[] students = new string[allStudentsList.Count];
             for (int i = 0; i < allStudentsList.Count; i++)
                 students[i] = (allStudentsList.ElementAt(i)[1] + " " + allStudentsList.ElementAt(i)[2]);
@@ -325,14 +339,14 @@ namespace ExamManager
             List<string> temp_room_list = new List<string>(room_list);
             temp_room_list.Sort();
             room_list = new LinkedList<string>(temp_room_list);
-            foreach (string s in room_list)
-                AddTimeline(s);
+            foreach (string s in room_list) AddTimeline(s);
             // SideBottomPanel 
             if (panel_empty == null) panel_empty = new Panel();
             panel_empty.Location = new Point(0, panel_side_time.Height + 5 + 85 * time_line_list.Count);
             panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
             panel_empty.Name = "empty";
             panel_side_room.Controls.Add(panel_empty);
+            LinkedList<string> tempRoomFilterList = new LinkedList<string>();
             foreach (string[] s in database.GetAllExamsAtDate(date))
             {
                 Panel panel_tl_entity = new Panel();
@@ -364,7 +378,6 @@ namespace ExamManager
                 mnuDelete.Name = s[0];
                 mnu.Items.AddRange(new ToolStripItem[] { mnuEdit, mnuCopy, mnuSwap, mnuDelete });
                 panel_tl_entity.ContextMenuStrip = mnu;
-                LinkedList<string> tempRoomFilterList = new LinkedList<string>();
                 foreach (Panel p in time_line_list)
                 {
                     if (p.Name.Equals(s[3]))
@@ -378,13 +391,34 @@ namespace ExamManager
                         }
                         else if (filterMode == Filter.grade && student[3].Equals(filter))
                         {
-                            tempRoomFilterList.AddLast(exam[3]);
+                            if (!tempRoomFilterList.Contains(exam[3]))
+                                tempRoomFilterList.AddLast(exam[3]);
+                            p.Controls.Add(panel_tl_entity);
+                            time_line_entity_list.AddLast(panel_tl_entity);
+                        }
+                        else if (filterMode == Filter.teacher && (exam[6].Equals(filter) || exam[7].Equals(filter) || exam[8].Equals(filter)))
+                        {
+                            if (!tempRoomFilterList.Contains(exam[3]))
+                                tempRoomFilterList.AddLast(exam[3]);
                             p.Controls.Add(panel_tl_entity);
                             time_line_entity_list.AddLast(panel_tl_entity);
                         }
                     }
                 }
             }
+            if (filterMode != Filter.all)
+            {
+                foreach (string p in tempRoomFilterList)
+                    Console.WriteLine("temp: " + p);
+                Console.WriteLine("---------------------------");
+                foreach (Panel p in time_line_list)
+                {
+                    Console.WriteLine(p.Name);
+                    if (!tempRoomFilterList.Contains(p.Name))
+                        p.Visible = false;
+                }
+            }
+
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_sidetop_empty.BackColor = Color.Yellow; }
             else if (filter != null && filter.Length >= 1) { lbl_search.Text = "Filter:\n" + filter; panel_sidetop_empty.BackColor = Color.Yellow; }
             else { lbl_search.Text = null; panel_sidetop_empty.BackColor = panel_side_room.BackColor; } // panel_sidetop_empty
@@ -796,36 +830,39 @@ namespace ExamManager
         }
         private void tsmi_search_teacher_Click(object sender, EventArgs e)
         {
+            search_index = 0;
             FormSearch form = new FormSearch(0);
             form.UpdateSearch += update_search_Event;
             form.ShowDialog();
-            search_index = 0;
         }
         private void tsmi_search_student_Click(object sender, EventArgs e)
         {
+            search_index = 1;
             FormSearch form = new FormSearch(1);
             form.UpdateSearch += update_search_Event;
-            form.ShowDialog(); search_index = 1;
+            form.ShowDialog();
         }
         private void tsmi_search_subject_Click(object sender, EventArgs e)
         {
+            search_index = 2;
             FormSearch form = new FormSearch(2);
             form.UpdateSearch += update_search_Event;
-            form.ShowDialog(); search_index = 2;
+            form.ShowDialog();
 
         }
         private void tsmi_search_room_Click(object sender, EventArgs e)
         {
+            search_index = 3;
             FormSearch form = new FormSearch(3);
             form.UpdateSearch += update_search_Event;
-            form.ShowDialog(); search_index = 3;
+            form.ShowDialog();
         }
         private void tsmi_search_grade_Click(object sender, EventArgs e)
         {
+            search_index = 4;
             FormSearch form = new FormSearch(0);
             form.UpdateSearch += update_search_Event;
             form.ShowDialog();
-            search_index = 4;
         }
         private void tsmi_search_delete_Click(object sender, EventArgs e)
         {
@@ -952,6 +989,7 @@ namespace ExamManager
         // ----------------- tsmi filter -----------------
         private void tsmi_filter_grade_Click(object sender, EventArgs e)
         {
+            filterMode = Filter.grade;
             FormFilterGrade form = new FormFilterGrade(this);
             form.FormClosed += update_timeline_Event;
             form.ShowDialog();
@@ -964,7 +1002,16 @@ namespace ExamManager
         }
         private void tsmi_filter_teacher_Click(object sender, EventArgs e)
         {
-            // TODO
+            filterMode = Filter.teacher;
+            FormSearch form = new FormSearch(0);
+            form.UpdateSearch += update_filter_Event;
+            form.ShowDialog();
+        }
+        private void update_filter_Event(object sender, EventArgs e)
+        {
+            string s = sender as string;
+            filter = s;
+            UpdateTimeline();
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1092,6 +1139,107 @@ namespace ExamManager
             UpdateTimeline();
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
+        }
+
+        private Bitmap CreatePanelBitmap(Panel p)
+        {
+            Bitmap bmp = new Bitmap(p.Width, p.Height);
+            p.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+            return bmp;
+        }
+
+        private void tsmi_tools_export_Click(object sender, EventArgs e)
+        {
+            //CreatePanelBitmap(panel_time_line).Save(@"C:\\Users\\mattl\\Desktop\\image.png", ImageFormat.Png);
+
+            /*int width = tlp_timeline_view.Size.Width;
+            int height = tlp_timeline_view.Size.Height;
+            Bitmap bm = new Bitmap(width, height);
+            tlp_timeline_view.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
+            string file = "C:\\Users\\mattl\\Desktop\\Prüfungen-" + dtp_timeline_date.Value.ToString("dd.MM.yyyy") + ".png";
+            bm.Save(@file, ImageFormat.Png);*/
+            //DialogResult result = MessageBox.Show("Zeitachse gespeichert:\n" + file, "Info", MessageBoxButtons.OK); // yes/no -> open?
+
+            this.WindowState = FormWindowState.Normal;
+            this.Width = this.Width - panel_time_line.Size.Width + 2400 + 18;
+            this.Height = this.Height - panel_time_line.Size.Height + panel_side_time.Height + 5 + 85 * time_line_list.Count + 18;
+            Console.WriteLine(this.Height);
+            CreatePanelBitmap(tlp_timeline_view).Save(@"C:\\Users\\mattl\\Desktop\\Prüfungen-" + dtp_timeline_date.Value.ToString("dd.MM.yyyy") + ".png", ImageFormat.Png);
+            this.Width = 960;
+            this.Height = 540;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void tsmi_tools_export_teacher_timeroom_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            string csvPath = "C:\\Users\\mattl\\Desktop\\Prüfungen-" + date + ".csv";
+            if (File.Exists(csvPath))
+            {
+                DialogResult result = MessageBox.Show("Datei überschreiben?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes) File.Delete(csvPath);
+                else return;
+            }
+            if (!File.Exists(csvPath))
+            {
+                var csv = new StringBuilder();
+                /*string line1 = student[1] + " " + student[2] + "  [" + student[3] + "]\n";
+                string line2 = exam[2] + "     " + exam[10] + "min\n";
+                string line3 = exam[6] + "  " + exam[7] + "  " + exam[8] + "\n";
+                string line4 = exam[9] + "  " + exam[3] + "  [" + exam[4] + "]";*/
+                foreach (string[] teacher in database.GetAllTeachers())
+                    foreach (string[] exam in database.GetAllExamsFromTeacherAtDate(date, teacher[0]))
+                    {
+                        string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+                        DateTime start = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(exam[10]));
+                        var newLine = string.Format("{0},{1},{2},{3}", teacher[1] + " " + teacher[2], start.ToString("hh:mm") + " - " + end.ToString("hh:mm"), exam[3], student[1] + " " + student[2]);
+                        csv.AppendLine(newLine);
+                    }
+                File.WriteAllText(csvPath, csv.ToString());
+            }
+            MessageBox.Show("Liste gespeichert:\n" + csvPath, "Info", MessageBoxButtons.OK);
+        }
+
+        private void tsmi_tools_deleteOldExams_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsBeforeDate(date).Count() + " Prüfungen vor dem " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                database.DeleteOldExams(date);
+            }
+            else return;
+        }
+
+        private void tsmi_tools_exportexamday_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            string csvPath = "C:\\Users\\mattl\\Desktop\\Prüfungstag-" + date + ".csv";
+            if (File.Exists(csvPath))
+            {
+                DialogResult result = MessageBox.Show("Datei überschreiben?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes) File.Delete(csvPath);
+                else return;
+            }
+            if (!File.Exists(csvPath))
+            {
+                var csv = new StringBuilder();
+                var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach");
+                csv.AppendLine(firstLine);
+                foreach (string[] teacher in database.GetAllTeachers())
+                    foreach (string[] exam in database.GetAllExamsFromTeacherAtDate(date, teacher[0]))
+                    {
+                        string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
+                        DateTime start = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(exam[2], "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Int32.Parse(exam[10]));
+                        string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", teacher[1] + " " + teacher[2], time, exam[3], exam[4], student[1] + " " + student[2], exam[6], exam[7], exam[8], exam[9]);
+                        csv.AppendLine(newLine);
+                    }
+                File.WriteAllText(csvPath, csv.ToString());
+            }
+            MessageBox.Show("Liste gespeichert:\n" + csvPath, "Info", MessageBoxButtons.OK);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace ExamManager
             { path = Properties.Settings.Default.databasePath; }
 
             connection = CreateConnection(path);
+            Console.WriteLine(connection.State);
             CreateStudentDB();
             CreateTeacherDB();
             CreateExamDB();
@@ -77,7 +78,7 @@ namespace ExamManager
             string[] s = GetStudent(firstname, lastname);
             if (firstname.Contains(" ") || lastname.Contains(" "))
             {
-                Console.WriteLine("Space!>>> " + firstname + " - " + lastname);
+                // Console.WriteLine("Space!>>> " + firstname + " - " + lastname);
                 // TODO: replace " " with "_"
             }
             if (s != null)
@@ -514,12 +515,13 @@ namespace ExamManager
         }
         /// <summary>Searches all exams in the database.</summary>
         /// <returns>Returns all exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExams()
+        public LinkedList<string[]> GetAllExams(bool orderByDate = false)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam";
+            if (orderByDate) sqlite_cmd.CommandText = "SELECT * FROM exam ORDER BY date";
+            else sqlite_cmd.CommandText = "SELECT * FROM exam";
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -801,6 +803,38 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
             sqlite_cmd.ExecuteNonQuery();
         }*/
+        /// <summary>Searches all exams before a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        public LinkedList<string[]> GetAllExamsBeforeDate(string date)
+        {
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date < @date ";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rowData = new string[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        rowData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rowData[i] = rowData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rowData[i] = rowData[i].Split(' ')[1];
+                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(rowData);
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
         /// <summary>Changes the room of all exams at one date in the database.</summary>
         public void EditExamRoom(string date, string old_exam_room, string exam_room)
         {
@@ -817,6 +851,14 @@ namespace ExamManager
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "DELETE FROM exam WHERE id = @id ";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
+            sqlite_cmd.ExecuteNonQuery();
+        }
+        /// <summary>Removes all Exams before this date from the database.</summary>
+        public void DeleteOldExams(string date)
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM exam WHERE date < @date ";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Checks if a room is empty in the database.</summary>
@@ -969,7 +1011,7 @@ namespace ExamManager
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
             sqlite_cmd.ExecuteNonQuery();
         }
-        private void CreateExamDB()
+        private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student TEXT, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";

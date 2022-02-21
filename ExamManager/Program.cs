@@ -19,14 +19,10 @@ namespace ExamManager
 
             // student/teacher object
             // tabindex
-            // daten als liste exportieren
             // export data to txt file
             // entertaste in textbox
-            // doppelnamen filter -> fehlersuche
-            // allstudents filter/order + better layout
             // delete old exams funktion + Form
             // color theme
-            // if get student > 1 -> error! + Message
             // connection status?
             // remove addexam if id=null ?
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
@@ -39,26 +35,28 @@ namespace ExamManager
             // hide timelines without exams in filter
             // rerender timeline
             // editteacher = null etc. (teacher)
-            // getallstudents order first grade then lastname
-            // studentlist per grade
             // Tools - Extras: load exel file
             // formfilter -> action...
             // Search index -> enum
-            // Studentdata search string (tsmi_box?) -> hide others
-            // teacherdata menubar
             // class for filereader + formart manager
             // data -> expand default
             // studentdata menu: load from file?
             // studentdata order firstname
             // student/teacherdata -> tableview edit/delet
 
-            // student/teacher object
-            // namen mit _
+            // readonly mode
+            // export timeline view as image
+            // zeit/raum liste für lehrer
+            // autocomplete lastname
+
+            // namen immer mit mit _
             // studentdata max entities -> multiple sides
 
             // getstudentbyname: -> remove  " " and "_"
             // SELECT CONCAT('SQL', ' is', ' fun!');
             // Filter in einem Fenster grade etc.
+
+            // list clear thread: create new pannels add...
 
 
             /*LinkedList<Item> list = new LinkedList<Item>();

@@ -25,7 +25,7 @@ namespace ExamManager
             lb_exam_date.Items.AddRange(dates);*/
 
             LinkedList<Item> list = new LinkedList<Item>();
-            foreach (string[] s in Program.database.GetAllExams())
+            foreach (string[] s in Program.database.GetAllExams(true))
             {
                 if (!list.Any(n => n.date == s[1]))
                 {

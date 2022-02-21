@@ -40,7 +40,7 @@ namespace ExamManager
             this.lb_exam_date.ItemHeight = 20;
             this.lb_exam_date.Location = new System.Drawing.Point(0, 0);
             this.lb_exam_date.Name = "lb_exam_date";
-            this.lb_exam_date.Size = new System.Drawing.Size(234, 261);
+            this.lb_exam_date.Size = new System.Drawing.Size(234, 264);
             this.lb_exam_date.TabIndex = 0;
             this.lb_exam_date.DoubleClick += new System.EventHandler(this.lb_exam_date_DoubleClick);
             // 
@@ -48,7 +48,7 @@ namespace ExamManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 261);
+            this.ClientSize = new System.Drawing.Size(234, 264);
             this.Controls.Add(this.lb_exam_date);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormExamDateListView";
