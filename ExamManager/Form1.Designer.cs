@@ -222,7 +222,7 @@ namespace ExamManager
             this.menuStrip1.Location = new System.Drawing.Point(102, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(544, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(424, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip";
             // 
@@ -1004,6 +1004,7 @@ namespace ExamManager
             this.cb_exam_room.Name = "cb_exam_room";
             this.cb_exam_room.Size = new System.Drawing.Size(90, 28);
             this.cb_exam_room.TabIndex = 8;
+            this.cb_exam_room.SelectedIndexChanged += new System.EventHandler(this.cb_exam_room_SelectedIndexChanged);
             // 
             // lbl_exam_room
             // 

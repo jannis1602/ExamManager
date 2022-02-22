@@ -12,6 +12,9 @@ namespace ExamManager
     public partial class Form1 : Form
     {
         private Panel editPanel = null;
+        Point oldPoint;
+
+
         public string search = null;
         public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room // TODO: ENUM
         //public enum Search { all, student, teacher, subject, room }
@@ -401,41 +404,10 @@ namespace ExamManager
                     {
                         p.Controls.Add(panel_tl_entity);
                         time_line_entity_list.AddLast(panel_tl_entity);
+                        break;
                     }
-                    /*if (p.Name.Equals(s[3]))
-                    {
-                        string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
-                        string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
-                        if (filterMode == Filter.all)
-                        {
-                            p.Controls.Add(panel_tl_entity);
-                            time_line_entity_list.AddLast(panel_tl_entity);
-                        }
-                        else if (filterMode == Filter.grade && student[3].Equals(filter))
-                        {
-                            if (!tempRoomFilterList.Contains(exam[3]))
-                                tempRoomFilterList.AddLast(exam[3]);
-                            p.Controls.Add(panel_tl_entity);
-                            time_line_entity_list.AddLast(panel_tl_entity);
-                        }
-                        else if (filterMode == Filter.teacher && (exam[6].Equals(filter) || exam[7].Equals(filter) || exam[8].Equals(filter)))
-                        {
-                            if (!tempRoomFilterList.Contains(exam[3]))
-                                tempRoomFilterList.AddLast(exam[3]);
-                            p.Controls.Add(panel_tl_entity);
-                            time_line_entity_list.AddLast(panel_tl_entity);
-                        }
-                    }*/
                 }
             }
-            /*if (filterMode != Filter.all)  // TODO
-            {
-                foreach (Panel p in time_line_list)
-                {
-                    if (!tempRoomFilterList.Contains(p.Name))
-                        p.Visible = false;
-                }
-            }*/
 
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_sidetop_empty.BackColor = Color.Yellow; }
             else if (filter != null && filter.Length >= 1) { lbl_search.Text = "Filter:\n" + filter; panel_sidetop_empty.BackColor = Color.Yellow; }
@@ -1166,7 +1138,122 @@ namespace ExamManager
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void UpdateEditPanel()
         {
+            if (editPanel != null) editPanel.Dispose();
+            string room = cb_exam_room.Text;
+            editPanel = new Panel();
+            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+            float unit_per_minute = 200F / 60F;
+            float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
+            editPanel.Location = new Point(Convert.ToInt32(startpoint), 10);
+            editPanel.Size = new Size(Convert.ToInt32(unit_per_minute * Int32.Parse(tb_duration.Text)), 60);
+            editPanel.Name = "0";
+            editPanel.BackColor = Color.FromArgb(80, Colors.TL_Entity);
+            editPanel.Paint += panel_tl_edit_entity_Paint;
+            foreach (Panel p in time_line_list)
+            {
+                if (p.Name.Equals(room))
+                {
+                    p.Controls.Add(editPanel);
+                    p.Controls.SetChildIndex(editPanel, 0);
+                    p.Update();
+                    break;
+                }
+            }
 
+            editPanel.MouseMove += editPanel_MouseMove;
+            editPanel.MouseDown += editPanel_MouseEnter;
+            //editPanel.MouseEnter
+            void editPanel_MouseEnter(object sender, MouseEventArgs e)
+            {
+                oldPoint = new Point(e.X, e.Y); // new Point(Cursor.Position.X, Cursor.Position.Y);
+            }
+            void editPanel_MouseMove(object sender, MouseEventArgs e)
+            {
+                DateTime oldTime = dtp_time.Value;
+                if (oldPoint == null)
+                    oldPoint = new Point(e.X, e.Y);
+                Panel p = sender as Panel;
+                if (e.Button == MouseButtons.Left)  // panel position relative to mouse position (mouse enter -> set start)
+                {
+                    if (e.X - oldPoint.X > 10)
+                    {
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - oldPoint.X) / 4);
+                        //Console.WriteLine(this.dtp_time.Value.Minute / 10);
+                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
+                        //Console.WriteLine(Convert.ToDateTime(time).ToString("HH:mm"));
+                        //this.dtp_time.Value = DateTime.ParseExact(Convert.ToDateTime(time).ToString("HH:mm"), "HH:mm", null);
+                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
+
+                    }
+                    else if (oldPoint.X - e.X > 10)
+                    {
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
+                        //Console.WriteLine(this.dtp_time.Value.Minute / 10);
+                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
+                        //Console.WriteLine(Convert.ToDateTime(time).ToString("HH:mm"));
+                        //this.dtp_time.Value = DateTime.ParseExact(Convert.ToDateTime(time).ToString("HH:mm"), "HH:mm", null);
+                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
+                    }
+
+                    else return;
+                    //Console.WriteLine(oldPoint.X - e.X);
+                    //Console.WriteLine(new Point(Cursor.Position.X + e.X, Cursor.Position.Y + e.Y));
+                    // this.Location = new Point(Cursor.Position.X + e.X, Cursor.Position.Y + e.Y);
+                    // 2400 / panel_time_line.Width;
+                    if (dtp_time.Value != oldTime)
+                        UpdateEditPanel();
+                }
+            }
+
+            DateTime RoundUp(DateTime dt, TimeSpan d)
+            {
+                return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+            }
+
+            void panel_tl_edit_entity_Paint(object sender, PaintEventArgs e)
+            {
+                Panel panel_tl_entity = sender as Panel;
+                Font drawFont = new Font("Microsoft Sans Serif", 8);  // Arial
+                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                Color.FromArgb(75, Colors.TL_EntityBorder), 2, ButtonBorderStyle.Solid,
+                Color.FromArgb(75, Colors.TL_EntityBorder), 2, ButtonBorderStyle.Solid,
+                Color.FromArgb(75, Colors.TL_EntityBorder), 2, ButtonBorderStyle.Solid,
+                Color.FromArgb(75, Colors.TL_EntityBorder), 2, ButtonBorderStyle.Solid);
+                string teacher1 = null;
+                string teacher2 = null;
+                string teacher3 = null;
+                if (cb_teacher1.Text.Length < 1) teacher1 = " - "; else teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1])[0];
+                if (cb_teacher2.Text.Length < 1) teacher2 = " - "; else teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1])[0];
+                if (cb_teacher3.Text.Length < 1) teacher3 = " - "; else teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1])[0];
+                string student_name = cb_student.Text; //= new string[] { "0", dtp_date.Text, dtp_time.Text, cb_grade.Text, " - ", " - " };
+                string tempfirstname = null;
+                string templastname = null;
+                if (student_name.Length > 1 && student_name.Contains(' '))
+                {
+                    for (int i = 0; i < student_name.Split(' ').Length - 1; i++)
+                        tempfirstname += student_name.Split(' ')[i] += " ";
+                    tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
+                    templastname += student_name.Split(' ')[student_name.Split(' ').Length - 1];
+                }
+                string[] student = database.GetStudent(tempfirstname, templastname);
+
+                if (student == null)
+                    student = new string[] { "0", "Schüler nicht gefunden!", " ", " - ", " - ", " - " };
+                string[] exam = new string[] { "0", tempfirstname, templastname, cb_exam_room.Text, cb_preparation_room.Text, " p-room - ", " - ", teacher1, teacher2, teacher3, tb_duration.Text };
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Near;
+                stringFormat.LineAlignment = StringAlignment.Center;
+                Rectangle rectL1 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 0, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+                Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+                Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+                Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+                e.Graphics.DrawString(student[1] + " " + student[2] + "  [" + student[3] + "]", drawFont, Brushes.Black, rectL1, stringFormat);
+                e.Graphics.DrawString(exam[2] + "     " + exam[10] + "min", drawFont, Brushes.Black, rectL2, stringFormat);
+                e.Graphics.DrawString(exam[6] + "  " + exam[7] + "  " + exam[8], drawFont, Brushes.Black, rectL3, stringFormat);
+                e.Graphics.DrawString(exam[9] + "  " + exam[3] + "  [" + exam[4] + "]", drawFont, Brushes.Black, rectL4, stringFormat);
+            }
         }
         public void SetDate(DateTime date)
         {
@@ -1228,6 +1315,7 @@ namespace ExamManager
         }
         private void tb_duration_TextChanged(object sender, EventArgs e)
         {
+            if (tb_duration.Text.Length == 0) return;
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
                 tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
             cb_add_next_time.Text = "Nächste + " + this.tb_duration.Text + "min";
@@ -1297,6 +1385,11 @@ namespace ExamManager
             UpdateTimeline();
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
+        }
+
+        private void cb_exam_room_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateEditPanel();
         }
     }
 }
