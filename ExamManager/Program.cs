@@ -25,6 +25,9 @@ namespace ExamManager
 
             // if (e.KeyData == (Keys.Control | Keys.Enter))
 
+            // exam preview on/off
+            // tl_entity mouse up -> move timeline up?
+
             // info vorsitz prüfer protokoll
             // student/teacher + Exam object
             // - string[] fn,ln,grade,...

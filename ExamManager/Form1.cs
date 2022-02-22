@@ -11,10 +11,6 @@ namespace ExamManager
 {
     public partial class Form1 : Form
     {
-        private Panel editPanel = null;
-        Point oldPoint;
-
-
         public string search = null;
         public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room // TODO: ENUM
         //public enum Search { all, student, teacher, subject, room }
@@ -23,6 +19,11 @@ namespace ExamManager
         public enum Filter { all, grade, teacher, student }
         public Filter filterMode = Filter.all;
         private int swapExam = 0;
+
+        private readonly bool editExamPreview = true;
+        private Panel editPanel = null;
+        private Point oldPoint;
+        private Panel oldTimeLine;
 
         private readonly Database database;
         private int id = 0;
@@ -331,6 +332,18 @@ namespace ExamManager
                 BackColor = Colors.TL_TimeLineBg,
             };
             panel_tl.Paint += panel_time_line_Paint;
+            panel_tl.MouseDown += panel_time_line_MouseDown;
+            void panel_time_line_MouseDown(object sender, MouseEventArgs e)
+            {
+                if (editPanel != null)
+                {
+                    Panel p = sender as Panel;
+                    if (oldTimeLine == p) return;
+                    oldTimeLine = p;
+                    cb_exam_room.SelectedItem = p.Name;
+                    UpdateEditPanel();
+                }
+            }
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
         }
@@ -1138,6 +1151,7 @@ namespace ExamManager
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void UpdateEditPanel()
         {
+            if (!editExamPreview) return;
             if (editPanel != null) editPanel.Dispose();
             string room = cb_exam_room.Text;
             editPanel = new Panel();
@@ -1188,7 +1202,8 @@ namespace ExamManager
 
                     }
                     else if (oldPoint.X - e.X > 10)
-                    {
+                    {       // float unit_per_minute = 200F / 60F;
+
                         this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
                         //Console.WriteLine(this.dtp_time.Value.Minute / 10);
                         string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
