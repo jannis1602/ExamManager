@@ -66,7 +66,7 @@ namespace ExamManager
             student_entity_list.Clear();
             LinkedList<string[]> studentList = null;
             if (listOrder == Order.lastname) studentList = database.GetAllStudents();
-            else if (listOrder == Order.lastname) studentList = database.GetAllStudents(true);
+            else if (listOrder == Order.firstname) studentList = database.GetAllStudents(true);
 
             foreach (string[] s in studentList)
             {

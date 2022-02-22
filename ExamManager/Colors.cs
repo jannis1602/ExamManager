@@ -4,7 +4,7 @@ namespace ExamManager
 {
     public class Colors
     {
-        public enum Theme { light, dark };
+        public enum Theme { light, dark, bw };
         public static Theme theme = Theme.dark;
         //public static Color roomBorderColor = Color.LightSlateGray;
         //public static Color roomBgColor = Color.LightSkyBlue;
@@ -17,7 +17,8 @@ namespace ExamManager
         public static Color TL_RoomEntityBg = Color.FromArgb(0, 140, 255);
         public static Color TL_RoomBorder = Color.FromArgb(0, 80, 150);
         public static Color TL_Bg = Color.FromArgb(60, 60, 60);
-        public static Color TL_TimeLineBg = Color.FromArgb(128,128,128);
+        public static Color TL_TimeLineBg = Color.FromArgb(128, 128, 128);
+        public static Color TL_MinLine = Color.FromArgb(0, 0, 255);
         public static Color Edit_Bg = Color.FromArgb(80, 80, 80);
         public static Color Menu_Bg = Color.FromArgb(120, 120, 120);
         public static Color Edit_ModeBg = Color.FromArgb(170, 170, 170);
@@ -39,6 +40,7 @@ namespace ExamManager
                     TL_RoomBorder = Color.FromArgb(30, 130, 230);
                     TL_Bg = Color.FromArgb(200, 200, 200);
                     TL_TimeLineBg = Color.FromArgb(180, 180, 180);
+                    TL_MinLine = Color.FromArgb(0, 0, 255);
                     Edit_Bg = Color.FromArgb(180, 180, 180);
                     Menu_Bg = Color.FromArgb(120, 120, 120);
                     Edit_ModeBg = Color.FromArgb(150, 150, 150);
@@ -54,10 +56,27 @@ namespace ExamManager
                     TL_RoomEntityBg = Color.FromArgb(0, 140, 255);
                     TL_RoomBorder = Color.FromArgb(0, 80, 150);
                     TL_Bg = Color.FromArgb(60, 60, 60);
-                    TL_TimeLineBg = Color.FromArgb(128,128,128);
+                    TL_TimeLineBg = Color.FromArgb(128, 128, 128);
+                    TL_MinLine = Color.FromArgb(0, 0, 255);
                     Edit_Bg = Color.FromArgb(80, 80, 80);
                     Menu_Bg = Color.FromArgb(120, 120, 120);
                     Edit_ModeBg = Color.FromArgb(170, 170, 170);
+                    break;
+                case Theme.bw:
+                    TL_TimeLineBorder = Color.Black;
+                    TL_Entity = Color.White;
+                    TL_EntityBorder = Color.Black;
+                    TL_TimeBg = Color.White;
+                    TL_TimeBorder = Color.Black;
+                    TL_RoomBg = Color.White;
+                    TL_RoomEntityBg = Color.White;
+                    TL_RoomBorder = Color.Black;
+                    TL_Bg = Color.White;
+                    TL_TimeLineBg = Color.White;
+                    TL_MinLine = Color.Black;
+                    Edit_Bg = Color.White;
+                    Menu_Bg = Color.White;
+                    Edit_ModeBg = Color.White;
                     break;
             }
         }

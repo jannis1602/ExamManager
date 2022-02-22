@@ -60,7 +60,6 @@ namespace ExamManager
             {
                 Item itm = lb_exam_date.SelectedItem as Item;  // lb_exam_date.SelectedItem.ToString()
                 form.SetDate(DateTime.ParseExact(itm.date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None));
-                this.Dispose();
             }
         }
     }

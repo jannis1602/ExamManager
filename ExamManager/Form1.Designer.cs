@@ -70,6 +70,10 @@ namespace ExamManager
             this.tsmi_settings_table_exams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_students = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_color = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_color_dark = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_color_light = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_color_bw = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,9 +138,6 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmi_color = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_color_light = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_color_dark = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -381,21 +382,21 @@ namespace ExamManager
             // tsmi_filter_grade
             // 
             this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_grade.Text = "Stufe";
             this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
             // 
             // tsmi_filter_teacher
             // 
             this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_teacher.Text = "Lehrer";
             this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // tsmi_filter_all
             // 
             this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_all.Text = "Filter löschen";
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
             // 
@@ -444,7 +445,7 @@ namespace ExamManager
             // 
             this.tsmi_settings_mailgenerator.Name = "tsmi_settings_mailgenerator";
             this.tsmi_settings_mailgenerator.Size = new System.Drawing.Size(190, 22);
-            this.tsmi_settings_mailgenerator.Text = "Email Generator";
+            this.tsmi_settings_mailgenerator.Text = "Email Domain";
             this.tsmi_settings_mailgenerator.Click += new System.EventHandler(this.tsmi_settings_mailgenerator_Click);
             // 
             // tsmi_settings_changedb
@@ -490,23 +491,54 @@ namespace ExamManager
             // tsmi_settings_table_exams
             // 
             this.tsmi_settings_table_exams.Name = "tsmi_settings_table_exams";
-            this.tsmi_settings_table_exams.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_exams.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_exams.Text = "Prüfungen";
             this.tsmi_settings_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
             // tsmi_settings_table_students
             // 
             this.tsmi_settings_table_students.Name = "tsmi_settings_table_students";
-            this.tsmi_settings_table_students.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_students.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_students.Text = "Schüler";
             this.tsmi_settings_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
             // tsmi_settings_table_teacher
             // 
             this.tsmi_settings_table_teacher.Name = "tsmi_settings_table_teacher";
-            this.tsmi_settings_table_teacher.Size = new System.Drawing.Size(130, 22);
+            this.tsmi_settings_table_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_settings_table_teacher.Text = "Lehrer";
             this.tsmi_settings_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
+            // 
+            // tsmi_color
+            // 
+            this.tsmi_color.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_color_dark,
+            this.tsmi_color_light,
+            this.tsmi_color_bw});
+            this.tsmi_color.Name = "tsmi_color";
+            this.tsmi_color.Size = new System.Drawing.Size(190, 22);
+            this.tsmi_color.Text = "Farbe";
+            // 
+            // tsmi_color_dark
+            // 
+            this.tsmi_color_dark.Name = "tsmi_color_dark";
+            this.tsmi_color_dark.Size = new System.Drawing.Size(147, 22);
+            this.tsmi_color_dark.Text = "Dunkel";
+            this.tsmi_color_dark.Click += new System.EventHandler(this.tsmi_color_dark_Click);
+            // 
+            // tsmi_color_light
+            // 
+            this.tsmi_color_light.Name = "tsmi_color_light";
+            this.tsmi_color_light.Size = new System.Drawing.Size(147, 22);
+            this.tsmi_color_light.Text = "Hell";
+            this.tsmi_color_light.Click += new System.EventHandler(this.tsmi_color_light_Click);
+            // 
+            // tsmi_color_bw
+            // 
+            this.tsmi_color_bw.Name = "tsmi_color_bw";
+            this.tsmi_color_bw.Size = new System.Drawing.Size(147, 22);
+            this.tsmi_color_bw.Text = "Schwarz Weiß";
+            this.tsmi_color_bw.Click += new System.EventHandler(this.tsmi_color_bw_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -1372,29 +1404,6 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
-            // tsmi_color
-            // 
-            this.tsmi_color.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_color_dark,
-            this.tsmi_color_light});
-            this.tsmi_color.Name = "tsmi_color";
-            this.tsmi_color.Size = new System.Drawing.Size(190, 22);
-            this.tsmi_color.Text = "Farbe";
-            // 
-            // tsmi_color_light
-            // 
-            this.tsmi_color_light.Name = "tsmi_color_light";
-            this.tsmi_color_light.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_color_light.Text = "Hell";
-            this.tsmi_color_light.Click += new System.EventHandler(this.tsmi_color_light_Click);
-            // 
-            // tsmi_color_dark
-            // 
-            this.tsmi_color_dark.Name = "tsmi_color_dark";
-            this.tsmi_color_dark.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_color_dark.Text = "Dunkel";
-            this.tsmi_color_dark.Click += new System.EventHandler(this.tsmi_color_dark_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1562,5 +1571,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_color;
         private System.Windows.Forms.ToolStripMenuItem tsmi_color_dark;
         private System.Windows.Forms.ToolStripMenuItem tsmi_color_light;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_color_bw;
     }
 }

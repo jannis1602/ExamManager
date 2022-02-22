@@ -18,7 +18,7 @@ namespace ExamManager
             { path = Properties.Settings.Default.databasePath; }
 
             connection = CreateConnection(path);
-            Console.WriteLine(connection.State);
+            //Console.WriteLine("connection.State: "+connection.State);
             CreateStudentDB();
             CreateTeacherDB();
             CreateExamDB();
@@ -64,7 +64,7 @@ namespace ExamManager
             SQLiteConnection sqlite_conn;
             if (!File.Exists(path + "database.db")) { Directory.CreateDirectory(path); SQLiteConnection.CreateFile(path + "database.db"); }
             sqlite_conn = new SQLiteConnection("Data Source=" + path + "database.db; Version = 3; New = False; Compress = True; ");
-            try { sqlite_conn.Open(); } catch (Exception e) { Console.WriteLine(e.Message); }
+            try { sqlite_conn.Open(); } catch (Exception e) { Console.WriteLine("ERROR: " + e.Message); }
             return sqlite_conn;
         }
 
@@ -675,6 +675,17 @@ namespace ExamManager
                 }
                 reader.NextResult();
             }
+            return data;
+        }
+        /// <summary>Searches all exams of all students of a grade at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        public LinkedList<string[]> GetAllExamsFromGradeAtDate(string date, string grade)
+        {
+            LinkedList<string[]> tempStudentList = GetAllStudentsFromGrade(grade);
+            LinkedList<string[]> data = new LinkedList<string[]>();
+            foreach (string[] s in tempStudentList)
+                foreach (string[] studentExam in GetAllExamsFromStudentAtDate(date, s[0]))
+                    data.AddLast(studentExam);
             return data;
         }
         /// <summary>Searches all exams in a room at a date in the database.</summary>

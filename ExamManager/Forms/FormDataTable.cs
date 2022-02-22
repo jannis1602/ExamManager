@@ -36,6 +36,8 @@ namespace ExamManager
                 foreach (string[] s in data)
                 {
                     string[] student = Program.database.GetStudentByID(Int32.Parse(s[5]));
+                    if (student == null)
+                        student = new string[] { "0", "nicht gefunden", "nicht gefunden", " - ", " - ", " - " };
                     dataGridView_exam.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student[1] + " " + student[2], s[6], s[7], s[8], s[9], s[10]);
                 }
                 dataGridView = dataGridView_exam;

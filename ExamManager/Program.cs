@@ -13,6 +13,8 @@ namespace ExamManager
                 Colors.ColorTheme(Colors.Theme.dark);
             else if (Properties.Settings.Default.color_theme == 1)
                 Colors.ColorTheme(Colors.Theme.light);
+            else if (Properties.Settings.Default.color_theme == 2)
+                Colors.ColorTheme(Colors.Theme.bw);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             database = new Database();
@@ -21,7 +23,12 @@ namespace ExamManager
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);
 
-            // student/teacher object
+            // if (e.KeyData == (Keys.Control | Keys.Enter))
+
+            // info vorsitz prüfer protokoll
+            // student/teacher + Exam object
+            // - string[] fn,ln,grade,...
+            // - Panel obj.
             // tabindex
             // export data to txt file
             // color theme
@@ -45,7 +52,24 @@ namespace ExamManager
             // studentdata max entities -> multiple pages
             // list clear thread: create new pannels add...
             // search etc. in taskbar(top)
-
+            // DB getStudent(grade=null) if>1 -> error
+            // EditStudent(id,fn=null,ln=null,...)
+            // roompanel size y+1?
+            // Data filter doppelnamen
+            // Settings last/firstname || first/lastname -> [student,teacher]
+            // FileReaderClass (#grade, #formart,...)
+            // Student/teacher Data paintPanel
+            // Student/teacher Data multiple pages
+            // Student Data default grade = all
+            // ReadOnlyMode [-> if(readonly)return;] enum mode{all,read,write} disable write/edit
+            // export data as csv (student/teacher/exam) 
+            // import data from csv
+            // *Extra load Exel file
+            // Settings Form
+            // TimeLine & tlEntity Object
+            // load exams -> check if teacher exists
+            // AddExam Vorschau -> dragPanel move with mouse (blocks=15min shift->1min)
+            // custom autocomplete? if string.contains...-> show...
 
 
 

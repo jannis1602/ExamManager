@@ -31,6 +31,7 @@ namespace ExamManager
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTeacherData));
             this.tableLayoutPanel_main = new System.Windows.Forms.TableLayoutPanel();
+            this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlp_phonenumber = new System.Windows.Forms.FlowLayoutPanel();
@@ -64,7 +65,6 @@ namespace ExamManager
             this.tsmi_search_shortname = new System.Windows.Forms.ToolStripMenuItem();
             this.tstb_search = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.flp_teacher_entitys = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -90,6 +90,18 @@ namespace ExamManager
             this.tableLayoutPanel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel_main.Size = new System.Drawing.Size(984, 474);
             this.tableLayoutPanel_main.TabIndex = 0;
+            // 
+            // flp_teacher_entitys
+            // 
+            this.flp_teacher_entitys.AutoScroll = true;
+            this.flp_teacher_entitys.BackColor = System.Drawing.Color.Silver;
+            this.flp_teacher_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flp_teacher_entitys.Location = new System.Drawing.Point(0, 0);
+            this.flp_teacher_entitys.Margin = new System.Windows.Forms.Padding(0);
+            this.flp_teacher_entitys.Name = "flp_teacher_entitys";
+            this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 354);
+            this.flp_teacher_entitys.TabIndex = 21;
+            this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
             // 
             // tlp_edit
             // 
@@ -409,24 +421,24 @@ namespace ExamManager
             // tsmi_search_firstname
             // 
             this.tsmi_search_firstname.Name = "tsmi_search_firstname";
-            this.tsmi_search_firstname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_firstname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_firstname.Text = "Vorname [DEV]";
             // 
             // tsmi_search_lastname
             // 
             this.tsmi_search_lastname.Name = "tsmi_search_lastname";
-            this.tsmi_search_lastname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_lastname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_lastname.Text = "Nachname [DEV]";
             // 
             // tsmi_search_shortname
             // 
             this.tsmi_search_shortname.Name = "tsmi_search_shortname";
-            this.tsmi_search_shortname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_shortname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_shortname.Text = "Kürzel [DEV]";
             // 
             // tstb_search
             // 
-            this.tstb_search.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tstb_search.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstb_search.Name = "tstb_search";
             this.tstb_search.Size = new System.Drawing.Size(200, 23);
             this.tstb_search.TextChanged += new System.EventHandler(this.tstb_search_TextChanged);
@@ -443,18 +455,6 @@ namespace ExamManager
             this.menuStrip1.Size = new System.Drawing.Size(984, 27);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // flp_teacher_entitys
-            // 
-            this.flp_teacher_entitys.AutoScroll = true;
-            this.flp_teacher_entitys.BackColor = System.Drawing.Color.Silver;
-            this.flp_teacher_entitys.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp_teacher_entitys.Location = new System.Drawing.Point(0, 0);
-            this.flp_teacher_entitys.Margin = new System.Windows.Forms.Padding(0);
-            this.flp_teacher_entitys.Name = "flp_teacher_entitys";
-            this.flp_teacher_entitys.Size = new System.Drawing.Size(984, 354);
-            this.flp_teacher_entitys.TabIndex = 21;
-            this.flp_teacher_entitys.SizeChanged += new System.EventHandler(this.flp_teacher_entitys_SizeChanged);
             // 
             // FormTeacherData
             // 

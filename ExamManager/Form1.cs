@@ -11,6 +11,7 @@ namespace ExamManager
 {
     public partial class Form1 : Form
     {
+        private Panel editPanel = null;
         public string search = null;
         public int search_index = 0; // 0-student; 1-teacher; 2-subject; 3-room // TODO: ENUM
         //public enum Search { all, student, teacher, subject, room }
@@ -343,8 +344,13 @@ namespace ExamManager
             time_line_room_list.Clear();
 
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            LinkedList<string[]> examList = null;
+            if (filterMode == Filter.teacher) examList = database.GetAllExamsFromTeacherAtDate(date, filter);
+            else if (filterMode == Filter.grade) examList = database.GetAllExamsFromGradeAtDate(date, filter);
+            else examList = database.GetAllExamsAtDate(date);
             LinkedList<string> room_list = new LinkedList<string>();
-            foreach (string[] s in database.GetAllExamsAtDate(date))
+            // ---------- Rooms ----------
+            foreach (string[] s in examList)
             { if (!room_list.Contains(s[3])) room_list.AddLast(s[3]); }
             List<string> temp_room_list = new List<string>(room_list);
             temp_room_list.Sort();
@@ -359,7 +365,7 @@ namespace ExamManager
             LinkedList<string> tempRoomFilterList = new LinkedList<string>();
             // TODO: Filter ?
             // ---------- TimeLineEntities ----------
-            foreach (string[] s in database.GetAllExamsAtDate(date))
+            foreach (string[] s in examList)
             {
                 Panel panel_tl_entity = new Panel();
                 DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -389,10 +395,14 @@ namespace ExamManager
                 mnuDelete.Name = s[0];
                 mnu.Items.AddRange(new ToolStripItem[] { mnuEdit, mnuCopy, mnuSwap, mnuDelete });
                 panel_tl_entity.ContextMenuStrip = mnu;
-                // ---------- FILTER ----------
                 foreach (Panel p in time_line_list)
                 {
                     if (p.Name.Equals(s[3]))
+                    {
+                        p.Controls.Add(panel_tl_entity);
+                        time_line_entity_list.AddLast(panel_tl_entity);
+                    }
+                    /*if (p.Name.Equals(s[3]))
                     {
                         string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
                         string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
@@ -415,17 +425,17 @@ namespace ExamManager
                             p.Controls.Add(panel_tl_entity);
                             time_line_entity_list.AddLast(panel_tl_entity);
                         }
-                    }
+                    }*/
                 }
             }
-            if (filterMode != Filter.all)  // TODO
+            /*if (filterMode != Filter.all)  // TODO
             {
                 foreach (Panel p in time_line_list)
                 {
                     if (!tempRoomFilterList.Contains(p.Name))
                         p.Visible = false;
                 }
-            }
+            }*/
 
             if (search != null && search.Length >= 1) { lbl_search.Text = "Suche:\n" + search; panel_sidetop_empty.BackColor = Color.Yellow; }
             else if (filter != null && filter.Length >= 1) { lbl_search.Text = "Filter:\n" + filter; panel_sidetop_empty.BackColor = Color.Yellow; }
@@ -595,6 +605,19 @@ namespace ExamManager
                 panelScrollPos2 = panel_side_room.AutoScrollPosition;
             }
         }
+        private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
+        {
+            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            {
+                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
+                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+            }
+            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            {
+                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
+                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+            }
+        }
         private void panel_top_time_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
@@ -610,15 +633,15 @@ namespace ExamManager
             for (int i = 0; i < 12; i++)
             {
                 float[] dashValues = { 1, 1 };
-                Pen pen = new Pen(Color.Blue, 1);
+                Pen pen = new Pen(Colors.TL_MinLine, 1);
                 pen.DashPattern = dashValues;
-                Pen pen2 = new Pen(Color.Blue, 2);
+                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
                 pen2.DashPattern = dashValues;
-                e.Graphics.DrawLine(new Pen(Color.Blue, 2), b + panel_tl.Width / 12 * i, b, b + panel_tl.Width / 12 * i, panel_tl.Height - b);
+                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), b + panel_tl.Width / 12 * i, b, b + panel_tl.Width / 12 * i, panel_tl.Height - b);
                 e.Graphics.DrawLine(pen2, b + panel_tl.Width / 12 * i + panel_tl.Width / 24, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - b);
                 e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - b);
                 e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - b);
-                e.Graphics.DrawString(7 + i + " Uhr", drawFont, Brushes.Blue, 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
+                e.Graphics.DrawString(7 + i + " Uhr", drawFont, new SolidBrush(Colors.TL_MinLine), 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
             }
         }
         private void panel_time_line_Paint(object sender, PaintEventArgs e)
@@ -628,11 +651,11 @@ namespace ExamManager
             {
                 float[] dashValues = { 2, 2 };
                 float[] dashValues2 = { 1, 1 };
-                Pen pen = new Pen(Color.Blue, 1);
+                Pen pen = new Pen(Colors.TL_MinLine, 1);
                 pen.DashPattern = dashValues;
-                Pen pen2 = new Pen(Color.Blue, 2);
+                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
                 pen2.DashPattern = dashValues2;
-                e.Graphics.DrawLine(new Pen(Color.Blue, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
+                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
@@ -647,6 +670,11 @@ namespace ExamManager
         {
             Panel panel_tl_entity = sender as Panel;
             Font drawFont = new Font("Microsoft Sans Serif", 8);  // Arial
+            ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid);
             string[] exam = database.GetExamById(Int32.Parse(panel_tl_entity.Name));
             string[] student = database.GetStudentByID(Int32.Parse(exam[5]));
             if (student == null)
@@ -733,26 +761,6 @@ namespace ExamManager
             string line4 = exam[9] + "  " + exam[3] + "  [" + exam[4] + "]";
             ToolTip sfToolTip1 = new ToolTip();
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
-            ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
-            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
-            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
-            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid);
-        }
-        private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
-        {
-            if (panel_time_line.AutoScrollPosition.Y == 0)
-                this.panel_side_room.HorizontalScroll.Value = 0;
-            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
-            {
-                panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
-                panelScrollPos1 = panel_side_room.AutoScrollPosition;
-            }
-            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
-            {
-                panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
-                panelScrollPos2 = panel_side_room.AutoScrollPosition;
-            }
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //// ---- BTN ---- ////
@@ -1025,6 +1033,19 @@ namespace ExamManager
             lbl_mode.BackColor = Colors.Edit_ModeBg;
             //MessageBox.Show("Einstellungen werden beim nächsten start übernommen.", "Info!", MessageBoxButtons.OK);
         }
+        private void tsmi_color_bw_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.color_theme = 2;
+            Properties.Settings.Default.Save();
+            Colors.ColorTheme(Colors.Theme.bw);
+            UpdateTimeline();
+            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
+            panel_time_line.BackColor = Colors.TL_Bg;
+            panel_top_time.BackColor = Colors.TL_TimeBg;
+            panel_side_room.BackColor = Colors.TL_RoomBg;
+            tlp_edit.BackColor = Colors.Edit_Bg;
+            lbl_mode.BackColor = Colors.Edit_ModeBg;
+        }
         // ----------------- tsmi filter -----------------
         private void tsmi_filter_grade_Click(object sender, EventArgs e)
         {
@@ -1055,6 +1076,18 @@ namespace ExamManager
         // ----------------- tsmi tools -----------------
         private void tsmi_tools_export_Click(object sender, EventArgs e)
         {
+            Colors.Theme tempTheme = Colors.theme;
+            DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Colors.ColorTheme(Colors.Theme.bw);
+                UpdateTimeline();
+                panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
+                panel_time_line.BackColor = Colors.TL_Bg;
+                panel_top_time.BackColor = Colors.TL_TimeBg;
+                panel_side_room.BackColor = Colors.TL_RoomBg;
+            }
+
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
             lbl_search.Text = date;
             Panel tempPanel = new Panel();
@@ -1078,6 +1111,15 @@ namespace ExamManager
             if (sfd.ShowDialog() != DialogResult.OK) return;
             Console.WriteLine(sfd.FileName);
             bmp.Save(sfd.FileName, ImageFormat.Png);
+
+            Colors.ColorTheme(tempTheme);
+            UpdateTimeline();
+            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
+            panel_time_line.BackColor = Colors.TL_Bg;
+            panel_top_time.BackColor = Colors.TL_TimeBg;
+            panel_side_room.BackColor = Colors.TL_RoomBg;
+            tlp_edit.BackColor = Colors.Edit_Bg;
+            lbl_mode.BackColor = Colors.Edit_ModeBg;
         }
         private void tsmi_tools_deleteOldExams_Click(object sender, EventArgs e)
         {
@@ -1122,8 +1164,10 @@ namespace ExamManager
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //// ---- METHODS ---- ////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void UpdateEditPanel()
+        {
 
-        // ----------------- methods -----------------
+        }
         public void SetDate(DateTime date)
         {
             dtp_timeline_date.Value = date;
@@ -1254,6 +1298,5 @@ namespace ExamManager
             Properties.Settings.Default.timeline_date = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
         }
-
     }
 }

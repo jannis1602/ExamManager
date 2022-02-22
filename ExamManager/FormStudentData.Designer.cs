@@ -390,6 +390,7 @@ namespace ExamManager
             // 
             // tstb_search
             // 
+            this.tstb_search.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstb_search.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstb_search.Name = "tstb_search";
             this.tstb_search.Size = new System.Drawing.Size(200, 23);
