@@ -72,18 +72,18 @@ namespace ExamManager
         // ID firstname lastname grade Email TelNummer
         /// <summary>Adds a new student to the database.</summary>
         /// <returns>returns <see langword="true"/> if the student was added successfully</returns>
-        public bool AddStudent(string firstname, string lastname, string grade, string email = null, string phone_number = null)
+        public bool AddStudent(StudentObject s)
         {
-            string[] s = GetStudent(firstname, lastname);
-            if (firstname.Contains(" ") || lastname.Contains(" "))
+            StudentObject ts = GetStudentByName(s.Firstname, s.Lastname);
+            if (s.Firstname.Contains(" ") || s.Lastname.Contains(" "))
             {
                 // Console.WriteLine("Space!>>> " + firstname + " - " + lastname);
                 // TODO: replace " " with "_"
             }
-            if (s != null)
+            if (ts != null)
             {
-                DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + firstname + " " + lastname + " exestiert bereits in der Stufe " + s[3] +
-                    "!\nEinen weiteren in der Stufe " + grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNoCancel);
+                DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + s.Firstname + " " + s.Lastname + " exestiert bereits in der Stufe " + ts.Grade +
+                    "!\nEinen weiteren in der Stufe " + s.Grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                 { return false; }
                 if (result != DialogResult.Yes)
@@ -91,11 +91,11 @@ namespace ExamManager
             }
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number) ";
-            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
-            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
-            sqlite_cmd.Parameters.AddWithValue("@grade", grade);
-            sqlite_cmd.Parameters.AddWithValue("@email", email);
-            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
+            sqlite_cmd.Parameters.AddWithValue("@firstname", s.Firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", s.Lastname);
+            sqlite_cmd.Parameters.AddWithValue("@grade", s.Grade);
+            sqlite_cmd.Parameters.AddWithValue("@email", s.Email);
+            sqlite_cmd.Parameters.AddWithValue("@phone_number", s.Phonenumber);
             sqlite_cmd.ExecuteNonQuery();
             return true;
         }
@@ -126,14 +126,14 @@ namespace ExamManager
                                 {
                                     string domain = Properties.Settings.Default.email_domain;
                                     string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                    if (AddStudent(tempfirstname, templastname, grade, mail))
-                                        studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    if (AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail)))
+                                        studentIdList.AddLast(GetStudentByName(tempfirstname, templastname, grade).Id);
                                     else break;
                                 }
                                 else
                                 {
-                                    if (AddStudent(tempfirstname, templastname, grade))
-                                        studentIdList.AddLast(Int32.Parse(GetStudent(tempfirstname, templastname, grade)[0]));
+                                    if (AddStudent(new StudentObject(0, tempfirstname, templastname, grade)))
+                                        studentIdList.AddLast(GetStudentByName(tempfirstname, templastname, grade).Id);
                                     else break;
                                 }
 
@@ -156,9 +156,9 @@ namespace ExamManager
                                         {
                                             string domain = Properties.Settings.Default.email_domain;
                                             string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                            AddStudent(tempfirstname, templastname, grade, mail);
+                                            AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail));
                                         }
-                                        else AddStudent(tempfirstname, templastname, grade);
+                                        else AddStudent(new StudentObject(0, tempfirstname, templastname, grade));
                                         break;
                                     }
                                 }
@@ -170,14 +170,14 @@ namespace ExamManager
                             {
                                 string domain = Properties.Settings.Default.email_domain;
                                 string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                if (AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade, mail))
-                                    studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                if (AddStudent(new StudentObject(0, line.Split(' ')[0], line.Split(' ')[1], grade, mail)))
+                                    studentIdList.AddLast(GetStudentByName(line.Split(' ')[0], line.Split(' ')[1], grade).Id);
                                 else break;
                             }
                             else
                             {
-                                if (AddStudent(line.Split(' ')[0], line.Split(' ')[1], grade))
-                                    studentIdList.AddLast(Int32.Parse(GetStudent(line.Split(' ')[0], line.Split(' ')[1], grade)[0]));
+                                if (AddStudent(new StudentObject(0, line.Split(' ')[0], line.Split(' ')[1], grade)))
+                                    studentIdList.AddLast(GetStudentByName(line.Split(' ')[0], line.Split(' ')[1], grade).Id);
                                 else break;
                             }
                         }
@@ -191,7 +191,7 @@ namespace ExamManager
         }
         /// <summary>Searches a student by firstname and lastname (and grade) in the database.</summary>
         /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
-        public string[] GetStudent(string firstname, string lastname, string grade = null)
+        public StudentObject GetStudentByName(string firstname, string lastname, string grade = null)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -201,36 +201,36 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = new string[6];
+            string[] rData = new string[6];
             if (reader.HasRows)
                 while (reader.Read())
-                    for (int i = 0; i < 6; i++)
-                        data[i] = reader.GetValue(i).ToString();
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
             else return null;
-            return data;
+            return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]);
         }
         /// <summary>Searches a student by <paramref name="id"/> in the database.</summary>
         /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
-        public string[] GetStudentByID(int id)
+        public StudentObject GetStudentByID(int id)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM student WHERE id = @id";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = new string[6];
+            string[] rData = new string[6];
             if (reader.HasRows)
                 while (reader.Read())
-                    for (int i = 0; i < 6; i++)
-                        data[i] = reader.GetValue(i).ToString();
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
             else return null;
-            return data;
+            return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]); ;
         }
         /// <summary>Searches all students in the database.</summary>
         /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllStudents(bool orderFirstname = false)
+        public LinkedList<StudentObject> GetAllStudents(bool orderFirstname = false)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<StudentObject> data = new LinkedList<StudentObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM student ORDER BY grade ASC, firstname ASC";
@@ -240,10 +240,10 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[6];
-                    for (int i = 0; i < 6; i++)
-                        rowData[i] = reader.GetValue(i).ToString();
-                    data.AddLast(rowData);
+                    string[] rData = new string[6];
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
+                    data.AddLast(new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]));
                 }
                 reader.NextResult();
             }
@@ -251,9 +251,9 @@ namespace ExamManager
         }
         /// <summary>Searches all students in the database.</summary>
         /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllStudentsFromGrade(string grade, bool orderFirstname = false)
+        public LinkedList<StudentObject> GetAllStudentsFromGrade(string grade, bool orderFirstname = false)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<StudentObject> data = new LinkedList<StudentObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM student WHERE grade=@grade ORDER BY grade ASC, firstname ASC";
@@ -264,10 +264,10 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[6];
+                    string[] rData = new string[6];
                     for (int i = 0; i < 6; i++)
-                        rowData[i] = reader.GetValue(i).ToString();
-                    data.AddLast(rowData);
+                        rData[i] = reader.GetValue(i).ToString();
+                    data.AddLast(new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]));
                 }
                 reader.NextResult();
             }
@@ -314,7 +314,7 @@ namespace ExamManager
         // ---- TEACHER ---- ##########################################################################################################################
         // Kürzel firstname lastname TelNummer Faecher
         /// <summary>Adds s teacher to the database.</summary>
-        public void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
+        /*public void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
         {
             if (GetTeacherByID(short_name) != null) { return; }
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -327,12 +327,28 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject2", subject2);
             sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
             sqlite_cmd.ExecuteNonQuery();
+        }*/
+        /// <summary>Adds s teacher to the database.</summary>
+        public void AddTeacher(TeacherObject t)
+        {
+            if (GetTeacherByID(t.Shortname) != null) { return; }
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO teacher (short_name, firstname, lastname,email, phone_number, subject1, subject2, subject3) VALUES(@short_name,@firstname,@lastname,@email,@phone_number,@subject1,@subject2,@subject3); ";
+            sqlite_cmd.Parameters.AddWithValue("@short_name", t.Shortname);
+            sqlite_cmd.Parameters.AddWithValue("@firstname", t.Firstname);
+            sqlite_cmd.Parameters.AddWithValue("@lastname", t.Lastname);
+            sqlite_cmd.Parameters.AddWithValue("@email", t.Email);
+            sqlite_cmd.Parameters.AddWithValue("@phone_number", t.Phonenumber);
+            sqlite_cmd.Parameters.AddWithValue("@subject1", t.Subject1);
+            sqlite_cmd.Parameters.AddWithValue("@subject2", t.Subject2);
+            sqlite_cmd.Parameters.AddWithValue("@subject3", t.Subject3);
+            sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Adds all teachers from a file into the database.</summary>
         public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen in file with _ info
         {
             //bool editDoppelnamen = false;
-            LinkedList<string> teacherIdList = new LinkedList<string>();
+            LinkedList<string> teacherIdList = new LinkedList<string>();    // TODO Teacher mail generator
             if (File.Exists(file))
             {
                 string[] lines = File.ReadAllLines(file);
@@ -348,21 +364,21 @@ namespace ExamManager
                                 // TODO teacher mail?
                                 // string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (t.Length == 5)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4]));
                                 else if (t.Length == 6)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5]));
                                 else if (t.Length == 7)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5], t[6]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, t[4], t[5], t[6]));
                                 teacherIdList.AddLast(t[3]);
                             }
                             else
                             {
                                 if (t.Length == 5)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4]));
                                 else if (t.Length == 6)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5]));
                                 else if (t.Length == 7)
-                                    AddTeacher(t[3], t[1], t[2], null, t[4], t[5], t[6]);
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], t[6]));
                                 teacherIdList.AddLast(t[3]);
                             }
                             if (t.Length >= 5)
@@ -388,9 +404,9 @@ namespace ExamManager
         }
         /// <summary>Searches all teachers in the database.</summary>
         /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllTeachers(bool orderFirstname = false)
+        public LinkedList<TeacherObject> GetAllTeachers(bool orderFirstname = false)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<TeacherObject> data = new LinkedList<TeacherObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (orderFirstname) sqlite_cmd.CommandText = "SELECT * FROM teacher ORDER BY firstname ASC";
@@ -400,10 +416,10 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[7];
-                    for (int i = 0; i < 7; i++)
-                        rowData[i] = reader.GetValue(i).ToString();
-                    data.AddLast(rowData);
+                    string[] rData = new string[8];
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
+                    data.AddLast(new TeacherObject(rData[0], rData[1], rData[2], rData[3], rData[4], rData[5], rData[6], rData[7]));
                 }
                 reader.NextResult();
             }
@@ -411,26 +427,26 @@ namespace ExamManager
         }
         /// <summary>Searches a teacher by shortname in the database.</summary>
         /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
-        public string[] GetTeacherByID(string short_name)
+        public TeacherObject GetTeacherByID(string short_name)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE short_name = @short_name";
             sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = new string[7];
+            string[] rData = new string[8];
             if (reader.HasRows)
                 while (reader.Read())
-                    for (int i = 0; i < 7; i++)
-                        data[i] = reader.GetValue(i).ToString();
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
             else return null;
-            return data;
+            return new TeacherObject(rData[0], rData[1], rData[2], rData[3], rData[4], rData[5], rData[6], rData[7]);
         }
         /// <summary>Searches a teacher by subject in the database.</summary>
         /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetTeacherBySubject(string subject)
+        public LinkedList<TeacherObject> GetTeacherBySubject(string subject)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<TeacherObject> data = new LinkedList<TeacherObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE subject1 = @subject OR subject2 = @subject OR subject3 = @subject ORDER BY lastname";
@@ -440,10 +456,10 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[7];
-                    for (int i = 0; i < 7; i++)
-                        rowData[i] = reader.GetValue(i).ToString();
-                    data.AddLast(rowData);
+                    string[] rData = new string[8];
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
+                    data.AddLast(new TeacherObject(rData[0], rData[1], rData[2], rData[3], rData[4], rData[5], rData[6], rData[7]));
                 }
                 reader.NextResult();
             }
@@ -451,7 +467,7 @@ namespace ExamManager
         }
         /// <summary>Searches a teacher by firstname and lastname in the database.</summary>
         /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
-        public string[] GetTeacherByName(string firstname, string lastname)
+        public TeacherObject GetTeacherByName(string firstname, string lastname)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -459,26 +475,27 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = new string[7];
+            string[] rData = new string[8];
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    for (int i = 0; i < 7; i++)
-                        data[i] = reader.GetValue(i).ToString();
+                    for (int i = 0; i < rData.Length; i++)
+                        rData[i] = reader.GetValue(i).ToString();
                 }
             }
             else return null;
-            return data;
+            return new TeacherObject(rData[0], rData[1], rData[2], rData[3], rData[4], rData[5], rData[6], rData[7]);
         }
         /// <summary>Edits a teacher in the database.</summary>
-        public void EditTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
+        public void EditTeacher(string short_name, string firstname, string lastname, string email, string phone_number, string subject1, string subject2 = null, string subject3 = null)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "UPDATE teacher SET firstname=@firstname, lastname=@lastname, phone_number=@phone_number, subject1=@subject1, subject2=@subject2, subject3=@subject3 WHERE short_name = @short_name";
+            sqlite_cmd.CommandText = "UPDATE teacher SET firstname=@firstname, lastname=@lastname,email=@email, phone_number=@phone_number, subject1=@subject1, subject2=@subject2, subject3=@subject3 WHERE short_name = @short_name";
             sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
             sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
             sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
+            sqlite_cmd.Parameters.AddWithValue("@email", email);
             sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
             sqlite_cmd.Parameters.AddWithValue("@subject1", subject1);
             sqlite_cmd.Parameters.AddWithValue("@subject2", subject2);
@@ -646,14 +663,14 @@ namespace ExamManager
         }
         /// <summary>Searches all exams of a student at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsFromStudentAtDate(string date, string student)
+        public LinkedList<string[]> GetAllExamsFromStudentAtDate(string date, int student_id)
         {
             LinkedList<string[]> data = new LinkedList<string[]>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND student = @student";
             sqlite_cmd.Parameters.AddWithValue("@date", date);
-            sqlite_cmd.Parameters.AddWithValue("@student", student);
+            sqlite_cmd.Parameters.AddWithValue("@student", student_id.ToString());
             reader = sqlite_cmd.ExecuteReader();
             while (reader.HasRows)
             {
@@ -681,10 +698,10 @@ namespace ExamManager
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsFromGradeAtDate(string date, string grade)
         {
-            LinkedList<string[]> tempStudentList = GetAllStudentsFromGrade(grade);
+            LinkedList<StudentObject> tempStudentList = GetAllStudentsFromGrade(grade);
             LinkedList<string[]> data = new LinkedList<string[]>();
-            foreach (string[] s in tempStudentList)
-                foreach (string[] studentExam in GetAllExamsFromStudentAtDate(date, s[0]))
+            foreach (StudentObject s in tempStudentList)
+                foreach (string[] studentExam in GetAllExamsFromStudentAtDate(date, s.Id))
                     data.AddLast(studentExam);
             return data;
         }
@@ -1019,7 +1036,7 @@ namespace ExamManager
         private void CreateTeacherDB()
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
+            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL,email TEXT, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
             sqlite_cmd.ExecuteNonQuery();
         }
         private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1 -> change string[].length +2!

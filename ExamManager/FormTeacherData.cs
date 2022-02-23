@@ -36,31 +36,31 @@ namespace ExamManager
         //private void UpdateAutocomplete()
         //{ }
 
-        private void UpdateTeacherList()
+        private void UpdateTeacherList()    // TODO Email
         {
             flp_teacher_entitys.Controls.Clear();
             teacher_entity_list.Clear();
-            LinkedList<string[]> teacherList = null;
+            LinkedList<TeacherObject> teacherList = null;
             if (listOrder == Order.lastname) teacherList = database.GetAllTeachers();
             else if (listOrder == Order.lastname) teacherList = database.GetAllTeachers(true);
 
-            foreach (string[] s in teacherList)
+            foreach (TeacherObject t in teacherList)
             {
-                if ((teacherIdList != null && teacherIdList.Contains(s[0])) || teacherIdList == null)
+                if ((teacherIdList != null && teacherIdList.Contains(t.Shortname)) || teacherIdList == null)
                 {
                     FlowLayoutPanel panel_teacher = new FlowLayoutPanel
                     {
                         Width = flp_teacher_entitys.Width - 28,
                         Margin = new Padding(5),
                         BackColor = Color.LightBlue,
-                        Name = s[0]
+                        Name = t.Shortname
                     };
                     // -- NAME --
                     Label lbl_teacher_name = new Label
                     {
                         Size = new Size(180, panel_teacher.Height),
                         Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = s[1] + " " + s[2],
+                        Text = t.Firstname + " " + t.Lastname,
                         TextAlign = ContentAlignment.MiddleLeft
                     };
                     panel_teacher.Controls.Add(lbl_teacher_name);
@@ -69,7 +69,7 @@ namespace ExamManager
                     {
                         Size = new Size(60, panel_teacher.Height),
                         Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = s[0],
+                        Text = t.Shortname,
                         TextAlign = ContentAlignment.MiddleLeft
                     };
                     panel_teacher.Controls.Add(lbl_teacher_shortname);
@@ -78,22 +78,26 @@ namespace ExamManager
                     {
                         Size = new Size(140, panel_teacher.Height),
                         Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = s[3]
+                        Text = t.Phonenumber
                     };
-                    if (s[3].Length < 1 || s[3] == null)
+                    if (t.Phonenumber.Length < 1 || t.Phonenumber == null)
                         lbl_teacher_phone.Text = "-";
                     lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
                     panel_teacher.Controls.Add(lbl_teacher_phone);
                     // -- subjects --
                     for (int i = 0; i < 3; i++)
                     {
+                        string subject = null;
+                        if (i == 0) subject = t.Subject1;
+                        if (i == 1) subject = t.Subject2;
+                        if (i == 2) subject = t.Subject3;
                         Label lbl_teacher_subject = new Label
                         {
                             Size = new Size(100, panel_teacher.Height),
                             Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                            Text = s[4 + i]
+                            Text = subject
                         };
-                        if (s[4 + i].Length < 1 || s[4 + i] == null)
+                        if (subject.Length < 1 || subject == null)
                             lbl_teacher_subject.Text = "-";
                         lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
                         panel_teacher.Controls.Add(lbl_teacher_subject);
@@ -104,7 +108,7 @@ namespace ExamManager
                         Size = new Size(100, panel_teacher.Height - 40),
                         Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
                         Text = "Bearbeiten",
-                        Name = s[0],
+                        Name = t.Shortname,
                         Margin = new Padding(10, 20, 10, 20),
                         BackColor = Color.LightGray
                     };
@@ -116,7 +120,7 @@ namespace ExamManager
                         Size = new Size(100, panel_teacher.Height - 40),
                         Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
                         Text = "Löschen",
-                        Name = s[0],
+                        Name = t.Shortname,
                         Margin = new Padding(10, 20, 10, 20),
                         BackColor = Color.LightGray
                     };
@@ -138,45 +142,49 @@ namespace ExamManager
             }
         }
 
-        private void AddTeacherEntity(string id) 
+        private void AddTeacherEntity(string id)
         {
-            string[] s = database.GetTeacherByID(id.ToString());
+            TeacherObject t = database.GetTeacherByID(id.ToString());
             FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
             panel_teacher.Width = flp_teacher_entitys.Width - 28;
             panel_teacher.Margin = new Padding(5);
             panel_teacher.BackColor = Color.LightBlue;
-            panel_teacher.Name = s[0];
+            panel_teacher.Name = t.Shortname;
             // -- NAME --
             Label lbl_teacher_name = new Label();
             lbl_teacher_name.Size = new Size(180, panel_teacher.Height);
             lbl_teacher_name.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_teacher_name.Text = s[1] + " " + s[2];
+            lbl_teacher_name.Text = t.Firstname + " " + t.Lastname;
             lbl_teacher_name.TextAlign = ContentAlignment.MiddleLeft;
             panel_teacher.Controls.Add(lbl_teacher_name);
             // -- shortname --
             Label lbl_teacher_shortname = new Label();
             lbl_teacher_shortname.Size = new Size(60, panel_teacher.Height);
             lbl_teacher_shortname.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_teacher_shortname.Text = s[0];
+            lbl_teacher_shortname.Text = t.Shortname;
             lbl_teacher_shortname.TextAlign = ContentAlignment.MiddleLeft;
             panel_teacher.Controls.Add(lbl_teacher_shortname);
             // -- phone --
             Label lbl_teacher_phone = new Label();
             lbl_teacher_phone.Size = new Size(140, panel_teacher.Height);
             lbl_teacher_phone.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_teacher_phone.Text = s[3];
-            if (s[3].Length < 1 || s[3] == null)
+            lbl_teacher_phone.Text = t.Email;
+            if (t.Email.Length < 1 || t.Email == null)
                 lbl_teacher_phone.Text = "-";
             lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
             panel_teacher.Controls.Add(lbl_teacher_phone);
             // -- subjects --
             for (int i = 0; i < 3; i++)
             {
+                string subject = null;
+                if (i == 0) subject = t.Subject1;
+                if (i == 1) subject = t.Subject2;
+                if (i == 2) subject = t.Subject3;
                 Label lbl_teacher_subject = new Label();
                 lbl_teacher_subject.Size = new Size(100, panel_teacher.Height);
                 lbl_teacher_subject.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-                lbl_teacher_subject.Text = s[4 + i];
-                if (s[4 + i].Length < 1 || s[4 + i] == null)
+                lbl_teacher_subject.Text = subject;
+                if (subject.Length < 1 || subject == null)
                     lbl_teacher_subject.Text = "-";
                 lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
                 panel_teacher.Controls.Add(lbl_teacher_subject);
@@ -186,7 +194,7 @@ namespace ExamManager
             btn_teacher_edit.Size = new Size(100, panel_teacher.Height - 40);
             btn_teacher_edit.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             btn_teacher_edit.Text = "Bearbeiten";
-            btn_teacher_edit.Name = s[0];
+            btn_teacher_edit.Name = t.Shortname;
             btn_teacher_edit.Margin = new Padding(10, 20, 10, 20);
             btn_teacher_edit.BackColor = Color.LightGray;
             btn_teacher_edit.Click += btn_teacher_edit_Click;
@@ -196,7 +204,7 @@ namespace ExamManager
             btn_teacher_delete.Size = new Size(100, panel_teacher.Height - 40);
             btn_teacher_delete.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             btn_teacher_delete.Text = "Löschen";
-            btn_teacher_delete.Name = s[0];
+            btn_teacher_delete.Name = t.Shortname;
             btn_teacher_delete.Margin = new Padding(10, 20, 10, 20);
             btn_teacher_delete.BackColor = Color.LightGray;
             btn_teacher_delete.Click += btn_teacher_delete_Click;
@@ -217,8 +225,8 @@ namespace ExamManager
         private void btn_teacher_delete_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            string[] t = database.GetTeacherByID(btn.Name);
-            string name = t[1] + " " + t[2];
+            TeacherObject t = database.GetTeacherByID(btn.Name);
+            string name = t.Firstname + " " + t.Lastname;
             DialogResult result = MessageBox.Show("Lehrer " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -241,14 +249,14 @@ namespace ExamManager
             edit_id = btn.Name;
             btn_add_teacher.Text = add_mode[1];
             tb_shortname.ReadOnly = true;
-            string[] t = database.GetTeacherByID(btn.Name);
-            tb_shortname.Text = t[0];
-            tb_firstname.Text = t[1];
-            tb_lastname.Text = t[2];
-            tb_phonenumber.Text = t[3];
-            cb_subject1.Text = t[4];
-            cb_subject2.Text = t[5];
-            cb_subject3.Text = t[6];
+            TeacherObject t = database.GetTeacherByID(btn.Name);
+            tb_shortname.Text = t.Shortname;
+            tb_firstname.Text = t.Firstname;
+            tb_lastname.Text = t.Lastname;
+            tb_phonenumber.Text = t.Phonenumber;
+            cb_subject1.Text = t.Subject1;
+            cb_subject2.Text = t.Subject2;
+            cb_subject3.Text = t.Subject3;
         }
 
         private void btn_add_teacher_Click(object sender, EventArgs e)
@@ -268,7 +276,7 @@ namespace ExamManager
             {
                 if (database.GetTeacherByID(shortname) != null)
                 { MessageBox.Show("Lehrer schon vorhanden", "Warnung"); return; }
-                database.AddTeacher(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3);
+                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3)); // TODO: email
             }
             else
             {
@@ -340,10 +348,10 @@ namespace ExamManager
             {
                 foreach (FlowLayoutPanel flp in teacher_entity_list)
                 {
-                    string[] student = database.GetTeacherByID(flp.Name);
-                    if (!student[0].ToLower().Contains(search.ToLower()) && !student[1].ToLower().Contains(search.ToLower()) && !student[2].ToLower().Contains(search.ToLower()))
+                    TeacherObject teacher = database.GetTeacherByID(flp.Name);
+                    if (!teacher.Shortname.ToLower().Contains(search.ToLower()) && !teacher.Firstname.ToLower().Contains(search.ToLower()) && !teacher.Lastname.ToLower().Contains(search.ToLower()))
                         flp.Hide();
-                    else if (student[0].ToLower().Contains(search.ToLower()) || student[1].ToLower().Contains(search.ToLower()) || student[2].ToLower().Contains(search.ToLower()))
+                    else if (teacher.Shortname.ToLower().Contains(search.ToLower()) || teacher.Firstname.ToLower().Contains(search.ToLower()) || teacher.Lastname.ToLower().Contains(search.ToLower()))
                         flp.Show();
                 }
             }
@@ -365,8 +373,8 @@ namespace ExamManager
         {
             foreach (FlowLayoutPanel flp in teacher_entity_list)
             {
-                string[] teacher = database.GetTeacherByID(flp.Name);
-                if (!teacher[1].ToLower().Contains("_") && !teacher[2].ToLower().Contains("_") && !teacher[1].ToLower().Contains(" ") && !teacher[2].ToLower().Contains(" "))
+                TeacherObject teacher = database.GetTeacherByID(flp.Name);
+                if (!teacher.Firstname.ToLower().Contains("_") && !teacher.Lastname.ToLower().Contains("_") && !teacher.Firstname.ToLower().Contains(" ") && !teacher.Lastname.ToLower().Contains(" "))
                     flp.Hide();
             }
         }
