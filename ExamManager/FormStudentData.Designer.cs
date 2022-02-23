@@ -60,6 +60,8 @@ namespace ExamManager
             this.tsmi_search_firstname = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_lastname = new System.Windows.Forms.ToolStripMenuItem();
             this.tstb_search = new System.Windows.Forms.ToolStripTextBox();
+            this.tsmi_search_doublenames = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -356,14 +358,14 @@ namespace ExamManager
             // tsmi_sort_firstname
             // 
             this.tsmi_sort_firstname.Name = "tsmi_sort_firstname";
-            this.tsmi_sort_firstname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_firstname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_sort_firstname.Text = "Vorname";
             this.tsmi_sort_firstname.Click += new System.EventHandler(this.tsmi_sort_firstname_Click);
             // 
             // tsmi_sort_lastname
             // 
             this.tsmi_sort_lastname.Name = "tsmi_sort_lastname";
-            this.tsmi_sort_lastname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_lastname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_sort_lastname.Text = "Nachname";
             this.tsmi_sort_lastname.Click += new System.EventHandler(this.tsmi_sort_lastname_Click);
             // 
@@ -371,7 +373,9 @@ namespace ExamManager
             // 
             this.tsmi_search.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_search_firstname,
-            this.tsmi_search_lastname});
+            this.tsmi_search_lastname,
+            this.tsmi_search_doublenames,
+            this.tsmi_search_delete});
             this.tsmi_search.Name = "tsmi_search";
             this.tsmi_search.Size = new System.Drawing.Size(51, 23);
             this.tsmi_search.Text = "Suche";
@@ -379,13 +383,13 @@ namespace ExamManager
             // tsmi_search_firstname
             // 
             this.tsmi_search_firstname.Name = "tsmi_search_firstname";
-            this.tsmi_search_firstname.Size = new System.Drawing.Size(164, 22);
+            this.tsmi_search_firstname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_firstname.Text = "Vorname [DEV]";
             // 
             // tsmi_search_lastname
             // 
             this.tsmi_search_lastname.Name = "tsmi_search_lastname";
-            this.tsmi_search_lastname.Size = new System.Drawing.Size(164, 22);
+            this.tsmi_search_lastname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_lastname.Text = "Nachname [DEV]";
             // 
             // tstb_search
@@ -395,6 +399,20 @@ namespace ExamManager
             this.tstb_search.Name = "tstb_search";
             this.tstb_search.Size = new System.Drawing.Size(200, 23);
             this.tstb_search.TextChanged += new System.EventHandler(this.tstb_search_TextChanged);
+            // 
+            // tsmi_search_doublenames
+            // 
+            this.tsmi_search_doublenames.Name = "tsmi_search_doublenames";
+            this.tsmi_search_doublenames.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_doublenames.Text = "Doppelnamen";
+            this.tsmi_search_doublenames.Click += new System.EventHandler(this.tsmi_search_doublenames_Click);
+            // 
+            // tsmi_search_delete
+            // 
+            this.tsmi_search_delete.Name = "tsmi_search_delete";
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_delete.Text = "Suche löschen";
+            this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
             // FormStudentData
             // 
@@ -455,5 +473,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_sort_lastname;
         private System.Windows.Forms.ToolStripMenuItem tsmi_sort_firstname;
         private System.Windows.Forms.ToolStripTextBox tstb_search;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_doublenames;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_search_delete;
     }
 }

@@ -22,56 +22,49 @@ namespace ExamManager
 
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);
-
             // if (e.KeyData == (Keys.Control | Keys.Enter))
+
 
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?
 
+            // student/teacher data loading window
             // info vorsitz prüfer protokoll
             // student/teacher + Exam object
             // - string[] fn,ln,grade,...
             // - Panel obj.
             // tabindex
-            // export data to txt file
-            // color theme
-            // connection status?
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
             // teacher email ?
             // exam gleicher lehrer
             // edit_students_form faster load
             // teacherData filter subject
-            // hide timelines without exams in filter...
             // editteacher = null etc. (teacher)
             // Search index -> enum
             // class for filereader + formart manager
             // data -> expand default
             // studentdata menu: load from file?
-            // studentdata order firstname
             // student/teacherdata -> tableview edit/delet
-            // readonly mode
-            // autocomplete lastname
             // namen immer mit mit _
             // studentdata max entities -> multiple pages
             // list clear thread: create new pannels add...
             // search etc. in taskbar(top)
             // DB getStudent(grade=null) if>1 -> error
             // EditStudent(id,fn=null,ln=null,...)
-            // roompanel size y+1?
-            // Data filter doppelnamen
-            // Settings last/firstname || first/lastname -> [student,teacher]
+            // roompanel empty size y+1?
+            // + Settings last/firstname || first/lastname -> [student,teacher]
+            // - autocomplete lastname
             // FileReaderClass (#grade, #formart,...)
             // Student/teacher Data paintPanel
             // Student/teacher Data multiple pages
             // Student Data default grade = all
-            // ReadOnlyMode [-> if(readonly)return;] enum mode{all,read,write} disable write/edit
-            // export data as csv (student/teacher/exam) 
+            // + ReadOnlyMode [-> if(readonly)return;] enum mode{all,read,write} disable write/edit
+            // + export data as csv (student/teacher/exam) 
             // import data from csv
             // *Extra load Exel file
             // Settings Form
             // TimeLine & tlEntity Object
-            // load exams -> check if teacher exists
-            // AddExam Vorschau -> dragPanel move with mouse (blocks=15min shift->1min)
+            // + load exams -> check if teacher exists
             // custom autocomplete? if string.contains...-> show...
 
 

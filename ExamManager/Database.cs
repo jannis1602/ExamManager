@@ -329,7 +329,7 @@ namespace ExamManager
             sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Adds all teachers from a file into the database.</summary>
-        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen?
+        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen in file with _ info
         {
             //bool editDoppelnamen = false;
             LinkedList<string> teacherIdList = new LinkedList<string>();
@@ -1022,7 +1022,7 @@ namespace ExamManager
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
             sqlite_cmd.ExecuteNonQuery();
         }
-        private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1
+        private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1 -> change string[].length +2!
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student TEXT, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";

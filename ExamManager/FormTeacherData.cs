@@ -138,7 +138,7 @@ namespace ExamManager
             }
         }
 
-        private void AddTeacherEntity(string id) // TODO ################################################################
+        private void AddTeacherEntity(string id) 
         {
             string[] s = database.GetTeacherByID(id.ToString());
             FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
@@ -360,6 +360,23 @@ namespace ExamManager
         {
             listOrder = Order.firstname;
             UpdateTeacherList();
+        }
+        private void tsmi_search_doublenames_Click(object sender, EventArgs e)
+        {
+            foreach (FlowLayoutPanel flp in teacher_entity_list)
+            {
+                string[] teacher = database.GetTeacherByID(flp.Name);
+                if (!teacher[1].ToLower().Contains("_") && !teacher[2].ToLower().Contains("_") && !teacher[1].ToLower().Contains(" ") && !teacher[2].ToLower().Contains(" "))
+                    flp.Hide();
+            }
+        }
+
+        private void tsmi_search_delete_Click(object sender, EventArgs e)
+        {
+            foreach (FlowLayoutPanel flp in teacher_entity_list)
+            {
+                flp.Show();
+            }
         }
     }
 }

@@ -15,9 +15,6 @@ namespace ExamManager
             this.searchmode = mode;
             if (mode == 0)
             {
-                // ## [DEV] ##
-                // TODO TEACHER
-                //
                 cb_search = new ComboBox
                 {
                     Dock = DockStyle.Fill,

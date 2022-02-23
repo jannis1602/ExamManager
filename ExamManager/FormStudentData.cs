@@ -308,5 +308,23 @@ namespace ExamManager
             else foreach (FlowLayoutPanel flp in student_entity_list) flp.Show();
 
         }
+
+        private void tsmi_search_doublenames_Click(object sender, EventArgs e)
+        {
+            foreach (FlowLayoutPanel flp in student_entity_list)
+            {
+                string[] student = database.GetStudentByID(Int32.Parse(flp.Name));
+                if (!student[1].ToLower().Contains("_") && !student[2].ToLower().Contains("_") && !student[1].ToLower().Contains(" ") && !student[2].ToLower().Contains(" "))
+                    flp.Hide();
+            }
+        }
+
+        private void tsmi_search_delete_Click(object sender, EventArgs e)
+        {
+            foreach (FlowLayoutPanel flp in student_entity_list)
+            {
+                flp.Show();
+            }
+        }
     }
 }

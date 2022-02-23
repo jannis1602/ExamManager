@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,6 +44,7 @@ namespace ExamManager
             time_line_entity_list = new LinkedList<Panel>();
             time_line_room_list = new LinkedList<Panel>();
             InitializeComponent();
+
             dtp_date.Value = DateTime.Now;
             if (Properties.Settings.Default.timeline_date.Length > 2)
                 dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.timeline_date, "dd.MM.yyyy", null);
@@ -379,7 +382,6 @@ namespace ExamManager
             panel_empty.Name = "empty";
             panel_side_room.Controls.Add(panel_empty);
             LinkedList<string> tempRoomFilterList = new LinkedList<string>();
-            // TODO: Filter ?
             // ---------- TimeLineEntities ----------
             foreach (string[] s in examList)
             {
@@ -910,8 +912,6 @@ namespace ExamManager
             }
             form.FormClosed += update_Event;
             form.ShowDialog();
-            // TODO: update all? ##############################################################################
-
         }
         private void tsmi_data_editgrade_delete_Click(object sender, EventArgs e)
         {
@@ -1076,7 +1076,7 @@ namespace ExamManager
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
             lbl_search.Text = date;
             Panel tempPanel = new Panel();
-            tempPanel.Width = panel_side_room.Width + 2400;
+            tempPanel.Width = panel_side_room.Width + 2400; // 200 per houer
             tempPanel.Height = panel_top_time.Height + 5 + 85 * time_line_list.Count + 15;
             tempPanel.Controls.Add(tlp_timeline_view);
             Bitmap bmp = new Bitmap(tempPanel.Width, tempPanel.Height - 20);
@@ -1096,6 +1096,13 @@ namespace ExamManager
             if (sfd.ShowDialog() != DialogResult.OK) return;
             Console.WriteLine(sfd.FileName);
             bmp.Save(sfd.FileName, ImageFormat.Png);
+            bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            
+            /*Process p = new Process();
+            p.StartInfo.FileName = sfd.FileName;
+            p.StartInfo.Verb = "Print";
+            p.StartInfo.Arguments = "Microsoft Print to PDF";
+            p.Start();*/
 
             Colors.ColorTheme(tempTheme);
             UpdateTimeline();
