@@ -1,8 +1,9 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/jannis1602/exammanager?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues-raw/jannis1602/exammanager?style=for-the-badge)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/jannis1602/exammanager?style=for-the-badge)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/jannis1602/exammanager?style=for-the-badge)](https://github.com/jannis1602/ExamManager/releases/)
+[![Bitbucket open issues](https://img.shields.io/bitbucket/issues-raw/jannis1602/exammanager?style=for-the-badge)](https://github.com/jannis1602/ExamManager/issues)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/jannis1602/exammanager?style=for-the-badge)](https://github.com/jannis1602/ExamManager/graphs/contributors)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/jannis1602/exammanager?style=for-the-badge)
+[![Generic badge](https://img.shields.io/github/stars/jannis1602/exammanager?style=for-the-badge)]()
+
 # ExamManager
 
 <div id="top"></div>
