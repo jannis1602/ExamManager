@@ -813,24 +813,6 @@ namespace ExamManager
                 sqlite_cmd.ExecuteNonQuery();
             }
         }
-
-        /*public void EditExam(int id, string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion)
-        {
-            SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "UPDATE exam SET date=@date, time=@time, exam_room=@exam_room, preparation_room=@preparation_room, student=@student, teacher_vorsitz=@teacher_vorsitz, teacher_pruefer=@teacher_pruefer, teacher_protokoll=@teacher_protokoll, subject=@subject, duration=@duration WHERE id = @id";
-            sqlite_cmd.Parameters.AddWithValue("@id", id);
-            sqlite_cmd.Parameters.AddWithValue("@date", date);
-            sqlite_cmd.Parameters.AddWithValue("@time", time);
-            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
-            sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
-            sqlite_cmd.Parameters.AddWithValue("@student", student);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
-            sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
-            sqlite_cmd.Parameters.AddWithValue("@subject", subject);
-            sqlite_cmd.Parameters.AddWithValue("@duration", duartion);
-            sqlite_cmd.ExecuteNonQuery();
-        }*/
         /// <summary>Searches all exams before a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
         public LinkedList<string[]> GetAllExamsBeforeDate(string date)
