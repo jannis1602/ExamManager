@@ -35,10 +35,10 @@ namespace ExamManager
                     data.Add(s);
                 foreach (string[] s in data)
                 {
-                    string[] student = Program.database.GetStudentByID(Int32.Parse(s[5]));
+                    StudentObject student = Program.database.GetStudentByID(Int32.Parse(s[5]));
                     if (student == null)
-                        student = new string[] { "0", "nicht gefunden", "nicht gefunden", " - ", " - ", " - " };
-                    dataGridView_exam.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student[1] + " " + student[2], s[6], s[7], s[8], s[9], s[10]);
+                        student = new StudentObject(0, "nicht gefunden", "nicht gefunden", "-");
+                    dataGridView_exam.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student.Firstname + " " + student.Lastname, s[6], s[7], s[8], s[9], s[10]);
                 }
                 dataGridView = dataGridView_exam;
             }
@@ -58,12 +58,12 @@ namespace ExamManager
                 dataGridView_students.Name = "dataGridView_students";
                 dataGridView_students.Size = new System.Drawing.Size(1000, 500);
                 this.Controls.Add(dataGridView_students);
-                List<string[]> data = new List<string[]>();
-                foreach (string[] s in Program.database.GetAllTeachers())
+                List<TeacherObject> data = new List<TeacherObject>();
+                foreach (TeacherObject s in Program.database.GetAllTeachers())
                     data.Add(s);
-                foreach (string[] s in data)
+                foreach (TeacherObject t in data)
                 {
-                    dataGridView_students.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5], s[6]);
+                    dataGridView_students.Rows.Add(t.Shortname, t.Firstname, t.Lastname, t.Email, t.Phonenumber, t.Subject1, t.Subject2, t.Subject3);
                 }
                 dataGridView = dataGridView_students;
             }
@@ -82,12 +82,12 @@ namespace ExamManager
                 dataGridView_teachers.Name = "dataGridView_teachers";
                 dataGridView_teachers.Size = new System.Drawing.Size(1000, 500);
                 this.Controls.Add(dataGridView_teachers);
-                List<string[]> data = new List<string[]>();
-                foreach (string[] s in Program.database.GetAllStudents())
+                List<StudentObject> data = new List<StudentObject>();
+                foreach (StudentObject s in Program.database.GetAllStudents())
                     data.Add(s);
-                foreach (string[] s in data)
+                foreach (StudentObject s in data)
                 {
-                    dataGridView_teachers.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5]);
+                    dataGridView_teachers.Rows.Add(s.Id, s.Firstname, s.Lastname, s.Grade, s.Email, s.Phonenumber);
                 }
                 dataGridView = dataGridView_teachers;
             }
@@ -106,8 +106,8 @@ namespace ExamManager
                 data.Add(s);
             foreach (string[] s in data)
             {
-                string[] student = Program.database.GetStudentByID(Int32.Parse(s[5]));
-                this.dataGridView.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student[1] + " " + student[2], s[6], s[7], s[8], s[9], s[10]);
+                StudentObject student = Program.database.GetStudentByID(Int32.Parse(s[5]));
+                this.dataGridView.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student.Firstname + " " + student.Lastname, s[6], s[7], s[8], s[9], s[10]);
             }
         }
     }

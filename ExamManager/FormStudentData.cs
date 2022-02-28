@@ -28,11 +28,11 @@ namespace ExamManager
         }
         private void UpdateAutocomplete()
         {
-            LinkedList<string[]> allStudents = database.GetAllStudents();
+            LinkedList<StudentObject> allStudents = database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
-            foreach (string[] s in allStudents)
-                if (!gradeList.Contains(s[3]))
-                    gradeList.AddLast(s[3]);
+            foreach (StudentObject s in allStudents)
+                if (!gradeList.Contains(s.Grade))
+                    gradeList.AddLast(s.Grade);
             List<string> templist = new List<string>(gradeList);
             templist = templist.OrderBy(x => x).ToList();
             gradeList = new LinkedList<string>(templist);
@@ -64,16 +64,16 @@ namespace ExamManager
         {
             flp_student_entitys.Controls.Clear();
             student_entity_list.Clear();
-            LinkedList<string[]> studentList = null;
+            LinkedList<StudentObject> studentList = null;
             if (listOrder == Order.lastname) studentList = database.GetAllStudents();
             else if (listOrder == Order.firstname) studentList = database.GetAllStudents(true);
 
-            foreach (string[] s in studentList)
+            foreach (StudentObject s in studentList)
             {
-                if (grade == null || s[3] == grade)
-                    if ((studentIdList != null && studentIdList.Contains(Int32.Parse(s[0]))) || studentIdList == null)
+                if (grade == null || s.Grade == grade)
+                    if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
                     {
-                        FlowLayoutPanel panel_student = CreateEntityPanel(Int32.Parse(s[0]));
+                        FlowLayoutPanel panel_student = CreateEntityPanel(s.Id);
                         this.flp_student_entitys.HorizontalScroll.Value = 0;
                         student_entity_list.AddLast(panel_student);
                     }
@@ -101,20 +101,20 @@ namespace ExamManager
 
         private FlowLayoutPanel CreateEntityPanel(int id)
         {
-            string[] s = database.GetStudentByID(id);
+            StudentObject s = database.GetStudentByID(id);
             FlowLayoutPanel panel_student = new FlowLayoutPanel
             {
                 Width = flp_student_entitys.Width - 28,
                 Margin = new Padding(5),
                 BackColor = Color.LightBlue,
-                Name = s[0]
+                Name = s.Id.ToString()
             };
             // -- NAME --
             Label lbl_student_name = new Label
             {
                 Size = new Size(180, panel_student.Height),
                 Font = new Font("Microsoft Sans Serif", 10F),
-                Text = s[1] + " " + s[2],
+                Text = s.Firstname + " " + s.Lastname,
                 TextAlign = ContentAlignment.MiddleLeft
             };
             panel_student.Controls.Add(lbl_student_name);
@@ -123,7 +123,7 @@ namespace ExamManager
             {
                 Size = new Size(60, panel_student.Height),
                 Font = new Font("Microsoft Sans Serif", 10F),
-                Text = s[3],
+                Text = s.Grade,
                 TextAlign = ContentAlignment.MiddleLeft
             };
             panel_student.Controls.Add(lbl_student_grade);
@@ -132,9 +132,9 @@ namespace ExamManager
             {
                 Size = new Size(220, panel_student.Height),
                 Font = new Font("Microsoft Sans Serif", 10F),
-                Text = s[4]
+                Text = s.Email
             };
-            if (s[4].Length < 1 || s[4] == null)
+            if (s.Email.Length < 1 || s.Email == null)
                 lbl_student_email.Text = "-";
             lbl_student_email.TextAlign = ContentAlignment.MiddleLeft;
             panel_student.Controls.Add(lbl_student_email);
@@ -143,9 +143,9 @@ namespace ExamManager
             {
                 Size = new Size(140, panel_student.Height),
                 Font = new Font("Microsoft Sans Serif", 10F),
-                Text = s[5]
+                Text = s.Phonenumber
             };
-            if (s[5].Length < 1 || s[5] == null)
+            if (s.Phonenumber.Length < 1 || s.Phonenumber == null)
                 lbl_student_phone.Text = "-";
             lbl_student_phone.TextAlign = ContentAlignment.MiddleLeft;
             panel_student.Controls.Add(lbl_student_phone);
@@ -155,7 +155,7 @@ namespace ExamManager
                 Size = new Size(100, panel_student.Height - 40),
                 Font = new Font("Microsoft Sans Serif", 10F),
                 Text = "Bearbeiten",
-                Name = s[0],
+                Name = s.Id.ToString(),
                 Margin = new Padding(10, 20, 10, 20),
                 BackColor = Color.LightGray
             };
@@ -167,7 +167,7 @@ namespace ExamManager
                 Size = new Size(100, panel_student.Height - 40),
                 Font = new Font("Microsoft Sans Serif", 10F),
                 Text = "Löschen",
-                Name = s[0],
+                Name = s.Id.ToString(),
                 Margin = new Padding(10, 20, 10, 20),
                 BackColor = Color.LightGray
             };
@@ -179,8 +179,8 @@ namespace ExamManager
         private void btn_student_delete_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            string[] t = database.GetStudentByID(Int32.Parse(btn.Name));
-            string name = t[1] + " " + t[2];
+            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
+            string name = s.Firstname + " " + s.Lastname;
             DialogResult result = MessageBox.Show("Schüler " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -202,12 +202,12 @@ namespace ExamManager
             Button btn = sender as Button;
             edit_id = Int32.Parse(btn.Name);
             btn_add_student.Text = add_mode[1];
-            string[] t = database.GetStudentByID(Int32.Parse(btn.Name));
-            tb_firstname.Text = t[1];
-            tb_lastname.Text = t[2];
-            cb_grade.Text = t[3];
-            tb_email.Text = t[4];
-            tb_phonenumber.Text = t[5];
+            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
+            tb_firstname.Text = s.Firstname;
+            tb_lastname.Text = s.Lastname;
+            cb_grade.Text = s.Grade;
+            tb_email.Text = s.Email;
+            tb_phonenumber.Text = s.Phonenumber;
         }
 
         private void btn_add_student_Click(object sender, EventArgs e)
@@ -219,7 +219,7 @@ namespace ExamManager
             string phonenumber = tb_phonenumber.Text;
             if (firstname.Length == 0 || lastname.Length == 0 || grade.Length == 0 || grade.Length == 0)
             { MessageBox.Show("Alle Felder mit * ausfüllen!", "Warnung"); return; }
-            if (edit_id == 0) database.AddStudent(firstname, lastname, grade, email, phonenumber);
+            if (edit_id == 0) database.AddStudent(new StudentObject(0, firstname, lastname, grade, email, phonenumber));
             else
             {
                 database.EditStudent(edit_id, firstname, lastname, grade, email, phonenumber);
@@ -233,7 +233,7 @@ namespace ExamManager
                     }
                 }
             }
-            int id = Int32.Parse(database.GetStudent(firstname, lastname, grade)[0]);
+            int id = database.GetStudentByName(firstname, lastname, grade).Id;
             if (studentIdList != null) studentIdList.AddLast(id);
             UpdateAutocomplete();
             AddStudentEntity(id);
@@ -298,10 +298,10 @@ namespace ExamManager
             {
                 foreach (FlowLayoutPanel flp in student_entity_list)
                 {
-                    string[] student = database.GetStudentByID(Int32.Parse(flp.Name));
-                    if (!student[1].ToLower().Contains(search.ToLower()) && !student[2].ToLower().Contains(search.ToLower()))
+                    StudentObject student = database.GetStudentByID(Int32.Parse(flp.Name));
+                    if (!student.Firstname.ToLower().Contains(search.ToLower()) && !student.Lastname.ToLower().Contains(search.ToLower()))
                         flp.Hide();
-                    else if (student[1].ToLower().Contains(search.ToLower()) || student[2].ToLower().Contains(search.ToLower()))
+                    else if (student.Firstname.ToLower().Contains(search.ToLower()) || student.Lastname.ToLower().Contains(search.ToLower()))
                         flp.Show();
                 }
             }
@@ -313,8 +313,8 @@ namespace ExamManager
         {
             foreach (FlowLayoutPanel flp in student_entity_list)
             {
-                string[] student = database.GetStudentByID(Int32.Parse(flp.Name));
-                if (!student[1].ToLower().Contains("_") && !student[2].ToLower().Contains("_") && !student[1].ToLower().Contains(" ") && !student[2].ToLower().Contains(" "))
+                StudentObject student = database.GetStudentByID(Int32.Parse(flp.Name));
+                if (!student.Firstname.ToLower().Contains("_") && !student.Lastname.ToLower().Contains("_") && !student.Firstname.ToLower().Contains(" ") && !student.Lastname.ToLower().Contains(" "))
                     flp.Hide();
             }
         }

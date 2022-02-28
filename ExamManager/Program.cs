@@ -28,6 +28,10 @@ namespace ExamManager
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?
 
+            // TODO Exam Object
+            // student/teacher obj -> panel...
+            // database change summary
+
             // student/teacher data loading window
             // info vorsitz prüfer protokoll
             // student/teacher + Exam object

@@ -29,16 +29,16 @@ namespace ExamManager
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //
-                LinkedList<string[]> allTeachers = Program.database.GetAllTeachers();
+                LinkedList<TeacherObject> allTeachers = Program.database.GetAllTeachers();
                 string[] teacher = new string[allTeachers.Count];
                 for (int i = 0; i < allTeachers.Count; i++)
-                    teacher[i] = allTeachers.ElementAt(i)[1] + " " + allTeachers.ElementAt(i)[2];
+                    teacher[i] = allTeachers.ElementAt(i).Firstname + " " + allTeachers.ElementAt(i).Lastname;
                 cb_search.Items.AddRange(teacher);
                 //
                 var autocomplete_teacher = new AutoCompleteStringCollection();
                 string[] students = new string[allTeachers.Count];
                 for (int i = 0; i < allTeachers.Count; i++)
-                    students[i] = (allTeachers.ElementAt(i)[1] + " " + allTeachers.ElementAt(i)[2]);
+                    students[i] = (allTeachers.ElementAt(i).Firstname + " " + allTeachers.ElementAt(i).Lastname);
                 autocomplete_teacher.AddRange(students);
                 cb_search.AutoCompleteCustomSource = autocomplete_teacher;
                 cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -60,10 +60,10 @@ namespace ExamManager
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //
-                LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+                LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
                 string[] students = new string[allStudents.Count];
                 for (int i = 0; i < allStudents.Count; i++)
-                    students[i] = allStudents.ElementAt(i)[1] + " " + allStudents.ElementAt(i)[2];
+                    students[i] = allStudents.ElementAt(i).Firstname + " " + allStudents.ElementAt(i).Lastname;
                 cb_search.Items.AddRange(students);
                 //
                 var autocomplete_student = new AutoCompleteStringCollection();
@@ -132,11 +132,11 @@ namespace ExamManager
                 cb_search.PreviewKeyDown += new PreviewKeyDownEventHandler(tb_search_PreviewKeyDown);
                 tlp_main.Controls.Add(cb_search);
                 //cb_search
-                LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+                LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
                 LinkedList<string> gradeList = new LinkedList<string>();
-                foreach (string[] s in allStudents)
-                    if (!gradeList.Contains(s[3]))
-                        gradeList.AddLast(s[3]);
+                foreach (StudentObject s in allStudents)
+                    if (!gradeList.Contains(s.Grade))
+                        gradeList.AddLast(s.Grade);
                 List<string> templist = new List<string>(gradeList);
                 templist = templist.OrderBy(x => x).ToList();
                 gradeList = new LinkedList<string>(templist);
@@ -155,7 +155,7 @@ namespace ExamManager
                     if (searchmode == 0)    // teacher
                     {
                         string s = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        string tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1])[0];
+                        string tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1]).Shortname;
                         UpdateSearch.Invoke(tid, null);
                         this.Dispose();
                     }
