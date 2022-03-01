@@ -25,12 +25,12 @@ namespace ExamManager
             lb_exam_date.Items.AddRange(dates);*/
 
             LinkedList<Item> list = new LinkedList<Item>();
-            foreach (string[] s in Program.database.GetAllExams(true))
+            foreach (ExamObject s in Program.database.GetAllExams(true))
             {
-                if (!list.Any(n => n.date == s[1]))
+                if (!list.Any(n => n.date == s.Date))
                 {
-                    DateTime dt = DateTime.ParseExact(s[1], "dd.MM.yyyy", null);
-                    list.AddLast(new Item(s[1], s[1] + "  ->  " + Program.database.GetAllExamsAtDate(dt.ToString("yyyy-MM-dd")).Count().ToString() + " Prüfungen"));
+                    DateTime dt = DateTime.ParseExact(s.Date, "dd.MM.yyyy", null);
+                    list.AddLast(new Item(s.Date, s.Date + "  ->  " + Program.database.GetAllExamsAtDate(dt.ToString("yyyy-MM-dd")).Count().ToString() + " Prüfungen"));
                 }
             }
             Item[] dates = new Item[list.Count];

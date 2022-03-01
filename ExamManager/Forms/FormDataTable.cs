@@ -30,15 +30,15 @@ namespace ExamManager
                 dataGridView_exam.Name = "dataGridView_exam";
                 dataGridView_exam.Size = new System.Drawing.Size(1000, 500);
                 this.Controls.Add(dataGridView_exam);
-                List<string[]> data = new List<string[]>();
-                foreach (string[] s in Program.database.GetAllExams())
+                List<ExamObject> data = new List<ExamObject>();
+                foreach (ExamObject s in Program.database.GetAllExams())
                     data.Add(s);
-                foreach (string[] s in data)
+                foreach (ExamObject s in data)
                 {
-                    StudentObject student = Program.database.GetStudentByID(Int32.Parse(s[5]));
+                    StudentObject student = s.Student;
                     if (student == null)
                         student = new StudentObject(0, "nicht gefunden", "nicht gefunden", "-");
-                    dataGridView_exam.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student.Firstname + " " + student.Lastname, s[6], s[7], s[8], s[9], s[10]);
+                    dataGridView_exam.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s.StudentId + " -> " + student.Firstname + " " + student.Lastname, s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
                 }
                 dataGridView = dataGridView_exam;
             }
@@ -101,13 +101,13 @@ namespace ExamManager
         internal void Data_update()
         {
             dataGridView.Rows.Clear();
-            List<string[]> data = new List<string[]>();
-            foreach (string[] s in Program.database.GetAllExams())
+            List<ExamObject> data = new List<ExamObject>();
+            foreach (ExamObject s in Program.database.GetAllExams())
                 data.Add(s);
-            foreach (string[] s in data)
+            foreach (ExamObject s in data)
             {
-                StudentObject student = Program.database.GetStudentByID(Int32.Parse(s[5]));
-                this.dataGridView.Rows.Add(s[0], s[1], s[2], s[3], s[4], s[5] + " -> " + student.Firstname + " " + student.Lastname, s[6], s[7], s[8], s[9], s[10]);
+                StudentObject student = s.Student;
+                this.dataGridView.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s.StudentId + " -> " + student.Firstname + " " + student.Lastname, s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
             }
         }
     }

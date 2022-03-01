@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ExamManager
 {
     class ExamObject
     {
+        private bool SolidBorder;
+        private bool Border;
+        private Color BorderColor;
+
         public int Id { get; private set; }
         public string Date { get; private set; }
         public string Time { get; private set; }
         public string Examroom { get; private set; }
         public string Preparationroom { get; private set; }
-        public int StudentId { get; private set; }
+        public int StudentId { get; private set; }      // TODO: Student 2 + 3
         public StudentObject Student { get; private set; }
         public string Teacher1 { get; private set; }
         public string Teacher2 { get; private set; }
@@ -35,6 +41,8 @@ namespace ExamManager
             this.Subject = subject;
             this.Duration = duration;
             this.Student = Program.database.GetStudentByID(student);
+            SolidBorder = true;
+            BorderColor = Colors.TL_EntityBorder;
             // TODO: check teacher in db
         }
 
@@ -50,10 +58,116 @@ namespace ExamManager
             if (teacher3 != null) this.Teacher3 = teacher3;
             if (subject != null) this.Subject = subject;
             if (duration != 0) this.Duration = duration;
-
             Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
         }
 
-        public Panel GetTimelineEntity
+        public void Delete()
+        {
+            Program.database.DeleteExam(this.Id);
+        }
+
+        public Panel GetTimelineEntity()
+        {
+            Panel panel_tl_entity = new Panel();
+            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+            float unit_per_minute = 200F / 60F;
+            float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
+            panel_tl_entity.Location = new Point(Convert.ToInt32(startpoint), 10);
+            panel_tl_entity.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
+            panel_tl_entity.Name = Id.ToString();
+            panel_tl_entity.BackColor = Colors.TL_Entity;
+            panel_tl_entity.Paint += panel_time_line_entity_Paint;
+            return panel_tl_entity;
+        }
+
+        private void panel_time_line_entity_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel_tl_entity = sender as Panel;
+            Font drawFont = new Font("Microsoft Sans Serif", 8);  // Arial
+            ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
+            Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid);
+            ExamObject exam = Program.database.GetExamById(Int32.Parse(panel_tl_entity.Name));
+            StudentObject student = exam.Student;
+            if (student == null)
+                student = new StudentObject(0, "Schüler nicht gefunden!", " ", "-");
+            if (Border)
+            {
+                if (SolidBorder)
+                {
+                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                    BorderColor, 2, ButtonBorderStyle.Solid,
+                    BorderColor, 2, ButtonBorderStyle.Solid,
+                    BorderColor, 2, ButtonBorderStyle.Solid,
+                    BorderColor, 2, ButtonBorderStyle.Solid);
+                }
+                else
+                {
+                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                    BorderColor, 3, ButtonBorderStyle.Dashed,
+                    BorderColor, 3, ButtonBorderStyle.Dashed,
+                    BorderColor, 3, ButtonBorderStyle.Dashed,
+                    BorderColor, 3, ButtonBorderStyle.Dashed);
+                }
+            }
+            /*if (RedBorder)
+            {
+                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                Color.Red, 2, ButtonBorderStyle.Solid,
+                Color.Red, 2, ButtonBorderStyle.Solid,
+                Color.Red, 2, ButtonBorderStyle.Solid,
+                Color.Red, 2, ButtonBorderStyle.Solid);
+            }
+            if (swapExam == Int32.Parse(panel_tl_entity.Name))
+            {
+                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                Color.Orange, 3, ButtonBorderStyle.Dashed,
+                Color.Orange, 3, ButtonBorderStyle.Dashed,
+                Color.Orange, 3, ButtonBorderStyle.Dashed,
+                Color.Orange, 3, ButtonBorderStyle.Dashed);
+            }
+            if (id == Int32.Parse(panel_tl_entity.Name))
+            {
+                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
+                Color.DarkRed, 3, ButtonBorderStyle.Dashed);
+            }*/
+
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Near;
+            stringFormat.LineAlignment = StringAlignment.Center;
+            Rectangle rectL1 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 0, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            e.Graphics.DrawString(student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
+            e.Graphics.DrawString(exam.Time + "     " + exam.Duration + "min", drawFont, Brushes.Black, rectL2, stringFormat);
+            e.Graphics.DrawString(exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+            e.Graphics.DrawString(exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
+            string line1 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
+            string line2 = exam.Time + "     " + exam.Duration + "min\n";
+            string line3 = exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3 + "\n";
+            string line4 = exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]";
+            ToolTip sfToolTip1 = new ToolTip();
+            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
+        }
+
+        public void SetBorder(Color borderColor, bool solidBorder)
+        {
+            Border = true;
+            this.BorderColor = borderColor;
+            this.SolidBorder = solidBorder;
+        }
+
+        public void RemoveBorder()
+        {
+            Border = false;
+        }
     }
 }

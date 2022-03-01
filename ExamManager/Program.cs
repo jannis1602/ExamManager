@@ -32,6 +32,8 @@ namespace ExamManager
             // student/teacher obj -> panel...
             // database change summary
             // Database: int StudentId
+            // student/Teacher Object.Delete()
+            // editpanel cursor: move
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll

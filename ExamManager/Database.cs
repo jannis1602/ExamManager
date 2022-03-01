@@ -532,9 +532,9 @@ namespace ExamManager
         }
         /// <summary>Searches all exams in the database.</summary>
         /// <returns>Returns all exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExams(bool orderByDate = false)
+        public LinkedList<ExamObject> GetAllExams(bool orderByDate = false)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (orderByDate) sqlite_cmd.CommandText = "SELECT * FROM exam ORDER BY date";
@@ -544,19 +544,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
@@ -564,43 +564,43 @@ namespace ExamManager
         }
         /// <summary>Searches a exam by id in the database.</summary>
         /// <returns>Returns the exam as <see cref="string"/> <see cref="Array"/></returns>
-        public string[] GetExamById(int id)
+        public ExamObject GetExamById(int id)
         {
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE id = @id";
             sqlite_cmd.Parameters.AddWithValue("@id", id);
             reader = sqlite_cmd.ExecuteReader();
-            string[] data = null;
+            string[] rData = null;
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    data = new string[11];
+                    rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        data[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            data[i] = data[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            data[i] = data[i].Split(' ')[1];
-                            data[i] = data[i].Remove(data[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
                 }
                 reader.NextResult();
             }
             else { return null; }
-            return data;
+            return new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10]));
         }
         /// <summary>Searches all exams at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsAtDate(string date)
+        public LinkedList<ExamObject> GetAllExamsAtDate(string date)
         {
             //DateTime dt = DateTime.ParseExact(date, "dd.MM.yyyy", null);
             //date = dt.ToString("yyyy-MM-dd");
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date";
@@ -610,19 +610,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
@@ -630,9 +630,9 @@ namespace ExamManager
         }
         /// <summary>Searches all exams of a teacher at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsFromTeacherAtDate(string date, string teacher)
+        public LinkedList<ExamObject> GetAllExamsFromTeacherAtDate(string date, string teacher)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND (teacher_vorsitz=@teacher OR teacher_pruefer=@teacher OR teacher_protokoll=@teacher)";
@@ -643,19 +643,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
@@ -663,9 +663,9 @@ namespace ExamManager
         }
         /// <summary>Searches all exams of a student at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsFromStudentAtDate(string date, int student_id)
+        public LinkedList<ExamObject> GetAllExamsFromStudentAtDate(string date, int student_id)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND student = @student";
@@ -676,19 +676,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
@@ -696,20 +696,20 @@ namespace ExamManager
         }
         /// <summary>Searches all exams of all students of a grade at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsFromGradeAtDate(string date, string grade)
+        public LinkedList<ExamObject> GetAllExamsFromGradeAtDate(string date, string grade)
         {
             LinkedList<StudentObject> tempStudentList = GetAllStudentsFromGrade(grade);
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             foreach (StudentObject s in tempStudentList)
-                foreach (string[] studentExam in GetAllExamsFromStudentAtDate(date, s.Id))
+                foreach (ExamObject studentExam in GetAllExamsFromStudentAtDate(date, s.Id))
                     data.AddLast(studentExam);
             return data;
         }
         /// <summary>Searches all exams in a room at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsAtDateAndRoom(string date, string exam_room)
+        public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND exam_room = @exam_room";
@@ -720,19 +720,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
@@ -815,9 +815,9 @@ namespace ExamManager
         }
         /// <summary>Searches all exams before a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
-        public LinkedList<string[]> GetAllExamsBeforeDate(string date)
+        public LinkedList<ExamObject> GetAllExamsBeforeDate(string date)
         {
-            LinkedList<string[]> data = new LinkedList<string[]>();
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date < @date ";
@@ -827,19 +827,19 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rowData = new string[11];
+                    string[] rData = new string[11];
                     for (int i = 0; i < 11; i++)
                     {
-                        rowData[i] = reader.GetValue(i).ToString();
+                        rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
-                            rowData[i] = rowData[i].Split(' ')[0];
+                            rData[i] = rData[i].Split(' ')[0];
                         if (i == 2)
                         {
-                            rowData[i] = rowData[i].Split(' ')[1];
-                            rowData[i] = rowData[i].Remove(rowData[i].Length - 3, 3);
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(rowData);
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
                 }
                 reader.NextResult();
             }
