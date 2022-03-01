@@ -15,8 +15,6 @@ namespace ExamManager
         private Color BorderColor;
         public Panel Panel { get; private set; }
 
-        // TODO: PANEL!!!
-
         public int Id { get; private set; }
         public string Date { get; private set; }
         public string Time { get; private set; }
@@ -68,7 +66,7 @@ namespace ExamManager
             Program.database.DeleteExam(this.Id);
         }
 
-        public void UpdatePanel()
+        public void CreatePanel()
         {
             this.Panel = new Panel();
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -83,9 +81,14 @@ namespace ExamManager
             this.Panel.Paint += panel_time_line_entity_Paint;
         }
 
+        public void UpdatePanel()
+        {
+            this.Panel.Refresh();
+        }
+
         public Panel GetTimelineEntity()
         {
-            if (Panel == null) UpdatePanel();
+            if (Panel == null) CreatePanel();
             return this.Panel;
         }
 
@@ -136,11 +139,13 @@ namespace ExamManager
             if (solidBorder) BorderStyle = ButtonBorderStyle.Solid;
             else BorderStyle = ButtonBorderStyle.Dashed;
             this.BorderColor = borderColor;
+            Panel.Refresh();
         }
 
         public void RemoveBorder()
         {
             Border = false;
+            Panel.Refresh();
         }
     }
 }

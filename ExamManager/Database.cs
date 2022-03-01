@@ -112,7 +112,7 @@ namespace ExamManager
                     if (!line[0].Equals('#'))
                         if (line.Split(' ').Length > 2) // Doppelnamen
                         {
-                            if (!editDoppelnamen)   // TODO: Abfrage am Anfang!
+                            if (!editDoppelnamen)   // Abfrage am Anfang?
                             {
                                 string tempfirstname = null;
                                 for (int i = 0; i < line.Split(' ').Length - 1; i++)
@@ -345,10 +345,10 @@ namespace ExamManager
             sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Adds all teachers from a file into the database.</summary>
-        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen in file with _ info
+        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen in file with _ info?
         {
             //bool editDoppelnamen = false;
-            LinkedList<string> teacherIdList = new LinkedList<string>();    // TODO Teacher mail generator
+            LinkedList<string> teacherIdList = new LinkedList<string>();    // TODO: Teacher mail generator
             if (File.Exists(file))
             {
                 string[] lines = File.ReadAllLines(file);
@@ -361,7 +361,6 @@ namespace ExamManager
                             if (mailgenerator)
                             {
                                 //string domain = Properties.Settings.Default.email_domain;
-                                // TODO teacher mail?
                                 // string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (t.Length == 5)
                                     AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4]));
