@@ -25,15 +25,6 @@ namespace ExamManager
             this.Email = email;
             this.Phonenumber = phone_number;
         }
-        /*public StudentObject(string firstname, string lastname, string grade, string email = null, string phone_number = null)
-        {
-            this.Id = Program.database.GetStudent(firstname, lastname).Id; // TODO if null -> 0
-            this.Firstname = firstname;
-            this.Lastname = lastname;
-            this.Grade = grade;
-            this.Email = email;
-            this.Phonenumber = phone_number;
-        }*/
 
         public void Edit(string firstname = null, string lastname = null, string grade = null, string email = null, string phonenumber = null)
         {

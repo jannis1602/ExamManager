@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -273,7 +271,7 @@ namespace ExamManager
 
             // Add / Edit / Clear
             if (id != 0)
-                database.EditExam(id, date, time, exam_room, preparation_room, database.GetStudentByName(tempfirstname, templastname, grade).Id.ToString(), teacher1, teacher2, teacher3, subject, duration);
+                database.EditExam(id, date, time, exam_room, preparation_room, database.GetStudentByName(tempfirstname, templastname, grade).Id, teacher1, teacher2, teacher3, subject, duration);
             if (id == 0)
                 database.AddExam(date, time, exam_room, preparation_room, database.GetStudentByName(tempfirstname, templastname, grade).Id.ToString(), teacher1, teacher2, teacher3, subject, duration);
             id = 0;
@@ -1436,6 +1434,11 @@ namespace ExamManager
         private void cb_exam_room_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateEditPanel();
+        }
+
+        private void tsmi_settings_keepdata_Click(object sender, EventArgs e)
+        {
+            new KeepDataForm().ShowDialog();
         }
     }
 }

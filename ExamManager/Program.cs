@@ -31,6 +31,7 @@ namespace ExamManager
             // TODO Exam Object
             // student/teacher obj -> panel...
             // database change summary
+            // Database: int StudentId
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll

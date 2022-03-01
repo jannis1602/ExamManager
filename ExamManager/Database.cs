@@ -739,7 +739,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Edits an exam in the database.</summary>
-        public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, string student = null, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
+        public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, int student = 0, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (date != null)
@@ -770,7 +770,7 @@ namespace ExamManager
                 sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
                 sqlite_cmd.ExecuteNonQuery();
             }
-            if (student != null)
+            if (student != 0)
             {
                 sqlite_cmd.CommandText = "UPDATE exam SET student=@student WHERE id = @id";
                 sqlite_cmd.Parameters.AddWithValue("@id", id);

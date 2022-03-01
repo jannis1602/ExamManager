@@ -16,11 +16,11 @@ namespace ExamManager
         private void LoadAutocomplete()
         {
             cb_grade.Items.Clear();
-            LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+            LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
-            foreach (string[] s in allStudents)
-                if (!gradeList.Contains(s[3]))
-                    gradeList.AddLast(s[3]);
+            foreach (StudentObject s in allStudents)
+                if (!gradeList.Contains(s.Grade))
+                    gradeList.AddLast(s.Grade);
             List<string> templist = new List<string>(gradeList);
             templist = templist.OrderBy(x => x).ToList();
             gradeList = new LinkedList<string>(templist);
@@ -52,7 +52,6 @@ namespace ExamManager
                     cb_grade.SelectedItem = null;
                     tb_new.Clear();
                     LoadAutocomplete();
-                    // MessageBox.Show("Stufe " + oldgrade + " erfolgreich zu "+newgrade+" umbenannt!", "Warnung!");
                 }
         }
     }

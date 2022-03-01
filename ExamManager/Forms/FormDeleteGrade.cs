@@ -19,11 +19,11 @@ namespace ExamManager
 
         private void FormDeleteGrade_Load(object sender, EventArgs e)
         {
-            LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+            LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
-            foreach (string[] s in allStudents)
-                if (!gradeList.Contains(s[3]))
-                    gradeList.AddLast(s[3]);
+            foreach (StudentObject s in allStudents)
+                if (!gradeList.Contains(s.Grade))
+                    gradeList.AddLast(s.Grade);
             List<string> templist = new List<string>(gradeList);
             templist = templist.OrderBy(x => x).ToList();
             gradeList = new LinkedList<string>(templist);
@@ -41,13 +41,13 @@ namespace ExamManager
                 MessageBox.Show("Stufe " + cb_grade.SelectedItem.ToString() + " gelöscht!", "Warnung!");
                 cb_grade.SelectedItem = null;
                 cb_grade.Items.Clear();
-                LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+                LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
                 LinkedList<string> gradeList = new LinkedList<string>();
-                foreach (string[] s in allStudents)
-                    if (!gradeList.Contains(s[3]))
-                        gradeList.AddLast(s[3]);
+                foreach (StudentObject s in allStudents)
+                    if (!gradeList.Contains(s.Grade))
+                        gradeList.AddLast(s.Grade);
                 List<string> templist = new List<string>(gradeList);
-                templist = templist.OrderBy(x => x).ToList(); 
+                templist = templist.OrderBy(x => x).ToList();
                 gradeList = new LinkedList<string>(templist);
                 string[] list = new string[gradeList.Count];
                 for (int i = 0; i < gradeList.Count; i++)

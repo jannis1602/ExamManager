@@ -15,11 +15,11 @@ namespace ExamManager
         public FormLoadStudents()
         {
             InitializeComponent();
-            LinkedList<string[]> allStudents = Program.database.GetAllStudents();
+            LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
             LinkedList<string> gradeList = new LinkedList<string>();
-            foreach (string[] s in allStudents)
-                if (!gradeList.Contains(s[3]))
-                    gradeList.AddLast(s[3]);
+            foreach (StudentObject s in allStudents)
+                if (!gradeList.Contains(s.Grade))
+                    gradeList.AddLast(s.Grade);
             List<string> templist = new List<string>(gradeList);
             templist = templist.OrderBy(x => x).ToList();
             gradeList = new LinkedList<string>(templist);

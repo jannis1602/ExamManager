@@ -440,6 +440,7 @@ namespace ExamManager
             this.tsmi_settings_keepdata.Name = "tsmi_settings_keepdata";
             this.tsmi_settings_keepdata.Size = new System.Drawing.Size(190, 22);
             this.tsmi_settings_keepdata.Text = "Daten behalten [DEV]";
+            this.tsmi_settings_keepdata.Click += new System.EventHandler(this.tsmi_settings_keepdata_Click);
             // 
             // tsmi_settings_mailgenerator
             // 

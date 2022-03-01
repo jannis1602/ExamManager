@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/jannis1602/exammanager">
-    <img src="images/timeline.png" alt="Logo" width="80" height="80">
+    <img src="images/exam.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Exam Manager</h3>
