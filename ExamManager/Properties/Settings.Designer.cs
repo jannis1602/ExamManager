@@ -70,5 +70,77 @@ namespace ExamManager.Properties {
                 this["color_theme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keep_subject {
+            get {
+                return ((bool)(this["keep_subject"]));
+            }
+            set {
+                this["keep_subject"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keep_examroom {
+            get {
+                return ((bool)(this["keep_examroom"]));
+            }
+            set {
+                this["keep_examroom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keep_preparationroom {
+            get {
+                return ((bool)(this["keep_preparationroom"]));
+            }
+            set {
+                this["keep_preparationroom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keep_teacher {
+            get {
+                return ((bool)(this["keep_teacher"]));
+            }
+            set {
+                this["keep_teacher"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool keep_grade {
+            get {
+                return ((bool)(this["keep_grade"]));
+            }
+            set {
+                this["keep_grade"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keep_student {
+            get {
+                return ((bool)(this["keep_student"]));
+            }
+            set {
+                this["keep_student"] = value;
+            }
+        }
     }
 }

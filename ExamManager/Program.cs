@@ -34,6 +34,7 @@ namespace ExamManager
             // Database: int StudentId
             // student/Teacher Object.Delete()
             // editpanel cursor: move
+            // cb teacher 2+3 add "-"
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll

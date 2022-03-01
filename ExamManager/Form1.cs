@@ -286,7 +286,15 @@ namespace ExamManager
             Properties.Settings.Default.Save();
             UpdateTimeline();
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
-            if (this.cb_keep_data.Checked) { this.cb_student.Text = null; }
+            if (this.cb_keep_data.Checked)
+            {
+                if (!Properties.Settings.Default.keep_subject) cb_subject.Text = null;
+                if (!Properties.Settings.Default.keep_examroom) cb_exam_room.Text = null;
+                if (!Properties.Settings.Default.keep_preparationroom) cb_preparation_room.Text = null;
+                if (!Properties.Settings.Default.keep_teacher) { cb_teacher1.Text = null; cb_teacher2.Text = null; cb_teacher3.Text = null; }
+                if (!Properties.Settings.Default.keep_grade) cb_grade.Text = null;
+                if (!Properties.Settings.Default.keep_student) cb_student.Text = null;
+            }
             else
             {
                 this.cb_exam_room.Text = null;
@@ -774,7 +782,13 @@ namespace ExamManager
                     UpdateTimeline();
                     if (this.cb_keep_data.Checked)
                     {
-                        this.cb_student.Text = null;
+                        if (!Properties.Settings.Default.keep_subject) cb_subject.Text = null;
+                        if (!Properties.Settings.Default.keep_examroom) cb_exam_room.Text = null;
+                        if (!Properties.Settings.Default.keep_preparationroom) cb_preparation_room.Text = null;
+                        if (!Properties.Settings.Default.keep_teacher) { cb_teacher1.Text = null; cb_teacher2.Text = null; cb_teacher3.Text = null; }
+                        if (!Properties.Settings.Default.keep_grade) cb_grade.Text = null;
+                        if (!Properties.Settings.Default.keep_student) cb_student.Text = null;
+                        //this.cb_student.Text = null; // TODO: KEEP DATA ----------------------------------
                     }
                     else
                     {
@@ -1102,12 +1116,6 @@ namespace ExamManager
             bmp.Save(sfd.FileName, ImageFormat.Png);
             bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
-            /*Process p = new Process();
-            p.StartInfo.FileName = sfd.FileName;
-            p.StartInfo.Verb = "Print";
-            p.StartInfo.Arguments = "Microsoft Print to PDF";
-            p.Start();*/
-
             Colors.ColorTheme(tempTheme);
             UpdateTimeline();
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
@@ -1189,10 +1197,9 @@ namespace ExamManager
 
             editPanel.MouseMove += editPanel_MouseMove;
             editPanel.MouseDown += editPanel_MouseEnter;
-            //editPanel.MouseEnter
             void editPanel_MouseEnter(object sender, MouseEventArgs e)
             {
-                oldPoint = new Point(e.X, e.Y); // new Point(Cursor.Position.X, Cursor.Position.Y);
+                oldPoint = new Point(e.X, e.Y);
             }
             void editPanel_MouseMove(object sender, MouseEventArgs e)
             {
@@ -1205,28 +1212,16 @@ namespace ExamManager
                     if (e.X - oldPoint.X > 10)
                     {
                         this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - oldPoint.X) / 4);
-                        //Console.WriteLine(this.dtp_time.Value.Minute / 10);
                         string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
-                        //Console.WriteLine(Convert.ToDateTime(time).ToString("HH:mm"));
-                        //this.dtp_time.Value = DateTime.ParseExact(Convert.ToDateTime(time).ToString("HH:mm"), "HH:mm", null);
                         this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
-
                     }
                     else if (oldPoint.X - e.X > 10)
                     {       // float unit_per_minute = 200F / 60F;
-
                         this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
-                        //Console.WriteLine(this.dtp_time.Value.Minute / 10);
                         string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
-                        //Console.WriteLine(Convert.ToDateTime(time).ToString("HH:mm"));
-                        //this.dtp_time.Value = DateTime.ParseExact(Convert.ToDateTime(time).ToString("HH:mm"), "HH:mm", null);
                         this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
                     }
-
                     else return;
-                    //Console.WriteLine(oldPoint.X - e.X);
-                    //Console.WriteLine(new Point(Cursor.Position.X + e.X, Cursor.Position.Y + e.Y));
-                    // this.Location = new Point(Cursor.Position.X + e.X, Cursor.Position.Y + e.Y);
                     // 2400 / panel_time_line.Width;
                     if (dtp_time.Value != oldTime)
                         UpdateEditPanel();

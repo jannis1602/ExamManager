@@ -35,27 +35,27 @@ namespace ExamManager
             // clb1
             // 
             this.clb1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clb1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clb1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clb1.FormattingEnabled = true;
             this.clb1.Items.AddRange(new object[] {
             "Fach",
             "Prüfungsraum",
             "Vorbereitungsraum",
-            "Lehrer1",
-            "Lehrer2",
-            "Lehrer3",
+            "Lehrer",
+            "Stufe",
             "Schüler"});
             this.clb1.Location = new System.Drawing.Point(0, 0);
             this.clb1.Name = "clb1";
-            this.clb1.Size = new System.Drawing.Size(234, 262);
+            this.clb1.Size = new System.Drawing.Size(234, 196);
             this.clb1.TabIndex = 0;
             this.clb1.SelectedIndexChanged += new System.EventHandler(this.clb1_SelectedIndexChanged);
+            this.clb1.DoubleClick += new System.EventHandler(this.clb1_DoubleClick);
             // 
             // KeepDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 262);
+            this.ClientSize = new System.Drawing.Size(234, 196);
             this.Controls.Add(this.clb1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
