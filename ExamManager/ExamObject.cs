@@ -10,9 +10,12 @@ namespace ExamManager
 {
     class ExamObject
     {
-        private bool SolidBorder;
         private bool Border;
+        private ButtonBorderStyle BorderStyle;
         private Color BorderColor;
+        public Panel Panel { get; private set; }
+
+        // TODO: PANEL!!!
 
         public int Id { get; private set; }
         public string Date { get; private set; }
@@ -41,7 +44,6 @@ namespace ExamManager
             this.Subject = subject;
             this.Duration = duration;
             this.Student = Program.database.GetStudentByID(student);
-            SolidBorder = true;
             BorderColor = Colors.TL_EntityBorder;
             // TODO: check teacher in db
         }
@@ -66,20 +68,25 @@ namespace ExamManager
             Program.database.DeleteExam(this.Id);
         }
 
-        public Panel GetTimelineEntity()
+        public void UpdatePanel()
         {
-            Panel panel_tl_entity = new Panel();
+            this.Panel = new Panel();
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
             float unit_per_minute = 200F / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
-            panel_tl_entity.Location = new Point(Convert.ToInt32(startpoint), 10);
-            panel_tl_entity.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
-            panel_tl_entity.Name = Id.ToString();
-            panel_tl_entity.BackColor = Colors.TL_Entity;
-            panel_tl_entity.Paint += panel_time_line_entity_Paint;
-            return panel_tl_entity;
+            this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
+            this.Panel.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
+            this.Panel.Name = Id.ToString();
+            this.Panel.BackColor = Colors.TL_Entity;
+            this.Panel.Paint += panel_time_line_entity_Paint;
+        }
+
+        public Panel GetTimelineEntity()
+        {
+            if (Panel == null) UpdatePanel();
+            return this.Panel;
         }
 
         private void panel_time_line_entity_Paint(object sender, PaintEventArgs e)
@@ -97,47 +104,12 @@ namespace ExamManager
                 student = new StudentObject(0, "Schüler nicht gefunden!", " ", "-");
             if (Border)
             {
-                if (SolidBorder)
-                {
-                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-                    BorderColor, 2, ButtonBorderStyle.Solid,
-                    BorderColor, 2, ButtonBorderStyle.Solid,
-                    BorderColor, 2, ButtonBorderStyle.Solid,
-                    BorderColor, 2, ButtonBorderStyle.Solid);
-                }
-                else
-                {
-                    ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-                    BorderColor, 3, ButtonBorderStyle.Dashed,
-                    BorderColor, 3, ButtonBorderStyle.Dashed,
-                    BorderColor, 3, ButtonBorderStyle.Dashed,
-                    BorderColor, 3, ButtonBorderStyle.Dashed);
-                }
-            }
-            /*if (RedBorder)
-            {
                 ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-                Color.Red, 2, ButtonBorderStyle.Solid,
-                Color.Red, 2, ButtonBorderStyle.Solid,
-                Color.Red, 2, ButtonBorderStyle.Solid,
-                Color.Red, 2, ButtonBorderStyle.Solid);
+                BorderColor, 2, BorderStyle,
+                BorderColor, 2, BorderStyle,
+                BorderColor, 2, BorderStyle,
+                BorderColor, 2, BorderStyle);
             }
-            if (swapExam == Int32.Parse(panel_tl_entity.Name))
-            {
-                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-                Color.Orange, 3, ButtonBorderStyle.Dashed,
-                Color.Orange, 3, ButtonBorderStyle.Dashed,
-                Color.Orange, 3, ButtonBorderStyle.Dashed,
-                Color.Orange, 3, ButtonBorderStyle.Dashed);
-            }
-            if (id == Int32.Parse(panel_tl_entity.Name))
-            {
-                ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,
-                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
-                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
-                Color.DarkRed, 3, ButtonBorderStyle.Dashed,
-                Color.DarkRed, 3, ButtonBorderStyle.Dashed);
-            }*/
 
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Near;
@@ -160,9 +132,10 @@ namespace ExamManager
 
         public void SetBorder(Color borderColor, bool solidBorder)
         {
-            Border = true;
+            this.Border = true;
+            if (solidBorder) BorderStyle = ButtonBorderStyle.Solid;
+            else BorderStyle = ButtonBorderStyle.Dashed;
             this.BorderColor = borderColor;
-            this.SolidBorder = solidBorder;
         }
 
         public void RemoveBorder()

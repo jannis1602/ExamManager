@@ -35,6 +35,7 @@ namespace ExamManager
             // student/Teacher Object.Delete()
             // editpanel cursor: move
             // cb teacher 2+3 add "-"
+            // time_line_entity_list -> ExamObj
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll
