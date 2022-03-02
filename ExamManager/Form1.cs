@@ -39,7 +39,6 @@ namespace ExamManager
         {
             database = Program.database;
             time_line_list = new LinkedList<Panel>();
-            // time_line_entity_list = new LinkedList<Panel>();
             tl_exam_entity_list = new LinkedList<ExamObject>();
             time_line_room_list = new LinkedList<Panel>();
             InitializeComponent();

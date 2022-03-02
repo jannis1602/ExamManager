@@ -28,7 +28,8 @@ namespace ExamManager
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?
 
-            // TODO Exam Object
+            // Doc: Data etc. unterpunkte erklären 
+
             // student/teacher obj -> panel...
             // database change summary
             // Database: int StudentId
