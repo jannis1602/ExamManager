@@ -30,19 +30,22 @@ namespace ExamManager
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_add = new System.Windows.Forms.Button();
             this.tb_add = new System.Windows.Forms.TextBox();
             this.lb_roomlist = new System.Windows.Forms.ListBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btn_delete = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.btn_add, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tb_add, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lb_roomlist, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -52,19 +55,6 @@ namespace ExamManager
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 261);
             this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // btn_add
-            // 
-            this.btn_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add.Location = new System.Drawing.Point(50, 221);
-            this.btn_add.Margin = new System.Windows.Forms.Padding(50, 10, 50, 10);
-            this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(284, 30);
-            this.btn_add.TabIndex = 1;
-            this.btn_add.Text = "Hinzufügen";
-            this.btn_add.UseVisualStyleBackColor = true;
-            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // tb_add
             // 
@@ -89,6 +79,48 @@ namespace ExamManager
             this.lb_roomlist.TabIndex = 2;
             this.lb_roomlist.DoubleClick += new System.EventHandler(this.lb_roomlist_DoubleClick);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btn_delete, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 212);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(382, 48);
+            this.tableLayoutPanel2.TabIndex = 3;
+            // 
+            // btn_delete
+            // 
+            this.btn_delete.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_delete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_delete.Location = new System.Drawing.Point(20, 8);
+            this.btn_delete.Margin = new System.Windows.Forms.Padding(20, 8, 20, 8);
+            this.btn_delete.Name = "btn_delete";
+            this.btn_delete.Size = new System.Drawing.Size(151, 32);
+            this.btn_delete.TabIndex = 2;
+            this.btn_delete.Text = "Löschen";
+            this.btn_delete.UseVisualStyleBackColor = true;
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(211, 8);
+            this.button1.Margin = new System.Windows.Forms.Padding(20, 8, 20, 8);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(151, 32);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Hinzufügen";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btn_add_Click);
+            // 
             // FormRoomData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -101,6 +133,7 @@ namespace ExamManager
             this.Load += new System.EventHandler(this.FormRoomData_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -108,8 +141,10 @@ namespace ExamManager
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button btn_add;
         private System.Windows.Forms.TextBox tb_add;
         private System.Windows.Forms.ListBox lb_roomlist;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_delete;
     }
 }

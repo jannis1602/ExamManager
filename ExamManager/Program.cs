@@ -37,6 +37,10 @@ namespace ExamManager
             // editpanel cursor: move
             // cb teacher 2+3 add "-"
             // time_line_entity_list -> ExamObj
+            // editExam.RemoveBorder bug
+            // move panem with mouse add 15min per move (new+5min))
+            // editpanel preview change if data change
+            // search filter student: filter s2+s3! etc.
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll

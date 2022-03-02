@@ -13,9 +13,11 @@ namespace ExamManager
         readonly SQLiteConnection connection;
         public Database()
         {
-            string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\");
+            string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
             if (Properties.Settings.Default.databasePath != "default")
             { path = Properties.Settings.Default.databasePath; }
+
+            Console.WriteLine(path);
 
             connection = CreateConnection(path);
             //Console.WriteLine("connection.State: "+connection.State);
@@ -24,6 +26,7 @@ namespace ExamManager
             CreateExamDB();
             CreateRoomDB();
             CreateSubjectDB();
+
             // #####################################################################################
             /*SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "DROP TABLE IF EXISTS exam";
@@ -39,7 +42,7 @@ namespace ExamManager
         /// <summary>Creates a connection to the sqlite database</summary>
         private SQLiteConnection CreateConnection(string path)
         {
-            if (!File.Exists(path + "database.db"))
+            if (!File.Exists(path))//+ "database.db")) //TODO ---- TEMP ----
             {
                 DialogResult result = MessageBox.Show("Existierende Datenbank wählen?", "Achtung", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
@@ -62,8 +65,10 @@ namespace ExamManager
                 }
             }
             SQLiteConnection sqlite_conn;
-            if (!File.Exists(path + "database.db")) { Directory.CreateDirectory(path); SQLiteConnection.CreateFile(path + "database.db"); }
-            sqlite_conn = new SQLiteConnection("Data Source=" + path + "database.db; Version = 3; New = False; Compress = True; ");
+            if (!File.Exists(path))
+            {// Directory.CreateDirectory(path);
+                SQLiteConnection.CreateFile(path); }//+ "database.db");
+            sqlite_conn = new SQLiteConnection("Data Source=" + path + "; Version = 3; New = False; Compress = True; ");
             try { sqlite_conn.Open(); } catch (Exception e) { Console.WriteLine("ERROR: " + e.Message); }
             return sqlite_conn;
         }
@@ -224,7 +229,7 @@ namespace ExamManager
                     for (int i = 0; i < rData.Length; i++)
                         rData[i] = reader.GetValue(i).ToString();
             else return null;
-            return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]); ;
+            return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]);
         }
         /// <summary>Searches all students in the database.</summary>
         /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
@@ -382,17 +387,17 @@ namespace ExamManager
                             }
                             if (t.Length >= 5)
                             {
-                                if (GetSubject(t[4]).Length == 0)
+                                if (GetSubject(t[4]) == null)
                                     AddSubject(t[4]);
                             }
                             if (t.Length >= 6)
                             {
-                                if (GetSubject(t[5]).Length == 0)
+                                if (GetSubject(t[5]) == null)
                                     AddSubject(t[5]);
                             }
                             if (t.Length == 7)
                             {
-                                if (GetSubject(t[6]).Length == 0)
+                                if (GetSubject(t[6]) == null)
                                     AddSubject(t[6]);
                             }
                         }
@@ -513,15 +518,17 @@ namespace ExamManager
         // ---- EXAM ---- ##################################################################################################################################
         // ID student_ID VorsitzKuerzel PrueferKuerzel ProtokollKuerzel Fach Raum_Pruefung Raum_Vorbereitung Raum_Abholen Datum Uhrzeit Schulstunden
         /// <summary>Adds an exam to the database.</summary>
-        public void AddExam(string date, string time, string exam_room, string preparation_room, string student, string t1, string t2, string t3, string subject, int duartion = 45)
+        public void AddExam(string date, string time, string exam_room, string preparation_room, int student, int student2, int student3, string t1, string t2, string t3, string subject, int duartion = 45)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "INSERT INTO exam (date, time, exam_room, preparation_room, student, teacher_vorsitz, teacher_pruefer, teacher_protokoll, subject, duration) VALUES(@date,@time,@exam_room,@preparation_room,@student,@teacher_vorsitz,@teacher_pruefer,@teacher_protokoll,@subject,@duration)";
+            sqlite_cmd.CommandText = "INSERT INTO exam (date, time, exam_room, preparation_room, student, student2, student3, teacher_vorsitz, teacher_pruefer, teacher_protokoll, subject, duration) VALUES(@date,@time,@exam_room,@preparation_room,@student,@student2,@student3,@teacher_vorsitz,@teacher_pruefer,@teacher_protokoll,@subject,@duration)";
             sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@time", time);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             sqlite_cmd.Parameters.AddWithValue("@preparation_room", preparation_room);
             sqlite_cmd.Parameters.AddWithValue("@student", student);
+            sqlite_cmd.Parameters.AddWithValue("@student2", student2);
+            sqlite_cmd.Parameters.AddWithValue("@student3", student3);
             sqlite_cmd.Parameters.AddWithValue("@teacher_vorsitz", t1);
             sqlite_cmd.Parameters.AddWithValue("@teacher_pruefer", t2);
             sqlite_cmd.Parameters.AddWithValue("@teacher_protokoll", t3);
@@ -543,8 +550,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -555,7 +562,9 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    if (rData[6].Length == 0) rData[6] = 0.ToString();
+                    if (rData[7].Length == 0) rData[7] = 0.ToString();
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
@@ -575,8 +584,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -591,7 +600,8 @@ namespace ExamManager
                 reader.NextResult();
             }
             else { return null; }
-            return new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10]));
+            return new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12]));
+
         }
         /// <summary>Searches all exams at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
@@ -609,8 +619,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -621,7 +631,9 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    if (rData[6].Length == 0) rData[6] = 0.ToString();
+                    if (rData[7].Length == 0) rData[7] = 0.ToString();
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
@@ -642,8 +654,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -654,7 +666,7 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
@@ -675,8 +687,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -687,7 +699,7 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
@@ -719,8 +731,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -731,14 +743,14 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
             return data;
         }
         /// <summary>Edits an exam in the database.</summary>
-        public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, int student = 0, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
+        public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, int student = 0, int student2 = 0, int student3 = 0, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             if (date != null)
@@ -774,6 +786,20 @@ namespace ExamManager
                 sqlite_cmd.CommandText = "UPDATE exam SET student=@student WHERE id = @id";
                 sqlite_cmd.Parameters.AddWithValue("@id", id);
                 sqlite_cmd.Parameters.AddWithValue("@student", student);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (student2 != 0)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET student2=@student2 WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@student2", student2);
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (student3 != 0)
+            {
+                sqlite_cmd.CommandText = "UPDATE exam SET student3=@student3 WHERE id = @id";
+                sqlite_cmd.Parameters.AddWithValue("@id", id);
+                sqlite_cmd.Parameters.AddWithValue("@student3", student3);
                 sqlite_cmd.ExecuteNonQuery();
             }
             if (t1 != null)
@@ -826,8 +852,8 @@ namespace ExamManager
             {
                 while (reader.Read())
                 {
-                    string[] rData = new string[11];
-                    for (int i = 0; i < 11; i++)
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
                     {
                         rData[i] = reader.GetValue(i).ToString();
                         if (i == 1)
@@ -838,7 +864,7 @@ namespace ExamManager
                             rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
                         }
                     }
-                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), rData[6], rData[7], rData[8], rData[9], int.Parse(rData[10])));
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
                 }
                 reader.NextResult();
             }
@@ -1023,7 +1049,7 @@ namespace ExamManager
         private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1 -> change string[].length +2!
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student TEXT, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";
+            sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student INTEGER, student2 INTEGER, student3 INTEGER, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";
             sqlite_cmd.ExecuteNonQuery();
         }
         private void CreateRoomDB()
