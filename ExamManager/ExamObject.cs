@@ -159,15 +159,29 @@ namespace ExamManager
             Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             e.Graphics.DrawString(student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
-            e.Graphics.DrawString(exam.Time + "     " + exam.Duration + "min", drawFont, Brushes.Black, rectL2, stringFormat);
-            e.Graphics.DrawString(exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
-            e.Graphics.DrawString(exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
+            string scount = null;
+            if (Student2 != null) scount = "[2xS]";
+            if (Student3 != null) scount = "[3xS]";
+            if (Duration < 40)
+            {
+                e.Graphics.DrawString(exam.Time + "; " + exam.Duration + "min  " + scount, drawFont, Brushes.Black, rectL2, stringFormat);
+                e.Graphics.DrawString(exam.Teacher1 + "," + exam.Teacher2 + "," + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+            }
+            else
+            {
+                e.Graphics.DrawString(exam.Time + "   " + exam.Duration + "min  " + scount, drawFont, Brushes.Black, rectL2, stringFormat);
+                e.Graphics.DrawString(exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+
+            }
+            e.Graphics.DrawString(exam.Subject + " " + exam.Examroom + " [" + exam.Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             string line1 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
+            string line11 = null; if (Student2 != null) line11 = exam.Student2.Firstname + " " + exam.Student2.Lastname + "  [" + exam.Student2.Grade + "]\n";
+            string line12 = null; if (Student3 != null) line12 = Student3.Firstname + " " + exam.Student3.Lastname + "  [" + exam.Student3.Grade + "]\n";
             string line2 = exam.Time + "     " + exam.Duration + "min\n";
             string line3 = exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3 + "\n";
             string line4 = exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]";
             ToolTip sfToolTip1 = new ToolTip();
-            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
+            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);
         }
 
         public void SetBorder(Color borderColor, bool solidBorder)

@@ -104,6 +104,8 @@ namespace ExamManager
             cb_student.Items.AddRange(listStudent);
             cb_student2.Items.AddRange(listStudent);
             cb_student3.Items.AddRange(listStudent);
+            cb_student2.Items.Add("");
+            cb_student3.Items.Add("");
 
             // grade
             cb_grade.Items.Clear();
@@ -177,7 +179,9 @@ namespace ExamManager
             string time = this.dtp_time.Value.ToString("HH:mm");
             string exam_room = cb_exam_room.SelectedItem.ToString();
             string preparation_room = cb_preparation_room.SelectedItem.ToString();
-            string student = cb_student.Text;
+            string studentName = cb_student.Text;
+            string student2Name = cb_student2.Text;
+            string student3Name = cb_student3.Text;
             string grade = null;
             if (cb_grade.SelectedItem != null) grade = cb_grade.SelectedItem.ToString();
             if (cb_teacher1.Text.Length < 1) // || cb_teacher2.Text.Length < 1 || cb_teacher3.Text.Length < 1)
@@ -188,7 +192,7 @@ namespace ExamManager
             string subject = cb_subject.Text;
             int duration = Int32.Parse(tb_duration.Text);
             // check if not empty
-            if (exam_room.Length == 0 || preparation_room.Length == 0 || student.Length == 0 || teacher1.Length == 0 || subject.Length == 0 || duration == 0) // || teacher1.Length == 0 || teacher2.Length == 0 
+            if (exam_room.Length == 0 || preparation_room.Length == 0 || studentName.Length == 0 || teacher1.Length == 0 || subject.Length == 0 || duration == 0) // || teacher1.Length == 0 || teacher2.Length == 0 
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             if (teacher2.Length == 0) teacher2 = null;
             if (teacher3.Length == 0) teacher3 = null;
@@ -222,21 +226,38 @@ namespace ExamManager
             string templastname = null;
             try
             {
-                for (int i = 0; i < student.Split(' ').Length - 1; i++)
-                    tempfirstname += student.Split(' ')[i] += " ";
+                for (int i = 0; i < studentName.Split(' ').Length - 1; i++)
+                    tempfirstname += studentName.Split(' ')[i] += " ";
                 tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                templastname += student.Split(' ')[student.Split(' ').Length - 1];
+                templastname += studentName.Split(' ')[studentName.Split(' ').Length - 1];
             }
             catch (NullReferenceException)
             { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
-            if (database.GetStudentByName(tempfirstname, templastname, grade) == null)
+            StudentObject student = null;
+            StudentObject student2 = null;
+            StudentObject student3 = null;
+            try
+            {
+                student = database.GetStudentByName(studentName.Split(' ')[0], studentName.Split(' ')[1], grade);
+                if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[0], student2Name.Split(' ')[1], grade);
+                if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[0], student3Name.Split(' ')[1], grade);
+            }
+            catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
+
+            if (student == null)
             { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
+            if (student2Name.Length > 1 && student2 == null)
+            { MessageBox.Show("Schüler 2 nicht gefunden!", "Warnung"); return; }
+            if (student3Name.Length > 1 && student3 == null)
+            { MessageBox.Show("Schüler 3 nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
             if (database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]) == null)
             { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
+
+            if (student2 == null && student3 != null) { MessageBox.Show("erst Schüler 2 vor Schüler 3 belegen!", "Warnung"); return; }
 
             bool checkTimeIsFree(string t, int d)
             {
@@ -257,7 +278,7 @@ namespace ExamManager
                     { MessageBox.Show(database.GetTeacherByID(teacher1).Firstname + " " + database.GetTeacherByID(teacher1).Lastname + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
                 }
             }
-            if (teacher2 != null)
+            if (teacher2.Length > 1)
                 foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(date, teacher2))
                 {
                     if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
@@ -266,7 +287,7 @@ namespace ExamManager
                         { MessageBox.Show(database.GetTeacherByID(teacher2).Firstname + " " + database.GetTeacherByID(teacher2).Lastname + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
                     }
                 }
-            if (teacher3 != null)
+            if (teacher3.Length > 1)
                 foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(date, teacher3))
                 {
                     if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
@@ -281,15 +302,38 @@ namespace ExamManager
                 if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
                 {
                     if (!checkTimeIsFree(s.Time, s.Duration))
-                    { MessageBox.Show(student + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    { MessageBox.Show(studentName + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
                 }
             }
+            if (student2Name.Length > 1)
+                foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(date, database.GetStudentByName(student2Name.Split(' ')[0], student2Name.Split(' ')[1], grade).Id))
+                {
+                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
+                    {
+                        if (!checkTimeIsFree(s.Time, s.Duration))
+                        { MessageBox.Show(student2Name + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    }
+                }
+            if (student3Name.Length > 1) foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(date, database.GetStudentByName(student3Name.Split(' ')[0], student3Name.Split(' ')[1], grade).Id))
+                {
+                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
+                    {
+                        if (!checkTimeIsFree(s.Time, s.Duration))
+                        { MessageBox.Show(student3Name + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    }
+                }
+            int[] sIDs = new int[3];
+            sIDs[0] = student.Id;
+            sIDs[1] = 0;
+            sIDs[2] = 0;
+            if (student2 != null) sIDs[1] = student2.Id;
+            if (student3 != null) sIDs[3] = student3.Id;
 
             // Add / Edit / Clear
             if (EditExam != null)
-                database.EditExam(EditExam.Id, date, time, exam_room, preparation_room, database.GetStudentByName(tempfirstname, templastname, grade).Id, 0, 0, teacher1, teacher2, teacher3, subject, duration);
+                database.EditExam(EditExam.Id, date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
             if (EditExam == null)
-                database.AddExam(date, time, exam_room, preparation_room, database.GetStudentByName(tempfirstname, templastname, grade).Id, 0, 0, teacher1, teacher2, teacher3, subject, duration);
+                database.AddExam(date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
             EditExam = null;
             this.lbl_mode.Text = edit_mode[0];
             this.btn_add_exam.Text = add_mode[0];
@@ -305,13 +349,15 @@ namespace ExamManager
                 if (!Properties.Settings.Default.keep_preparationroom) cb_preparation_room.Text = null;
                 if (!Properties.Settings.Default.keep_teacher) { cb_teacher1.Text = null; cb_teacher2.Text = null; cb_teacher3.Text = null; }
                 if (!Properties.Settings.Default.keep_grade) cb_grade.Text = null;
-                if (!Properties.Settings.Default.keep_student) cb_student.Text = null;
+                if (!Properties.Settings.Default.keep_student) { cb_student.Text = null; cb_student2.Text = null; cb_student3.Text = null; }
             }
             else
             {
                 this.cb_exam_room.Text = null;
                 this.cb_preparation_room.Text = null;
                 this.cb_student.Text = null;
+                this.cb_student2.Text = null;
+                this.cb_student3.Text = null;
                 this.cb_grade.Text = null;
                 this.cb_subject.Text = null;
                 this.cb_teacher1.Text = null;
@@ -524,9 +570,13 @@ namespace ExamManager
             this.dtp_time.Value = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             this.cb_exam_room.SelectedItem = exam.Examroom;
             this.cb_preparation_room.SelectedItem = exam.Preparationroom;
-            StudentObject st = exam.Student;
-            if (st == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
-            else { this.cb_student.Text = st.Firstname + " " + st.Lastname; this.cb_grade.SelectedItem = st.Grade; }
+            if (exam.Student == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
+            else { this.cb_student.Text = exam.Student.Firstname + " " + exam.Student.Lastname; this.cb_grade.SelectedItem = exam.Student.Grade; }
+            if (exam.Student2 == null) { this.cb_student2.Text = null; }
+            else { this.cb_student2.Text = exam.Student2.Firstname + " " + exam.Student2.Lastname; }
+            if (exam.Student3 == null) { this.cb_student3.Text = null; }
+            else { this.cb_student3.Text = exam.Student3.Firstname + " " + exam.Student3.Lastname; }
+
             if (database.GetTeacherByID(exam.Teacher1) == null) this.cb_teacher1.Text = "";
             else this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Firstname + " " + database.GetTeacherByID(exam.Teacher1).Lastname;
             if (database.GetTeacherByID(exam.Teacher2) == null) this.cb_teacher2.Text = "";
@@ -784,12 +834,16 @@ namespace ExamManager
             e.Graphics.DrawString(exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
             e.Graphics.DrawString(exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             string line1 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
+            string line11 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
+            string line12 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
+            //string line11 = exam.Student2.Firstname + " " + exam.Student2.Lastname + "  [" + exam.Student2.Grade + "]\n";
+            //string line12 = exam.Student3.Firstname + " " + exam.Student3.Lastname + "  [" + exam.Student3.Grade + "]\n";
             string line2 = exam.Time + "     " + exam.Duration + "min\n";
             string line3 = exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3 + "\n";
             string line4 = exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]";
 
             ToolTip sfToolTip1 = new ToolTip();
-            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line2 + line3 + line4);
+            sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //// ---- BTN ---- ////
@@ -818,7 +872,7 @@ namespace ExamManager
                         if (!Properties.Settings.Default.keep_preparationroom) cb_preparation_room.Text = null;
                         if (!Properties.Settings.Default.keep_teacher) { cb_teacher1.Text = null; cb_teacher2.Text = null; cb_teacher3.Text = null; }
                         if (!Properties.Settings.Default.keep_grade) cb_grade.Text = null;
-                        if (!Properties.Settings.Default.keep_student) cb_student.Text = null;
+                        if (!Properties.Settings.Default.keep_student) { cb_student.Text = null; cb_student2.Text = null; cb_student3.Text = null; }
                         //this.cb_student.Text = null; // TODO: KEEP DATA ----------------------------------
                     }
                     else
@@ -826,6 +880,8 @@ namespace ExamManager
                         this.cb_exam_room.Text = null;
                         this.cb_preparation_room.Text = null;
                         this.cb_student.Text = null;
+                        this.cb_student2.Text = null;
+                        this.cb_student3.Text = null;
                         this.cb_grade.Text = null;
                         this.cb_subject.Text = null;
                         this.cb_teacher1.Text = null;
@@ -846,7 +902,8 @@ namespace ExamManager
         }
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            EditExam.RemoveBorder();
+            if (EditExam != null)
+                EditExam.RemoveBorder();
             EditExam = null;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[1];
@@ -1443,6 +1500,8 @@ namespace ExamManager
                 cb_student.Items.AddRange(listStudent);
                 cb_student2.Items.AddRange(listStudent);
                 cb_student3.Items.AddRange(listStudent);
+                cb_student2.Items.Add("");
+                cb_student3.Items.Add("");
             }
             else
             {
@@ -1455,8 +1514,16 @@ namespace ExamManager
                 this.cb_student.AutoCompleteCustomSource = autocomplete_student;
                 this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                 this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_student2.AutoCompleteCustomSource = autocomplete_student;
+                this.cb_student2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_student2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                this.cb_student3.AutoCompleteCustomSource = autocomplete_student;
+                this.cb_student3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                this.cb_student3.AutoCompleteSource = AutoCompleteSource.CustomSource;
                 //
                 cb_student.Items.Clear();
+                cb_student2.Items.Clear();
+                cb_student3.Items.Clear();
                 LinkedList<StudentObject> studentList = new LinkedList<StudentObject>();
                 List<StudentObject> tempStudentList = new List<StudentObject>(allStudents);
                 tempStudentList = tempStudentList.OrderBy(x => x.Lastname).ToList();
@@ -1465,6 +1532,10 @@ namespace ExamManager
                 for (int i = 0; i < studentList.Count; i++)
                     listStudent[i] = studentList.ElementAt(i).Firstname + " " + studentList.ElementAt(i).Lastname;
                 cb_student.Items.AddRange(listStudent);
+                cb_student2.Items.AddRange(listStudent);
+                cb_student3.Items.AddRange(listStudent);
+                cb_student2.Items.Add("");
+                cb_student3.Items.Add("");
             }
         }
         private void cb_subject_SelectedIndexChanged(object sender, EventArgs e)

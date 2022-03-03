@@ -29,6 +29,8 @@ namespace ExamManager
             // tl_entity mouse up -> move timeline up?
             // export exam with student
             // im/export data form
+            // nur 1/2 teacher 
+            // update exampreview on change
 
             // Doc: Data etc. unterpunkte erklären 
 
