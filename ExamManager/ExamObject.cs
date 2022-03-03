@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ExamManager
     {
         private bool Border;
         private ButtonBorderStyle BorderStyle;
-        private Color BorderColor;
+        private Color BorderColor = Colors.TL_EntityBorder;
         public Panel Panel { get; private set; }
 
         public int Id { get; private set; }
@@ -20,7 +21,7 @@ namespace ExamManager
         public string Time { get; private set; }
         public string Examroom { get; private set; }
         public string Preparationroom { get; private set; }
-        public int StudentId { get; private set; }      
+        public int StudentId { get; private set; }
         public int Student2Id { get; private set; }
         public int Student3Id { get; private set; }
         public StudentObject Student { get; private set; }
@@ -32,17 +33,44 @@ namespace ExamManager
         public string Teacher3 { get; private set; }
         public string Subject { get; private set; }
         public int Duration { get; private set; }
-
+        [JsonConstructor]
+        public ExamObject(int id, string date, string time, string examroom, string preparationroom, int studentid, int student2id, int student3id, StudentObject student, StudentObject student2, StudentObject student3, string teacher1, string teacher2, string teacher3, string subject, int duration)
+        {
+            this.Id = id;
+            this.Date = date;
+            this.Time = time;
+            this.Examroom = examroom;
+            this.Preparationroom = preparationroom;
+            this.StudentId = studentid;
+            this.Student2Id = student2id;
+            this.Student3Id = student3id;
+            this.Student = student;
+            this.Student2 = student2;
+            this.Student3 = student3;
+            this.Teacher1 = teacher1;
+            this.Teacher2 = teacher2;
+            this.Teacher3 = teacher3;
+            this.Subject = subject;
+            this.Duration = duration;
+            // TODO: check teacher in db
+            // TODO teacher object
+        }
         public ExamObject(int id, string date, string time, string examroom, string preparationroom, int student, int student2, int student3, string teacher1, string teacher2, string teacher3, string subject, int duration)
         {
             this.Id = id;
             this.Date = date;
-            DateTime dt = DateTime.ParseExact(date, "dd.MM.yyyy", null);
-            this.Date = dt.ToString("yyyy-MM-dd");
+            DateTime dt;
+            if (!date.Contains('-'))
+            {
+                dt = DateTime.ParseExact(date, "dd.MM.yyyy", null);
+                this.Date = dt.ToString("yyyy-MM-dd");
+            }
             this.Time = time;
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
             this.StudentId = student;
+            //this.Student = Program.database.GetStudentByID(student);
+            if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
             if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
             if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
             this.Teacher1 = teacher1;
@@ -50,8 +78,6 @@ namespace ExamManager
             this.Teacher3 = teacher3;
             this.Subject = subject;
             this.Duration = duration;
-            this.Student = Program.database.GetStudentByID(student);
-            BorderColor = Colors.TL_EntityBorder;
             // TODO: check teacher in db
         }
 

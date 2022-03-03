@@ -15,7 +15,6 @@ namespace ExamManager
         public string Email { get; private set; }
         public string Phonenumber { get; private set; }
         // TODO: get fullname
-
         public StudentObject(int id, string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             this.Id = id;

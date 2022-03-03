@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -1039,6 +1040,14 @@ namespace ExamManager
                 }
             }
         }
+        private void tsmi_show_current_db_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(Properties.Settings.Default.databasePath, "Aktuelle Datenbank", MessageBoxButtons.OK);
+        }
+        private void tsmi_settings_keepdata_Click(object sender, EventArgs e)
+        {
+            new KeepDataForm().ShowDialog();
+        }
         private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
         {
             FormSettings form = new FormSettings();
@@ -1482,9 +1491,86 @@ namespace ExamManager
             UpdateEditPanel();
         }
 
-        private void tsmi_settings_keepdata_Click(object sender, EventArgs e)
+        private void tsmi_export_json_Click(object sender, EventArgs e)
         {
-            new KeepDataForm().ShowDialog();
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Schülerdaten speichern",
+                FileName = "StudentData.json",
+                DefaultExt = "json",
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            var json = JsonConvert.SerializeObject(database.GetAllStudents(), Formatting.Indented);
+            File.WriteAllText(sfd.FileName, json);
+        }
+
+        private void tsmi_import_json_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+                ofd.FilterIndex = 1;
+                ofd.RestoreDirectory = true;
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = ofd.FileName;
+                    List<StudentObject> items;
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string jsonString = r.ReadToEnd();
+                        items = JsonConvert.DeserializeObject<List<StudentObject>>(jsonString);
+                    }
+                    //foreach (StudentObject so in items)
+                    //    Console.WriteLine(so.Lastname);
+                }
+            }
+        }
+
+        private void tsmi_backup_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Daten speichern",
+                FileName = "DataBackup.json",
+                DefaultExt = "json",
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            var json = JsonConvert.SerializeObject(database.GetAllExams(), Formatting.Indented);
+            File.WriteAllText(sfd.FileName, json);
+        }
+        private void tsmi_loadbackup_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+                ofd.FilterIndex = 1;
+                ofd.RestoreDirectory = true;
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = ofd.FileName;
+                    List<ExamObject> items;
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string jsonString = r.ReadToEnd();
+                        items = JsonConvert.DeserializeObject<List<ExamObject>>(jsonString);
+                    }
+                    foreach (ExamObject so in items)
+                        Console.WriteLine(so.Id);
+                }
+            }
         }
     }
+
 }

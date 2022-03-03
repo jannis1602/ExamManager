@@ -63,11 +63,19 @@ namespace ExamManager
                         }
                     }
                 }
+                else
+                {
+                    path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
+                    Properties.Settings.Default.databasePath = path;
+                    Properties.Settings.Default.Save();
+                }
             }
             SQLiteConnection sqlite_conn;
             if (!File.Exists(path))
-            {// Directory.CreateDirectory(path);
-                SQLiteConnection.CreateFile(path); }//+ "database.db");
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                SQLiteConnection.CreateFile(path);
+            }//+ "database.db");
             sqlite_conn = new SQLiteConnection("Data Source=" + path + "; Version = 3; New = False; Compress = True; ");
             try { sqlite_conn.Open(); } catch (Exception e) { Console.WriteLine("ERROR: " + e.Message); }
             return sqlite_conn;

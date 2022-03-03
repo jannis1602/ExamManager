@@ -27,6 +27,8 @@ namespace ExamManager
 
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?
+            // export exam with student
+            // im/export data form
 
             // Doc: Data etc. unterpunkte erklären 
 
@@ -41,11 +43,11 @@ namespace ExamManager
             // move panem with mouse add 15min per move (new+5min))
             // editpanel preview change if data change
             // search filter student: filter s2+s3! etc.
+            // create file directory if !exists
+            // exam / student edit in db ifx!=null
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll
-            // student/teacher + Exam object
-            // - string[] fn,ln,grade,...
             // - Panel obj.
             // tabindex
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
@@ -54,7 +56,6 @@ namespace ExamManager
             // edit_students_form faster load
             // teacherData filter subject
             // editteacher = null etc. (teacher)
-            // Search index -> enum
             // class for filereader + formart manager
             // data -> expand default
             // studentdata menu: load from file?
@@ -73,7 +74,8 @@ namespace ExamManager
             // Student/teacher Data multiple pages
             // Student Data default grade = all
             // + ReadOnlyMode [-> if(readonly)return;] enum mode{all,read,write} disable write/edit
-            // + export data as csv (student/teacher/exam) 
+            // + export data as csv / json (student/teacher/exam) 
+            // + export exam with student and teacher -> keep id / change to same
             // import data from csv
             // *Extra load Exel file
             // Settings Form

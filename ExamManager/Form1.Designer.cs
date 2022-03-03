@@ -66,6 +66,7 @@ namespace ExamManager
             this.tsmi_settings_db_default = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_db_localdb = new System.Windows.Forms.ToolStripMenuItem();
             this.serverdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_show_current_db = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_exams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_settings_table_students = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +79,11 @@ namespace ExamManager
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_exportexamday = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_import_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_backup = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_loadbackup = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_export_json = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_import_json = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_info_keys = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
@@ -464,7 +470,8 @@ namespace ExamManager
             this.tsmi_settings_changedb.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_settings_db_default,
             this.tsmi_settings_db_localdb,
-            this.serverdbToolStripMenuItem});
+            this.serverdbToolStripMenuItem,
+            this.tsmi_show_current_db});
             this.tsmi_settings_changedb.Name = "tsmi_settings_changedb";
             this.tsmi_settings_changedb.Size = new System.Drawing.Size(190, 22);
             this.tsmi_settings_changedb.Text = "Datenbank auswählen";
@@ -488,6 +495,13 @@ namespace ExamManager
             this.serverdbToolStripMenuItem.Name = "serverdbToolStripMenuItem";
             this.serverdbToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.serverdbToolStripMenuItem.Text = "Server Datenbank [DEV]";
+            // 
+            // tsmi_show_current_db
+            // 
+            this.tsmi_show_current_db.Name = "tsmi_show_current_db";
+            this.tsmi_show_current_db.Size = new System.Drawing.Size(227, 22);
+            this.tsmi_show_current_db.Text = "Aktuelle Datenbank anzeigen";
+            this.tsmi_show_current_db.Click += new System.EventHandler(this.tsmi_show_current_db_Click);
             // 
             // tsmi_settings_table
             // 
@@ -556,7 +570,8 @@ namespace ExamManager
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_tools_deleteOldExams,
             this.tsmi_tools_export,
-            this.tsmi_tools_exportexamday});
+            this.tsmi_tools_exportexamday,
+            this.tsmi_import_export});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -581,6 +596,45 @@ namespace ExamManager
             this.tsmi_tools_exportexamday.Size = new System.Drawing.Size(230, 22);
             this.tsmi_tools_exportexamday.Text = "Prüfungstag exportieren (csv)";
             this.tsmi_tools_exportexamday.Click += new System.EventHandler(this.tsmi_tools_exportexamday_Click);
+            // 
+            // tsmi_import_export
+            // 
+            this.tsmi_import_export.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_backup,
+            this.tsmi_loadbackup,
+            this.tsmi_export_json,
+            this.tsmi_import_json});
+            this.tsmi_import_export.Name = "tsmi_import_export";
+            this.tsmi_import_export.Size = new System.Drawing.Size(230, 22);
+            this.tsmi_import_export.Text = "Import/Export";
+            // 
+            // tsmi_backup
+            // 
+            this.tsmi_backup.Name = "tsmi_backup";
+            this.tsmi_backup.Size = new System.Drawing.Size(216, 22);
+            this.tsmi_backup.Text = "Daten Backup";
+            this.tsmi_backup.Click += new System.EventHandler(this.tsmi_backup_Click);
+            // 
+            // tsmi_loadbackup
+            // 
+            this.tsmi_loadbackup.Name = "tsmi_loadbackup";
+            this.tsmi_loadbackup.Size = new System.Drawing.Size(216, 22);
+            this.tsmi_loadbackup.Text = "Backup laden";
+            this.tsmi_loadbackup.Click += new System.EventHandler(this.tsmi_loadbackup_Click);
+            // 
+            // tsmi_export_json
+            // 
+            this.tsmi_export_json.Name = "tsmi_export_json";
+            this.tsmi_export_json.Size = new System.Drawing.Size(216, 22);
+            this.tsmi_export_json.Text = "als json exportieren [DEV]";
+            this.tsmi_export_json.Click += new System.EventHandler(this.tsmi_export_json_Click);
+            // 
+            // tsmi_import_json
+            // 
+            this.tsmi_import_json.Name = "tsmi_import_json";
+            this.tsmi_import_json.Size = new System.Drawing.Size(216, 22);
+            this.tsmi_import_json.Text = "von json importieren [DEV]";
+            this.tsmi_import_json.Click += new System.EventHandler(this.tsmi_import_json_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -1702,5 +1756,11 @@ namespace ExamManager
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ComboBox cb_student2;
         private System.Windows.Forms.Label lbl_student2;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_show_current_db;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_import_export;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_export_json;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_import_json;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_backup;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_loadbackup;
     }
 }
