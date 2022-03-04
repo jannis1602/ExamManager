@@ -15,7 +15,6 @@ namespace ExamManager
         public string Email { get; private set; }
         public string Phonenumber { get; private set; }
         // TODO: get fullname
-
         public StudentObject(int id, string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             this.Id = id;
@@ -34,6 +33,11 @@ namespace ExamManager
             if (email != null) this.Email = email;
             if (phonenumber != null) this.Phonenumber = phonenumber;
             Program.database.EditStudent(this.Id, this.Firstname, this.Lastname, this.Grade, this.Email, this.Phonenumber);
+        }
+
+        public void Delete()
+        {
+            Program.database.DeleteStudent(this.Id);
         }
     }
 }

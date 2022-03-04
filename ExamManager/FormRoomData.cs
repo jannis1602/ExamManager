@@ -67,5 +67,18 @@ namespace ExamManager
                 }
             }
         }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            if (lb_roomlist.SelectedItem != null)
+            {
+                DialogResult result = MessageBox.Show("Raum " + lb_roomlist.SelectedItem.ToString() + " Löschen?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Program.database.DeleteRoom(lb_roomlist.SelectedItem.ToString());
+                    LoadAllRooms();
+                }
+            }
+        }
     }
 }

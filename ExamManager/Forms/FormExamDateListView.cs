@@ -29,8 +29,7 @@ namespace ExamManager
             {
                 if (!list.Any(n => n.date == s.Date))
                 {
-                    DateTime dt = DateTime.ParseExact(s.Date, "dd.MM.yyyy", null);
-                    list.AddLast(new Item(s.Date, s.Date + "  ->  " + Program.database.GetAllExamsAtDate(dt.ToString("yyyy-MM-dd")).Count().ToString() + " Prüfungen"));
+                    list.AddLast(new Item(s.Date, s.Date + "  ->  " + Program.database.GetAllExamsAtDate(s.Date).Count().ToString() + " Prüfungen"));
                 }
             }
             Item[] dates = new Item[list.Count];
@@ -59,7 +58,7 @@ namespace ExamManager
             if (lb_exam_date.SelectedItem != null)
             {
                 Item itm = lb_exam_date.SelectedItem as Item;  // lb_exam_date.SelectedItem.ToString()
-                form.SetDate(DateTime.ParseExact(itm.date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None));
+                form.SetDate(DateTime.ParseExact(itm.date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None));
             }
         }
     }

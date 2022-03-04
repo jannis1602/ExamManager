@@ -18,7 +18,7 @@ namespace ExamManager
         public string Subject3 { get; private set; }
         // TODO: get fullname
 
-        public TeacherObject(string shortname, string firstname, string lastname, string email, string phonenumber, string subject1, string subject2 = null, string subject3 = null)
+        public TeacherObject(string shortname, string firstname, string lastname, string email, string phonenumber, string subject1, string subject2 , string subject3)
         {
             this.Shortname = shortname;
             this.Firstname = firstname;
@@ -40,7 +40,12 @@ namespace ExamManager
             if (subject1 != null) this.Subject1 = subject1;
             if (subject2 != null) this.Subject2 = subject2;
             if (subject3 != null) this.Subject3 = subject3;
-            Program.database.EditTeacher(this.Shortname, this.Firstname, this.Lastname, this.Phonenumber, this.Subject1, this.Subject2, this.Subject3); // TODO (edit) email in database
+            Program.database.EditTeacher(this.Shortname, this.Firstname, this.Lastname, this.Email, this.Phonenumber, this.Subject1, this.Subject2, this.Subject3);
+        }
+
+        public void Delete()
+        {
+            Program.database.DeleteTeacher(this.Shortname);
         }
 
     }
