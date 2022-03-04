@@ -909,7 +909,7 @@ namespace ExamManager
         public bool CheckTimeAndRoom(string date, string time, string exam_room)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE  date = @date AND time = @time AND exam_room = @exam_room";
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE  date = @date AND time = @time AND (exam_room = @exam_room OR preparation_room = @exam_room)";
             sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@time", time);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);

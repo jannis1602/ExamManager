@@ -173,12 +173,12 @@ namespace ExamManager
         /// <summary>Checks the entered values ​​and adds an exam to the database</summary>
         private void AddExam()
         {
-            if (cb_exam_room.SelectedItem == null || cb_preparation_room.SelectedItem == null)
+            if (cb_exam_room.Text.Length < 1 || cb_preparation_room.Text.Length < 1)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             string time = this.dtp_time.Value.ToString("HH:mm");
-            string exam_room = cb_exam_room.SelectedItem.ToString();
-            string preparation_room = cb_preparation_room.SelectedItem.ToString();
+            string exam_room = cb_exam_room.Text;
+            string preparation_room = cb_preparation_room.Text;
             string studentName = cb_student.Text;
             string student2Name = cb_student2.Text;
             string student3Name = cb_student3.Text;
@@ -186,16 +186,23 @@ namespace ExamManager
             if (cb_grade.SelectedItem != null) grade = cb_grade.SelectedItem.ToString();
             if (cb_teacher1.Text.Length < 1) // || cb_teacher2.Text.Length < 1 || cb_teacher3.Text.Length < 1)
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
-            string teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]).Shortname;
-            string teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]).Shortname;
-            string teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]).Shortname;
+
+            string teacher1 = null;
+            string teacher2 = null;
+            string teacher3 = null;
+            try
+            {
+                if (cb_teacher1.Text.Length > 1) teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]).Shortname;
+                if (cb_teacher2.Text.Length > 1) teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]).Shortname;
+                if (cb_teacher3.Text.Length > 1) teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]).Shortname;
+            }
+            catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
+            if (teacher1 == null && teacher2 == null && teacher3 == null) { MessageBox.Show("Kein Lehrer!", "Warnung"); return; }
             string subject = cb_subject.Text;
             int duration = Int32.Parse(tb_duration.Text);
             // check if not empty
-            if (exam_room.Length == 0 || preparation_room.Length == 0 || studentName.Length == 0 || teacher1.Length == 0 || subject.Length == 0 || duration == 0) // || teacher1.Length == 0 || teacher2.Length == 0 
-            { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
-            if (teacher2.Length == 0 || (teacher2.Length == 1 && teacher2.Contains('-'))) teacher2 = null;
-            if (teacher3.Length == 0 || (teacher3.Length == 1 && teacher3.Contains('-'))) teacher3 = null;
+            if (exam_room.Length == 0 || studentName.Length == 0 || teacher1.Length == 0 || subject.Length == 0 || duration == 0) // || teacher1.Length == 0 || teacher2.Length == 0 
+            { MessageBox.Show("Felder fehlen!", "Warnung"); return; }
             // check room
             if (EditExam != null)
             {
@@ -258,6 +265,15 @@ namespace ExamManager
             { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
 
             if (student2 == null && student3 != null) { MessageBox.Show("erst Schüler 2 vor Schüler 3 belegen!", "Warnung"); return; }
+            if (preparation_room.Length > 1)
+                foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(date, preparation_room))
+                {
+                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
+                    {
+                        if (!checkTimeIsFree(s.Time, s.Duration))
+                        { MessageBox.Show("Vorbereitungsraum belegt: " + s.Examroom, "Warnung"); return; }
+                    }
+                }
 
             bool checkTimeIsFree(string t, int d)
             {
@@ -1441,8 +1457,8 @@ namespace ExamManager
             }*/
         }
         private void UpdateAutocompleteStudent(LinkedList<TeacherObject> list)
-        { 
-        
+        {
+
         }
 
         // ----------------- events -----------------
