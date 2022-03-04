@@ -27,7 +27,6 @@ namespace ExamManager
 
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?
-            // export exam with student
             // im/export data form
             // nur 1/2 teacher 
             // update exampreview on change
@@ -40,17 +39,14 @@ namespace ExamManager
             // student/Teacher Object.Delete()
             // editpanel cursor: move
             // cb teacher 2+3 add "-"
-            // time_line_entity_list -> ExamObj
             // editExam.RemoveBorder bug
-            // move panem with mouse add 15min per move (new+5min))
+            // move panel with mouse add 15min per move (new+5min))
             // editpanel preview change if data change
             // search filter student: filter s2+s3! etc.
-            // create file directory if !exists
             // exam / student edit in db ifx!=null
 
             // student/teacher data loading window
             // info vorsitz prüfer protokoll
-            // - Panel obj.
             // tabindex
             // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
             // teacher email ?
@@ -71,7 +67,7 @@ namespace ExamManager
             // roompanel empty size y+1?
             // + Settings last/firstname || first/lastname -> [student,teacher]
             // - autocomplete lastname
-            // FileReaderClass (#grade, #formart,...)
+            // FileReaderClass (#grade, #format,...)
             // Student/teacher Data paintPanel
             // Student/teacher Data multiple pages
             // Student Data default grade = all
@@ -81,7 +77,6 @@ namespace ExamManager
             // import data from csv
             // *Extra load Exel file
             // Settings Form
-            // TimeLine & tlEntity Object
             // + load exams -> check if teacher exists
             // custom autocomplete? if string.contains...-> show...
 

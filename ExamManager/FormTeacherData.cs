@@ -253,6 +253,7 @@ namespace ExamManager
             tb_shortname.Text = t.Shortname;
             tb_firstname.Text = t.Firstname;
             tb_lastname.Text = t.Lastname;
+            tb_email.Text = t.Email;
             tb_phonenumber.Text = t.Phonenumber;
             cb_subject1.Text = t.Subject1;
             cb_subject2.Text = t.Subject2;
@@ -264,6 +265,7 @@ namespace ExamManager
             string shortname = tb_shortname.Text.Replace(" ", "");
             string firstname = tb_firstname.Text;
             string lastname = tb_lastname.Text;
+            string email = tb_email.Text;
             string phonenumber = tb_phonenumber.Text;
             string subject1 = cb_subject1.Text;
             string subject2 = cb_subject2.Text;
@@ -276,7 +278,7 @@ namespace ExamManager
             {
                 if (database.GetTeacherByID(shortname) != null)
                 { MessageBox.Show("Lehrer schon vorhanden", "Warnung"); return; }
-                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3)); // TODO: email
+                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3)); // TODO: email
             }
             else
             {
@@ -298,6 +300,7 @@ namespace ExamManager
             tb_shortname.Clear();
             tb_firstname.Clear();
             tb_lastname.Clear();
+            tb_email.Clear();
             tb_phonenumber.Clear();
             cb_subject1.SelectedItem = null;
             cb_subject2.SelectedItem = null;
@@ -313,6 +316,7 @@ namespace ExamManager
             tb_shortname.Clear();
             tb_firstname.Clear();
             tb_lastname.Clear();
+            tb_email.Clear();
             tb_phonenumber.Clear();
             cb_subject1.SelectedItem = null;
             cb_subject2.SelectedItem = null;
@@ -385,6 +389,13 @@ namespace ExamManager
             {
                 flp.Show();
             }
+        }
+
+        private void btn_email_generate_Click(object sender, EventArgs e)
+        {
+            string domain = Properties.Settings.Default.email_domain;
+            if (domain.Length < 2) MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
+            tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
     }
 }

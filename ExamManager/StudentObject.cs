@@ -34,5 +34,10 @@ namespace ExamManager
             if (phonenumber != null) this.Phonenumber = phonenumber;
             Program.database.EditStudent(this.Id, this.Firstname, this.Lastname, this.Grade, this.Email, this.Phonenumber);
         }
+
+        public void Delete()
+        {
+            Program.database.DeleteStudent(this.Id);
+        }
     }
 }

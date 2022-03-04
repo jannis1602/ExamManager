@@ -194,8 +194,8 @@ namespace ExamManager
             // check if not empty
             if (exam_room.Length == 0 || preparation_room.Length == 0 || studentName.Length == 0 || teacher1.Length == 0 || subject.Length == 0 || duration == 0) // || teacher1.Length == 0 || teacher2.Length == 0 
             { MessageBox.Show("Alle Felder ausfüllen!", "Warnung"); return; }
-            if (teacher2.Length == 0) teacher2 = null;
-            if (teacher3.Length == 0) teacher3 = null;
+            if (teacher2.Length == 0 || (teacher2.Length == 1 && teacher2.Contains('-'))) teacher2 = null;
+            if (teacher3.Length == 0 || (teacher3.Length == 1 && teacher3.Contains('-'))) teacher3 = null;
             // check room
             if (EditExam != null)
             {
@@ -1440,6 +1440,11 @@ namespace ExamManager
                 } 
             }*/
         }
+        private void UpdateAutocompleteStudent(LinkedList<TeacherObject> list)
+        { 
+        
+        }
+
         // ----------------- events -----------------
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -1562,85 +1567,9 @@ namespace ExamManager
             UpdateEditPanel();
         }
 
-        private void tsmi_export_json_Click(object sender, EventArgs e)
+        private void tsmi_import_export_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Title = "Schülerdaten speichern",
-                FileName = "StudentData.json",
-                DefaultExt = "json",
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            var json = JsonConvert.SerializeObject(database.GetAllStudents(), Formatting.Indented);
-            File.WriteAllText(sfd.FileName, json);
-        }
-
-        private void tsmi_import_json_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
-                ofd.FilterIndex = 1;
-                ofd.RestoreDirectory = true;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = ofd.FileName;
-                    List<StudentObject> items;
-                    using (StreamReader r = new StreamReader(filePath))
-                    {
-                        string jsonString = r.ReadToEnd();
-                        items = JsonConvert.DeserializeObject<List<StudentObject>>(jsonString);
-                    }
-                    //foreach (StudentObject so in items)
-                    //    Console.WriteLine(so.Lastname);
-                }
-            }
-        }
-
-        private void tsmi_backup_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog
-            {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Title = "Daten speichern",
-                FileName = "DataBackup.json",
-                DefaultExt = "json",
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            var json = JsonConvert.SerializeObject(database.GetAllExams(), Formatting.Indented);
-            File.WriteAllText(sfd.FileName, json);
-        }
-        private void tsmi_loadbackup_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
-                ofd.FilterIndex = 1;
-                ofd.RestoreDirectory = true;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = ofd.FileName;
-                    List<ExamObject> items;
-                    using (StreamReader r = new StreamReader(filePath))
-                    {
-                        string jsonString = r.ReadToEnd();
-                        items = JsonConvert.DeserializeObject<List<ExamObject>>(jsonString);
-                    }
-                    foreach (ExamObject so in items)
-                        Console.WriteLine(so.Id);
-                }
-            }
+            new FormImportExport().ShowDialog();
         }
     }
 

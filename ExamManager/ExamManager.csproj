@@ -172,10 +172,16 @@
     <Compile Include="FormTeacherData.Designer.cs">
       <DependentUpon>FormTeacherData.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeepDataForm.cs">
+    <Compile Include="Forms\FormImportExport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KeepDataForm.Designer.cs">
+    <Compile Include="Forms\FormImportExport.Designer.cs">
+      <DependentUpon>FormImportExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KeepDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KeepDataForm.Designer.cs">
       <DependentUpon>KeepDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -221,7 +227,10 @@
     <EmbeddedResource Include="FormTeacherData.resx">
       <DependentUpon>FormTeacherData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeepDataForm.resx">
+    <EmbeddedResource Include="Forms\FormImportExport.resx">
+      <DependentUpon>FormImportExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KeepDataForm.resx">
       <DependentUpon>KeepDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

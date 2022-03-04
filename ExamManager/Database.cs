@@ -373,22 +373,22 @@ namespace ExamManager
                             string[] t = line.Replace("dr.", "").Replace(",", "").Split(' ');
                             if (mailgenerator)
                             {
-                                //string domain = Properties.Settings.Default.email_domain;
-                                // string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+                                string domain = Properties.Settings.Default.email_domain;
+                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (t.Length == 5)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4]));
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], null, null));
                                 else if (t.Length == 6)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5]));
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], t[5], null));
                                 else if (t.Length == 7)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, t[4], t[5], t[6]));
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], t[5], t[6]));
                                 teacherIdList.AddLast(t[3]);
                             }
                             else
                             {
                                 if (t.Length == 5)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4]));
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], null, null));
                                 else if (t.Length == 6)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5]));
+                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], null));
                                 else if (t.Length == 7)
                                     AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], t[6]));
                                 teacherIdList.AddLast(t[3]);
