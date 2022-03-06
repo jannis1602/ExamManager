@@ -70,7 +70,7 @@ namespace ExamManager
 
             foreach (StudentObject s in studentList)
             {
-                if (grade == null || s.Grade == grade)
+                if (grade == null || grade.Length < 1 || s.Grade == grade)
                     if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
                     {
                         FlowLayoutPanel panel_student = CreateEntityPanel(s.Id);
@@ -324,6 +324,19 @@ namespace ExamManager
             foreach (FlowLayoutPanel flp in student_entity_list)
             {
                 flp.Show();
+            }
+        }
+
+        private void tsmi_generate_email_click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.email_domain.Length < 2) { MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); return; }
+            DialogResult result = MessageBox.Show("Alle Schüler-Emails generieren?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                foreach (StudentObject so in database.GetAllStudents())
+                {
+                    so.GenerateEmail(true);
+                }
             }
         }
     }

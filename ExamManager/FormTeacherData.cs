@@ -11,6 +11,7 @@ namespace ExamManager
         Database database;
         LinkedList<FlowLayoutPanel> teacher_entity_list;
         string edit_id = null;
+        string subject = null;
         string[] add_mode = { "Lehrer hinzufügen", "Lehrer übernehmen" };
         LinkedList<string> teacherIdList;
         public enum Order { firstname, lastname }
@@ -22,6 +23,7 @@ namespace ExamManager
             this.teacherIdList = teacherIdList;
             InitializeComponent();
             UpdateTeacherList();
+            UpdateAutocomplete();
             cb_subject2.Items.Add("");
             cb_subject3.Items.Add("");
             LinkedList<string[]> subjectList = Program.database.GetAllSubjects();
@@ -35,8 +37,49 @@ namespace ExamManager
 
         //private void UpdateAutocomplete()
         //{ }
+        private void UpdateAutocomplete()
+        {
+            LinkedList<TeacherObject> allTeacher = database.GetAllTeachers();
+            LinkedList<string> gradeList = new LinkedList<string>();
+            foreach (TeacherObject s in allTeacher)
+            {
+                if (!gradeList.Contains(s.Subject1))
+                    gradeList.AddLast(s.Subject1);
+                if (s.Subject2.Length > 0 && !gradeList.Contains(s.Subject2))
+                    gradeList.AddLast(s.Subject2);
+                if (s.Subject3.Length > 0 && !gradeList.Contains(s.Subject3))
+                    gradeList.AddLast(s.Subject3);
+            }
+            List<string> templist = new List<string>(gradeList);
+            templist = templist.OrderBy(x => x).ToList();
+            gradeList = new LinkedList<string>(templist);
+            string[] list = new string[gradeList.Count];
+            for (int i = 0; i < gradeList.Count; i++)
+                list[i] = gradeList.ElementAt(i);
+            // grade tsmi
+            ToolStripMenuItem tsmi_grade_entity_clear = new ToolStripMenuItem
+            { Name = null, Size = new Size(188, 22), Text = "Alle" };
+            tsmi_grade_entity_clear.Click += new EventHandler(tsmi_grade_entity_click);
+            tsmi_subject.DropDownItems.Add(tsmi_grade_entity_clear);
+            foreach (string s in gradeList)
+            {
+                ToolStripMenuItem tsmi_grade_entity = new ToolStripMenuItem()
+                { Name = s, Size = new Size(188, 22), Text = s };
+                tsmi_grade_entity.Click += new EventHandler(tsmi_grade_entity_click);
+                tsmi_subject.DropDownItems.Add(tsmi_grade_entity);
+            }
+            void tsmi_grade_entity_click(object sender, EventArgs e)
+            {
+                ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
+                subject = tsmi.Name;
+                UpdateTeacherList();
+            }
+        }
 
-        private void UpdateTeacherList()    // TODO Email
+
+
+
+        private void UpdateTeacherList()
         {
             flp_teacher_entitys.Controls.Clear();
             teacher_entity_list.Clear();
@@ -44,102 +87,104 @@ namespace ExamManager
             if (listOrder == Order.lastname) teacherList = database.GetAllTeachers();
             else if (listOrder == Order.lastname) teacherList = database.GetAllTeachers(true);
 
-            foreach (TeacherObject t in teacherList)
+            foreach (TeacherObject s in teacherList)
             {
-                if ((teacherIdList != null && teacherIdList.Contains(t.Shortname)) || teacherIdList == null)
-                {
-                    FlowLayoutPanel panel_teacher = new FlowLayoutPanel
+                if (subject == null || subject.Length < 1 || s.Subject1 == subject || s.Subject2 == subject || s.Subject3 == subject)
+                    if ((teacherIdList != null && teacherIdList.Contains(s.Shortname)) || teacherIdList == null)
                     {
-                        Width = flp_teacher_entitys.Width - 28,
-                        Margin = new Padding(5),
-                        BackColor = Color.LightBlue,
-                        Name = t.Shortname
-                    };
-                    // -- NAME --
-                    Label lbl_teacher_name = new Label
-                    {
-                        Size = new Size(180, panel_teacher.Height),
-                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = t.Firstname + " " + t.Lastname,
-                        TextAlign = ContentAlignment.MiddleLeft
-                    };
-                    panel_teacher.Controls.Add(lbl_teacher_name);
-                    // -- shortname --
-                    Label lbl_teacher_shortname = new Label
-                    {
-                        Size = new Size(60, panel_teacher.Height),
-                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = t.Shortname,
-                        TextAlign = ContentAlignment.MiddleLeft
-                    };
-                    panel_teacher.Controls.Add(lbl_teacher_shortname);
-                    // -- phone --
-                    Label lbl_teacher_phone = new Label
-                    {
-                        Size = new Size(140, panel_teacher.Height),
-                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = t.Phonenumber
-                    };
-                    if (t.Phonenumber.Length < 1 || t.Phonenumber == null)
-                        lbl_teacher_phone.Text = "-";
-                    lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
-                    panel_teacher.Controls.Add(lbl_teacher_phone);
-                    // -- subjects --
-                    for (int i = 0; i < 3; i++)
-                    {
-                        string subject = null;
-                        if (i == 0) subject = t.Subject1;
-                        if (i == 1) subject = t.Subject2;
-                        if (i == 2) subject = t.Subject3;
-                        Label lbl_teacher_subject = new Label
-                        {
-                            Size = new Size(100, panel_teacher.Height),
-                            Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                            Text = subject
-                        };
-                        if (subject.Length < 1 || subject == null)
-                            lbl_teacher_subject.Text = "-";
-                        lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
-                        panel_teacher.Controls.Add(lbl_teacher_subject);
+                        FlowLayoutPanel panel_teacher = CreateEntityPanel(s);
+                        this.flp_teacher_entitys.HorizontalScroll.Value = 0;
+                        teacher_entity_list.AddLast(panel_teacher);
                     }
-                    // -- BTN edit --
-                    Button btn_teacher_edit = new Button
-                    {
-                        Size = new Size(100, panel_teacher.Height - 40),
-                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = "Bearbeiten",
-                        Name = t.Shortname,
-                        Margin = new Padding(10, 20, 10, 20),
-                        BackColor = Color.LightGray
-                    };
-                    btn_teacher_edit.Click += btn_teacher_edit_Click;
-                    panel_teacher.Controls.Add(btn_teacher_edit);
-                    // -- BTN delete --
-                    Button btn_teacher_delete = new Button
-                    {
-                        Size = new Size(100, panel_teacher.Height - 40),
-                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0))),
-                        Text = "Löschen",
-                        Name = t.Shortname,
-                        Margin = new Padding(10, 20, 10, 20),
-                        BackColor = Color.LightGray
-                    };
-                    btn_teacher_delete.Click += btn_teacher_delete_Click;
-                    panel_teacher.Controls.Add(btn_teacher_delete);
-
-                    //this.flp_teacher_entitys.HorizontalScroll.Value = 0;
-                    teacher_entity_list.AddLast(panel_teacher);
-                }
             }
-            /*List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(teacher_entity_list);
-            temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList();
-            teacher_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);*/
 
             foreach (Panel p in teacher_entity_list)
             {
                 flp_teacher_entitys.Controls.Add(p);
                 this.flp_teacher_entitys.SetFlowBreak(p, true);
             }
+        }
+
+
+
+        private FlowLayoutPanel CreateEntityPanel(TeacherObject t)
+        {
+            FlowLayoutPanel panel_teacher = new FlowLayoutPanel();
+            panel_teacher.Width = flp_teacher_entitys.Width - 28;
+            panel_teacher.Margin = new Padding(5);
+            panel_teacher.BackColor = Color.LightBlue;
+            panel_teacher.Name = t.Shortname;
+            // -- NAME --
+            Label lbl_teacher_name = new Label();
+            lbl_teacher_name.Size = new Size(180, panel_teacher.Height);
+            lbl_teacher_name.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_teacher_name.Text = t.Firstname + " " + t.Lastname;
+            lbl_teacher_name.TextAlign = ContentAlignment.MiddleLeft;
+            panel_teacher.Controls.Add(lbl_teacher_name);
+            // -- shortname --
+            Label lbl_teacher_shortname = new Label();
+            lbl_teacher_shortname.Size = new Size(60, panel_teacher.Height);
+            lbl_teacher_shortname.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_teacher_shortname.Text = t.Shortname;
+            lbl_teacher_shortname.TextAlign = ContentAlignment.MiddleLeft;
+            panel_teacher.Controls.Add(lbl_teacher_shortname);
+            // -- email --
+            Label lbl_teacher_email = new Label();
+            lbl_teacher_email.Size = new Size(140, panel_teacher.Height);
+            lbl_teacher_email.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_teacher_email.Text = t.Email;
+            if (t.Email.Length < 1 || t.Email == null)
+                lbl_teacher_email.Text = "-";
+            lbl_teacher_email.TextAlign = ContentAlignment.MiddleLeft;
+            panel_teacher.Controls.Add(lbl_teacher_email);
+            // -- phone --
+            Label lbl_teacher_phone = new Label();
+            lbl_teacher_phone.Size = new Size(140, panel_teacher.Height);
+            lbl_teacher_phone.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_teacher_phone.Text = t.Phonenumber;
+            if (t.Phonenumber.Length < 1 || t.Phonenumber == null)
+                lbl_teacher_phone.Text = "-";
+            lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
+            panel_teacher.Controls.Add(lbl_teacher_phone);
+            // -- subjects --
+            for (int i = 0; i < 3; i++)
+            {
+                string subject = null;
+                if (i == 0) subject = t.Subject1;
+                if (i == 1) subject = t.Subject2;
+                if (i == 2) subject = t.Subject3;
+                Label lbl_teacher_subject = new Label();
+                lbl_teacher_subject.Size = new Size(100, panel_teacher.Height);
+                lbl_teacher_subject.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+                lbl_teacher_subject.Text = subject;
+                if (subject.Length < 1 || subject == null)
+                    lbl_teacher_subject.Text = "-";
+                lbl_teacher_subject.TextAlign = ContentAlignment.MiddleLeft;
+                panel_teacher.Controls.Add(lbl_teacher_subject);
+            }
+            // -- BTN edit --
+            Button btn_teacher_edit = new Button();
+            btn_teacher_edit.Size = new Size(100, panel_teacher.Height - 40);
+            btn_teacher_edit.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            btn_teacher_edit.Text = "Bearbeiten";
+            btn_teacher_edit.Name = t.Shortname;
+            btn_teacher_edit.Margin = new Padding(10, 20, 10, 20);
+            btn_teacher_edit.BackColor = Color.LightGray;
+            btn_teacher_edit.Click += btn_teacher_edit_Click;
+            panel_teacher.Controls.Add(btn_teacher_edit);
+            // -- BTN delete --
+            Button btn_teacher_delete = new Button();
+            btn_teacher_delete.Size = new Size(100, panel_teacher.Height - 40);
+            btn_teacher_delete.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            btn_teacher_delete.Text = "Löschen";
+            btn_teacher_delete.Name = t.Shortname;
+            btn_teacher_delete.Margin = new Padding(10, 20, 10, 20);
+            btn_teacher_delete.BackColor = Color.LightGray;
+            btn_teacher_delete.Click += btn_teacher_delete_Click;
+            panel_teacher.Controls.Add(btn_teacher_delete);
+            teacher_entity_list.AddLast(panel_teacher);
+            panel_teacher.Controls.Add(btn_teacher_delete);
+            return panel_teacher;
         }
 
         private void AddTeacherEntity(string id)
@@ -164,12 +209,21 @@ namespace ExamManager
             lbl_teacher_shortname.Text = t.Shortname;
             lbl_teacher_shortname.TextAlign = ContentAlignment.MiddleLeft;
             panel_teacher.Controls.Add(lbl_teacher_shortname);
+            // -- email --
+            Label lbl_teacher_email = new Label();
+            lbl_teacher_email.Size = new Size(140, panel_teacher.Height);
+            lbl_teacher_email.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbl_teacher_email.Text = t.Email;
+            if (t.Email.Length < 1 || t.Email == null)
+                lbl_teacher_email.Text = "-";
+            lbl_teacher_email.TextAlign = ContentAlignment.MiddleLeft;
+            panel_teacher.Controls.Add(lbl_teacher_email);
             // -- phone --
             Label lbl_teacher_phone = new Label();
             lbl_teacher_phone.Size = new Size(140, panel_teacher.Height);
             lbl_teacher_phone.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            lbl_teacher_phone.Text = t.Email;
-            if (t.Email.Length < 1 || t.Email == null)
+            lbl_teacher_phone.Text = t.Phonenumber;
+            if (t.Phonenumber.Length < 1 || t.Phonenumber == null)
                 lbl_teacher_phone.Text = "-";
             lbl_teacher_phone.TextAlign = ContentAlignment.MiddleLeft;
             panel_teacher.Controls.Add(lbl_teacher_phone);
@@ -230,6 +284,7 @@ namespace ExamManager
             DialogResult result = MessageBox.Show("Lehrer " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                edit_id = null;
                 database.DeleteTeacher(btn.Name);
                 foreach (FlowLayoutPanel flp in teacher_entity_list)
                 {
@@ -241,6 +296,7 @@ namespace ExamManager
                     }
                 }
             }
+            UpdateTeacherList();
         }
 
         private void btn_teacher_edit_Click(object sender, EventArgs e)
@@ -284,7 +340,7 @@ namespace ExamManager
             {
                 if (database.GetTeacherByID(shortname) == null)
                 { MessageBox.Show("Lehrer nicht vorhanden", "Warnung"); return; }
-                database.EditTeacher(shortname, firstname, lastname, phonenumber, subject1, subject2, subject3);
+                database.EditTeacher(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3);
                 foreach (FlowLayoutPanel flp in teacher_entity_list)
                 {
                     if (flp.Name == edit_id)
@@ -396,6 +452,20 @@ namespace ExamManager
             string domain = Properties.Settings.Default.email_domain;
             if (domain.Length < 2) MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
             tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+        }
+
+        private void tsmi_generate_email_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.email_domain.Length < 2) { MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); return; }
+            DialogResult result = MessageBox.Show("Alle Lehrer-Emails generieren?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                foreach (TeacherObject to in database.GetAllTeachers())
+                {
+                    to.GenerateEmail(true);
+                }
+                UpdateTeacherList();
+            }
         }
     }
 }

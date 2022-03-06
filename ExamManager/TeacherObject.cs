@@ -18,7 +18,7 @@ namespace ExamManager
         public string Subject3 { get; private set; }
         // TODO: get fullname
 
-        public TeacherObject(string shortname, string firstname, string lastname, string email, string phonenumber, string subject1, string subject2 , string subject3)
+        public TeacherObject(string shortname, string firstname, string lastname, string email, string phonenumber, string subject1, string subject2, string subject3)
         {
             this.Shortname = shortname;
             this.Firstname = firstname;
@@ -30,7 +30,16 @@ namespace ExamManager
             this.Subject3 = subject3;
         }
 
-        public void Edit(string shortname, string firstname = null, string lastname = null, string email = null, string phonenumber = null, string subject1 = null, string subject2 = null, string subject3 = null)
+        public string GenerateEmail(bool setEmail = false)
+        {
+            string domain = Properties.Settings.Default.email_domain;
+            if (domain.Length < 2) return null;
+            string email = Firstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + Lastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+            if (setEmail) { this.Email = email; this.Edit(email: email); }
+            return email;
+        }
+
+        public void Edit(string shortname = null, string firstname = null, string lastname = null, string email = null, string phonenumber = null, string subject1 = null, string subject2 = null, string subject3 = null)
         {
             if (shortname != null) this.Shortname = shortname;
             if (firstname != null) this.Firstname = firstname;

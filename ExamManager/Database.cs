@@ -370,7 +370,7 @@ namespace ExamManager
                     if (!line[0].Equals('#'))
                         if (line.Split(' ').Length > 2)
                         {       // kein doppelnamen
-                            string[] t = line.Replace("dr.", "").Replace(",", "").Split(' ');
+                            string[] t = line.Replace("Dr.", "").Replace(",", "").Split(' ');
                             if (mailgenerator)
                             {
                                 string domain = Properties.Settings.Default.email_domain;

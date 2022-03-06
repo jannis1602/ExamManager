@@ -37,6 +37,9 @@ namespace ExamManager
             this.tlp_phonenumber = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_phonenumber = new System.Windows.Forms.Label();
             this.tb_phonenumber = new System.Windows.Forms.TextBox();
+            this.lbl_email = new System.Windows.Forms.Label();
+            this.tb_email = new System.Windows.Forms.TextBox();
+            this.btn_email_generate = new System.Windows.Forms.Button();
             this.btn_add_teacher = new System.Windows.Forms.Button();
             this.flp_subjects = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_subject1 = new System.Windows.Forms.Label();
@@ -67,9 +70,8 @@ namespace ExamManager
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.tstb_search = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.lbl_email = new System.Windows.Forms.Label();
-            this.tb_email = new System.Windows.Forms.TextBox();
-            this.btn_email_generate = new System.Windows.Forms.Button();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_generate_email = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -173,6 +175,37 @@ namespace ExamManager
             this.tb_phonenumber.Name = "tb_phonenumber";
             this.tb_phonenumber.Size = new System.Drawing.Size(160, 26);
             this.tb_phonenumber.TabIndex = 10;
+            // 
+            // lbl_email
+            // 
+            this.lbl_email.AutoSize = true;
+            this.lbl_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_email.Location = new System.Drawing.Point(299, 6);
+            this.lbl_email.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.lbl_email.Name = "lbl_email";
+            this.lbl_email.Size = new System.Drawing.Size(52, 20);
+            this.lbl_email.TabIndex = 11;
+            this.lbl_email.Text = "Email:";
+            // 
+            // tb_email
+            // 
+            this.tb_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_email.Location = new System.Drawing.Point(357, 3);
+            this.tb_email.Name = "tb_email";
+            this.tb_email.Size = new System.Drawing.Size(160, 26);
+            this.tb_email.TabIndex = 12;
+            // 
+            // btn_email_generate
+            // 
+            this.btn_email_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_email_generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_email_generate.Location = new System.Drawing.Point(523, 3);
+            this.btn_email_generate.Name = "btn_email_generate";
+            this.btn_email_generate.Size = new System.Drawing.Size(124, 26);
+            this.btn_email_generate.TabIndex = 13;
+            this.btn_email_generate.Text = "Email generieren";
+            this.btn_email_generate.UseVisualStyleBackColor = true;
+            this.btn_email_generate.Click += new System.EventHandler(this.btn_email_generate_Click);
             // 
             // btn_add_teacher
             // 
@@ -391,8 +424,8 @@ namespace ExamManager
             // tsmi_subject
             // 
             this.tsmi_subject.Name = "tsmi_subject";
-            this.tsmi_subject.Size = new System.Drawing.Size(76, 23);
-            this.tsmi_subject.Text = "Fach [DEV]";
+            this.tsmi_subject.Size = new System.Drawing.Size(44, 23);
+            this.tsmi_subject.Text = "Fach";
             // 
             // tsmi_sort
             // 
@@ -406,14 +439,14 @@ namespace ExamManager
             // tsmi_sort_firstname
             // 
             this.tsmi_sort_firstname.Name = "tsmi_sort_firstname";
-            this.tsmi_sort_firstname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_firstname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_sort_firstname.Text = "Vorname";
             this.tsmi_sort_firstname.Click += new System.EventHandler(this.tsmi_sort_firstname_Click);
             // 
             // tsmi_sort_lastname
             // 
             this.tsmi_sort_lastname.Name = "tsmi_sort_lastname";
-            this.tsmi_sort_lastname.Size = new System.Drawing.Size(132, 22);
+            this.tsmi_sort_lastname.Size = new System.Drawing.Size(180, 22);
             this.tsmi_sort_lastname.Text = "Nachname";
             // 
             // tsmi_search
@@ -431,32 +464,32 @@ namespace ExamManager
             // tsmi_search_firstname
             // 
             this.tsmi_search_firstname.Name = "tsmi_search_firstname";
-            this.tsmi_search_firstname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_firstname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_firstname.Text = "Vorname [DEV]";
             // 
             // tsmi_search_lastname
             // 
             this.tsmi_search_lastname.Name = "tsmi_search_lastname";
-            this.tsmi_search_lastname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_lastname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_lastname.Text = "Nachname [DEV]";
             // 
             // tsmi_search_shortname
             // 
             this.tsmi_search_shortname.Name = "tsmi_search_shortname";
-            this.tsmi_search_shortname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_shortname.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_shortname.Text = "Kürzel [DEV]";
             // 
             // tsmi_search_doublenames
             // 
             this.tsmi_search_doublenames.Name = "tsmi_search_doublenames";
-            this.tsmi_search_doublenames.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_doublenames.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_doublenames.Text = "Doppelnamen";
             this.tsmi_search_doublenames.Click += new System.EventHandler(this.tsmi_search_doublenames_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(164, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -472,6 +505,7 @@ namespace ExamManager
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_subject,
+            this.toolsToolStripMenuItem,
             this.tsmi_sort,
             this.tsmi_search,
             this.tstb_search});
@@ -481,36 +515,20 @@ namespace ExamManager
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // lbl_email
+            // toolsToolStripMenuItem
             // 
-            this.lbl_email.AutoSize = true;
-            this.lbl_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_email.Location = new System.Drawing.Point(299, 6);
-            this.lbl_email.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.lbl_email.Name = "lbl_email";
-            this.lbl_email.Size = new System.Drawing.Size(52, 20);
-            this.lbl_email.TabIndex = 11;
-            this.lbl_email.Text = "Email:";
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_generate_email});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 23);
+            this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // tb_email
+            // tsmi_generate_email
             // 
-            this.tb_email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_email.Location = new System.Drawing.Point(357, 3);
-            this.tb_email.Name = "tb_email";
-            this.tb_email.Size = new System.Drawing.Size(160, 26);
-            this.tb_email.TabIndex = 12;
-            // 
-            // btn_email_generate
-            // 
-            this.btn_email_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_email_generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_email_generate.Location = new System.Drawing.Point(523, 3);
-            this.btn_email_generate.Name = "btn_email_generate";
-            this.btn_email_generate.Size = new System.Drawing.Size(124, 26);
-            this.btn_email_generate.TabIndex = 13;
-            this.btn_email_generate.Text = "Email generieren";
-            this.btn_email_generate.UseVisualStyleBackColor = true;
-            this.btn_email_generate.Click += new System.EventHandler(this.btn_email_generate_Click);
+            this.tsmi_generate_email.Name = "tsmi_generate_email";
+            this.tsmi_generate_email.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_generate_email.Text = "Emails generieren";
+            this.tsmi_generate_email.Click += new System.EventHandler(this.tsmi_generate_email_Click);
             // 
             // FormTeacherData
             // 
@@ -582,5 +600,7 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_email;
         private System.Windows.Forms.TextBox tb_email;
         private System.Windows.Forms.Button btn_email_generate;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_generate_email;
     }
 }

@@ -474,10 +474,19 @@ namespace ExamManager
                 if (search != null)
                 {
                     bool border = false;
-                    if (searchMode == Search.teacher) // teacher
-                        if (search.Equals(exam.Teacher1) || search.Equals(exam.Teacher2) || search.Equals(exam.Teacher3)) border = true;
-                    if (searchMode == Search.student) // student
-                        if (search.Equals(exam.Student.Firstname + " " + exam.Student.Lastname)) border = true;
+                    if (searchMode == Search.teacher)
+                    {// teacher
+                        if (search.Equals(exam.Teacher1)) border = true;
+                        if (exam.Teacher2.Length > 1 && search.Equals(exam.Teacher2)) border = true;
+                        if (exam.Teacher3.Length > 1 && search.Equals(exam.Teacher3)) border = true;
+
+                    }
+                    if (searchMode == Search.student)
+                    { // student
+                        if (search.Equals(exam.Student.Fullname())) border = true;
+                        if (exam.Student2 != null && search.Equals(exam.Student2.Fullname())) border = true;
+                        if (exam.Student3 != null && search.Equals(exam.Student3.Fullname())) border = true;
+                    }
                     if (searchMode == Search.subject) // subject
                         if (search.Equals(exam.Subject)) border = true;
                     if (searchMode == Search.room) // room
@@ -991,7 +1000,7 @@ namespace ExamManager
         private void tsmi_search_grade_Click(object sender, EventArgs e)
         {
             searchMode = Search.grade;
-            FormSearch form = new FormSearch(0);
+            FormSearch form = new FormSearch(4);
             form.UpdateSearch += update_search_Event;
             form.ShowDialog();
         }

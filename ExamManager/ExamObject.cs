@@ -190,7 +190,12 @@ namespace ExamManager
             if (solidBorder) BorderStyle = ButtonBorderStyle.Solid;
             else BorderStyle = ButtonBorderStyle.Dashed;
             this.BorderColor = borderColor;
-            Panel.Refresh();
+            /*if (Panel != null)
+            {
+                Panel.Refresh();
+                Console.WriteLine("Refresh: " + Date + " " + Time);
+            }
+            else Console.WriteLine("ERROR! " + Date + " " + Time);*/
         }
 
         public void RemoveBorder()
