@@ -25,7 +25,7 @@ namespace ExamManager
             {
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 Title = "Daten speichern",
-                FileName = "DataBackup.json",
+                FileName = "ExamData.json",
                 DefaultExt = "json",
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
                 FilterIndex = 2,
@@ -36,7 +36,7 @@ namespace ExamManager
             File.WriteAllText(sfd.FileName, json);
         }
 
-        private void btn_exam_import_Click(object sender, EventArgs e)
+        private void btn_exam_import_Click(object sender, EventArgs e) // TODO: import exams and check if student/teacher exists else create
         {
             string filePath;
             using (OpenFileDialog ofd = new OpenFileDialog())

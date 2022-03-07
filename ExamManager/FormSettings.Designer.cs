@@ -33,6 +33,9 @@ namespace ExamManager
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.panel_main = new System.Windows.Forms.TabControl();
             this.tp_common = new System.Windows.Forms.TabPage();
+            this.flp_settings_options = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_settings_export = new System.Windows.Forms.Button();
+            this.btn_settings_import = new System.Windows.Forms.Button();
             this.flp_border_color = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_color = new System.Windows.Forms.Label();
             this.cb_color = new System.Windows.Forms.ComboBox();
@@ -45,7 +48,7 @@ namespace ExamManager
             this.lbl_border_smtp_server = new System.Windows.Forms.Label();
             this.flp_smtp_server_port = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_smtp_server_name = new System.Windows.Forms.Label();
-            this.tb_smtp_domain = new System.Windows.Forms.TextBox();
+            this.tb_smtp_server = new System.Windows.Forms.TextBox();
             this.lbl_smtp_server_port = new System.Windows.Forms.Label();
             this.tb_smtp_port = new System.Windows.Forms.TextBox();
             this.flp_smtp_user = new System.Windows.Forms.FlowLayoutPanel();
@@ -58,7 +61,7 @@ namespace ExamManager
             this.lbl_smtp_sendername = new System.Windows.Forms.Label();
             this.tb_smtp_sendername = new System.Windows.Forms.TextBox();
             this.lbl_titel = new System.Windows.Forms.Label();
-            this.tb_email_titel = new System.Windows.Forms.TextBox();
+            this.tb_smtp_email_titel = new System.Windows.Forms.TextBox();
             this.tp_database = new System.Windows.Forms.TabPage();
             this.flp_db_main = new System.Windows.Forms.FlowLayoutPanel();
             this.flp_current_db = new System.Windows.Forms.FlowLayoutPanel();
@@ -73,12 +76,10 @@ namespace ExamManager
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
-            this.flp_settings_options = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_settings_export = new System.Windows.Forms.Button();
-            this.btn_settings_import = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
+            this.flp_settings_options.SuspendLayout();
             this.flp_border_color.SuspendLayout();
             this.tp_email.SuspendLayout();
             this.flp_email_main.SuspendLayout();
@@ -92,7 +93,6 @@ namespace ExamManager
             this.flp_current_db.SuspendLayout();
             this.flp_select_localdb.SuspendLayout();
             this.tlp_btns.SuspendLayout();
-            this.flp_settings_options.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -134,6 +134,40 @@ namespace ExamManager
             this.tp_common.TabIndex = 0;
             this.tp_common.Text = "Allgemein";
             this.tp_common.UseVisualStyleBackColor = true;
+            // 
+            // flp_settings_options
+            // 
+            this.flp_settings_options.Controls.Add(this.btn_settings_export);
+            this.flp_settings_options.Controls.Add(this.btn_settings_import);
+            this.flp_settings_options.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flp_settings_options.Location = new System.Drawing.Point(3, 342);
+            this.flp_settings_options.Name = "flp_settings_options";
+            this.flp_settings_options.Size = new System.Drawing.Size(780, 30);
+            this.flp_settings_options.TabIndex = 6;
+            // 
+            // btn_settings_export
+            // 
+            this.btn_settings_export.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_settings_export.Location = new System.Drawing.Point(2, 2);
+            this.btn_settings_export.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_settings_export.Name = "btn_settings_export";
+            this.btn_settings_export.Size = new System.Drawing.Size(140, 26);
+            this.btn_settings_export.TabIndex = 9;
+            this.btn_settings_export.Text = "Einstellungen exportieren";
+            this.btn_settings_export.UseVisualStyleBackColor = true;
+            this.btn_settings_export.Click += new System.EventHandler(this.btn_settings_export_Click);
+            // 
+            // btn_settings_import
+            // 
+            this.btn_settings_import.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_settings_import.Location = new System.Drawing.Point(146, 2);
+            this.btn_settings_import.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_settings_import.Name = "btn_settings_import";
+            this.btn_settings_import.Size = new System.Drawing.Size(140, 26);
+            this.btn_settings_import.TabIndex = 10;
+            this.btn_settings_import.Text = "Einstellungen importieren";
+            this.btn_settings_import.UseVisualStyleBackColor = true;
+            this.btn_settings_import.Click += new System.EventHandler(this.btn_settings_import_Click);
             // 
             // flp_border_color
             // 
@@ -262,7 +296,7 @@ namespace ExamManager
             // flp_smtp_server_port
             // 
             this.flp_smtp_server_port.Controls.Add(this.lbl_smtp_server_name);
-            this.flp_smtp_server_port.Controls.Add(this.tb_smtp_domain);
+            this.flp_smtp_server_port.Controls.Add(this.tb_smtp_server);
             this.flp_smtp_server_port.Controls.Add(this.lbl_smtp_server_port);
             this.flp_smtp_server_port.Controls.Add(this.tb_smtp_port);
             this.flp_smtp_server_port.Dock = System.Windows.Forms.DockStyle.Top;
@@ -282,13 +316,13 @@ namespace ExamManager
             this.lbl_smtp_server_name.TabIndex = 0;
             this.lbl_smtp_server_name.Text = "Server:";
             // 
-            // tb_smtp_domain
+            // tb_smtp_server
             // 
-            this.tb_smtp_domain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_smtp_domain.Location = new System.Drawing.Point(72, 3);
-            this.tb_smtp_domain.Name = "tb_smtp_domain";
-            this.tb_smtp_domain.Size = new System.Drawing.Size(175, 23);
-            this.tb_smtp_domain.TabIndex = 1;
+            this.tb_smtp_server.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_smtp_server.Location = new System.Drawing.Point(72, 3);
+            this.tb_smtp_server.Name = "tb_smtp_server";
+            this.tb_smtp_server.Size = new System.Drawing.Size(175, 23);
+            this.tb_smtp_server.TabIndex = 1;
             // 
             // lbl_smtp_server_port
             // 
@@ -377,7 +411,7 @@ namespace ExamManager
             this.flp_smtp_msg.Controls.Add(this.lbl_smtp_sendername);
             this.flp_smtp_msg.Controls.Add(this.tb_smtp_sendername);
             this.flp_smtp_msg.Controls.Add(this.lbl_titel);
-            this.flp_smtp_msg.Controls.Add(this.tb_email_titel);
+            this.flp_smtp_msg.Controls.Add(this.tb_smtp_email_titel);
             this.flp_smtp_msg.Dock = System.Windows.Forms.DockStyle.Top;
             this.flp_smtp_msg.Location = new System.Drawing.Point(3, 150);
             this.flp_smtp_msg.Name = "flp_smtp_msg";
@@ -414,14 +448,14 @@ namespace ExamManager
             this.lbl_titel.TabIndex = 7;
             this.lbl_titel.Text = "Email-Titel:";
             // 
-            // tb_email_titel
+            // tb_smtp_email_titel
             // 
-            this.tb_email_titel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_email_titel.Location = new System.Drawing.Point(377, 3);
-            this.tb_email_titel.Name = "tb_email_titel";
-            this.tb_email_titel.Size = new System.Drawing.Size(175, 23);
-            this.tb_email_titel.TabIndex = 8;
-            this.tb_email_titel.UseSystemPasswordChar = true;
+            this.tb_smtp_email_titel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_smtp_email_titel.Location = new System.Drawing.Point(377, 3);
+            this.tb_smtp_email_titel.Name = "tb_smtp_email_titel";
+            this.tb_smtp_email_titel.Size = new System.Drawing.Size(175, 23);
+            this.tb_smtp_email_titel.TabIndex = 8;
+            this.tb_smtp_email_titel.UseSystemPasswordChar = true;
             // 
             // tp_database
             // 
@@ -589,40 +623,6 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // flp_settings_options
-            // 
-            this.flp_settings_options.Controls.Add(this.btn_settings_export);
-            this.flp_settings_options.Controls.Add(this.btn_settings_import);
-            this.flp_settings_options.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flp_settings_options.Location = new System.Drawing.Point(3, 342);
-            this.flp_settings_options.Name = "flp_settings_options";
-            this.flp_settings_options.Size = new System.Drawing.Size(780, 30);
-            this.flp_settings_options.TabIndex = 6;
-            // 
-            // btn_settings_export
-            // 
-            this.btn_settings_export.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_settings_export.Location = new System.Drawing.Point(2, 2);
-            this.btn_settings_export.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_settings_export.Name = "btn_settings_export";
-            this.btn_settings_export.Size = new System.Drawing.Size(140, 26);
-            this.btn_settings_export.TabIndex = 9;
-            this.btn_settings_export.Text = "Einstellungen exportieren";
-            this.btn_settings_export.UseVisualStyleBackColor = true;
-            this.btn_settings_export.Click += new System.EventHandler(this.btn_settings_export_Click);
-            // 
-            // btn_settings_import
-            // 
-            this.btn_settings_import.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_settings_import.Location = new System.Drawing.Point(146, 2);
-            this.btn_settings_import.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_settings_import.Name = "btn_settings_import";
-            this.btn_settings_import.Size = new System.Drawing.Size(140, 26);
-            this.btn_settings_import.TabIndex = 10;
-            this.btn_settings_import.Text = "Einstellungen importieren";
-            this.btn_settings_import.UseVisualStyleBackColor = true;
-            this.btn_settings_import.Click += new System.EventHandler(this.btn_settings_import_Click);
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -637,6 +637,7 @@ namespace ExamManager
             this.tlp_main.ResumeLayout(false);
             this.panel_main.ResumeLayout(false);
             this.tp_common.ResumeLayout(false);
+            this.flp_settings_options.ResumeLayout(false);
             this.flp_border_color.ResumeLayout(false);
             this.flp_border_color.PerformLayout();
             this.tp_email.ResumeLayout(false);
@@ -658,7 +659,6 @@ namespace ExamManager
             this.flp_select_localdb.ResumeLayout(false);
             this.flp_select_localdb.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
-            this.flp_settings_options.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -673,7 +673,7 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flp_email_main;
         private System.Windows.Forms.FlowLayoutPanel flp_smtp_server_port;
         private System.Windows.Forms.Label lbl_smtp_server_name;
-        private System.Windows.Forms.TextBox tb_smtp_domain;
+        private System.Windows.Forms.TextBox tb_smtp_server;
         private System.Windows.Forms.TableLayoutPanel tlp_btns;
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.Button btnm_cancel;
@@ -707,7 +707,7 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_smtp_sendername;
         private System.Windows.Forms.TextBox tb_smtp_sendername;
         private System.Windows.Forms.Label lbl_titel;
-        private System.Windows.Forms.TextBox tb_email_titel;
+        private System.Windows.Forms.TextBox tb_smtp_email_titel;
         private System.Windows.Forms.Button btn_reset;
         private System.Windows.Forms.FlowLayoutPanel flp_settings_options;
         private System.Windows.Forms.Button btn_settings_export;

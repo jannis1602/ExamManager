@@ -20,6 +20,8 @@ namespace ExamManager
                 dataGridView_exam.Columns.Add("exam_room", "Prüfungsraum");
                 dataGridView_exam.Columns.Add("preparation_room", "Vorbereitungsraum");
                 dataGridView_exam.Columns.Add("student", "Schüler");
+                dataGridView_exam.Columns.Add("student2", "Schüler2");
+                dataGridView_exam.Columns.Add("student3", "Schüler3");
                 dataGridView_exam.Columns.Add("teacher_vorsitz", "Lehrer-vorsitz");
                 dataGridView_exam.Columns.Add("teacher_pruefer", "Lehrer-pruefer");
                 dataGridView_exam.Columns.Add("teacher_protokoll", "Lehrer-protokoll");
@@ -35,10 +37,19 @@ namespace ExamManager
                     data.Add(s);
                 foreach (ExamObject s in data)
                 {
-                    StudentObject student = s.Student;
-                    if (student == null)
-                        student = new StudentObject(0, "nicht gefunden", "nicht gefunden", "-");
-                    dataGridView_exam.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s.StudentId + " -> " + student.Firstname + " " + student.Lastname, s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
+                    StudentObject s1 = s.Student;
+                    StudentObject s2 = s.Student2;
+                    StudentObject s3 = s.Student3;
+                    if (s1 == null) s1 = new StudentObject(0, "ID " + s.StudentId + " nicht gefunden", "nicht gefunden", "-");
+                    if (s2 == null) s2 = new StudentObject(0, "-", "-", "-");
+                    if (s3 == null) s3 = new StudentObject(0, "-", "-", "-");
+                    /*TeacherObject t1 = s.Teacher1;
+                    TeacherObject t2 = s.Teacher2;
+                    TeacherObject t3 = s.Teacher3;
+                    if (s1 == null) t1 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");
+                    if (s2 == null) t2 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");
+                    if (s3 == null) t3 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");*/
+                    dataGridView_exam.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s1.Fullname(), s2.Fullname(), s3.Fullname(), s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
                 }
                 dataGridView = dataGridView_exam;
             }
@@ -49,6 +60,7 @@ namespace ExamManager
                 dataGridView_students.Columns.Add("short_name", "Kürzel");
                 dataGridView_students.Columns.Add("firstname", "Vorname");
                 dataGridView_students.Columns.Add("lastname", "Nachname");
+                dataGridView_students.Columns.Add("email", "Email");
                 dataGridView_students.Columns.Add("phone_number", "Telefonnummer");
                 dataGridView_students.Columns.Add("subject1", "Fach1");
                 dataGridView_students.Columns.Add("subject2", "Fach2");
@@ -71,7 +83,7 @@ namespace ExamManager
             {
                 DataGridView dataGridView_teachers = new DataGridView();
                 dataGridView_teachers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-                dataGridView_teachers.Columns.Add("id", "id");
+                dataGridView_teachers.Columns.Add("id", "Id");
                 dataGridView_teachers.Columns.Add("firstname", "Vorname");
                 dataGridView_teachers.Columns.Add("lastname", "Nachname");
                 dataGridView_teachers.Columns.Add("grade", "Klasse");

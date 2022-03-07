@@ -219,8 +219,8 @@ namespace ExamManager
             this.searchToolStripMenuItem,
             this.tsmi_filter,
             this.examToolStripMenuItem,
-            this.tsmi_options,
             this.toolsToolStripMenuItem,
+            this.tsmi_options,
             this.infoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(102, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -333,42 +333,42 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
             // tsmi_search_room
             // 
             this.tsmi_search_room.Name = "tsmi_search_room";
-            this.tsmi_search_room.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_room.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_room.Text = "Raum";
             this.tsmi_search_room.Click += new System.EventHandler(this.tsmi_search_room_Click);
             // 
             // tsmi_search_grade
             // 
             this.tsmi_search_grade.Name = "tsmi_search_grade";
-            this.tsmi_search_grade.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_grade.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_grade.Text = "Stufe";
             this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -385,21 +385,21 @@ namespace ExamManager
             // tsmi_filter_grade
             // 
             this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_grade.Text = "Stufe";
             this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
             // 
             // tsmi_filter_teacher
             // 
             this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_teacher.Text = "Lehrer";
             this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // tsmi_filter_all
             // 
             this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_all.Text = "Filter löschen";
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
             // 

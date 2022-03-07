@@ -118,7 +118,16 @@ namespace ExamManager
             SettingsObject settings = new SettingsObject
             {
                 DatabasePath = Properties.Settings.Default.databasePath,
-                EmailDomain = Properties.Settings.Default.email_domain
+                EmailDomain = Properties.Settings.Default.email_domain,
+                SMTPSettings = new SMTP_Settings // TODO: get from settings
+                {
+                    Server = tb_smtp_server.Text,
+                    Port = tb_smtp_port.Text,
+                    Email = tb_smtp_email.Text,
+                    Password = tb_smtp_pwd.Text,
+                    SenderName = tb_smtp_sendername.Text,
+                    EmailTitel = tb_smtp_email_titel.Text
+                }
             };
 
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
@@ -137,13 +146,28 @@ namespace ExamManager
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     filePath = ofd.FileName;
-                    SettingsObject item;
+                    SettingsObject settings;
                     using (StreamReader r = new StreamReader(filePath))
                     {
                         string jsonString = r.ReadToEnd();
-                        item = JsonConvert.DeserializeObject<SettingsObject>(jsonString);
+                        settings = JsonConvert.DeserializeObject<SettingsObject>(jsonString);
                     }
-                    Console.WriteLine(item.DatabasePath + "  " + item.EmailDomain);
+                    Console.WriteLine(settings.DatabasePath + "  " + settings.EmailDomain + "  " + settings.SMTPSettings);
+                    if (settings.EmailDomain != null)
+                    {
+                        Properties.Settings.Default.email_domain = settings.EmailDomain;
+                        tb_emaildomain.Text = settings.EmailDomain;
+                    }
+                    if (settings.DatabasePath != null)
+                    {
+                        Properties.Settings.Default.databasePath = settings.DatabasePath;
+                        lbl_current_database_path.Text = settings.DatabasePath;
+                    }
+                    if (settings.SMTPSettings != null)
+                    {
+                        tb_smtp_server.Text = settings.SMTPSettings.Server;
+                        tb_smtp_port.Text = settings.SMTPSettings.Port;
+                    }
                 }
             }
         }
@@ -152,6 +176,17 @@ namespace ExamManager
     {
         public string DatabasePath { get; set; }
         public string EmailDomain { get; set; }
+        public SMTP_Settings SMTPSettings { get; set; }
+
+    }
+    class SMTP_Settings
+    {
+        public string Server { get; set; }
+        public string Port { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string SenderName { get; set; }
+        public string EmailTitel { get; set; }
 
     }
 }

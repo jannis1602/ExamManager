@@ -42,7 +42,7 @@ namespace ExamManager
         /// <summary>Creates a connection to the sqlite database</summary>
         private SQLiteConnection CreateConnection(string path)
         {
-            if (!File.Exists(path))//+ "database.db")) //TODO ---- TEMP ----
+            if (!File.Exists(path))
             {
                 DialogResult result = MessageBox.Show("Existierende Datenbank wählen?", "Achtung", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
@@ -203,7 +203,7 @@ namespace ExamManager
             }
         }
         /// <summary>Searches a student by firstname and lastname (and grade) in the database.</summary>
-        /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
+        /// <returns>Returns the student as <see cref="StudentObject"/>. If it doesn't exist, null is returned</returns>
         public StudentObject GetStudentByName(string firstname, string lastname, string grade = null)
         {
             SQLiteDataReader reader;
@@ -223,7 +223,7 @@ namespace ExamManager
             return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]);
         }
         /// <summary>Searches a student by <paramref name="id"/> in the database.</summary>
-        /// <returns>Returns the student as <see cref="string"/> <see cref="Array"/> if it doesn't exist, null is returned</returns>
+        /// <returns>Returns the student as <see cref="StudentObject"/>. If it doesn't exist, null is returned</returns>
         public StudentObject GetStudentByID(int id)
         {
             SQLiteDataReader reader;
@@ -240,7 +240,7 @@ namespace ExamManager
             return new StudentObject(Int32.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], rData[5]);
         }
         /// <summary>Searches all students in the database.</summary>
-        /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="StudentObject"/></returns>
         public LinkedList<StudentObject> GetAllStudents(bool orderFirstname = false)
         {
             LinkedList<StudentObject> data = new LinkedList<StudentObject>();
@@ -263,7 +263,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches all students in the database.</summary>
-        /// <returns>Returns all students as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns all students as a <see cref="LinkedList{t}"/> with <see cref="StudentObject"/></returns>
         public LinkedList<StudentObject> GetAllStudentsFromGrade(string grade, bool orderFirstname = false)
         {
             LinkedList<StudentObject> data = new LinkedList<StudentObject>();
@@ -415,7 +415,7 @@ namespace ExamManager
             form.ShowDialog();
         }
         /// <summary>Searches all teachers in the database.</summary>
-        /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="TeacherObject"/></returns>
         public LinkedList<TeacherObject> GetAllTeachers(bool orderFirstname = false)
         {
             LinkedList<TeacherObject> data = new LinkedList<TeacherObject>();
@@ -438,7 +438,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches a teacher by shortname in the database.</summary>
-        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the teacher as <see cref="TeacherObject"/></returns>
         public TeacherObject GetTeacherByID(string short_name)
         {
             SQLiteDataReader reader;
@@ -455,7 +455,7 @@ namespace ExamManager
             return new TeacherObject(rData[0], rData[1], rData[2], rData[3], rData[4], rData[5], rData[6], rData[7]);
         }
         /// <summary>Searches a teacher by subject in the database.</summary>
-        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the teacher as <see cref="TeacherObject"/></returns>
         public LinkedList<TeacherObject> GetTeacherBySubject(string subject)
         {
             LinkedList<TeacherObject> data = new LinkedList<TeacherObject>();
@@ -478,7 +478,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches a teacher by firstname and lastname in the database.</summary>
-        /// <returns>Returns the teacher as <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the teacher as <see cref="TeacherObject"/></returns>
         public TeacherObject GetTeacherByName(string firstname, string lastname)
         {
             SQLiteDataReader reader;
@@ -545,7 +545,7 @@ namespace ExamManager
             sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Searches all exams in the database.</summary>
-        /// <returns>Returns all exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns all exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExams(bool orderByDate = false)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
@@ -579,7 +579,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches a exam by id in the database.</summary>
-        /// <returns>Returns the exam as <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exam as <see cref="ExamObject"/></returns>
         public ExamObject GetExamById(int id)
         {
             SQLiteDataReader reader;
@@ -612,7 +612,7 @@ namespace ExamManager
 
         }
         /// <summary>Searches all exams at a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsAtDate(string date)
         {
             //DateTime dt = DateTime.ParseExact(date, "dd.MM.yyyy", null);
@@ -648,7 +648,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches all exams of a teacher at a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsFromTeacherAtDate(string date, string teacher)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
@@ -681,7 +681,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches all exams of a student at a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsFromStudentAtDate(string date, int student_id)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
@@ -714,7 +714,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches all exams of all students of a grade at a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsFromGradeAtDate(string date, string grade)
         {
             LinkedList<StudentObject> tempStudentList = GetAllStudentsFromGrade(grade);
@@ -725,7 +725,7 @@ namespace ExamManager
             return data;
         }
         /// <summary>Searches all exams in a room at a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
@@ -847,7 +847,7 @@ namespace ExamManager
             }
         }
         /// <summary>Searches all exams before a date in the database.</summary>
-        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="string"/> <see cref="Array"/></returns>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
         public LinkedList<ExamObject> GetAllExamsBeforeDate(string date)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
@@ -1054,7 +1054,7 @@ namespace ExamManager
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS teacher (short_name TEXT PRIMARY KEY NOT NULL, firstname TEXT NOT NULL, lastname TEXT NOT NULL,email TEXT, phone_number TEXT, subject1 TEXT NOT NULL, subject2 TEXT, subject3 TEXT)";
             sqlite_cmd.ExecuteNonQuery();
         }
-        private void CreateExamDB() // TODO: 3 teacher 1 notnull and  3 students min 1 -> change string[].length +2!
+        private void CreateExamDB()
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS exam (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE, time TIME NOT NULL, exam_room TEXT NOT NULL, preparation_room TEXT, student INTEGER, student2 INTEGER, student3 INTEGER, teacher_vorsitz TEXT, teacher_pruefer TEXT, teacher_protokoll TEXT, subject TEXT, duration INTEGER DEFAULT 45)";
