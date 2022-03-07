@@ -54,6 +54,7 @@ namespace ExamManager
             this.Duration = duration;
             // TODO: check teacher in db
             // TODO teacher object
+            // TODO UPDATE from database
         }
         public ExamObject(int id, string date, string time, string examroom, string preparationroom, int student, int student2, int student3, string teacher1, string teacher2, string teacher3, string subject, int duration)
         {
@@ -69,7 +70,6 @@ namespace ExamManager
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
             this.StudentId = student;
-            //this.Student = Program.database.GetStudentByID(student);
             if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
             if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
             if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
@@ -123,9 +123,10 @@ namespace ExamManager
             this.Panel.Refresh();
         }
 
-        public Panel GetTimelineEntity()
+        public Panel GetTimelineEntity(bool preview = false)
         {
             if (Panel == null) CreatePanel();
+            if (preview) Panel.BackColor = Color.FromArgb(80, Colors.TL_Entity);
             return this.Panel;
         }
 
@@ -138,8 +139,7 @@ namespace ExamManager
             Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
             Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid,
             Colors.TL_EntityBorder, 2, ButtonBorderStyle.Solid);
-            ExamObject exam = Program.database.GetExamById(Int32.Parse(panel_tl_entity.Name));
-            StudentObject student = exam.Student;
+            StudentObject student = Student;
             if (student == null)
                 student = new StudentObject(0, "Schüler nicht gefunden!", " ", "-");
             if (Border)
@@ -158,28 +158,28 @@ namespace ExamManager
             Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
             Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            e.Graphics.DrawString(student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
-            string scount = null;
-            if (Student2 != null) scount = "[2xS]";
-            if (Student3 != null) scount = "[3xS]";
+            e.Graphics.DrawString(student.Fullname() + "  [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
+            string sCount = null;
+            if (Student2 != null) sCount = "[2xS]";
+            if (Student3 != null) sCount = "[3xS]";
             if (Duration < 40)
             {
-                e.Graphics.DrawString(exam.Time + "; " + exam.Duration + "min  " + scount, drawFont, Brushes.Black, rectL2, stringFormat);
-                e.Graphics.DrawString(exam.Teacher1 + "," + exam.Teacher2 + "," + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+                e.Graphics.DrawString(Time + "; " + Duration + "min  " + sCount, drawFont, Brushes.Black, rectL2, stringFormat);
+                e.Graphics.DrawString(Teacher1 + "," + Teacher2 + "," + Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
             }
             else
             {
-                e.Graphics.DrawString(exam.Time + "   " + exam.Duration + "min  " + scount, drawFont, Brushes.Black, rectL2, stringFormat);
-                e.Graphics.DrawString(exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
-
+                e.Graphics.DrawString(Time + "   " + Duration + "min  " + sCount, drawFont, Brushes.Black, rectL2, stringFormat);
+                e.Graphics.DrawString(Teacher1 + "  " + Teacher2 + "  " + Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
             }
-            e.Graphics.DrawString(exam.Subject + " " + exam.Examroom + " [" + exam.Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
+            e.Graphics.DrawString(Subject + " " + Examroom + " [" + Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
+            // ---- ToolTip ----
             string line1 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
-            string line11 = null; if (Student2 != null) line11 = exam.Student2.Firstname + " " + exam.Student2.Lastname + "  [" + exam.Student2.Grade + "]\n";
-            string line12 = null; if (Student3 != null) line12 = Student3.Firstname + " " + exam.Student3.Lastname + "  [" + exam.Student3.Grade + "]\n";
-            string line2 = exam.Time + "     " + exam.Duration + "min\n";
-            string line3 = exam.Teacher1 + "  " + exam.Teacher2 + "  " + exam.Teacher3 + "\n";
-            string line4 = exam.Subject + "  " + exam.Examroom + "  [" + exam.Preparationroom + "]";
+            string line11 = null; if (Student2 != null) line11 = Student2.Firstname + " " + Student2.Lastname + "  [" + Student2.Grade + "]\n";
+            string line12 = null; if (Student3 != null) line12 = Student3.Firstname + " " + Student3.Lastname + "  [" + Student3.Grade + "]\n";
+            string line2 = Time + "     " + Duration + "min\n";
+            string line3 = Teacher1 + "  " + Teacher2 + "  " + Teacher3 + "\n";
+            string line4 = Subject + "  " + Examroom + "  [" + Preparationroom + "]";
             ToolTip sfToolTip1 = new ToolTip();
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);
         }

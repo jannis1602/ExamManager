@@ -59,18 +59,18 @@ namespace ExamManager
             this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_examdates = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_options = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings_keepdata = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings_table = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings_table_exams = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings_table_students = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_settings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_deleteOldExams = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_exportexamday = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_import_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_options = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_options_keepdata = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_options_table = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_exams = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_students = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_options_settings = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_info_keys = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
@@ -225,7 +225,7 @@ namespace ExamManager
             this.menuStrip1.Location = new System.Drawing.Point(102, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(523, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(403, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip";
             // 
@@ -333,42 +333,42 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
             // tsmi_search_room
             // 
             this.tsmi_search_room.Name = "tsmi_search_room";
-            this.tsmi_search_room.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_room.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_room.Text = "Raum";
             this.tsmi_search_room.Click += new System.EventHandler(this.tsmi_search_room_Click);
             // 
             // tsmi_search_grade
             // 
             this.tsmi_search_grade.Name = "tsmi_search_grade";
-            this.tsmi_search_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_grade.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_grade.Text = "Stufe";
             this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -385,21 +385,21 @@ namespace ExamManager
             // tsmi_filter_grade
             // 
             this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(144, 22);
             this.tsmi_filter_grade.Text = "Stufe";
             this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
             // 
             // tsmi_filter_teacher
             // 
             this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(144, 22);
             this.tsmi_filter_teacher.Text = "Lehrer";
             this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // tsmi_filter_all
             // 
             this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_all.Size = new System.Drawing.Size(144, 22);
             this.tsmi_filter_all.Text = "Filter löschen";
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
             // 
@@ -425,61 +425,6 @@ namespace ExamManager
             this.tsmi_exam_examdates.Size = new System.Drawing.Size(190, 22);
             this.tsmi_exam_examdates.Text = "Prüfungstage Liste";
             this.tsmi_exam_examdates.Click += new System.EventHandler(this.tsmi_exam_examdates_Click);
-            // 
-            // tsmi_options
-            // 
-            this.tsmi_options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_settings_keepdata,
-            this.tsmi_settings_table,
-            this.tsmi_settings});
-            this.tsmi_options.Name = "tsmi_options";
-            this.tsmi_options.Size = new System.Drawing.Size(69, 20);
-            this.tsmi_options.Text = "Optionen";
-            // 
-            // tsmi_settings_keepdata
-            // 
-            this.tsmi_settings_keepdata.Name = "tsmi_settings_keepdata";
-            this.tsmi_settings_keepdata.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings_keepdata.Text = "Daten behalten";
-            this.tsmi_settings_keepdata.Click += new System.EventHandler(this.tsmi_settings_keepdata_Click);
-            // 
-            // tsmi_settings_table
-            // 
-            this.tsmi_settings_table.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_settings_table_exams,
-            this.tsmi_settings_table_students,
-            this.tsmi_settings_table_teacher});
-            this.tsmi_settings_table.Name = "tsmi_settings_table";
-            this.tsmi_settings_table.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings_table.Text = "Tabellen";
-            // 
-            // tsmi_settings_table_exams
-            // 
-            this.tsmi_settings_table_exams.Name = "tsmi_settings_table_exams";
-            this.tsmi_settings_table_exams.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings_table_exams.Text = "Prüfungen";
-            this.tsmi_settings_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
-            // 
-            // tsmi_settings_table_students
-            // 
-            this.tsmi_settings_table_students.Name = "tsmi_settings_table_students";
-            this.tsmi_settings_table_students.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings_table_students.Text = "Schüler";
-            this.tsmi_settings_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
-            // 
-            // tsmi_settings_table_teacher
-            // 
-            this.tsmi_settings_table_teacher.Name = "tsmi_settings_table_teacher";
-            this.tsmi_settings_table_teacher.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings_table_teacher.Text = "Lehrer";
-            this.tsmi_settings_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
-            // 
-            // tsmi_settings
-            // 
-            this.tsmi_settings.Name = "tsmi_settings";
-            this.tsmi_settings.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_settings.Text = "Einstellungen";
-            this.tsmi_settings.Click += new System.EventHandler(this.tsmi_settings_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -519,6 +464,61 @@ namespace ExamManager
             this.tsmi_import_export.Size = new System.Drawing.Size(230, 22);
             this.tsmi_import_export.Text = "Import/Export [DEV]";
             this.tsmi_import_export.Click += new System.EventHandler(this.tsmi_import_export_Click);
+            // 
+            // tsmi_options
+            // 
+            this.tsmi_options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_options_keepdata,
+            this.tsmi_options_table,
+            this.tsmi_options_settings});
+            this.tsmi_options.Name = "tsmi_options";
+            this.tsmi_options.Size = new System.Drawing.Size(69, 20);
+            this.tsmi_options.Text = "Optionen";
+            // 
+            // tsmi_options_keepdata
+            // 
+            this.tsmi_options_keepdata.Name = "tsmi_options_keepdata";
+            this.tsmi_options_keepdata.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_keepdata.Text = "Daten behalten";
+            this.tsmi_options_keepdata.Click += new System.EventHandler(this.tsmi_options_keepdata_Click);
+            // 
+            // tsmi_options_table
+            // 
+            this.tsmi_options_table.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_table_exams,
+            this.tsmi_table_students,
+            this.tsmi_table_teacher});
+            this.tsmi_options_table.Name = "tsmi_options_table";
+            this.tsmi_options_table.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_table.Text = "Tabellen";
+            // 
+            // tsmi_table_exams
+            // 
+            this.tsmi_table_exams.Name = "tsmi_table_exams";
+            this.tsmi_table_exams.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_exams.Text = "Prüfungen";
+            this.tsmi_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
+            // 
+            // tsmi_table_students
+            // 
+            this.tsmi_table_students.Name = "tsmi_table_students";
+            this.tsmi_table_students.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_students.Text = "Schüler";
+            this.tsmi_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
+            // 
+            // tsmi_table_teacher
+            // 
+            this.tsmi_table_teacher.Name = "tsmi_table_teacher";
+            this.tsmi_table_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_teacher.Text = "Lehrer";
+            this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
+            // 
+            // tsmi_options_settings
+            // 
+            this.tsmi_options_settings.Name = "tsmi_options_settings";
+            this.tsmi_options_settings.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_settings.Text = "Einstellungen";
+            this.tsmi_options_settings.Click += new System.EventHandler(this.tsmi_options_settings_Click);
             // 
             // infoToolStripMenuItem
             // 
@@ -1608,10 +1608,10 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_info_keys;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_exams;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_students;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_table_teacher;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_options_table;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_exams;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_students;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_table_teacher;
         private System.Windows.Forms.Panel panel_sidetop_empty;
         private System.Windows.Forms.Label lbl_search;
         private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadteacher;
@@ -1630,8 +1630,8 @@ namespace ExamManager
         private System.Windows.Forms.ComboBox cb_student2;
         private System.Windows.Forms.Label lbl_student2;
         private System.Windows.Forms.ToolStripMenuItem tsmi_import_export;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings_keepdata;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_options_keepdata;
         private System.Windows.Forms.Button btn_cancel;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_settings;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_options_settings;
     }
 }
