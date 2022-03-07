@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ExamManager
 {
-    public partial class FormSettings : Form
+    public partial class FormDomainSettings : Form
     {
-        public FormSettings()
+        public FormDomainSettings()
         {
             InitializeComponent();
             tb_maildomain.Text = Properties.Settings.Default.email_domain;

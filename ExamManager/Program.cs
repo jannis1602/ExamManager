@@ -10,15 +10,18 @@ namespace ExamManager
         static void Main()
         {
             if (Properties.Settings.Default.color_theme == 0)
-                Colors.ColorTheme(Colors.Theme.dark);
-            else if (Properties.Settings.Default.color_theme == 1)
                 Colors.ColorTheme(Colors.Theme.light);
+            else if (Properties.Settings.Default.color_theme == 1)
+                Colors.ColorTheme(Colors.Theme.dark);
             else if (Properties.Settings.Default.color_theme == 2)
                 Colors.ColorTheme(Colors.Theme.bw);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             database = new Database();
             Application.Run(new Form1());
+
+            //DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
+            //if (result == DialogResult.Yes)
 
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);

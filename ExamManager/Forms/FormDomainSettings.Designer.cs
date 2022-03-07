@@ -1,7 +1,7 @@
 ﻿
 namespace ExamManager
 {
-    partial class FormSettings
+    partial class FormDomainSettings
     {
         /// <summary>
         /// Required designer variable.

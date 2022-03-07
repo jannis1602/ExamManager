@@ -1093,88 +1093,9 @@ namespace ExamManager
             form.ShowDialog();
         }
         // ----------------- tsmi settings -----------------
-        private void tsmi_settings_db_default_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.databasePath = "default";
-            Properties.Settings.Default.Save();
-            Application.Restart();
-            Environment.Exit(0);
-        }
-        private void tsmi_settings_db_localdb_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.Title = "Lokale Datenbank auswählen";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string filePath = openFileDialog.FileName;
-                    Properties.Settings.Default.databasePath = filePath;
-                    Properties.Settings.Default.Save();
-                    Application.Restart();
-                    Environment.Exit(0);
-                    Program.database = new Database();
-                    UpdateTimeline();
-                    UpdateAutocomplete();
-                }
-            }
-        }
-        private void tsmi_show_current_db_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(Properties.Settings.Default.databasePath, "Aktuelle Datenbank", MessageBoxButtons.OK);
-        }
         private void tsmi_settings_keepdata_Click(object sender, EventArgs e)
         {
             new KeepDataForm().ShowDialog();
-        }
-        private void tsmi_settings_mailgenerator_Click(object sender, EventArgs e)
-        {
-            FormSettings form = new FormSettings();
-            form.ShowDialog(this);
-        }
-        private void tsmi_color_dark_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.color_theme = 0;
-            Properties.Settings.Default.Save();
-            Colors.ColorTheme(Colors.Theme.dark);
-            UpdateTimeline();
-            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
-            panel_time_line.BackColor = Colors.TL_Bg;
-            panel_top_time.BackColor = Colors.TL_TimeBg;
-            panel_side_room.BackColor = Colors.TL_RoomBg;
-            tlp_edit.BackColor = Colors.Edit_Bg;
-            lbl_mode.BackColor = Colors.Edit_ModeBg;
-            //MessageBox.Show("Einstellungen werden beim nächsten start übernommen.", "Info!", MessageBoxButtons.OK);
-        }
-        private void tsmi_color_light_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.color_theme = 1;
-            Properties.Settings.Default.Save();
-            Colors.ColorTheme(Colors.Theme.light);
-            UpdateTimeline();
-            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
-            panel_time_line.BackColor = Colors.TL_Bg;
-            panel_top_time.BackColor = Colors.TL_TimeBg;
-            panel_side_room.BackColor = Colors.TL_RoomBg;
-            tlp_edit.BackColor = Colors.Edit_Bg;
-            lbl_mode.BackColor = Colors.Edit_ModeBg;
-            //MessageBox.Show("Einstellungen werden beim nächsten start übernommen.", "Info!", MessageBoxButtons.OK);
-        }
-        private void tsmi_color_bw_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.color_theme = 2;
-            Properties.Settings.Default.Save();
-            Colors.ColorTheme(Colors.Theme.bw);
-            UpdateTimeline();
-            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
-            panel_time_line.BackColor = Colors.TL_Bg;
-            panel_top_time.BackColor = Colors.TL_TimeBg;
-            panel_side_room.BackColor = Colors.TL_RoomBg;
-            tlp_edit.BackColor = Colors.Edit_Bg;
-            lbl_mode.BackColor = Colors.Edit_ModeBg;
         }
         // ----------------- tsmi filter -----------------
         private void tsmi_filter_grade_Click(object sender, EventArgs e)
@@ -1465,7 +1386,7 @@ namespace ExamManager
                 } 
             }*/
         }
-        private void UpdateAutocompleteStudent(LinkedList<TeacherObject> list)
+        private void UpdateAutocompleteStudent(LinkedList<TeacherObject> list)  //TODO: update autocomplete student
         {
 
         }
@@ -1488,6 +1409,16 @@ namespace ExamManager
         private void update_timeline_Event(object sender, EventArgs a)
         {
             UpdateTimeline();
+        }
+        private void update_color_Event(object sender, EventArgs a)
+        {
+            UpdateTimeline();
+            panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
+            panel_time_line.BackColor = Colors.TL_Bg;
+            panel_top_time.BackColor = Colors.TL_TimeBg;
+            panel_side_room.BackColor = Colors.TL_RoomBg;
+            tlp_edit.BackColor = Colors.Edit_Bg;
+            lbl_mode.BackColor = Colors.Edit_ModeBg;
         }
         private void tb_duration_TextChanged(object sender, EventArgs e)
         {
@@ -1595,6 +1526,13 @@ namespace ExamManager
         private void tsmi_import_export_Click(object sender, EventArgs e)
         {
             new FormImportExport().ShowDialog();
+        }
+
+        private void tsmi_settings_Click(object sender, EventArgs e)
+        {
+            FormSettings form = new FormSettings();
+            form.UpdateColor += update_color_Event;
+            form.ShowDialog(this);
         }
     }
 
