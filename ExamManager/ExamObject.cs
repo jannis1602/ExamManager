@@ -162,15 +162,20 @@ namespace ExamManager
             string sCount = null;
             if (Student2 != null) sCount = "[2xS]";
             if (Student3 != null) sCount = "[3xS]";
+
+            string t1 = Teacher1, t2 = Teacher2, t3 = Teacher3;
+            if (Teacher1 == null || Teacher1.Length < 1) t1 = " - ";
+            if (Teacher2 == null || Teacher2.Length < 1) t2 = " - ";
+            if (Teacher3 == null || Teacher3.Length < 1) t3 = " - ";
             if (Duration < 40)
             {
                 e.Graphics.DrawString(Time + "; " + Duration + "min  " + sCount, drawFont, Brushes.Black, rectL2, stringFormat);
-                e.Graphics.DrawString(Teacher1 + "," + Teacher2 + "," + Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+                e.Graphics.DrawString(t1 + "," + t2 + "," + t3, drawFont, Brushes.Black, rectL3, stringFormat);
             }
             else
             {
                 e.Graphics.DrawString(Time + "   " + Duration + "min  " + sCount, drawFont, Brushes.Black, rectL2, stringFormat);
-                e.Graphics.DrawString(Teacher1 + "  " + Teacher2 + "  " + Teacher3, drawFont, Brushes.Black, rectL3, stringFormat);
+                e.Graphics.DrawString(t1 + "  " + t2 + "  " + t3, drawFont, Brushes.Black, rectL3, stringFormat);
             }
             e.Graphics.DrawString(Subject + " " + Examroom + " [" + Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             // ---- ToolTip ----
@@ -178,7 +183,7 @@ namespace ExamManager
             string line11 = null; if (Student2 != null) line11 = Student2.Firstname + " " + Student2.Lastname + "  [" + Student2.Grade + "]\n";
             string line12 = null; if (Student3 != null) line12 = Student3.Firstname + " " + Student3.Lastname + "  [" + Student3.Grade + "]\n";
             string line2 = Time + "     " + Duration + "min\n";
-            string line3 = Teacher1 + "  " + Teacher2 + "  " + Teacher3 + "\n";
+            string line3 = t1 + "  " + t2 + "  " + t3 + "\n";
             string line4 = Subject + "  " + Examroom + "  [" + Preparationroom + "]";
             ToolTip sfToolTip1 = new ToolTip();
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);

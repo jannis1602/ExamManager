@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -10,11 +11,13 @@ namespace ExamManager
     {
         private bool saved = false;
         private bool changedColor = false;
+        private bool changedDatabase = false;
         public FormSettings()
         {
             InitializeComponent();
         }
         public event EventHandler UpdateColor;
+        public event EventHandler RestartEvent;
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -22,6 +25,7 @@ namespace ExamManager
 
         private void btn_save_Click(object sender, EventArgs e)
         {
+            lbl_current_database_path.Text = lbl_current_database_path.Text.Replace("*", "");
             if (changedColor)
                 switch (cb_color.SelectedIndex)
                 {
@@ -34,12 +38,27 @@ namespace ExamManager
                                                                             //Properties.Settings.Default.Reload(); // TODO restore old settings
             Properties.Settings.Default.Save(); // on exit
             saved = true;
+            if (changedDatabase)
+            {
+                DialogResult result = MessageBox.Show("Jetzt neustarten?", "Achtung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Process p = new Process();
+                    p.StartInfo.FileName = Application.ExecutablePath;
+                    p.Start();
+                    Environment.Exit(0);
+                }
+            }
+            /*{
+                Application.Restart();
+                Environment.Exit(0);
+            }*/
             // save propeties...
         }
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!saved)
+            if (!saved && !changedDatabase)
             {
                 DialogResult result = MessageBox.Show("Schließen ohne zu speichern?", "Achtung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes) this.Dispose();
@@ -74,6 +93,8 @@ namespace ExamManager
         {
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
             Properties.Settings.Default.databasePath = path;
+            lbl_current_database_path.Text = path + "*";
+            changedDatabase = true;
         }
 
         private void btn_select_localdb_Click(object sender, EventArgs e)
@@ -90,8 +111,8 @@ namespace ExamManager
                     string filePath = openFileDialog.FileName;
                     Properties.Settings.Default.databasePath = filePath;
                     Properties.Settings.Default.Save();
-                    Application.Restart();
-                    Environment.Exit(0);
+                    lbl_current_database_path.Text = filePath + "*";
+                    changedDatabase = true;
                     // TODO: no restart
                 }
             }
@@ -171,22 +192,22 @@ namespace ExamManager
                 }
             }
         }
-    }
-    class SettingsObject
-    {
-        public string DatabasePath { get; set; }
-        public string EmailDomain { get; set; }
-        public SMTP_Settings SMTPSettings { get; set; }
+        class SettingsObject
+        {
+            public string DatabasePath { get; set; }
+            public string EmailDomain { get; set; }
+            public SMTP_Settings SMTPSettings { get; set; }
 
-    }
-    class SMTP_Settings
-    {
-        public string Server { get; set; }
-        public string Port { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string SenderName { get; set; }
-        public string EmailTitel { get; set; }
+        }
+        class SMTP_Settings
+        {
+            public string Server { get; set; }
+            public string Port { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string SenderName { get; set; }
+            public string EmailTitel { get; set; }
 
+        }
     }
 }

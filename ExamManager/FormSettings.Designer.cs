@@ -534,14 +534,14 @@ namespace ExamManager
             this.lbl_localdb.Location = new System.Drawing.Point(5, 5);
             this.lbl_localdb.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_localdb.Name = "lbl_localdb";
-            this.lbl_localdb.Size = new System.Drawing.Size(52, 20);
+            this.lbl_localdb.Size = new System.Drawing.Size(92, 20);
             this.lbl_localdb.TabIndex = 0;
-            this.lbl_localdb.Text = "Email:";
+            this.lbl_localdb.Text = "Datenbank:";
             // 
             // btn_select_localdb
             // 
             this.btn_select_localdb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_select_localdb.Location = new System.Drawing.Point(64, 2);
+            this.btn_select_localdb.Location = new System.Drawing.Point(104, 2);
             this.btn_select_localdb.Margin = new System.Windows.Forms.Padding(2);
             this.btn_select_localdb.Name = "btn_select_localdb";
             this.btn_select_localdb.Size = new System.Drawing.Size(164, 26);
@@ -553,7 +553,7 @@ namespace ExamManager
             // lbl_daefaultdb
             // 
             this.lbl_daefaultdb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_daefaultdb.Location = new System.Drawing.Point(232, 2);
+            this.lbl_daefaultdb.Location = new System.Drawing.Point(272, 2);
             this.lbl_daefaultdb.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_daefaultdb.Name = "lbl_daefaultdb";
             this.lbl_daefaultdb.Size = new System.Drawing.Size(117, 26);
@@ -568,7 +568,7 @@ namespace ExamManager
             this.lbl_changedb_info.AutoSize = true;
             this.lbl_changedb_info.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_changedb_info.ForeColor = System.Drawing.Color.Red;
-            this.lbl_changedb_info.Location = new System.Drawing.Point(356, 8);
+            this.lbl_changedb_info.Location = new System.Drawing.Point(396, 8);
             this.lbl_changedb_info.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_changedb_info.Name = "lbl_changedb_info";
             this.lbl_changedb_info.Size = new System.Drawing.Size(138, 17);

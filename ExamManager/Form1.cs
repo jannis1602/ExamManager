@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using ExcelDataReader;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -357,12 +359,12 @@ namespace ExamManager
                     if (searchMode == Search.teacher)
                     { // teacher
                         if (search.Equals(exam.Teacher1)) border = true;
-                        if (exam.Teacher2.Length > 1 && search.Equals(exam.Teacher2)) border = true;
-                        if (exam.Teacher3.Length > 1 && search.Equals(exam.Teacher3)) border = true;
+                        if (exam.Teacher2 != null && exam.Teacher2.Length > 1 && search.Equals(exam.Teacher2)) border = true;
+                        if (exam.Teacher3 != null && exam.Teacher3.Length > 1 && search.Equals(exam.Teacher3)) border = true;
                     }
                     if (searchMode == Search.student)
                     { // student
-                        if (search.Equals(exam.Student.Fullname())) border = true;
+                        if (exam.Student != null && search.Equals(exam.Student.Fullname())) border = true;
                         if (exam.Student2 != null && search.Equals(exam.Student2.Fullname())) border = true;
                         if (exam.Student3 != null && search.Equals(exam.Student3.Fullname())) border = true;
                     }
@@ -1219,6 +1221,76 @@ namespace ExamManager
         private void dtp_time_ValueChanged(object sender, EventArgs e)
         {
             UpdateEditPanel();
+        }
+        private void tsmi_open_excel_Click(object sender, EventArgs e)
+        {
+            FileStream fStream = File.Open(@"E:\Kurslisten_P4.xlsx", FileMode.Open, FileAccess.Read);
+            IExcelDataReader edr = ExcelReaderFactory.CreateOpenXmlReader(fStream);
+            LinkedList<string[]> list = new LinkedList<string[]>();
+            LinkedList<string[]> listNotFound = new LinkedList<string[]>();
+            string subject = null;
+            string teacher = null;
+            string student = null;
+            string course = null;
+            while (edr.Read())
+            {
+                if (edr.GetValue(2) != null && edr.GetValue(2).ToString().Length > 3)
+                {
+                    subject = edr.GetValue(2).ToString().Split(' ')[0];
+                    course = edr.GetValue(2).ToString().Split(' ')[1];
+                }
+                if (edr.GetValue(4) != null && edr.GetValue(4).ToString().Length > 1)
+                    teacher = edr.GetValue(4).ToString();
+                if (edr.GetValue(1) != null && edr.GetValue(1).ToString().Length > 3 && edr.GetValue(1).ToString().Contains(','))
+                    student = edr.GetValue(1).ToString();
+                else student = null;
+                if (student != null)
+                {
+                    Console.WriteLine(subject + "  " + teacher + "  " + student);
+                    string[] data = { subject, teacher, student };
+                    list.AddLast(data);
+                }
+            }
+            fStream.Close();
+
+            string date = "2022-03-07";
+            int examCount = 0;
+            int room = 0;
+            while (list.Count > examCount)
+            {
+                for (int t = 1; t < 20 + 1; t++)    // TODO check subject else add new 
+                {
+                    examCount++;
+                    if (list.Count == examCount) break;
+                    string[] d = list.ElementAt(room * 20 + t);
+                    string s = d[2].Replace(", ", ",").Replace(" ", "_");
+                    database.AddRoom("R" + room);
+                    DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(30 * t);
+                    if (database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("yyyy-MM-dd"), "R" + room).Count == 0)
+                    {
+                        if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null || database.GetTeacherByID(d[1]) == null)
+                        {
+                            if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && database.GetTeacherByID(d[1]) == null)
+                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, d[1] + "*", null, null, d[0], 30);
+                            else if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
+                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
+                            else if (database.GetTeacherByID(d[1]) == null)
+                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], 30);
+                            listNotFound.AddLast(d);
+                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30); ;
+                        }
+                        else
+                        {
+                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + 30); ;
+                            database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
+                        }
+                    }
+                }
+                room++;
+            }
+            foreach (string[] s in listNotFound)
+                Console.WriteLine(s[0] + " " + s[1] + " " + s[2]);
+            UpdateTimeline();
         }
     }
 

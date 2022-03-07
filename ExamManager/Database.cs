@@ -757,6 +757,40 @@ namespace ExamManager
             }
             return data;
         }
+        /// <summary>Searches all exams in a room at a date in the database.</summary>
+        /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
+        public LinkedList<ExamObject> GetAllExamsAtDateTimeAndRoom(string date, string time, string exam_room)
+        {
+            LinkedList<ExamObject> data = new LinkedList<ExamObject>();
+            SQLiteDataReader reader;
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND time = @time AND exam_room = @exam_room";
+            sqlite_cmd.Parameters.AddWithValue("@date", date);
+            sqlite_cmd.Parameters.AddWithValue("@time", time);
+            sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
+            reader = sqlite_cmd.ExecuteReader();
+            while (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    string[] rData = new string[13];
+                    for (int i = 0; i < rData.Length; i++)
+                    {
+                        rData[i] = reader.GetValue(i).ToString();
+                        if (i == 1)
+                            rData[i] = rData[i].Split(' ')[0];
+                        if (i == 2)
+                        {
+                            rData[i] = rData[i].Split(' ')[1];
+                            rData[i] = rData[i].Remove(rData[i].Length - 3, 3);
+                        }
+                    }
+                    data.AddLast(new ExamObject(int.Parse(rData[0]), rData[1], rData[2], rData[3], rData[4], int.Parse(rData[5]), int.Parse(rData[6]), int.Parse(rData[7]), rData[8], rData[9], rData[10], rData[11], int.Parse(rData[12])));
+                }
+                reader.NextResult();
+            }
+            return data;
+        }
         /// <summary>Edits an exam in the database.</summary>
         public void EditExam(int id, string date = null, string time = null, string exam_room = null, string preparation_room = null, int student = 0, int student2 = 0, int student3 = 0, string t1 = null, string t2 = null, string t3 = null, string subject = null, int duration = 0)
         {

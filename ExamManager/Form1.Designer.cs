@@ -64,6 +64,7 @@ namespace ExamManager
             this.tsmi_tools_export = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_exportexamday = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_import_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_open_excel = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_options = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_options_keepdata = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_options_table = new System.Windows.Forms.ToolStripMenuItem();
@@ -432,7 +433,8 @@ namespace ExamManager
             this.tsmi_tools_deleteOldExams,
             this.tsmi_tools_export,
             this.tsmi_tools_exportexamday,
-            this.tsmi_import_export});
+            this.tsmi_import_export,
+            this.tsmi_open_excel});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -465,6 +467,13 @@ namespace ExamManager
             this.tsmi_import_export.Text = "Import/Export [DEV]";
             this.tsmi_import_export.Click += new System.EventHandler(this.tsmi_import_export_Click);
             // 
+            // tsmi_open_excel
+            // 
+            this.tsmi_open_excel.Name = "tsmi_open_excel";
+            this.tsmi_open_excel.Size = new System.Drawing.Size(230, 22);
+            this.tsmi_open_excel.Text = "Excel Datei öffnen";
+            this.tsmi_open_excel.Click += new System.EventHandler(this.tsmi_open_excel_Click);
+            // 
             // tsmi_options
             // 
             this.tsmi_options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -478,7 +487,7 @@ namespace ExamManager
             // tsmi_options_keepdata
             // 
             this.tsmi_options_keepdata.Name = "tsmi_options_keepdata";
-            this.tsmi_options_keepdata.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_keepdata.Size = new System.Drawing.Size(154, 22);
             this.tsmi_options_keepdata.Text = "Daten behalten";
             this.tsmi_options_keepdata.Click += new System.EventHandler(this.tsmi_options_keepdata_Click);
             // 
@@ -489,34 +498,34 @@ namespace ExamManager
             this.tsmi_table_students,
             this.tsmi_table_teacher});
             this.tsmi_options_table.Name = "tsmi_options_table";
-            this.tsmi_options_table.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_table.Size = new System.Drawing.Size(154, 22);
             this.tsmi_options_table.Text = "Tabellen";
             // 
             // tsmi_table_exams
             // 
             this.tsmi_table_exams.Name = "tsmi_table_exams";
-            this.tsmi_table_exams.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_exams.Size = new System.Drawing.Size(130, 22);
             this.tsmi_table_exams.Text = "Prüfungen";
             this.tsmi_table_exams.Click += new System.EventHandler(this.tsmi_table_exams_Click);
             // 
             // tsmi_table_students
             // 
             this.tsmi_table_students.Name = "tsmi_table_students";
-            this.tsmi_table_students.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_students.Size = new System.Drawing.Size(130, 22);
             this.tsmi_table_students.Text = "Schüler";
             this.tsmi_table_students.Click += new System.EventHandler(this.tsmi_table_students_Click);
             // 
             // tsmi_table_teacher
             // 
             this.tsmi_table_teacher.Name = "tsmi_table_teacher";
-            this.tsmi_table_teacher.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_table_teacher.Size = new System.Drawing.Size(130, 22);
             this.tsmi_table_teacher.Text = "Lehrer";
             this.tsmi_table_teacher.Click += new System.EventHandler(this.tsmi_table_teacher_Click);
             // 
             // tsmi_options_settings
             // 
             this.tsmi_options_settings.Name = "tsmi_options_settings";
-            this.tsmi_options_settings.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_options_settings.Size = new System.Drawing.Size(154, 22);
             this.tsmi_options_settings.Text = "Einstellungen";
             this.tsmi_options_settings.Click += new System.EventHandler(this.tsmi_options_settings_Click);
             // 
@@ -1633,5 +1642,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_keepdata;
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_settings;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_open_excel;
     }
 }
