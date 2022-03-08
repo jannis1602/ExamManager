@@ -70,6 +70,8 @@ namespace ExamManager
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
             this.StudentId = student;
+            this.Student2Id = student2;
+            this.Student3Id = student3;
             if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
             if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
             if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
@@ -80,9 +82,56 @@ namespace ExamManager
             this.Duration = duration;
             // TODO: check teacher in db
         }
-
+        //TODO: return error string, if null-> added
         public void Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0)
         {
+            /*string _date = date; if (_date == null) _date = Date;
+            string _time = time; if (_time == null) _time = Time;
+            string _examroom = examroom; if (_examroom == null) _examroom = Examroom;
+            int _duration = duration; if (_duration == 0) _duration = Duration;
+            // check room and duration at date and time
+            if (date != null || time != null || examroom != null || duration != 0)
+                foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(_date, _examroom))
+                    if (Id != s.Id)
+                    {
+                        DateTime start = DateTime.ParseExact(s.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(s.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(s.Duration);
+                        DateTime timestart = DateTime.ParseExact(_time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime timeend = DateTime.ParseExact(_time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(_duration);
+                        if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
+                        { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
+                    }
+
+            string _t1 = teacher1; if (_t1 == null) _t1 = Teacher1;
+            string _t2 = teacher2; if (_t2 == null) _t2 = Teacher2;
+            string _t3 = teacher3; if (_t3 == null) _t3 = Teacher3;
+            if (CheckTeacher(_t1)) MessageBox.Show("Lehrer Fehler!", "Warnung");
+            if (CheckTeacher(_t2)) MessageBox.Show("Lehrer Fehler!", "Warnung");
+            if (CheckTeacher(_t3)) MessageBox.Show("Lehrer Fehler!", "Warnung");
+
+
+            bool CheckTeacher(string teacher)
+            {
+                TeacherObject t = Program.database.GetTeacherByID(teacher);
+                if (t == null) return false;
+                foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
+                    if (_examroom != s.Examroom)
+                        if (!checkTimeIsFree(s.Time, s.Duration)) return false;
+                return true;
+
+                bool checkTimeIsFree(string tm, int d)
+                {
+                    DateTime start = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime end = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
+                    DateTime timestart = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime timeend = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Duration);
+                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                        return false;
+                    return true;
+                }
+
+            }*/
+
             // TODO check teacher times
             if (date != null) this.Date = date;
             if (time != null) this.Time = time;
@@ -98,6 +147,7 @@ namespace ExamManager
             if (duration != 0) this.Duration = duration;
             Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
         }
+
 
         public void Delete()
         {
@@ -119,8 +169,33 @@ namespace ExamManager
             this.Panel.Paint += panel_time_line_entity_Paint;
         }
 
-        public void UpdatePanel()
+        public void UpdatePanel(bool updateDB = false)
         {
+            if (updateDB)
+            {
+                ExamObject eo = Program.database.GetExamById(Id);
+                this.Date = eo.Date;
+                this.Time = eo.Time;
+                this.Examroom = eo.Examroom;
+                this.Preparationroom = eo.Preparationroom;
+                this.StudentId = eo.StudentId;
+                this.Student2Id = eo.Student2Id;
+                this.Student3Id = eo.Student3Id;
+                this.Student = eo.Student;
+                this.Student2 = eo.Student2;
+                this.Student3 = eo.Student3;
+                this.Teacher1 = eo.Teacher1;
+                this.Teacher2 = eo.Teacher2;
+                this.Teacher3 = eo.Teacher3;
+                this.Subject = eo.Subject;
+                this.Duration = eo.Duration;
+            }
+            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+            float unit_per_minute = 200F / 60F;
+            float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
+            this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Refresh();
         }
 
