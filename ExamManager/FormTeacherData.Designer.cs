@@ -439,14 +439,14 @@ namespace ExamManager
             // tsmi_sort_firstname
             // 
             this.tsmi_sort_firstname.Name = "tsmi_sort_firstname";
-            this.tsmi_sort_firstname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_sort_firstname.Size = new System.Drawing.Size(132, 22);
             this.tsmi_sort_firstname.Text = "Vorname";
             this.tsmi_sort_firstname.Click += new System.EventHandler(this.tsmi_sort_firstname_Click);
             // 
             // tsmi_sort_lastname
             // 
             this.tsmi_sort_lastname.Name = "tsmi_sort_lastname";
-            this.tsmi_sort_lastname.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_sort_lastname.Size = new System.Drawing.Size(132, 22);
             this.tsmi_sort_lastname.Text = "Nachname";
             // 
             // tsmi_search
@@ -526,7 +526,7 @@ namespace ExamManager
             // tsmi_generate_email
             // 
             this.tsmi_generate_email.Name = "tsmi_generate_email";
-            this.tsmi_generate_email.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_generate_email.Size = new System.Drawing.Size(167, 22);
             this.tsmi_generate_email.Text = "Emails generieren";
             this.tsmi_generate_email.Click += new System.EventHandler(this.tsmi_generate_email_Click);
             // 

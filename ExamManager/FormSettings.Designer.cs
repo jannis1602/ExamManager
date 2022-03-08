@@ -82,6 +82,7 @@ namespace ExamManager
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.cb_teacher_nameorder = new System.Windows.Forms.ComboBox();
+            this.btn_new_database = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
@@ -568,6 +569,7 @@ namespace ExamManager
             // 
             this.flp_select_localdb.Controls.Add(this.lbl_localdb);
             this.flp_select_localdb.Controls.Add(this.btn_select_localdb);
+            this.flp_select_localdb.Controls.Add(this.btn_new_database);
             this.flp_select_localdb.Controls.Add(this.lbl_daefaultdb);
             this.flp_select_localdb.Controls.Add(this.lbl_changedb_info);
             this.flp_select_localdb.Dock = System.Windows.Forms.DockStyle.Top;
@@ -593,16 +595,16 @@ namespace ExamManager
             this.btn_select_localdb.Location = new System.Drawing.Point(104, 2);
             this.btn_select_localdb.Margin = new System.Windows.Forms.Padding(2);
             this.btn_select_localdb.Name = "btn_select_localdb";
-            this.btn_select_localdb.Size = new System.Drawing.Size(164, 26);
+            this.btn_select_localdb.Size = new System.Drawing.Size(130, 26);
             this.btn_select_localdb.TabIndex = 9;
-            this.btn_select_localdb.Text = "Lokale Datenbank auswählen";
+            this.btn_select_localdb.Text = "Datenbank auswählen";
             this.btn_select_localdb.UseVisualStyleBackColor = true;
             this.btn_select_localdb.Click += new System.EventHandler(this.btn_select_localdb_Click);
             // 
             // lbl_daefaultdb
             // 
             this.lbl_daefaultdb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_daefaultdb.Location = new System.Drawing.Point(272, 2);
+            this.lbl_daefaultdb.Location = new System.Drawing.Point(342, 2);
             this.lbl_daefaultdb.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_daefaultdb.Name = "lbl_daefaultdb";
             this.lbl_daefaultdb.Size = new System.Drawing.Size(117, 26);
@@ -617,7 +619,7 @@ namespace ExamManager
             this.lbl_changedb_info.AutoSize = true;
             this.lbl_changedb_info.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_changedb_info.ForeColor = System.Drawing.Color.Red;
-            this.lbl_changedb_info.Location = new System.Drawing.Point(396, 8);
+            this.lbl_changedb_info.Location = new System.Drawing.Point(466, 8);
             this.lbl_changedb_info.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_changedb_info.Name = "lbl_changedb_info";
             this.lbl_changedb_info.Size = new System.Drawing.Size(138, 17);
@@ -710,6 +712,18 @@ namespace ExamManager
             this.cb_teacher_nameorder.Size = new System.Drawing.Size(160, 24);
             this.cb_teacher_nameorder.TabIndex = 5;
             this.cb_teacher_nameorder.SelectedIndexChanged += new System.EventHandler(this.cb_teacher_nameorder_SelectedIndexChanged);
+            // 
+            // btn_new_database
+            // 
+            this.btn_new_database.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_new_database.Location = new System.Drawing.Point(238, 2);
+            this.btn_new_database.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_new_database.Name = "btn_new_database";
+            this.btn_new_database.Size = new System.Drawing.Size(100, 26);
+            this.btn_new_database.TabIndex = 12;
+            this.btn_new_database.Text = "neue Datenbank";
+            this.btn_new_database.UseVisualStyleBackColor = true;
+            this.btn_new_database.Click += new System.EventHandler(this.btn_new_database_Click);
             // 
             // FormSettings
             // 
@@ -810,5 +824,6 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cb_teacher_nameorder;
+        private System.Windows.Forms.Button btn_new_database;
     }
 }

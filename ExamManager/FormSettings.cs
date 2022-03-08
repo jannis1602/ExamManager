@@ -117,12 +117,29 @@ namespace ExamManager
                 {
                     string filePath = openFileDialog.FileName;
                     Properties.Settings.Default.DatabasePath = filePath;
-                    Properties.Settings.Default.Save();
                     lbl_current_database_path.Text = filePath + "*";
                     changedDatabase = true;
                     // TODO: no restart
                 }
             }
+        }
+        private void btn_new_database_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "neue Datenbank speichern",
+                FileName = "database.db",
+                DefaultExt = "db",
+                Filter = "Database files (*.db)|*.db|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            File.Create(sfd.FileName);
+            Properties.Settings.Default.DatabasePath = sfd.FileName;
+            lbl_current_database_path.Text = sfd.FileName + "*";
+            changedDatabase = true;
         }
 
         private void btn_reset_Click(object sender, EventArgs e)

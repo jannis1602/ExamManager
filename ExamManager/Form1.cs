@@ -33,16 +33,19 @@ namespace ExamManager
         private LinkedList<ExamObject> tl_exam_entity_list;
 
         private readonly LinkedList<Panel> time_line_room_list;
-        private readonly string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten" };
-        private readonly string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen" };
+        private readonly string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten", "mehrere Prüfungen bearbeiten" };
+        private readonly string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen", "Prüfungen ändern" };
         private Point panelScrollPos1 = new Point();
         private Point panelScrollPos2 = new Point();
         private Panel panel_empty;
+
+        private LinkedList<ExamObject> tl_entity_multiselect_list;
         public Form1()
         {
             database = Program.database;
             time_line_list = new LinkedList<Panel>();
             tl_exam_entity_list = new LinkedList<ExamObject>();
+            tl_entity_multiselect_list = new LinkedList<ExamObject>();
             time_line_room_list = new LinkedList<Panel>();
             InitializeComponent();
 
@@ -57,6 +60,7 @@ namespace ExamManager
             UpdateTimeline();
             UpdateAutocomplete();
         }
+        #region -------- Methods --------
         /// <summary>reloads the autocomplete and dropdownlist</summary>
         private void UpdateAutocomplete()
         {
@@ -155,7 +159,7 @@ namespace ExamManager
         /// <summary>Checks the entered values ​​and adds an exam to the database</summary>
         private void AddExam()
         {
-            if (cb_exam_room.Text.Length < 1 || cb_preparation_room.Text.Length < 1)
+            if (cb_exam_room.Text.Length < 1) // || cb_preparation_room.Text.Length < 1)
             { MessageBox.Show("Raum fehlt!", "Warnung"); return; }
             string date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             string time = this.dtp_time.Value.ToString("HH:mm");
@@ -315,7 +319,8 @@ namespace ExamManager
             this.dtp_timeline_date.Value = this.dtp_date.Value;
             Properties.Settings.Default.TimelineDate = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
-            UpdateTimeline();
+            // UpdateTimeline();
+
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
             if (this.cb_keep_data.Checked)
             {
@@ -402,6 +407,7 @@ namespace ExamManager
                 if (EditExam != null && EditExam.Id == exam.Id) exam.SetBorder(Color.DarkRed, false);
                 // exam panel
                 Panel panel_tl_entity = exam.GetTimelineEntity();
+                panel_tl_entity.MouseClick += panel_tl_entity_click;
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
                 // context menu
                 ContextMenuStrip mnu = new ContextMenuStrip();
@@ -431,7 +437,269 @@ namespace ExamManager
             else if (search != null && search.Length >= 1) tooltip_search_filter.SetToolTip(lbl_search, "Suche: " + search);
             else if (filter != null && filter.Length >= 1) tooltip_search_filter.SetToolTip(lbl_search, "Filter: " + filter);
         }
-        // ----------------- panel menu click -----------------
+        private void UpdateEditPanel()
+        {
+            if (tl_entity_multiselect_list.Count > 0) return;
+            if (!editExamPreview) return;
+            if (editPanel != null) editPanel.Dispose();
+            string teacher1 = null;
+            string teacher2 = null;
+            string teacher3 = null;
+            try
+            {
+                if (Properties.Settings.Default.NameOrderStudent)
+                {
+                    if (cb_teacher1.Text.Length > 1) teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]).Shortname;
+                    if (cb_teacher2.Text.Length > 1) teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]).Shortname;
+                    if (cb_teacher3.Text.Length > 1) teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]).Shortname;
+                }
+                else
+                {
+                    if (cb_teacher1.Text.Length > 1) teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[1], cb_teacher1.Text.Split(' ')[0]).Shortname;
+                    if (cb_teacher2.Text.Length > 1) teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[1], cb_teacher2.Text.Split(' ')[0]).Shortname;
+                    if (cb_teacher3.Text.Length > 1) teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[1], cb_teacher3.Text.Split(' ')[0]).Shortname;
+                }
+            }
+            catch (Exception) { }
+            string studentName = cb_student.Text;
+            string student2Name = cb_student2.Text;
+            string student3Name = cb_student3.Text;
+            string grade = null;
+            if (cb_grade.SelectedItem != null) grade = cb_grade.SelectedItem.ToString();
+            StudentObject student = null;
+            StudentObject student2 = null;
+            StudentObject student3 = null;
+            try
+            {
+                if (Properties.Settings.Default.NameOrderStudent)
+                {
+                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[0], studentName.Split(' ')[1]);
+                    if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[0], student2Name.Split(' ')[1]);
+                    if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[0], student3Name.Split(' ')[1]);
+                }
+                else
+                {
+                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[1], studentName.Split(' ')[0]);
+                    if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[1], student2Name.Split(' ')[0]);
+                    if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[1], student3Name.Split(' ')[0]);
+                }
+            }
+            catch (Exception) { }
+            int[] sIDs = { 0, 0, 0 };
+            if (student != null) sIDs[0] = student.Id;
+            if (student2 != null) sIDs[1] = student2.Id;
+            if (student3 != null) sIDs[2] = student3.Id;
+            ExamObject exam = new ExamObject(0, dtp_date.Text, dtp_time.Text, cb_exam_room.Text, cb_preparation_room.Text, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, cb_subject.Text, int.Parse(tb_duration.Text));
+            string room = cb_exam_room.Text;
+            editPanel = exam.GetTimelineEntity(true);
+            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+            float unit_per_minute = 200F / 60F;
+            float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
+
+            foreach (Panel p in time_line_list) // TODO: if no room add new temp timeline
+            {
+                if (p.Name.Equals(room))
+                {
+                    p.Controls.Add(editPanel);
+                    p.Controls.SetChildIndex(editPanel, 0);
+                    p.Update();
+                    break;
+                }
+            }
+            editPanel.MouseMove += editPanel_MouseMove;
+            editPanel.MouseDown += editPanel_MouseDown;
+            void editPanel_MouseDown(object sender, MouseEventArgs e)
+            { oldPoint = new Point(e.X, e.Y); }
+            void editPanel_MouseMove(object sender, MouseEventArgs e) // TODO: better previewpanel moving
+            {
+                DateTime oldTime = dtp_time.Value;
+                if (oldPoint == null)
+                    oldPoint = new Point(e.X, e.Y);
+                Panel p = sender as Panel;
+                if (e.Button == MouseButtons.Left)  // panel position relative to mouse position (mouse enter -> set start)
+                {
+                    if (e.X - oldPoint.X > 10)
+                    {
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - oldPoint.X) / 4);
+                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
+                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
+                    }
+                    else if (oldPoint.X - e.X > 10)
+                    {       // float unit_per_minute = 200F / 60F;
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
+                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
+                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
+                    }
+                    else return;
+                    // 2400 / panel_time_line.Width;
+                    if (dtp_time.Value != oldTime)
+                        UpdateEditPanel();
+                }
+            }
+
+            DateTime RoundUp(DateTime dt, TimeSpan d)
+            {
+                return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+            }
+        }
+        private void UpdateAutocompleteTeacher(LinkedList<TeacherObject> list)
+        {
+            cb_teacher1.Items.Clear();
+            cb_teacher2.Items.Clear();
+            cb_teacher3.Items.Clear();
+            var autocomplete_teacher = new AutoCompleteStringCollection();
+            string[] teacher = new string[list.Count];
+            for (int i = 0; i < list.Count; i++)
+                teacher[i] = list.ElementAt(i).Fullname();
+            autocomplete_teacher.AddRange(teacher);
+            this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
+            this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            //
+            LinkedList<TeacherObject> teacherList = new LinkedList<TeacherObject>(list);
+            List<TeacherObject> tempTeacherList = new List<TeacherObject>(list);
+            tempTeacherList = tempTeacherList.OrderBy(x => x.Lastname).ToList();
+            teacherList = new LinkedList<TeacherObject>(tempTeacherList);
+            string[] listTeacher = new string[teacherList.Count];
+            for (int i = 0; i < teacherList.Count; i++)
+                listTeacher[i] = teacherList.ElementAt(i).Fullname();
+            cb_teacher2.Items.Add("");
+            cb_teacher3.Items.Add("");
+            cb_teacher1.Items.AddRange(listTeacher);
+            cb_teacher2.Items.AddRange(listTeacher);
+            cb_teacher3.Items.AddRange(listTeacher);
+        }
+        private void UpdateAutocompleteStudent(LinkedList<StudentObject> list)
+        {
+            LinkedList<StudentObject> allStudentsList = list;
+            var autocomplete_student = new AutoCompleteStringCollection();
+            if (cb_student_onetime.Checked)
+            {
+                LinkedList<StudentObject> tempAllStudentsList = list;
+                string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+                foreach (StudentObject s in database.GetAllStudents())
+                    if (database.GetAllExamsFromStudentAtDate(date, s.Id).Count == 0)
+                        tempAllStudentsList.AddLast(s);
+                allStudentsList = tempAllStudentsList;
+            }
+            string[] students = new string[allStudentsList.Count];
+            for (int i = 0; i < allStudentsList.Count; i++)
+                students[i] = allStudentsList.ElementAt(i).Fullname();
+            autocomplete_student.AddRange(students);
+            this.cb_student.AutoCompleteCustomSource = autocomplete_student;
+            this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_student2.AutoCompleteCustomSource = autocomplete_student;
+            this.cb_student2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_student2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cb_student3.AutoCompleteCustomSource = autocomplete_student;
+            this.cb_student3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.cb_student3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            //
+            cb_student.Items.Clear();
+            cb_student2.Items.Clear();
+            cb_student3.Items.Clear();
+            LinkedList<StudentObject> studentList = new LinkedList<StudentObject>();
+            List<StudentObject> tempStudentList = new List<StudentObject>(allStudentsList);
+            tempStudentList = tempStudentList.OrderBy(x => x.Lastname).ToList();
+            studentList = new LinkedList<StudentObject>(tempStudentList);
+            string[] listStudent = new string[studentList.Count];
+            for (int i = 0; i < studentList.Count; i++)
+                listStudent[i] = studentList.ElementAt(i).Fullname();
+            cb_student2.Items.Add("");  // TODO student null = "-"
+            cb_student3.Items.Add("");
+            cb_student.Items.AddRange(listStudent);
+            cb_student2.Items.AddRange(listStudent);
+            cb_student3.Items.AddRange(listStudent);
+        }
+        public void SetDate(DateTime date)
+        {
+            dtp_timeline_date.Value = date;
+            Properties.Settings.Default.TimelineDate = date.ToString("dd.MM.yyyy");
+            Properties.Settings.Default.Save();
+        }
+        #endregion
+        #region -------- panel click --------
+        private void panel_tl_entity_click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Panel p = sender as Panel;
+                if (Form.ModifierKeys == Keys.Control)  // TODO: ctrl+single_click
+                {
+                    lbl_mode.Text = edit_mode[2];
+                    btn_add_exam.Text = add_mode[2];
+                    ExamObject exam = database.GetExamById(Int32.Parse(p.Name));
+                    if (tl_entity_multiselect_list.Count == 0)
+                    {
+                        tb_duration.Text = exam.Duration.ToString();
+                        this.dtp_date.Value = DateTime.ParseExact(exam.Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None);
+                    }
+                    foreach (ExamObject eo in tl_entity_multiselect_list)
+                        Console.WriteLine(eo.Student.Fullname());
+                    foreach (ExamObject eo in tl_exam_entity_list)
+                        if (eo.Id == exam.Id) { exam = eo; break; }
+                    if (tl_entity_multiselect_list.Contains(exam))
+                    {
+                        exam.RemoveBorder();
+                        exam.UpdatePanel();
+                        tl_entity_multiselect_list.Remove(exam);
+                        if (tl_entity_multiselect_list.Count == 0)
+                        {
+                            lbl_mode.Text = edit_mode[0];
+                            btn_add_exam.Text = add_mode[0];
+                        }
+                    }
+                    else
+                    {
+                        tl_entity_multiselect_list.AddLast(exam);
+                        exam.SetBorder(Color.Yellow, false);
+                        exam.UpdatePanel();
+                    }
+                }
+            }
+        }
+        private void panel_tl_entity_double_click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Panel p = sender as Panel;
+                ExamObject exam = database.GetExamById(Int32.Parse(p.Name));
+                DialogResult result = MessageBox.Show("Prüfung von " + exam.Student.Fullname() + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    EditExam = exam;
+                    lbl_mode.Text = edit_mode[1];
+                    btn_add_exam.Text = add_mode[1];
+                    this.dtp_date.Value = DateTime.ParseExact(exam.Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None);
+                    this.dtp_time.Value = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    this.cb_exam_room.SelectedItem = exam.Examroom;
+                    this.cb_preparation_room.SelectedItem = exam.Preparationroom;
+                    if (exam.Student != null) this.cb_student.Text = exam.Student.Fullname(); else this.cb_student.Text = "";
+                    if (exam.Student2 != null) this.cb_student2.Text = exam.Student2.Fullname(); else this.cb_student2.Text = "";
+                    if (exam.Student3 != null) this.cb_student3.Text = exam.Student3.Fullname(); else this.cb_student3.Text = "";
+                    this.cb_grade.SelectedItem = exam.Student.Grade;
+                    try
+                    {
+                        if (exam.Teacher1.Length > 1) this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Fullname(); else this.cb_teacher1.Text = "";
+                        if (exam.Teacher2.Length > 1) this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2).Fullname(); else this.cb_teacher2.Text = "";
+                        if (exam.Teacher3.Length > 1) this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3).Fullname(); else this.cb_teacher3.Text = "";
+                    }
+                    catch (Exception) { }
+                    this.cb_subject.Text = exam.Subject;
+                    this.tb_duration.Text = exam.Duration.ToString();
+                }
+                UpdateEditPanel();
+            }
+        }
         private void panel_menu_click_copy(object sender, EventArgs e)
         {
             ToolStripMenuItem itm = sender as ToolStripMenuItem;
@@ -545,38 +813,9 @@ namespace ExamManager
                 UpdateTimeline();
             }
         }
-        // ----------------- panel click -----------------
-        private void panel_tl_entity_double_click(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Panel p = sender as Panel;
-                ExamObject exam = database.GetExamById(Int32.Parse(p.Name));
-                StudentObject student = exam.Student;
-
-                DialogResult result = MessageBox.Show("Prüfung von " + student.Firstname + " " + student.Lastname + " Bearbeiten?", "Warnung!", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    EditExam = exam;
-                    lbl_mode.Text = edit_mode[1];
-                    btn_add_exam.Text = add_mode[1];
-                    this.dtp_date.Value = DateTime.ParseExact(exam.Date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None);
-                    this.dtp_time.Value = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    this.cb_exam_room.SelectedItem = exam.Examroom;
-                    this.cb_preparation_room.SelectedItem = exam.Preparationroom;
-                    StudentObject st = exam.Student;
-                    this.cb_student.Text = st.Firstname + " " + st.Lastname;
-                    this.cb_grade.SelectedItem = st.Grade;
-                    this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Firstname + " " + database.GetTeacherByID(exam.Teacher1).Lastname;
-                    this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2).Firstname + " " + database.GetTeacherByID(exam.Teacher2).Lastname;
-                    this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3).Firstname + " " + database.GetTeacherByID(exam.Teacher3).Lastname;
-                    this.cb_subject.Text = exam.Subject;
-                    this.tb_duration.Text = exam.Duration.ToString();
-                }
-            }
-        }
+        #endregion
+        #region -------- PAINT --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //// ---- PAINT ---- ////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void panel_side_room_Paint(object sender, PaintEventArgs e)
         {
@@ -652,12 +891,85 @@ namespace ExamManager
             Colors.TL_TimeLineBorder, 4, ButtonBorderStyle.Solid,
             Colors.TL_TimeLineBorder, 4, ButtonBorderStyle.Solid);
         }
+        #endregion
+        #region -------- BTNs --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //// ---- BTN ---- ////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////    
         private void btn_add_exam_Click(object sender, EventArgs e)
         {
-            AddExam();
+            if (tl_entity_multiselect_list.Count >= 1)
+            {
+                int duration = int.Parse(tb_duration.Text);
+                string subject = cb_subject.Text; if (subject.Length == 0) subject = null;
+                string examRoom = cb_exam_room.Text; if (examRoom.Length == 0) examRoom = null;
+                string preparationRoom = cb_preparation_room.Text; if (preparationRoom.Length == 0) preparationRoom = null;
+                /*string s1 = cb_student.Text; if (s1.Length == 0) s1 = null;
+                string s2 = cb_student2.Text; if (s2.Length == 0) s2 = null;
+                string s3 = cb_student3.Text; if (s3.Length == 0) s3 = null;*/
+                foreach (ExamObject exam in tl_entity_multiselect_list)
+                {
+                    // ---- teacher ----
+                    string t1 = null;
+                    string t2 = null;
+                    string t3 = null;
+                    try
+                    {
+                        if (Properties.Settings.Default.NameOrderTeacher)
+                        {
+                            if (cb_teacher1.Text != null && cb_teacher1.Text.Length > 1) t1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]).Shortname;
+                            if (cb_teacher2.Text != null && cb_teacher2.Text.Length > 1) t2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]).Shortname;
+                            if (cb_teacher3.Text != null && cb_teacher3.Text.Length > 1) t3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]).Shortname;
+                        }
+                        else
+                        {
+                            if (cb_teacher1.Text != null && cb_teacher1.Text.Length > 1) t1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[1], cb_teacher1.Text.Split(' ')[0]).Shortname;
+                            if (cb_teacher2.Text != null && cb_teacher2.Text.Length > 1) t2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[1], cb_teacher2.Text.Split(' ')[0]).Shortname;
+                            if (cb_teacher3.Text != null && cb_teacher3.Text.Length > 1) t3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[1], cb_teacher3.Text.Split(' ')[0]).Shortname;
+                        }
+                    }
+                    catch (Exception) { MessageBox.Show("Fehler beim Lehrernamen!", "Warnung"); return; }
+                    if (cb_teacher1.Text.Length > 1 && t1 == null)
+                    { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
+                    if (cb_teacher2.Text.Length > 1 && t2 == null)
+                    { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
+                    if (cb_teacher3.Text.Length > 1 && t3 == null)
+                    { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
+                    // ---- check teacher in other rooms ----
+                    if (t1 != null && t1.Length > 1)
+                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t1))
+                            if (EditExam == null || (examRoom != s.Examroom && s.Examroom != EditExam.Examroom))
+                                if (!checkTimeIsFree(s.Time, s.Duration))
+                                { MessageBox.Show(database.GetTeacherByID(t1).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    if (t2 != null && t2.Length > 1)
+                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t2))
+                            if (EditExam == null || (examRoom != s.Examroom && s.Examroom != EditExam.Examroom))
+                                if (!checkTimeIsFree(s.Time, s.Duration))
+                                { MessageBox.Show(database.GetTeacherByID(t2).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    if (t3 != null && t3.Length > 1)
+                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t3))
+                            if (EditExam == null || (examRoom != s.Examroom && s.Examroom != EditExam.Examroom))
+                                if (!checkTimeIsFree(s.Time, s.Duration))
+                                { MessageBox.Show(database.GetTeacherByID(t3).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
+                    bool checkTimeIsFree(string t, int d)
+                    {
+                        DateTime start = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
+                        DateTime timestart = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime timeend = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                        if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                            return false;
+                        return true;
+                    }
+                    exam.Edit(subject: subject, examroom: examRoom, preparationroom: preparationRoom, teacher1: t1, teacher2: t2, teacher3: t3, duration: duration);
+                    exam.RemoveBorder();
+                    exam.UpdatePanel();
+                }
+                lbl_mode.Text = edit_mode[0];
+                btn_add_exam.Text = add_mode[0];
+                tl_entity_multiselect_list.Clear();
+            }
+            else
+                AddExam();
         }
         private void btn_delete_exam_Click(object sender, EventArgs e)
         {
@@ -708,12 +1020,17 @@ namespace ExamManager
         }
         private void btn_cancel_Click(object sender, EventArgs e)
         {
+            foreach (ExamObject exam in tl_entity_multiselect_list)
+            {
+                exam.RemoveBorder();
+                exam.UpdatePanel();
+            }
+            tl_entity_multiselect_list.Clear();
             if (EditExam != null)
                 EditExam.RemoveBorder();
             EditExam = null;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[1];
-            foreach (ExamObject exam in tl_exam_entity_list) exam.UpdatePanel();
             this.cb_exam_room.Text = null;
             this.cb_preparation_room.Text = null;
             this.cb_student.Text = null;
@@ -723,9 +1040,9 @@ namespace ExamManager
             this.cb_teacher2.Text = null;
             this.cb_teacher3.Text = null;
         }
-
+        #endregion
+        #region -------- TSMI --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //// ---- TSMI ---- ////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // ----------------- tsmi search -----------------
         private void update_search_Event(object sender, EventArgs e)
@@ -829,6 +1146,7 @@ namespace ExamManager
             string filePath;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                openFileDialog.Title = "Lehrerliste auswählen";
                 openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
@@ -977,6 +1295,76 @@ namespace ExamManager
         {
             new FormImportExport().ShowDialog();
         }
+        private void tsmi_open_excel_Click(object sender, EventArgs e)
+        {
+            FileStream fStream = File.Open(@"E:\Kurslisten_P4.xlsx", FileMode.Open, FileAccess.Read);
+            IExcelDataReader edr = ExcelReaderFactory.CreateOpenXmlReader(fStream);
+            LinkedList<string[]> list = new LinkedList<string[]>();
+            LinkedList<string[]> listNotFound = new LinkedList<string[]>();
+            string subject = null;
+            string teacher = null;
+            string student = null;
+            string course = null;
+            while (edr.Read())
+            {
+                if (edr.GetValue(2) != null && edr.GetValue(2).ToString().Length > 3)
+                {
+                    subject = edr.GetValue(2).ToString().Split(' ')[0];
+                    course = edr.GetValue(2).ToString().Split(' ')[1];
+                }
+                if (edr.GetValue(4) != null && edr.GetValue(4).ToString().Length > 1)
+                    teacher = edr.GetValue(4).ToString();
+                if (edr.GetValue(1) != null && edr.GetValue(1).ToString().Length > 3 && edr.GetValue(1).ToString().Contains(','))
+                    student = edr.GetValue(1).ToString();
+                else student = null;
+                if (student != null)
+                {
+                    Console.WriteLine(subject + "  " + teacher + "  " + student);
+                    string[] data = { subject, teacher, student };
+                    list.AddLast(data);
+                }
+            }
+            fStream.Close();
+
+            string date = DateTime.Now.ToString("yyyy-MM-dd");
+            int examCount = 0;
+            int room = 0;
+            while (list.Count > examCount)
+            {
+                for (int t = 1; t < 20 + 1; t++)    // TODO check subject else add new 
+                {
+                    examCount++;
+                    if (list.Count == examCount) break;
+                    string[] d = list.ElementAt(room * 20 + t);
+                    string s = d[2].Replace(", ", ",").Replace(" ", "_"); // TODO: teacher -> t1/t2/t3?
+                    database.AddRoom("R" + room);
+                    DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(30 * t);
+                    if (database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("yyyy-MM-dd"), "R" + room).Count == 0)
+                    {
+                        if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null || database.GetTeacherByID(d[1]) == null)
+                        {
+                            if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && database.GetTeacherByID(d[1]) == null)
+                                database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, d[1] + "*", null, null, d[0], 30);
+                            else if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
+                                database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
+                            else if (database.GetTeacherByID(d[1]) == null)
+                                database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], 30);
+                            listNotFound.AddLast(d);
+                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30); ;
+                        }
+                        else
+                        {
+                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + 30); ;
+                            database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
+                        }
+                    }
+                }
+                room++;
+            }
+            foreach (string[] s in listNotFound)
+                Console.WriteLine(s[0] + " " + s[1] + " " + s[2]);
+            UpdateTimeline();
+        }
         // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)
         {
@@ -1001,201 +1389,10 @@ namespace ExamManager
             form.UpdateColor += update_color_Event;
             form.ShowDialog(this);
         }
-
+        #endregion
+        #region -------- events --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //// ---- METHODS ---- ////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void UpdateEditPanel()
-        {
-            if (!editExamPreview) return;
-            if (editPanel != null) editPanel.Dispose();
-            string teacher1 = null;
-            string teacher2 = null;
-            string teacher3 = null;
-            try
-            {
-                if (Properties.Settings.Default.NameOrderStudent)
-                {
-                    if (cb_teacher1.Text.Length > 1) teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[0], cb_teacher1.Text.Split(' ')[1]).Shortname;
-                    if (cb_teacher2.Text.Length > 1) teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[0], cb_teacher2.Text.Split(' ')[1]).Shortname;
-                    if (cb_teacher3.Text.Length > 1) teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[0], cb_teacher3.Text.Split(' ')[1]).Shortname;
-                }
-                else
-                {
-                    if (cb_teacher1.Text.Length > 1) teacher1 = database.GetTeacherByName(cb_teacher1.Text.Split(' ')[1], cb_teacher1.Text.Split(' ')[0]).Shortname;
-                    if (cb_teacher2.Text.Length > 1) teacher2 = database.GetTeacherByName(cb_teacher2.Text.Split(' ')[1], cb_teacher2.Text.Split(' ')[0]).Shortname;
-                    if (cb_teacher3.Text.Length > 1) teacher3 = database.GetTeacherByName(cb_teacher3.Text.Split(' ')[1], cb_teacher3.Text.Split(' ')[0]).Shortname;
-                }
-            }
-            catch (Exception) { }
-            string studentName = cb_student.Text;
-            string student2Name = cb_student2.Text;
-            string student3Name = cb_student3.Text;
-            string grade = null;
-            if (cb_grade.SelectedItem != null) grade = cb_grade.SelectedItem.ToString();
-            StudentObject student = null;
-            StudentObject student2 = null;
-            StudentObject student3 = null;
-            try
-            {
-                if (Properties.Settings.Default.NameOrderStudent)
-                {
-                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[0], studentName.Split(' ')[1]);
-                    if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[0], student2Name.Split(' ')[1]);
-                    if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[0], student3Name.Split(' ')[1]);
-                }
-                else
-                {
-                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[1], studentName.Split(' ')[0]);
-                    if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[1], student2Name.Split(' ')[0]);
-                    if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[1], student3Name.Split(' ')[0]);
-                }
-            }
-            catch (Exception) { }
-            int[] sIDs = { 0, 0, 0 };
-            if (student != null) sIDs[0] = student.Id;
-            if (student2 != null) sIDs[1] = student2.Id;
-            if (student3 != null) sIDs[2] = student3.Id;
-            ExamObject exam = new ExamObject(0, dtp_date.Text, dtp_time.Text, cb_exam_room.Text, cb_preparation_room.Text, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, cb_subject.Text, int.Parse(tb_duration.Text));
-            string room = cb_exam_room.Text;
-            editPanel = exam.GetTimelineEntity(true);
-            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-            float unit_per_minute = 200F / 60F;
-            float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
-
-            foreach (Panel p in time_line_list) // TODO: if no room add new temp timeline
-            {
-                if (p.Name.Equals(room))
-                {
-                    p.Controls.Add(editPanel);
-                    p.Controls.SetChildIndex(editPanel, 0);
-                    p.Update();
-                    break;
-                }
-            }
-            editPanel.MouseMove += editPanel_MouseMove;
-            editPanel.MouseDown += editPanel_MouseDown;
-            void editPanel_MouseDown(object sender, MouseEventArgs e)
-            {
-                oldPoint = new Point(e.X, e.Y);
-            }
-            void editPanel_MouseMove(object sender, MouseEventArgs e) // TODO: better previewpanel moving
-            {
-                DateTime oldTime = dtp_time.Value;
-                if (oldPoint == null)
-                    oldPoint = new Point(e.X, e.Y);
-                Panel p = sender as Panel;
-                if (e.Button == MouseButtons.Left)  // panel position relative to mouse position (mouse enter -> set start)
-                {
-                    if (e.X - oldPoint.X > 10)
-                    {
-                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - oldPoint.X) / 4);
-                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
-                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
-                    }
-                    else if (oldPoint.X - e.X > 10)
-                    {       // float unit_per_minute = 200F / 60F;
-                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
-                        string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
-                        this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(15));
-                    }
-                    else return;
-                    // 2400 / panel_time_line.Width;
-                    if (dtp_time.Value != oldTime)
-                        UpdateEditPanel();
-                }
-            }
-
-            DateTime RoundUp(DateTime dt, TimeSpan d)
-            {
-                return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
-            }
-        }
-        public void SetDate(DateTime date)
-        {
-            dtp_timeline_date.Value = date;
-            Properties.Settings.Default.TimelineDate = date.ToString("dd.MM.yyyy");
-            Properties.Settings.Default.Save();
-        }
-        private void UpdateAutocompleteTeacher(LinkedList<TeacherObject> list)
-        {
-            cb_teacher1.Items.Clear();
-            cb_teacher2.Items.Clear();
-            cb_teacher3.Items.Clear();
-            var autocomplete_teacher = new AutoCompleteStringCollection();
-            string[] teacher = new string[list.Count];
-            for (int i = 0; i < list.Count; i++)
-                teacher[i] = list.ElementAt(i).Fullname();
-            autocomplete_teacher.AddRange(teacher);
-            this.cb_teacher1.AutoCompleteCustomSource = autocomplete_teacher;
-            this.cb_teacher1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_teacher1.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.cb_teacher2.AutoCompleteCustomSource = autocomplete_teacher;
-            this.cb_teacher2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_teacher2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.cb_teacher3.AutoCompleteCustomSource = autocomplete_teacher;
-            this.cb_teacher3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_teacher3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            //
-            LinkedList<TeacherObject> teacherList = new LinkedList<TeacherObject>(list);
-            List<TeacherObject> tempTeacherList = new List<TeacherObject>(list);
-            tempTeacherList = tempTeacherList.OrderBy(x => x.Lastname).ToList();
-            teacherList = new LinkedList<TeacherObject>(tempTeacherList);
-            string[] listTeacher = new string[teacherList.Count];
-            for (int i = 0; i < teacherList.Count; i++)
-                listTeacher[i] = teacherList.ElementAt(i).Fullname();
-            cb_teacher2.Items.Add("");
-            cb_teacher3.Items.Add("");
-            cb_teacher1.Items.AddRange(listTeacher);
-            cb_teacher2.Items.AddRange(listTeacher);
-            cb_teacher3.Items.AddRange(listTeacher);
-        }
-        private void UpdateAutocompleteStudent(LinkedList<StudentObject> list)
-        {
-            LinkedList<StudentObject> allStudentsList = list;
-            var autocomplete_student = new AutoCompleteStringCollection();
-            if (cb_student_onetime.Checked)
-            {
-                LinkedList<StudentObject> tempAllStudentsList = list;
-                string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-                foreach (StudentObject s in database.GetAllStudents())
-                    if (database.GetAllExamsFromStudentAtDate(date, s.Id).Count == 0)
-                        tempAllStudentsList.AddLast(s);
-                allStudentsList = tempAllStudentsList;
-            }
-            string[] students = new string[allStudentsList.Count];
-            for (int i = 0; i < allStudentsList.Count; i++)
-                students[i] = allStudentsList.ElementAt(i).Fullname();
-            autocomplete_student.AddRange(students);
-            this.cb_student.AutoCompleteCustomSource = autocomplete_student;
-            this.cb_student.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_student.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.cb_student2.AutoCompleteCustomSource = autocomplete_student;
-            this.cb_student2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_student2.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            this.cb_student3.AutoCompleteCustomSource = autocomplete_student;
-            this.cb_student3.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            this.cb_student3.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            //
-            cb_student.Items.Clear();
-            cb_student2.Items.Clear();
-            cb_student3.Items.Clear();
-            LinkedList<StudentObject> studentList = new LinkedList<StudentObject>();
-            List<StudentObject> tempStudentList = new List<StudentObject>(allStudentsList);
-            tempStudentList = tempStudentList.OrderBy(x => x.Lastname).ToList();
-            studentList = new LinkedList<StudentObject>(tempStudentList);
-            string[] listStudent = new string[studentList.Count];
-            for (int i = 0; i < studentList.Count; i++)
-                listStudent[i] = studentList.ElementAt(i).Fullname();
-            cb_student2.Items.Add("");  // TODO student null = "-"
-            cb_student3.Items.Add("");
-            cb_student.Items.AddRange(listStudent);
-            cb_student2.Items.AddRange(listStudent);
-            cb_student3.Items.AddRange(listStudent);
-        }
-        // ----------------- events -----------------
         private void Form1_Load(object sender, EventArgs e)
         {
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
@@ -1204,7 +1401,6 @@ namespace ExamManager
             panel_side_room.BackColor = Colors.TL_RoomBg;
             tlp_edit.BackColor = Colors.Edit_Bg;
             lbl_mode.BackColor = Colors.Edit_ModeBg;
-            //flp_menu.BackColor = Colors.Menu_Bg;
         }
         private void update_autocomplete_Event(object sender, EventArgs a)
         {
@@ -1263,75 +1459,11 @@ namespace ExamManager
         {
             UpdateEditPanel();
         }
-        private void tsmi_open_excel_Click(object sender, EventArgs e)
-        {
-            FileStream fStream = File.Open(@"E:\Kurslisten_P4.xlsx", FileMode.Open, FileAccess.Read);
-            IExcelDataReader edr = ExcelReaderFactory.CreateOpenXmlReader(fStream);
-            LinkedList<string[]> list = new LinkedList<string[]>();
-            LinkedList<string[]> listNotFound = new LinkedList<string[]>();
-            string subject = null;
-            string teacher = null;
-            string student = null;
-            string course = null;
-            while (edr.Read())
-            {
-                if (edr.GetValue(2) != null && edr.GetValue(2).ToString().Length > 3)
-                {
-                    subject = edr.GetValue(2).ToString().Split(' ')[0];
-                    course = edr.GetValue(2).ToString().Split(' ')[1];
-                }
-                if (edr.GetValue(4) != null && edr.GetValue(4).ToString().Length > 1)
-                    teacher = edr.GetValue(4).ToString();
-                if (edr.GetValue(1) != null && edr.GetValue(1).ToString().Length > 3 && edr.GetValue(1).ToString().Contains(','))
-                    student = edr.GetValue(1).ToString();
-                else student = null;
-                if (student != null)
-                {
-                    Console.WriteLine(subject + "  " + teacher + "  " + student);
-                    string[] data = { subject, teacher, student };
-                    list.AddLast(data);
-                }
-            }
-            fStream.Close();
+        #endregion
 
-            string date = DateTime.Now.ToString("yyyy-MM-dd"); //"2022-03-07";
-            int examCount = 0;
-            int room = 0;
-            while (list.Count > examCount)
-            {
-                for (int t = 1; t < 20 + 1; t++)    // TODO check subject else add new 
-                {
-                    examCount++;
-                    if (list.Count == examCount) break;
-                    string[] d = list.ElementAt(room * 20 + t);
-                    string s = d[2].Replace(", ", ",").Replace(" ", "_");
-                    database.AddRoom("R" + room);
-                    DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(30 * t);
-                    if (database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("yyyy-MM-dd"), "R" + room).Count == 0)
-                    {
-                        if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null || database.GetTeacherByID(d[1]) == null)
-                        {
-                            if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && database.GetTeacherByID(d[1]) == null)
-                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, d[1] + "*", null, null, d[0], 30);
-                            else if (database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
-                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
-                            else if (database.GetTeacherByID(d[1]) == null)
-                                database.AddExam("2022-03-07", time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], 30);
-                            listNotFound.AddLast(d);
-                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30); ;
-                        }
-                        else
-                        {
-                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + 30); ;
-                            database.AddExam(date, time.ToString("HH:mm"), "R" + room, "", database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, database.GetTeacherByID(d[1]).Shortname, null, null, d[0], 30);
-                        }
-                    }
-                }
-                room++;
-            }
-            foreach (string[] s in listNotFound)
-                Console.WriteLine(s[0] + " " + s[1] + " " + s[2]);
-            UpdateTimeline();
+        private void tsmi_edit_multiple_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

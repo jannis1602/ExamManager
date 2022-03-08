@@ -188,11 +188,11 @@
     <Compile Include="Forms\FormImportExport.Designer.cs">
       <DependentUpon>FormImportExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\KeepDataForm.cs">
+    <Compile Include="Forms\FormKeepData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\KeepDataForm.Designer.cs">
-      <DependentUpon>KeepDataForm.cs</DependentUpon>
+    <Compile Include="Forms\FormKeepData.Designer.cs">
+      <DependentUpon>FormKeepData.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -243,8 +243,8 @@
     <EmbeddedResource Include="Forms\FormImportExport.resx">
       <DependentUpon>FormImportExport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\KeepDataForm.resx">
-      <DependentUpon>KeepDataForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FormKeepData.resx">
+      <DependentUpon>FormKeepData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

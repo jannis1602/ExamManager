@@ -76,9 +76,6 @@ namespace ExamManager
             }
         }
 
-
-
-
         private void UpdateTeacherList()
         {
             flp_teacher_entitys.Controls.Clear();
@@ -409,9 +406,9 @@ namespace ExamManager
                 foreach (FlowLayoutPanel flp in teacher_entity_list)
                 {
                     TeacherObject teacher = database.GetTeacherByID(flp.Name);
-                    if (!teacher.Shortname.ToLower().Contains(search.ToLower()) && !teacher.Firstname.ToLower().Contains(search.ToLower()) && !teacher.Lastname.ToLower().Contains(search.ToLower()))
+                    if (!teacher.Shortname.ToLower().Contains(search.ToLower()) && !teacher.Firstname.ToLower().Contains(search.ToLower()) && !teacher.Lastname.ToLower().Contains(search.ToLower()) && !teacher.Shortname.ToLower().Contains(search.ToLower()))
                         flp.Hide();
-                    else if (teacher.Shortname.ToLower().Contains(search.ToLower()) || teacher.Firstname.ToLower().Contains(search.ToLower()) || teacher.Lastname.ToLower().Contains(search.ToLower()))
+                    else if (teacher.Shortname.ToLower().Contains(search.ToLower()) || teacher.Firstname.ToLower().Contains(search.ToLower()) || teacher.Lastname.ToLower().Contains(search.ToLower()) || teacher.Shortname.ToLower().Contains(search.ToLower()))
                         flp.Show();
                 }
             }

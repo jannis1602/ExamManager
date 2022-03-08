@@ -83,16 +83,17 @@ namespace ExamManager
 
         public void Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0)
         {
+            // TODO check teacher times
             if (date != null) this.Date = date;
             if (time != null) this.Time = time;
             if (examroom != null) this.Examroom = examroom;
             if (preparationroom != null) this.Preparationroom = preparationroom;
-            if (student != 0) this.StudentId = student; this.Student = Program.database.GetStudentByID(student);
-            if (student2 != 0) this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2);
-            if (student3 != 0) this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3);
-            if (teacher1 != null) this.Teacher1 = teacher1;
-            if (teacher2 != null) this.Teacher2 = teacher2;
-            if (teacher3 != null) this.Teacher3 = teacher3;
+            if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
+            if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
+            if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
+            if (teacher1 != null) this.Teacher1 = teacher1; if (teacher1 == "-") Teacher1 = null;
+            if (teacher2 != null) this.Teacher2 = teacher2; if (teacher2 == "-") Teacher2 = null;
+            if (teacher3 != null) this.Teacher3 = teacher3; if (teacher3 == "-") Teacher3 = null;
             if (subject != null) this.Subject = subject;
             if (duration != 0) this.Duration = duration;
             Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
@@ -154,11 +155,11 @@ namespace ExamManager
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Near;
             stringFormat.LineAlignment = StringAlignment.Center;
-            Rectangle rectL1 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 0, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            Rectangle rectL2 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            Rectangle rectL3 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            Rectangle rectL4 = new Rectangle(1, 1 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
-            e.Graphics.DrawString(student.Fullname() + "  [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
+            Rectangle rectL1 = new Rectangle(1, 2 + (panel_tl_entity.Height - 4) / 4 * 0, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL2 = new Rectangle(1, 2 + (panel_tl_entity.Height - 4) / 4 * 1, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL3 = new Rectangle(1, 2 + (panel_tl_entity.Height - 4) / 4 * 2, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            Rectangle rectL4 = new Rectangle(1, 2 + (panel_tl_entity.Height - 4) / 4 * 3, panel_tl_entity.Width, (panel_tl_entity.Height - 4) / 4);
+            e.Graphics.DrawString(student.Fullname() + " [" + student.Grade + "]", drawFont, Brushes.Black, rectL1, stringFormat);
             string sCount = null;
             if (Student2 != null) sCount = "[2xS]";
             if (Student3 != null) sCount = "[3xS]";
@@ -181,7 +182,7 @@ namespace ExamManager
             // ---- ToolTip ----
             string line1 = student.Fullname() + "  [" + student.Grade + "]\n";
             string line11 = null; if (Student2 != null) line11 = Student2.Fullname() + "  [" + Student2.Grade + "]\n";
-            string line12 = null; if (Student3 != null) line12 = Student3.Fullname()+ "  [" + Student3.Grade + "]\n";
+            string line12 = null; if (Student3 != null) line12 = Student3.Fullname() + "  [" + Student3.Grade + "]\n";
             string line2 = Time + "     " + Duration + "min\n";
             string line3 = t1 + "  " + t2 + "  " + t3 + "\n";
             string line4 = Subject + "  " + Examroom + "  [" + Preparationroom + "]";
@@ -206,7 +207,8 @@ namespace ExamManager
         public void RemoveBorder()
         {
             Border = false;
-            Panel.Refresh();
+            if (Panel != null)
+                Panel.Refresh();
         }
     }
 }

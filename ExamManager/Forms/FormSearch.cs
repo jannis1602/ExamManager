@@ -32,14 +32,14 @@ namespace ExamManager
                 LinkedList<TeacherObject> allTeachers = Program.database.GetAllTeachers();
                 string[] teacher = new string[allTeachers.Count];
                 for (int i = 0; i < allTeachers.Count; i++)
-                    teacher[i] = allTeachers.ElementAt(i).Firstname + " " + allTeachers.ElementAt(i).Lastname;
+                    teacher[i] = allTeachers.ElementAt(i).Fullname();
                 cb_search.Items.AddRange(teacher);
                 //
                 var autocomplete_teacher = new AutoCompleteStringCollection();
-                string[] students = new string[allTeachers.Count];
+                string[] teachers = new string[allTeachers.Count];
                 for (int i = 0; i < allTeachers.Count; i++)
-                    students[i] = (allTeachers.ElementAt(i).Firstname + " " + allTeachers.ElementAt(i).Lastname);
-                autocomplete_teacher.AddRange(students);
+                    teachers[i] = (allTeachers.ElementAt(i).Fullname());
+                autocomplete_teacher.AddRange(teachers);
                 cb_search.AutoCompleteCustomSource = autocomplete_teacher;
                 cb_search.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                 cb_search.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -63,7 +63,7 @@ namespace ExamManager
                 LinkedList<StudentObject> allStudents = Program.database.GetAllStudents();
                 string[] students = new string[allStudents.Count];
                 for (int i = 0; i < allStudents.Count; i++)
-                    students[i] = allStudents.ElementAt(i).Firstname + " " + allStudents.ElementAt(i).Lastname;
+                    students[i] = allStudents.ElementAt(i).Fullname();
                 cb_search.Items.AddRange(students);
                 //
                 var autocomplete_student = new AutoCompleteStringCollection();

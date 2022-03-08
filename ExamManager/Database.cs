@@ -481,7 +481,6 @@ namespace ExamManager
         /// <returns>Returns the teacher as <see cref="TeacherObject"/></returns>
         public TeacherObject GetTeacherByName(string firstname, string lastname)
         {
-            Console.WriteLine(firstname + " " + lastname);
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";

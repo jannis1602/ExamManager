@@ -139,6 +139,7 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmi_edit_multiple = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -334,42 +335,42 @@ namespace ExamManager
             // tsmi_search_teacher
             // 
             this.tsmi_search_teacher.Name = "tsmi_search_teacher";
-            this.tsmi_search_teacher.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_teacher.Text = "Lehrer";
             this.tsmi_search_teacher.Click += new System.EventHandler(this.tsmi_search_teacher_Click);
             // 
             // tsmi_search_student
             // 
             this.tsmi_search_student.Name = "tsmi_search_student";
-            this.tsmi_search_student.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_student.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_student.Text = "Schüler";
             this.tsmi_search_student.Click += new System.EventHandler(this.tsmi_search_student_Click);
             // 
             // tsmi_search_subject
             // 
             this.tsmi_search_subject.Name = "tsmi_search_subject";
-            this.tsmi_search_subject.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_subject.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_subject.Text = "Fach";
             this.tsmi_search_subject.Click += new System.EventHandler(this.tsmi_search_subject_Click);
             // 
             // tsmi_search_room
             // 
             this.tsmi_search_room.Name = "tsmi_search_room";
-            this.tsmi_search_room.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_room.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_room.Text = "Raum";
             this.tsmi_search_room.Click += new System.EventHandler(this.tsmi_search_room_Click);
             // 
             // tsmi_search_grade
             // 
             this.tsmi_search_grade.Name = "tsmi_search_grade";
-            this.tsmi_search_grade.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_grade.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_grade.Text = "Stufe";
             this.tsmi_search_grade.Click += new System.EventHandler(this.tsmi_search_grade_Click);
             // 
             // tsmi_search_delete
             // 
             this.tsmi_search_delete.Name = "tsmi_search_delete";
-            this.tsmi_search_delete.Size = new System.Drawing.Size(150, 22);
+            this.tsmi_search_delete.Size = new System.Drawing.Size(180, 22);
             this.tsmi_search_delete.Text = "Suche löschen";
             this.tsmi_search_delete.Click += new System.EventHandler(this.tsmi_search_delete_Click);
             // 
@@ -408,7 +409,8 @@ namespace ExamManager
             // 
             this.examToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_exam_changeroom,
-            this.tsmi_exam_examdates});
+            this.tsmi_exam_examdates,
+            this.tsmi_edit_multiple});
             this.examToolStripMenuItem.Name = "examToolStripMenuItem";
             this.examToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.examToolStripMenuItem.Text = "Prüfung";
@@ -830,7 +832,7 @@ namespace ExamManager
             // cb_teacher3
             // 
             this.cb_teacher3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_teacher3.DropDownHeight = 100;
+            this.cb_teacher3.DropDownHeight = 200;
             this.cb_teacher3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher3.FormattingEnabled = true;
             this.cb_teacher3.IntegralHeight = false;
@@ -872,7 +874,7 @@ namespace ExamManager
             // cb_teacher1
             // 
             this.cb_teacher1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_teacher1.DropDownHeight = 100;
+            this.cb_teacher1.DropDownHeight = 200;
             this.cb_teacher1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher1.FormattingEnabled = true;
             this.cb_teacher1.IntegralHeight = false;
@@ -914,7 +916,7 @@ namespace ExamManager
             // cb_teacher2
             // 
             this.cb_teacher2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_teacher2.DropDownHeight = 100;
+            this.cb_teacher2.DropDownHeight = 200;
             this.cb_teacher2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_teacher2.FormattingEnabled = true;
             this.cb_teacher2.IntegralHeight = false;
@@ -988,7 +990,7 @@ namespace ExamManager
             // cb_subject
             // 
             this.cb_subject.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_subject.DropDownHeight = 100;
+            this.cb_subject.DropDownHeight = 200;
             this.cb_subject.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_subject.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_subject.FormattingEnabled = true;
@@ -1018,7 +1020,7 @@ namespace ExamManager
             // cb_preparation_room
             // 
             this.cb_preparation_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_preparation_room.DropDownHeight = 100;
+            this.cb_preparation_room.DropDownHeight = 200;
             this.cb_preparation_room.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_preparation_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_preparation_room.FormattingEnabled = true;
@@ -1060,7 +1062,7 @@ namespace ExamManager
             // cb_exam_room
             // 
             this.cb_exam_room.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.cb_exam_room.DropDownHeight = 100;
+            this.cb_exam_room.DropDownHeight = 200;
             this.cb_exam_room.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_exam_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cb_exam_room.FormattingEnabled = true;
@@ -1469,6 +1471,13 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
+            // tsmi_edit_multiple
+            // 
+            this.tsmi_edit_multiple.Name = "tsmi_edit_multiple";
+            this.tsmi_edit_multiple.Size = new System.Drawing.Size(190, 22);
+            this.tsmi_edit_multiple.Text = "mehrere bearbeiten";
+            this.tsmi_edit_multiple.Click += new System.EventHandler(this.tsmi_edit_multiple_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1643,5 +1652,6 @@ namespace ExamManager
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_settings;
         private System.Windows.Forms.ToolStripMenuItem tsmi_open_excel;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_edit_multiple;
     }
 }
