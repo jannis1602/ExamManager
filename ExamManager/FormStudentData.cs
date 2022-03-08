@@ -260,7 +260,7 @@ namespace ExamManager
 
         private void btn_email_generate_Click(object sender, EventArgs e)
         {
-            string domain = Properties.Settings.Default.email_domain;
+            string domain = Properties.Settings.Default.EmailDomain;
             if (domain.Length < 2) MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
             tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
@@ -329,7 +329,7 @@ namespace ExamManager
 
         private void tsmi_generate_email_click(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.email_domain.Length < 2) { MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); return; }
+            if (Properties.Settings.Default.EmailDomain.Length < 2) { MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); return; }
             DialogResult result = MessageBox.Show("Alle Schüler-Emails generieren?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {

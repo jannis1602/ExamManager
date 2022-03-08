@@ -15,12 +15,12 @@ namespace ExamManager
         public FormDomainSettings()
         {
             InitializeComponent();
-            tb_maildomain.Text = Properties.Settings.Default.email_domain;
+            tb_maildomain.Text = Properties.Settings.Default.EmailDomain;
         }
 
         private void btn_set_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.email_domain = tb_maildomain.Text;
+            Properties.Settings.Default.EmailDomain = tb_maildomain.Text;
             Properties.Settings.Default.Save();
         }
     }

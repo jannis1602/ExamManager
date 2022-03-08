@@ -14,8 +14,8 @@ namespace ExamManager
         public Database()
         {
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
-            if (Properties.Settings.Default.databasePath != "default")
-            { path = Properties.Settings.Default.databasePath; }
+            if (Properties.Settings.Default.DatabasePath != "default")
+            { path = Properties.Settings.Default.DatabasePath; }
 
             Console.WriteLine(path);
 
@@ -57,7 +57,7 @@ namespace ExamManager
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
                             string filePath = openFileDialog.FileName;
-                            Properties.Settings.Default.databasePath = filePath;
+                            Properties.Settings.Default.DatabasePath = filePath;
                             Properties.Settings.Default.Save();
                             Program.database = new Database();
                         }
@@ -66,7 +66,7 @@ namespace ExamManager
                 else
                 {
                     path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
-                    Properties.Settings.Default.databasePath = path;
+                    Properties.Settings.Default.DatabasePath = path;
                     Properties.Settings.Default.Save();
                 }
             }
@@ -137,7 +137,7 @@ namespace ExamManager
                                 templastname = templastname.Replace(' ', '_');
                                 if (mailgenerator)
                                 {
-                                    string domain = Properties.Settings.Default.email_domain;
+                                    string domain = Properties.Settings.Default.EmailDomain;
                                     string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                     if (AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail)))
                                         studentIdList.AddLast(GetStudentByName(tempfirstname, templastname, grade).Id);
@@ -167,7 +167,7 @@ namespace ExamManager
                                     {
                                         if (mailgenerator)
                                         {
-                                            string domain = Properties.Settings.Default.email_domain;
+                                            string domain = Properties.Settings.Default.EmailDomain;
                                             string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                             AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail));
                                         }
@@ -181,7 +181,7 @@ namespace ExamManager
                         {       // kein doppelnamen
                             if (mailgenerator)
                             {
-                                string domain = Properties.Settings.Default.email_domain;
+                                string domain = Properties.Settings.Default.EmailDomain;
                                 string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (AddStudent(new StudentObject(0, line.Split(' ')[0], line.Split(' ')[1], grade, mail)))
                                     studentIdList.AddLast(GetStudentByName(line.Split(' ')[0], line.Split(' ')[1], grade).Id);
@@ -373,7 +373,7 @@ namespace ExamManager
                             string[] t = line.Replace("Dr.", "").Replace(",", "").Split(' ');
                             if (mailgenerator)
                             {
-                                string domain = Properties.Settings.Default.email_domain;
+                                string domain = Properties.Settings.Default.EmailDomain;
                                 string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
                                 if (t.Length == 5)
                                     AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], null, null));
@@ -481,6 +481,7 @@ namespace ExamManager
         /// <returns>Returns the teacher as <see cref="TeacherObject"/></returns>
         public TeacherObject GetTeacherByName(string firstname, string lastname)
         {
+            Console.WriteLine(firstname + " " + lastname);
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "SELECT * FROM teacher WHERE LOWER(firstname) = LOWER(@firstname) AND LOWER(lastname) = LOWER(@lastname)";

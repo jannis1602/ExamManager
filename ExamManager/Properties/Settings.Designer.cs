@@ -26,120 +26,144 @@ namespace ExamManager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("default")]
-        public string databasePath {
+        public string DatabasePath {
             get {
-                return ((string)(this["databasePath"]));
+                return ((string)(this["DatabasePath"]));
             }
             set {
-                this["databasePath"] = value;
+                this["DatabasePath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string email_domain {
+        public string EmailDomain {
             get {
-                return ((string)(this["email_domain"]));
+                return ((string)(this["EmailDomain"]));
             }
             set {
-                this["email_domain"] = value;
+                this["EmailDomain"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string timeline_date {
+        public string TimelineDate {
             get {
-                return ((string)(this["timeline_date"]));
+                return ((string)(this["TimelineDate"]));
             }
             set {
-                this["timeline_date"] = value;
+                this["TimelineDate"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int color_theme {
+        public int ColorTheme {
             get {
-                return ((int)(this["color_theme"]));
+                return ((int)(this["ColorTheme"]));
             }
             set {
-                this["color_theme"] = value;
+                this["ColorTheme"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool keep_subject {
+        public bool KeepSubject {
             get {
-                return ((bool)(this["keep_subject"]));
+                return ((bool)(this["KeepSubject"]));
             }
             set {
-                this["keep_subject"] = value;
+                this["KeepSubject"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool keep_examroom {
+        public bool KeepExamroom {
             get {
-                return ((bool)(this["keep_examroom"]));
+                return ((bool)(this["KeepExamroom"]));
             }
             set {
-                this["keep_examroom"] = value;
+                this["KeepExamroom"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool keep_preparationroom {
+        public bool KeepPreparationroom {
             get {
-                return ((bool)(this["keep_preparationroom"]));
+                return ((bool)(this["KeepPreparationroom"]));
             }
             set {
-                this["keep_preparationroom"] = value;
+                this["KeepPreparationroom"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool keep_teacher {
+        public bool KeepTeacher {
             get {
-                return ((bool)(this["keep_teacher"]));
+                return ((bool)(this["KeepTeacher"]));
             }
             set {
-                this["keep_teacher"] = value;
+                this["KeepTeacher"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool keep_grade {
+        public bool KeepGrade {
             get {
-                return ((bool)(this["keep_grade"]));
+                return ((bool)(this["KeepGrade"]));
             }
             set {
-                this["keep_grade"] = value;
+                this["KeepGrade"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool keep_student {
+        public bool KeepStudent {
             get {
-                return ((bool)(this["keep_student"]));
+                return ((bool)(this["KeepStudent"]));
             }
             set {
-                this["keep_student"] = value;
+                this["KeepStudent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NameOrderStudent {
+            get {
+                return ((bool)(this["NameOrderStudent"]));
+            }
+            set {
+                this["NameOrderStudent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NameOrderTeacher {
+            get {
+                return ((bool)(this["NameOrderTeacher"]));
+            }
+            set {
+                this["NameOrderTeacher"] = value;
             }
         }
     }

@@ -179,9 +179,9 @@ namespace ExamManager
             }
             e.Graphics.DrawString(Subject + " " + Examroom + " [" + Preparationroom + "]", drawFont, Brushes.Black, rectL4, stringFormat);
             // ---- ToolTip ----
-            string line1 = student.Firstname + " " + student.Lastname + "  [" + student.Grade + "]\n";
-            string line11 = null; if (Student2 != null) line11 = Student2.Firstname + " " + Student2.Lastname + "  [" + Student2.Grade + "]\n";
-            string line12 = null; if (Student3 != null) line12 = Student3.Firstname + " " + Student3.Lastname + "  [" + Student3.Grade + "]\n";
+            string line1 = student.Fullname() + "  [" + student.Grade + "]\n";
+            string line11 = null; if (Student2 != null) line11 = Student2.Fullname() + "  [" + Student2.Grade + "]\n";
+            string line12 = null; if (Student3 != null) line12 = Student3.Fullname()+ "  [" + Student3.Grade + "]\n";
             string line2 = Time + "     " + Duration + "min\n";
             string line3 = t1 + "  " + t2 + "  " + t3 + "\n";
             string line4 = Subject + "  " + Examroom + "  [" + Preparationroom + "]";

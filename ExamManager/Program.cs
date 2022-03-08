@@ -9,11 +9,11 @@ namespace ExamManager
         [STAThread]
         static void Main()
         {
-            if (Properties.Settings.Default.color_theme == 0)
+            if (Properties.Settings.Default.ColorTheme == 0)
                 Colors.ColorTheme(Colors.Theme.light);
-            else if (Properties.Settings.Default.color_theme == 1)
+            else if (Properties.Settings.Default.ColorTheme == 1)
                 Colors.ColorTheme(Colors.Theme.dark);
-            else if (Properties.Settings.Default.color_theme == 2)
+            else if (Properties.Settings.Default.ColorTheme == 2)
                 Colors.ColorTheme(Colors.Theme.bw);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

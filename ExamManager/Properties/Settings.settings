@@ -2,35 +2,41 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ExamManager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="databasePath" Type="System.String" Scope="User">
+    <Setting Name="DatabasePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">default</Value>
     </Setting>
-    <Setting Name="email_domain" Type="System.String" Scope="User">
+    <Setting Name="EmailDomain" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="timeline_date" Type="System.String" Scope="User">
+    <Setting Name="TimelineDate" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="color_theme" Type="System.Int32" Scope="User">
+    <Setting Name="ColorTheme" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="keep_subject" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepSubject" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keep_examroom" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepExamroom" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keep_preparationroom" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepPreparationroom" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keep_teacher" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepTeacher" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keep_grade" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepGrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="keep_student" Type="System.Boolean" Scope="User">
+    <Setting Name="KeepStudent" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NameOrderStudent" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="NameOrderTeacher" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -14,12 +14,21 @@ namespace ExamManager
         public string Grade { get; private set; }
         public string Email { get; private set; }
         public string Phonenumber { get; private set; }
-        // TODO: get fullname
         public StudentObject(int id, string firstname, string lastname, string grade, string email = null, string phone_number = null)
         {
             this.Id = id;
             this.Firstname = firstname;
             this.Lastname = lastname;
+            /*if (!Properties.Settings.Default.NameOrderStudent)
+            {
+                this.Firstname = firstname;
+                this.Lastname = lastname;
+            }
+            else
+            {
+                this.Firstname = lastname;
+                this.Lastname = firstname;
+            }*/
             this.Grade = grade;
             this.Email = email;
             this.Phonenumber = phone_number;
@@ -27,7 +36,7 @@ namespace ExamManager
 
         public string GenerateEmail(bool setEmail = false)
         {
-            string domain = Properties.Settings.Default.email_domain;
+            string domain = Properties.Settings.Default.EmailDomain;
             if (domain.Length < 2) return null;
             string email = Firstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + Lastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
             if (setEmail) { this.Email = email; this.Edit(email: email); }
@@ -36,17 +45,22 @@ namespace ExamManager
 
         public string Fullname()
         {
-            return Firstname + " " + Lastname;
+            if (Properties.Settings.Default.NameOrderStudent)
+                return Firstname + " " + Lastname;
+            else return Lastname + " " + Firstname;
         }
 
         public void Edit(string firstname = null, string lastname = null, string grade = null, string email = null, string phonenumber = null)
         {
-            if (firstname != null) this.Firstname = firstname;
-            if (lastname != null) this.Lastname = lastname;
+            if (firstname != null) this.Firstname = lastname;
+            if (lastname != null) this.Lastname = firstname;
             if (grade != null) this.Grade = Grade;
             if (email != null) this.Email = email;
             if (phonenumber != null) this.Phonenumber = phonenumber;
             Program.database.EditStudent(this.Id, this.Firstname, this.Lastname, this.Grade, this.Email, this.Phonenumber);
+            /*if (!Properties.Settings.Default.NameOrderStudent)
+                Program.database.EditStudent(this.Id, this.Firstname, this.Lastname, this.Grade, this.Email, this.Phonenumber);
+            else Program.database.EditStudent(this.Id, this.Lastname, this.Firstname, this.Grade, this.Email, this.Phonenumber);*/
         }
 
         public void Delete()

@@ -30,7 +30,7 @@ namespace ExamManager
             cb_existinggrade.Items.AddRange(list);
             cb_existinggrade.SelectedIndex = 0;
 
-            if (Properties.Settings.Default.email_domain.Length < 2)
+            if (Properties.Settings.Default.EmailDomain.Length < 2)
             {
                 cb_mailgenerator.Text += " (nicht festgelegt!)";
             }

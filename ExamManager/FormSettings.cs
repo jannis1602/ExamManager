@@ -34,8 +34,8 @@ namespace ExamManager
                     case 2: Colors.ColorTheme(Colors.Theme.bw); break;
                 }
             UpdateColor.Invoke(this, null);
-            Properties.Settings.Default.email_domain = tb_emaildomain.Text; // -> on change
-                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
+            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text; // -> on change
+                                                                           //Properties.Settings.Default.Reload(); // TODO restore old settings
             Properties.Settings.Default.Save(); // on exit
             saved = true;
             if (changedDatabase)
@@ -78,21 +78,28 @@ namespace ExamManager
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            tb_emaildomain.Text = Properties.Settings.Default.email_domain;
-            cb_color.SelectedIndex = Properties.Settings.Default.color_theme;
-            lbl_current_database_path.Text = Properties.Settings.Default.databasePath;
+            tb_emaildomain.Text = Properties.Settings.Default.EmailDomain;
+            cb_color.SelectedIndex = Properties.Settings.Default.ColorTheme;
+            lbl_current_database_path.Text = Properties.Settings.Default.DatabasePath;
+            if (Properties.Settings.Default.NameOrderStudent)
+                cb_student_nameorder.SelectedIndex = 0;
+            else cb_student_nameorder.SelectedIndex = 1;
+            if (Properties.Settings.Default.NameOrderTeacher)
+                cb_teacher_nameorder.SelectedIndex = 0;
+            else cb_teacher_nameorder.SelectedIndex = 1;
+            // TODO load settings
         }
 
         private void cb_color_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.color_theme = cb_color.SelectedIndex;
+            Properties.Settings.Default.ColorTheme = cb_color.SelectedIndex;
             changedColor = true;
         }
 
         private void lbl_daefaultdb_Click(object sender, EventArgs e)
         {
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
-            Properties.Settings.Default.databasePath = path;
+            Properties.Settings.Default.DatabasePath = path;
             lbl_current_database_path.Text = path + "*";
             changedDatabase = true;
         }
@@ -109,7 +116,7 @@ namespace ExamManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Properties.Settings.Default.databasePath = filePath;
+                    Properties.Settings.Default.DatabasePath = filePath;
                     Properties.Settings.Default.Save();
                     lbl_current_database_path.Text = filePath + "*";
                     changedDatabase = true;
@@ -138,8 +145,8 @@ namespace ExamManager
 
             SettingsObject settings = new SettingsObject
             {
-                DatabasePath = Properties.Settings.Default.databasePath,
-                EmailDomain = Properties.Settings.Default.email_domain,
+                DatabasePath = Properties.Settings.Default.DatabasePath,
+                EmailDomain = Properties.Settings.Default.EmailDomain,
                 SMTPSettings = new SMTP_Settings // TODO: get from settings
                 {
                     Server = tb_smtp_server.Text,
@@ -176,12 +183,12 @@ namespace ExamManager
                     Console.WriteLine(settings.DatabasePath + "  " + settings.EmailDomain + "  " + settings.SMTPSettings);
                     if (settings.EmailDomain != null)
                     {
-                        Properties.Settings.Default.email_domain = settings.EmailDomain;
+                        Properties.Settings.Default.EmailDomain = settings.EmailDomain;
                         tb_emaildomain.Text = settings.EmailDomain;
                     }
                     if (settings.DatabasePath != null)
                     {
-                        Properties.Settings.Default.databasePath = settings.DatabasePath;
+                        Properties.Settings.Default.DatabasePath = settings.DatabasePath;
                         lbl_current_database_path.Text = settings.DatabasePath;
                     }
                     if (settings.SMTPSettings != null)
@@ -208,6 +215,20 @@ namespace ExamManager
             public string SenderName { get; set; }
             public string EmailTitel { get; set; }
 
+        }
+
+        private void cb_student_nameorder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cb_student_nameorder.SelectedIndex == 0)
+                Properties.Settings.Default.NameOrderStudent = true;
+            else Properties.Settings.Default.NameOrderStudent = false;
+        }
+
+        private void cb_teacher_nameorder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cb_teacher_nameorder.SelectedIndex == 0)
+                Properties.Settings.Default.NameOrderTeacher = true;
+            else Properties.Settings.Default.NameOrderTeacher = false;
         }
     }
 }

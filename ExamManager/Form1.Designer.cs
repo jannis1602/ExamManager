@@ -471,7 +471,7 @@ namespace ExamManager
             // 
             this.tsmi_open_excel.Name = "tsmi_open_excel";
             this.tsmi_open_excel.Size = new System.Drawing.Size(230, 22);
-            this.tsmi_open_excel.Text = "Excel Datei öffnen";
+            this.tsmi_open_excel.Text = "Excel Datei öffnen [DEV]";
             this.tsmi_open_excel.Click += new System.EventHandler(this.tsmi_open_excel_Click);
             // 
             // tsmi_options

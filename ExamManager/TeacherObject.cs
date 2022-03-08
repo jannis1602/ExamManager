@@ -32,11 +32,17 @@ namespace ExamManager
 
         public string GenerateEmail(bool setEmail = false)
         {
-            string domain = Properties.Settings.Default.email_domain;
+            string domain = Properties.Settings.Default.EmailDomain;
             if (domain.Length < 2) return null;
             string email = Firstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + Lastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
             if (setEmail) { this.Email = email; this.Edit(email: email); }
             return email;
+        }
+        public string Fullname()
+        {
+            if (Properties.Settings.Default.NameOrderTeacher)
+                return Firstname + " " + Lastname;
+            else return Lastname + " " + Firstname;
         }
 
         public void Edit(string shortname = null, string firstname = null, string lastname = null, string email = null, string phonenumber = null, string subject1 = null, string subject2 = null, string subject3 = null)
