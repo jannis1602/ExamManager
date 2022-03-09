@@ -67,6 +67,8 @@ namespace ExamManager
                 this.Date = dt.ToString("yyyy-MM-dd");
             }
             this.Time = time;
+            if (DateTime.ParseExact(time, "HH:mm", null).Hour > 18) Edit(time: "18:00");
+            if (DateTime.ParseExact(time, "HH:mm", null).Hour < 7) Edit(time: "07:00");
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
             this.StudentId = student;
@@ -201,6 +203,7 @@ namespace ExamManager
 
         public void UpdateData(ExamObject eo)
         {
+            if (eo == null) eo = Program.database.GetExamById(Id);
             this.Date = eo.Date;
             this.Time = eo.Time;
             this.Examroom = eo.Examroom;
