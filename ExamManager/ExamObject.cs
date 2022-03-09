@@ -199,9 +199,28 @@ namespace ExamManager
             this.Panel.Refresh();
         }
 
+        public void UpdateData(ExamObject eo)
+        {
+            this.Date = eo.Date;
+            this.Time = eo.Time;
+            this.Examroom = eo.Examroom;
+            this.Preparationroom = eo.Preparationroom;
+            this.StudentId = eo.StudentId;
+            this.Student2Id = eo.Student2Id;
+            this.Student3Id = eo.Student3Id;
+            this.Student = eo.Student;
+            this.Student2 = eo.Student2;
+            this.Student3 = eo.Student3;
+            this.Teacher1 = eo.Teacher1;
+            this.Teacher2 = eo.Teacher2;
+            this.Teacher3 = eo.Teacher3;
+            this.Subject = eo.Subject;
+            this.Duration = eo.Duration;
+        }
+
         public Panel GetTimelineEntity(bool preview = false)
         {
-            if (Panel == null) CreatePanel();
+            if (this.Panel == null) CreatePanel();
             if (preview) Panel.BackColor = Color.FromArgb(80, Colors.TL_Entity);
             return this.Panel;
         }

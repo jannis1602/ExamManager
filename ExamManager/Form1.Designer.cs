@@ -139,6 +139,7 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmi_filter_subject = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -377,6 +378,7 @@ namespace ExamManager
             // 
             this.tsmi_filter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_filter_grade,
+            this.tsmi_filter_subject,
             this.tsmi_filter_teacher,
             this.tsmi_filter_all});
             this.tsmi_filter.Name = "tsmi_filter";
@@ -386,21 +388,21 @@ namespace ExamManager
             // tsmi_filter_grade
             // 
             this.tsmi_filter_grade.Name = "tsmi_filter_grade";
-            this.tsmi_filter_grade.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_grade.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_grade.Text = "Stufe";
             this.tsmi_filter_grade.Click += new System.EventHandler(this.tsmi_filter_grade_Click);
             // 
             // tsmi_filter_teacher
             // 
             this.tsmi_filter_teacher.Name = "tsmi_filter_teacher";
-            this.tsmi_filter_teacher.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_teacher.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_teacher.Text = "Lehrer";
             this.tsmi_filter_teacher.Click += new System.EventHandler(this.tsmi_filter_teacher_Click);
             // 
             // tsmi_filter_all
             // 
             this.tsmi_filter_all.Name = "tsmi_filter_all";
-            this.tsmi_filter_all.Size = new System.Drawing.Size(144, 22);
+            this.tsmi_filter_all.Size = new System.Drawing.Size(180, 22);
             this.tsmi_filter_all.Text = "Filter löschen";
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
             // 
@@ -1470,6 +1472,13 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
+            // tsmi_filter_subject
+            // 
+            this.tsmi_filter_subject.Name = "tsmi_filter_subject";
+            this.tsmi_filter_subject.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_filter_subject.Text = "Fach";
+            this.tsmi_filter_subject.Click += new System.EventHandler(this.tsmi_filter_subject_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1644,5 +1653,6 @@ namespace ExamManager
         private System.Windows.Forms.Button btn_cancel;
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_settings;
         private System.Windows.Forms.ToolStripMenuItem tsmi_open_excel;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_filter_subject;
     }
 }

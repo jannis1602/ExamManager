@@ -33,6 +33,9 @@ namespace ExamManager
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.panel_main = new System.Windows.Forms.TabControl();
             this.tp_common = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cb_teacher_nameorder = new System.Windows.Forms.ComboBox();
             this.flp_nameorder = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_nameorder = new System.Windows.Forms.Label();
             this.cb_student_nameorder = new System.Windows.Forms.ComboBox();
@@ -73,19 +76,20 @@ namespace ExamManager
             this.flp_select_localdb = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_localdb = new System.Windows.Forms.Label();
             this.btn_select_localdb = new System.Windows.Forms.Button();
+            this.btn_new_database = new System.Windows.Forms.Button();
             this.lbl_daefaultdb = new System.Windows.Forms.Button();
             this.lbl_changedb_info = new System.Windows.Forms.Label();
             this.tlp_btns = new System.Windows.Forms.TableLayoutPanel();
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cb_teacher_nameorder = new System.Windows.Forms.ComboBox();
-            this.btn_new_database = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_exambreak = new System.Windows.Forms.Label();
+            this.dtp_exambreak = new System.Windows.Forms.DateTimePicker();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.flp_nameorder.SuspendLayout();
             this.flp_settings_options.SuspendLayout();
             this.flp_color.SuspendLayout();
@@ -101,7 +105,7 @@ namespace ExamManager
             this.flp_current_db.SuspendLayout();
             this.flp_select_localdb.SuspendLayout();
             this.tlp_btns.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -134,6 +138,7 @@ namespace ExamManager
             // 
             // tp_common
             // 
+            this.tp_common.Controls.Add(this.flowLayoutPanel2);
             this.tp_common.Controls.Add(this.flowLayoutPanel1);
             this.tp_common.Controls.Add(this.flp_nameorder);
             this.tp_common.Controls.Add(this.flp_settings_options);
@@ -145,6 +150,45 @@ namespace ExamManager
             this.tp_common.TabIndex = 0;
             this.tp_common.Text = "Allgemein";
             this.tp_common.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.cb_teacher_nameorder);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 59);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel1.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label1.Location = new System.Drawing.Point(5, 5);
+            this.label1.Margin = new System.Windows.Forms.Padding(5);
+            this.label1.MinimumSize = new System.Drawing.Size(60, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(201, 20);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Namensreihenfolge Lehrer:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cb_teacher_nameorder
+            // 
+            this.cb_teacher_nameorder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_teacher_nameorder.FormattingEnabled = true;
+            this.cb_teacher_nameorder.Items.AddRange(new object[] {
+            "Vorname, Nachname",
+            "Nachname, Vorname"});
+            this.cb_teacher_nameorder.Location = new System.Drawing.Point(214, 3);
+            this.cb_teacher_nameorder.Name = "cb_teacher_nameorder";
+            this.cb_teacher_nameorder.Size = new System.Drawing.Size(160, 24);
+            this.cb_teacher_nameorder.TabIndex = 5;
+            this.cb_teacher_nameorder.SelectedIndexChanged += new System.EventHandler(this.cb_teacher_nameorder_SelectedIndexChanged);
             // 
             // flp_nameorder
             // 
@@ -601,6 +645,18 @@ namespace ExamManager
             this.btn_select_localdb.UseVisualStyleBackColor = true;
             this.btn_select_localdb.Click += new System.EventHandler(this.btn_select_localdb_Click);
             // 
+            // btn_new_database
+            // 
+            this.btn_new_database.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_new_database.Location = new System.Drawing.Point(238, 2);
+            this.btn_new_database.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_new_database.Name = "btn_new_database";
+            this.btn_new_database.Size = new System.Drawing.Size(100, 26);
+            this.btn_new_database.TabIndex = 12;
+            this.btn_new_database.Text = "neue Datenbank";
+            this.btn_new_database.UseVisualStyleBackColor = true;
+            this.btn_new_database.Click += new System.EventHandler(this.btn_new_database_Click);
+            // 
             // lbl_daefaultdb
             // 
             this.lbl_daefaultdb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -674,56 +730,48 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // flowLayoutPanel1
+            // flowLayoutPanel2
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel1.Controls.Add(this.label1);
-            this.flowLayoutPanel1.Controls.Add(this.cb_teacher_nameorder);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 59);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(780, 28);
-            this.flowLayoutPanel1.TabIndex = 8;
+            this.flowLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel2.Controls.Add(this.lbl_exambreak);
+            this.flowLayoutPanel2.Controls.Add(this.dtp_exambreak);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 87);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel2.TabIndex = 10;
             // 
-            // label1
+            // lbl_exambreak
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbl_exambreak.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(5, 5);
-            this.label1.Margin = new System.Windows.Forms.Padding(5);
-            this.label1.MinimumSize = new System.Drawing.Size(60, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(201, 20);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Namensreihenfolge Lehrer:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_exambreak.AutoSize = true;
+            this.lbl_exambreak.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_exambreak.Location = new System.Drawing.Point(5, 5);
+            this.lbl_exambreak.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_exambreak.MinimumSize = new System.Drawing.Size(60, 0);
+            this.lbl_exambreak.Name = "lbl_exambreak";
+            this.lbl_exambreak.Size = new System.Drawing.Size(199, 20);
+            this.lbl_exambreak.TabIndex = 4;
+            this.lbl_exambreak.Text = "Pause nach Prüfung[DEV]:";
+            this.lbl_exambreak.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // cb_teacher_nameorder
+            // dtp_exambreak
             // 
-            this.cb_teacher_nameorder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_teacher_nameorder.FormattingEnabled = true;
-            this.cb_teacher_nameorder.Items.AddRange(new object[] {
-            "Vorname, Nachname",
-            "Nachname, Vorname"});
-            this.cb_teacher_nameorder.Location = new System.Drawing.Point(214, 3);
-            this.cb_teacher_nameorder.Name = "cb_teacher_nameorder";
-            this.cb_teacher_nameorder.Size = new System.Drawing.Size(160, 24);
-            this.cb_teacher_nameorder.TabIndex = 5;
-            this.cb_teacher_nameorder.SelectedIndexChanged += new System.EventHandler(this.cb_teacher_nameorder_SelectedIndexChanged);
-            // 
-            // btn_new_database
-            // 
-            this.btn_new_database.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_new_database.Location = new System.Drawing.Point(238, 2);
-            this.btn_new_database.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_new_database.Name = "btn_new_database";
-            this.btn_new_database.Size = new System.Drawing.Size(100, 26);
-            this.btn_new_database.TabIndex = 12;
-            this.btn_new_database.Text = "neue Datenbank";
-            this.btn_new_database.UseVisualStyleBackColor = true;
-            this.btn_new_database.Click += new System.EventHandler(this.btn_new_database_Click);
+            this.dtp_exambreak.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dtp_exambreak.CustomFormat = "mm";
+            this.dtp_exambreak.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dtp_exambreak.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.dtp_exambreak.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_exambreak.Location = new System.Drawing.Point(212, 4);
+            this.dtp_exambreak.MaximumSize = new System.Drawing.Size(100, 26);
+            this.dtp_exambreak.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
+            this.dtp_exambreak.Name = "dtp_exambreak";
+            this.dtp_exambreak.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.dtp_exambreak.ShowUpDown = true;
+            this.dtp_exambreak.Size = new System.Drawing.Size(60, 23);
+            this.dtp_exambreak.TabIndex = 11;
+            this.dtp_exambreak.Value = new System.DateTime(2022, 1, 24, 8, 0, 0, 0);
             // 
             // FormSettings
             // 
@@ -739,6 +787,8 @@ namespace ExamManager
             this.tlp_main.ResumeLayout(false);
             this.panel_main.ResumeLayout(false);
             this.tp_common.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.flp_nameorder.ResumeLayout(false);
             this.flp_nameorder.PerformLayout();
             this.flp_settings_options.ResumeLayout(false);
@@ -763,8 +813,8 @@ namespace ExamManager
             this.flp_select_localdb.ResumeLayout(false);
             this.flp_select_localdb.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -825,5 +875,8 @@ namespace ExamManager
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cb_teacher_nameorder;
         private System.Windows.Forms.Button btn_new_database;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label lbl_exambreak;
+        private System.Windows.Forms.DateTimePicker dtp_exambreak;
     }
 }

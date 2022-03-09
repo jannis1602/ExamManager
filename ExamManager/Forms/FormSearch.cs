@@ -155,7 +155,11 @@ namespace ExamManager
                     if (searchmode == 0)    // teacher
                     {
                         string s = cb_search.Text.First().ToString().ToUpper() + (cb_search.Text.Substring(1));
-                        string tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1]).Shortname;
+                        string tid = null;
+                        if (Properties.Settings.Default.NameOrderStudent)
+                            tid = Program.database.GetTeacherByName(s.Split(' ')[0], s.Split(' ')[1]).Shortname;
+                        else if (!Properties.Settings.Default.NameOrderStudent)
+                            tid = Program.database.GetTeacherByName(s.Split(' ')[1], s.Split(' ')[0]).Shortname;
                         UpdateSearch.Invoke(tid, null);
                         this.Dispose();
                     }
