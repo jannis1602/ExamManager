@@ -748,7 +748,7 @@ namespace ExamManager
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND exam_room = @exam_room";
+            sqlite_cmd.CommandText = "SELECT * FROM exam WHERE date = @date AND (exam_room = @exam_room OR preparation_room = @exam_room)";
             sqlite_cmd.Parameters.AddWithValue("@date", date);
             sqlite_cmd.Parameters.AddWithValue("@exam_room", exam_room);
             reader = sqlite_cmd.ExecuteReader();

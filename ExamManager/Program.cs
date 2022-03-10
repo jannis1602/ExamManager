@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -15,18 +17,24 @@ namespace ExamManager
                 Colors.ColorTheme(Colors.Theme.dark);
             else if (Properties.Settings.Default.ColorTheme == 2)
                 Colors.ColorTheme(Colors.Theme.bw);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             database = new Database();
             Application.Run(new Form1());
 
+            /*Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+            Console.WriteLine(Properties.strings.test);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+            Console.WriteLine(Properties.strings.test);*/
+
+            //MessageBox.Show("Test", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
             //if (result == DialogResult.Yes)
 
             //public event EventHandler UpdateList;
             //UpdateList.Invoke(this,null);
             // if (e.KeyData == (Keys.Control | Keys.Enter))
-
 
             // exam preview on/off
             // tl_entity mouse up -> move timeline up?

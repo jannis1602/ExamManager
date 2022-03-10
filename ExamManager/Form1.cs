@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -21,7 +22,7 @@ namespace ExamManager
         public Filter filterMode = Filter.all;
         private ExamObject SwapExam = null;
 
-        private readonly bool editExamPreview = true;
+        //private readonly bool editExamPreview = true;
         private Panel editPanel = null; // TODO: EditPanel in ExamObject
         private Point oldPoint;
         private Panel oldTimeLine;
@@ -128,7 +129,6 @@ namespace ExamManager
             this.panel_side_room.HorizontalScroll.Value = 0;
             panel_side_room.Controls.Add(panel_room);
             time_line_room_list.AddLast(panel_room);
-            //panel_side_room.Refresh();
             // -- timeline --
             this.panel_time_line.HorizontalScroll.Value = 0;
             Panel panel_tl = new Panel
@@ -142,13 +142,13 @@ namespace ExamManager
             panel_tl.MouseDown += panel_time_line_MouseDown;
             void panel_time_line_MouseDown(object sender, MouseEventArgs e)
             {
-                if (editPanel != null)
+                if (e.Button == MouseButtons.Left && editPanel != null)
                 {
                     Panel p = sender as Panel;
                     if (oldTimeLine == p) return;
                     oldTimeLine = p;
                     cb_exam_room.SelectedItem = p.Name;
-                    UpdateEditPanel();
+                    UpdatePreviewPanel();
                 }
             }
             this.panel_time_line.Controls.Add(panel_tl);
@@ -310,7 +310,7 @@ namespace ExamManager
                 if (eoTime.Add(timeDiff).Hour > 18) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
                 if (eoTime.Add(timeDiff).Hour < 7) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
             }
-
+            bool UpdateTL = false;
             foreach (ExamObject exam in tl_entity_multiselect_list)
             {
                 // ---- student ----
@@ -365,20 +365,26 @@ namespace ExamManager
                 exam.Edit(time: eTime, subject: subject, examroom: examRoom, preparationroom: preparationRoom, teacher1: t1, teacher2: t2, teacher3: t3, duration: duration);
                 exam.RemoveBorder();
                 exam.UpdatePanel();
+                // TODO: check for empty Timeline -> remove
                 foreach (Panel p in time_line_list)
-                {
-                    if (p.Name == exam.Examroom)
+                    if (database.GetAllExamsAtDate(this.dtp_time.Value.ToString("HH:mm")).Count(x => x.Examroom == p.Name) == 0) UpdateTL = true;
+                if (time_line_list.Count(x => x.Name == exam.Examroom) == 0) UpdateTL = true;
+                else
+                    foreach (Panel p in this.time_line_list)
                     {
-                        p.Controls.Add(exam.GetTimelineEntity());
-                        p.Update();
-                        break;
+                        if (p.Name == exam.Examroom)
+                        {
+                            p.Controls.Add(exam.GetTimelineEntity());
+                            p.Update();
+                            break;
+                        }
                     }
-                }
             }
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             tl_entity_multiselect_list.Clear();
-            // UpdateTimeline();
+            if (UpdateTL) UpdateTimeline();
+
         }
         public void UpdateTimeline()
         {
@@ -387,7 +393,6 @@ namespace ExamManager
             foreach (Panel p in time_line_list) p.Dispose();
             foreach (Panel p in time_line_room_list) p.Dispose();
             time_line_list.Clear();
-            //tl_exam_entity_list.Clear();
             time_line_room_list.Clear();
             // create new timeline
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
@@ -396,53 +401,10 @@ namespace ExamManager
             else if (filterMode == Filter.subject) examList = database.GetAllExamsFromSubjectAtDate(date, filter);
             else if (filterMode == Filter.grade) examList = database.GetAllExamsFromGradeAtDate(date, filter);
             else examList = database.GetAllExamsAtDate(date);
-            //Console.WriteLine("---- TimeLine ----");
             LinkedList<ExamObject> newExams = new LinkedList<ExamObject>();
             LinkedList<ExamObject> removeExams = new LinkedList<ExamObject>();
             LinkedList<ExamObject> updateExamList = new LinkedList<ExamObject>();
             tl_exam_entity_list = examList;
-            /*if (tl_exam_entity_list.Count == 0)
-                tl_exam_entity_list = examList;
-            else
-            {
-                updateExamList = new LinkedList<ExamObject>(tl_exam_entity_list);
-                foreach (ExamObject eo in tl_exam_entity_list)
-                {
-                    if (examList.Where(x => x.Id == eo.Id).Count() == 0) updateExamList.Remove(eo);
-                    else
-                    {
-                        ExamObject teo = examList.Where(x => x.Id == eo.Id).First();
-                        if (teo != null)
-                        {
-                            eo.UpdateData(teo);
-                            updateExamList.AddLast(eo);
-                            examList.Remove(teo);
-                            Console.WriteLine("update: " + eo.Student.Fullname());
-                        }
-                        else
-                        {
-                            updateExamList.AddLast(eo);
-                        }
-                    }
-                }
-                tl_exam_entity_list = new LinkedList<ExamObject>(updateExamList);
-                foreach (ExamObject eo in examList)
-                    tl_exam_entity_list.AddLast(eo);
-            }*/
-            // ---------- Rooms ----------
-            /*LinkedList<string> room_list = new LinkedList<string>();
-            foreach (ExamObject s in tl_exam_entity_list)
-            { if (!room_list.Contains(s.Examroom)) room_list.AddLast(s.Examroom); }
-            List<string> temp_room_list = new List<string>(room_list);
-            temp_room_list.Sort();
-            room_list = new LinkedList<string>(temp_room_list);
-            foreach (string s in room_list) AddTimeline(s);
-            // SideBottomPanel 
-            if (panel_empty == null) panel_empty = new Panel();
-            panel_empty.Location = new Point(0, panel_top_time.Height + 5 + 85 * time_line_list.Count);
-            panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
-            panel_empty.Name = "empty";
-            panel_side_room.Controls.Add(panel_empty);*/
             // ---------- TimeLineEntities ----------
             foreach (ExamObject exam in tl_exam_entity_list)
             {
@@ -452,7 +414,7 @@ namespace ExamManager
                     bool border = false;
                     if (searchMode == Search.teacher)
                     { // teacher
-                        if (search.Equals(exam.Teacher1Id)) border = true;
+                        if (exam.Teacher1Id != null && exam.Teacher1Id.Length > 1 && search.Equals(exam.Teacher1Id)) border = true;
                         if (exam.Teacher2Id != null && exam.Teacher2Id.Length > 1 && search.Equals(exam.Teacher2Id)) border = true;
                         if (exam.Teacher3Id != null && exam.Teacher3Id.Length > 1 && search.Equals(exam.Teacher3Id)) border = true;
                     }
@@ -492,9 +454,6 @@ namespace ExamManager
                 mnuDelete.Name = exam.Id.ToString();
                 mnu.Items.AddRange(new ToolStripItem[] { mnuEdit, mnuCopy, mnuSwap, mnuDelete });
                 panel_tl_entity.ContextMenuStrip = mnu;
-                /*foreach (Panel p in time_line_list)
-                    if (p.Name.Equals(exam.Examroom))
-                    { p.Controls.Add(panel_tl_entity); break; }*/
             }
             UpdateTimeLineEntities();
             // ---- search/filter label ----
@@ -530,10 +489,11 @@ namespace ExamManager
             }
         }
 
-        private void UpdateEditPanel()
+        private void UpdatePreviewPanel()
         {
             if (tl_entity_multiselect_list.Count > 0) return;
-            if (!editExamPreview) return;
+            if (!Properties.Settings.Default.ExamPreview)
+            { if (editPanel != null) { editPanel.Dispose(); editPanel = null; } return; }
             if (editPanel != null) editPanel.Dispose();
             string teacher1 = null;
             string teacher2 = null;
@@ -632,14 +592,12 @@ namespace ExamManager
                     else return;
                     // 2400 / panel_time_line.Width;
                     if (dtp_time.Value != oldTime)
-                        UpdateEditPanel();
+                        UpdatePreviewPanel();
                 }
             }
 
             DateTime RoundUp(DateTime dt, TimeSpan d)
-            {
-                return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
-            }
+            { return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind); }
         }
         private void UpdateAutocompleteTeacher(LinkedList<TeacherObject> list)
         {
@@ -723,7 +681,6 @@ namespace ExamManager
             Properties.Settings.Default.TimelineDate = date.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
         }
-
         #endregion
         #region -------- panel click --------
         private void panel_tl_entity_click(object sender, MouseEventArgs e)
@@ -797,7 +754,7 @@ namespace ExamManager
                     this.cb_subject.Text = exam.Subject;
                     this.tb_duration.Text = exam.Duration.ToString();
                 }
-                UpdateEditPanel();
+                UpdatePreviewPanel();
             }
         }
         private void panel_menu_click_copy(object sender, EventArgs e)
@@ -829,7 +786,7 @@ namespace ExamManager
             EditExam = null;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
-            UpdateEditPanel();
+            UpdatePreviewPanel();
         }
         private void panel_menu_click_edit(object sender, EventArgs e)
         {
@@ -872,7 +829,7 @@ namespace ExamManager
             else this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3Id).Fullname();
 
             EditExam.SetBorder(Color.DarkRed, false);
-            UpdateEditPanel();
+            UpdatePreviewPanel();
             if (cb_show_subjectteacher.Checked)
             { UpdateAutocompleteTeacher(database.GetTeacherBySubject(exam.Subject)); }
             else { UpdateAutocompleteTeacher(database.GetAllTeachers()); }
@@ -1523,11 +1480,11 @@ namespace ExamManager
         }
         private void cb_exam_room_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateEditPanel();
+            UpdatePreviewPanel();
         }
         private void dtp_time_ValueChanged(object sender, EventArgs e)
         {
-            UpdateEditPanel();
+            UpdatePreviewPanel();
         }
         #endregion
         private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

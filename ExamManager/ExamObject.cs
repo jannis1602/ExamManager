@@ -15,7 +15,6 @@ namespace ExamManager
         private ButtonBorderStyle BorderStyle;
         private Color BorderColor = Colors.TL_EntityBorder;
         public Panel Panel { get; private set; }
-
         public int Id { get; private set; }
         public string Date { get; private set; } // DateTime?
         public string Time { get; private set; }
@@ -27,7 +26,6 @@ namespace ExamManager
         public StudentObject Student { get; private set; }
         public StudentObject Student2 { get; private set; }
         public StudentObject Student3 { get; private set; }
-
         public string Teacher1Id { get; private set; }
         public string Teacher2Id { get; private set; }
         public string Teacher3Id { get; private set; }
@@ -58,9 +56,6 @@ namespace ExamManager
             this.Teacher3 = t3;
             this.Subject = subject;
             this.Duration = duration;
-            // TODO: check teacher in db
-            // TODO teacher object
-            // TODO UPDATE from database
         }
         public ExamObject(int id, string date, string time, string examroom, string preparationroom, int student, int student2, int student3, string teacher1, string teacher2, string teacher3, string subject, int duration)
         {
@@ -122,7 +117,6 @@ namespace ExamManager
             else { UpdateDBData(); return false; }
             return true;
         }
-
         public bool EditDatabase()
         {
             string checkRoom = CheckRoom();
@@ -154,12 +148,10 @@ namespace ExamManager
             else UpdateDBData();
             return true;
         }
-
         public void Delete()
         {
             Program.database.DeleteExam(this.Id);
         }
-
         private void CreatePanel() // TODO Update Panel: change size+text
         {
             this.Panel = new Panel();
@@ -232,21 +224,20 @@ namespace ExamManager
         private string CheckRoom()
         {
             foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom))
-                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt " + s.Time;
+                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt ab " + s.Time;
             foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Preparationroom))
-                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt " + s.Time;
+                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt ab " + s.Time;
             return null;
         }
         private string CheckTeacher()
         {
-            // check if min 1 teacher != null
-            if (Teacher1Id != null && Program.database.GetTeacherByID(Teacher1Id) == null) return "Lehrer " + Teacher1Id + " nicht gefunden";
-            if (Teacher2Id != null && Program.database.GetTeacherByID(Teacher2Id) == null) return "Lehrer " + Teacher2Id + " nicht gefunden";
-            if (Teacher3Id != null && Program.database.GetTeacherByID(Teacher3Id) == null) return "Lehrer " + Teacher3Id + " nicht gefunden";
-            string ts = null;
-            if (Teacher1Id != null && (ts = TeacherInOtherRooms(Teacher1Id)) != null) return Teacher1Id + " befindet sich in einem anderem Raum " + ts;
-            if (Teacher2Id != null && (ts = TeacherInOtherRooms(Teacher2Id)) != null) return Teacher2Id + " befindet sich in einem anderem Raum " + ts;
-            if (Teacher3Id != null && (ts = TeacherInOtherRooms(Teacher3Id)) != null) return Teacher3Id + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher1Id != null && Teacher1Id.Length > 0 && Program.database.GetTeacherByID(Teacher1Id) == null) return "Lehrer1 " + Teacher1Id + " nicht gefunden";
+            if (Teacher2Id != null && Teacher2Id.Length > 0 && Program.database.GetTeacherByID(Teacher2Id) == null) return "Lehrer2 " + Teacher2Id + " nicht gefunden";
+            if (Teacher3Id != null && Teacher3Id.Length > 0 && Program.database.GetTeacherByID(Teacher3Id) == null) return "Lehrer3 " + Teacher3Id + " nicht gefunden";
+            string ts;
+            if (Teacher1Id != null && (ts = TeacherInOtherRooms(Teacher1Id)) != null) return Program.database.GetTeacherByID(Teacher1Id).Fullname() + " (" + Teacher1Id + ") befindet sich in einem anderem Raum: " + ts;
+            if (Teacher2Id != null && (ts = TeacherInOtherRooms(Teacher2Id)) != null) return Program.database.GetTeacherByID(Teacher2Id).Fullname() + " (" + Teacher2Id + ") befindet sich in einem anderem Raum: " + ts;
+            if (Teacher3Id != null && (ts = TeacherInOtherRooms(Teacher3Id)) != null) return Program.database.GetTeacherByID(Teacher3Id).Fullname() + " (" + Teacher3Id + ") befindet sich in einem anderem Raum: " + ts;
             if (Teacher1Id == null && Teacher2Id == null && Teacher3Id == null) return "Kein Lehrer!";
             string TeacherInOtherRooms(string teacher)
             {
@@ -260,11 +251,6 @@ namespace ExamManager
         private string CheckStudent()
         {
             if (Student == null) return "Schüler fehlt";
-            // check in db?
-            /*if (Student == null) return "Schüler " + Student.Fullname() + " nicht gefunden";
-            if (Student2 == null) return "Schüler " + Student.Fullname() + " nicht gefunden";
-            if (Student3 == null) return "Schüler " + Student.Fullname() + " nicht gefunden";*/
-
             if (Student != null && StudentInOtherRooms(Student)) return Student.Fullname() + " befindet sich in einem anderem Raum";
             if (Student2 != null && StudentInOtherRooms(Student2)) return Student2.Fullname() + " befindet sich in einem anderem Raum";
             if (Student3 != null && StudentInOtherRooms(Student3)) return Student3.Fullname() + " befindet sich in einem anderem Raum";

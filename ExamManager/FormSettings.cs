@@ -17,7 +17,6 @@ namespace ExamManager
             InitializeComponent();
         }
         public event EventHandler UpdateColor;
-        public event EventHandler RestartEvent;
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -36,6 +35,7 @@ namespace ExamManager
             UpdateColor.Invoke(this, null);
             Properties.Settings.Default.EmailDomain = tb_emaildomain.Text; // -> on change
                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
+            Properties.Settings.Default.ExamPreview = cb_exampreview.Checked;
             Properties.Settings.Default.Save(); // on exit
             saved = true;
             if (changedDatabase)
@@ -81,6 +81,8 @@ namespace ExamManager
             tb_emaildomain.Text = Properties.Settings.Default.EmailDomain;
             cb_color.SelectedIndex = Properties.Settings.Default.ColorTheme;
             lbl_current_database_path.Text = Properties.Settings.Default.DatabasePath;
+            cb_exampreview.Checked = Properties.Settings.Default.ExamPreview;
+
             if (Properties.Settings.Default.NameOrderStudent)
                 cb_student_nameorder.SelectedIndex = 0;
             else cb_student_nameorder.SelectedIndex = 1;
