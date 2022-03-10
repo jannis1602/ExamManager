@@ -28,13 +28,16 @@ namespace ExamManager
         public StudentObject Student2 { get; private set; }
         public StudentObject Student3 { get; private set; }
 
-        public string Teacher1 { get; private set; }
-        public string Teacher2 { get; private set; }
-        public string Teacher3 { get; private set; }
+        public string Teacher1Id { get; private set; }
+        public string Teacher2Id { get; private set; }
+        public string Teacher3Id { get; private set; }
+        public TeacherObject Teacher1 { get; private set; }
+        public TeacherObject Teacher2 { get; private set; }
+        public TeacherObject Teacher3 { get; private set; }
         public string Subject { get; private set; }
         public int Duration { get; private set; }
         [JsonConstructor]
-        public ExamObject(int id, string date, string time, string examroom, string preparationroom, int studentid, int student2id, int student3id, StudentObject student, StudentObject student2, StudentObject student3, string teacher1, string teacher2, string teacher3, string subject, int duration)
+        public ExamObject(int id, string date, string time, string examroom, string preparationroom, int studentid, int student2id, int student3id, StudentObject student, StudentObject student2, StudentObject student3, string teacher1id, string teacher2id, string teacher3id, TeacherObject t1, TeacherObject t2, TeacherObject t3, string subject, int duration)
         {
             this.Id = id;
             this.Date = date;
@@ -47,9 +50,12 @@ namespace ExamManager
             this.Student = student;
             this.Student2 = student2;
             this.Student3 = student3;
-            this.Teacher1 = teacher1;
-            this.Teacher2 = teacher2;
-            this.Teacher3 = teacher3;
+            this.Teacher1Id = teacher1id;
+            this.Teacher2Id = teacher2id;
+            this.Teacher3Id = teacher3id;
+            this.Teacher1 = t1;
+            this.Teacher2 = t2;
+            this.Teacher3 = t3;
             this.Subject = subject;
             this.Duration = duration;
             // TODO: check teacher in db
@@ -77,15 +83,17 @@ namespace ExamManager
             if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
             if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
             if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
-            this.Teacher1 = teacher1;
-            this.Teacher2 = teacher2;
-            this.Teacher3 = teacher3;
+            this.Teacher1Id = teacher1;
+            this.Teacher2Id = teacher2;
+            this.Teacher3Id = teacher3;
+            if (teacher1 != null) { this.Teacher1Id = teacher1; this.Teacher1 = Program.database.GetTeacherByID(teacher1); }
+            if (teacher2 != null) { this.Teacher2Id = teacher2; this.Teacher2 = Program.database.GetTeacherByID(teacher2); }
+            if (teacher3 != null) { this.Teacher3Id = teacher3; this.Teacher3 = Program.database.GetTeacherByID(teacher3); }
             this.Subject = subject;
             this.Duration = duration;
-            // TODO: check teacher in db
         }
         //TODO: return error string, if null-> added
-        public void Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0)
+        public bool Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0)
         {
             if (date != null) this.Date = date;
             if (time != null) this.Time = time;
@@ -94,9 +102,12 @@ namespace ExamManager
             if (student != 0) { this.StudentId = student; this.Student = Program.database.GetStudentByID(student); }
             if (student2 != 0) { this.Student2Id = student2; this.Student2 = Program.database.GetStudentByID(student2); }
             if (student3 != 0) { this.Student3Id = student3; this.Student3 = Program.database.GetStudentByID(student3); }
-            if (teacher1 != null) this.Teacher1 = teacher1; if (teacher1 == "-") Teacher1 = null;
-            if (teacher2 != null) this.Teacher2 = teacher2; if (teacher2 == "-") Teacher2 = null;
-            if (teacher3 != null) this.Teacher3 = teacher3; if (teacher3 == "-") Teacher3 = null;
+            if (teacher1 == "-") Teacher1Id = null;
+            else if (teacher1 != null) { this.Teacher1Id = teacher1; this.Teacher1 = Program.database.GetTeacherByID(teacher1); }
+            if (teacher2 == "-") Teacher2Id = null;
+            else if (teacher2 != null) { this.Teacher2Id = teacher2; this.Teacher2 = Program.database.GetTeacherByID(teacher2); }
+            if (teacher3 == "-") Teacher3Id = null;
+            else if (teacher3 != null) { this.Teacher3Id = teacher3; this.Teacher3 = Program.database.GetTeacherByID(teacher3); }
             if (subject != null) this.Subject = subject;
             if (duration != 0) this.Duration = duration;
 
@@ -107,18 +118,49 @@ namespace ExamManager
             string checkStudent = CheckStudent();
             if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
             if (checkRoom == null && checkTeacher == null && checkStudent == null)
-                Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
-            else UpdateData();
-
+                Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
+            else { UpdateDBData(); return false; }
+            return true;
         }
 
+        public bool EditDatabase()
+        {
+            string checkRoom = CheckRoom();
+            if (checkRoom != null) MessageBox.Show(checkRoom, "Fehler");
+            string checkTeacher = CheckTeacher();
+            if (checkTeacher != null) MessageBox.Show(checkTeacher, "Fehler");
+            string checkStudent = CheckStudent();
+            if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
+            if (checkRoom == null && checkTeacher == null && checkStudent == null)
+            {
+                Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
+            }
+            else { UpdateDBData(); return false; }
+            return true;
+        }
+        public bool AddToDatabase()
+        {
+            string checkRoom = CheckRoom();
+            if (checkRoom != null) MessageBox.Show(checkRoom, "Fehler");
+            string checkTeacher = CheckTeacher();
+            if (checkTeacher != null) MessageBox.Show(checkTeacher, "Fehler");
+            string checkStudent = CheckStudent();
+            if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
+            if (checkRoom == null && checkTeacher == null && checkStudent == null)
+            {
+                Program.database.AddExam(this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
+                return false;
+            }
+            else UpdateDBData();
+            return true;
+        }
 
         public void Delete()
         {
             Program.database.DeleteExam(this.Id);
         }
 
-        public void CreatePanel() //TODO Update Panel: chenge size+text
+        private void CreatePanel() // TODO Update Panel: change size+text
         {
             this.Panel = new Panel();
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -148,6 +190,9 @@ namespace ExamManager
                 this.Student = eo.Student;
                 this.Student2 = eo.Student2;
                 this.Student3 = eo.Student3;
+                this.Teacher1Id = eo.Teacher1Id;
+                this.Teacher2Id = eo.Teacher2Id;
+                this.Teacher3Id = eo.Teacher3Id;
                 this.Teacher1 = eo.Teacher1;
                 this.Teacher2 = eo.Teacher2;
                 this.Teacher3 = eo.Teacher3;
@@ -163,9 +208,10 @@ namespace ExamManager
             this.Panel.Refresh();
         }
 
-        public void UpdateData(ExamObject eo = null)
+        public void UpdateDBData(ExamObject eo = null)
         {
             if (eo == null) eo = Program.database.GetExamById(Id);
+            if (eo == null) return;
             this.Date = eo.Date;
             this.Time = eo.Time;
             this.Examroom = eo.Examroom;
@@ -176,9 +222,9 @@ namespace ExamManager
             this.Student = eo.Student;
             this.Student2 = eo.Student2;
             this.Student3 = eo.Student3;
-            this.Teacher1 = eo.Teacher1;
-            this.Teacher2 = eo.Teacher2;
-            this.Teacher3 = eo.Teacher3;
+            this.Teacher1Id = eo.Teacher1Id;
+            this.Teacher2Id = eo.Teacher2Id;
+            this.Teacher3Id = eo.Teacher3Id;
             this.Subject = eo.Subject;
             this.Duration = eo.Duration;
         }
@@ -194,14 +240,14 @@ namespace ExamManager
         private string CheckTeacher()
         {
             // check if min 1 teacher != null
-            if (Teacher1 != null && Program.database.GetTeacherByID(Teacher1) == null) return "Lehrer " + Teacher1 + " nicht gefunden";
-            if (Teacher2 != null && Program.database.GetTeacherByID(Teacher2) == null) return "Lehrer " + Teacher2 + " nicht gefunden";
-            if (Teacher3 != null && Program.database.GetTeacherByID(Teacher3) == null) return "Lehrer " + Teacher3 + " nicht gefunden";
+            if (Teacher1Id != null && Program.database.GetTeacherByID(Teacher1Id) == null) return "Lehrer " + Teacher1Id + " nicht gefunden";
+            if (Teacher2Id != null && Program.database.GetTeacherByID(Teacher2Id) == null) return "Lehrer " + Teacher2Id + " nicht gefunden";
+            if (Teacher3Id != null && Program.database.GetTeacherByID(Teacher3Id) == null) return "Lehrer " + Teacher3Id + " nicht gefunden";
             string ts = null;
-            if (Teacher1 != null && (ts = TeacherInOtherRooms(Teacher1)) != null) return Teacher1 + " befindet sich in einem anderem Raum " + ts;
-            if (Teacher2 != null && (ts = TeacherInOtherRooms(Teacher2)) != null) return Teacher2 + " befindet sich in einem anderem Raum " + ts;
-            if (Teacher3 != null && (ts = TeacherInOtherRooms(Teacher3)) != null) return Teacher3 + " befindet sich in einem anderem Raum " + ts;
-            if (Teacher1 == null && Teacher2 == null && Teacher3 == null) return "Kein Lehrer!";
+            if (Teacher1Id != null && (ts = TeacherInOtherRooms(Teacher1Id)) != null) return Teacher1Id + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher2Id != null && (ts = TeacherInOtherRooms(Teacher2Id)) != null) return Teacher2Id + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher3Id != null && (ts = TeacherInOtherRooms(Teacher3Id)) != null) return Teacher3Id + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher1Id == null && Teacher2Id == null && Teacher3Id == null) return "Kein Lehrer!";
             string TeacherInOtherRooms(string teacher)
             {
                 foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
@@ -232,7 +278,7 @@ namespace ExamManager
             }
             return null;
         }
-        // returns true if timespan is in the Examtime
+        /// <summary>returns true if timespan is in the Examtime</summary>
         private bool CheckTime(string tm, int d)
         {
             DateTime start = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -243,8 +289,6 @@ namespace ExamManager
                 return true;
             return false;
         }
-
-
 
         public Panel GetTimelineEntity(bool preview = false)
         {
@@ -285,10 +329,10 @@ namespace ExamManager
             if (Student2 != null) sCount = "[2xS]";
             if (Student3 != null) sCount = "[3xS]";
 
-            string t1 = Teacher1, t2 = Teacher2, t3 = Teacher3;
-            if (Teacher1 == null || Teacher1.Length < 1) t1 = " - ";
-            if (Teacher2 == null || Teacher2.Length < 1) t2 = " - ";
-            if (Teacher3 == null || Teacher3.Length < 1) t3 = " - ";
+            string t1 = Teacher1Id, t2 = Teacher2Id, t3 = Teacher3Id;
+            if (Teacher1Id == null || Teacher1Id.Length < 1) t1 = " - ";
+            if (Teacher2Id == null || Teacher2Id.Length < 1) t2 = " - ";
+            if (Teacher3Id == null || Teacher3Id.Length < 1) t3 = " - ";
             if (Duration < 40)
             {
                 e.Graphics.DrawString(Time + "; " + Duration + "min  " + sCount, drawFont, Brushes.Black, rectL2, stringFormat);

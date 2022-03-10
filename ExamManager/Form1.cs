@@ -190,12 +190,9 @@ namespace ExamManager
                 }
             }
             catch (Exception) { MessageBox.Show("Fehler beim Lehrernamen!", "Warnung"); return; }
-            if (cb_teacher1.Text.Length > 1 && teacher1 == null)
-            { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
-            if (cb_teacher2.Text.Length > 1 && teacher2 == null)
-            { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
-            if (cb_teacher3.Text.Length > 1 && teacher3 == null)
-            { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
+            if (cb_teacher1.Text.Length > 1 && teacher1 == null) { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
+            if (cb_teacher2.Text.Length > 1 && teacher2 == null) { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
+            if (cb_teacher3.Text.Length > 1 && teacher3 == null) { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
             if (teacher1 == null && teacher2 == null && teacher3 == null) { MessageBox.Show("Kein Lehrer!", "Warnung"); return; }
             // check if not empty
             if (exam_room.Length == 0 || studentName.Length == 0 || subject.Length == 0 || duration == 0)
@@ -220,102 +217,54 @@ namespace ExamManager
                 }
             }
             catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
-            if (student == null)
-            { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
-            if (student2Name.Length > 1 && student2 == null)
-            { MessageBox.Show("Schüler 2 nicht gefunden!", "Warnung"); return; }
-            if (student3Name.Length > 1 && student3 == null)
-            { MessageBox.Show("Schüler 3 nicht gefunden!", "Warnung"); return; }
+            if (student == null) { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
+            if (student2Name.Length > 1 && student2 == null) { MessageBox.Show("Schüler 2 nicht gefunden!", "Warnung"); return; }
+            if (student3Name.Length > 1 && student3 == null) { MessageBox.Show("Schüler 3 nicht gefunden!", "Warnung"); return; }
             if (student2 == null && student3 != null) { MessageBox.Show("erst Schüler 2 vor Schüler 3 belegen!", "Warnung"); return; }
-            ///////////////////////////////////////////////////////////////////////////////////////////
-            // -------- check room --------
-            if (EditExam != null)
-            {
-                if (time != EditExam.Time || date != EditExam.Date)
-                    foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(date, exam_room))
-                        if (EditExam.Id != s.Id)
-                            if (!checkTimeIsFree(s.Time, s.Duration))
-                            { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-            }
-            else
-                foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(date, exam_room))
-                {
-                    if (!checkTimeIsFree(s.Time, s.Duration))
-                    { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-                }
-            //////////////////////////////////////////////////////////////////////////////////////////////////
-            // check room methode
-            bool checkTimeIsFree(string t, int d)
-            {
-                DateTime start = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                DateTime end = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
-                DateTime timestart = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                DateTime timeend = DateTime.ParseExact(time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration);
-                if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
-                    return false;
-                return true;
-            }
-            // check if preparationroom is free
-            if (preparation_room.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(date, preparation_room))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show("Vorbereitungsraum belegt: " + s.Examroom, "Warnung"); return; }
-            // ---- check teacher in other rooms ----
-            if (teacher1 != null && teacher1.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(date, teacher1))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(database.GetTeacherByID(teacher1).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-            if (teacher2 != null && teacher2.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(date, teacher2))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(database.GetTeacherByID(teacher2).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-            if (teacher3 != null && teacher3.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(date, teacher3))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(database.GetTeacherByID(teacher3).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-            // ---- check student in other rooms ----
-            if (studentName.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(date, student.Id))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(studentName + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-            if (student2Name.Length > 1)
-                foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(date, student2.Id))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(student2Name + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-            if (student3Name.Length > 1) foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(date, student3.Id))
-                    if (EditExam == null || (exam_room != s.Examroom && s.Examroom != EditExam.Examroom))
-                        if (!checkTimeIsFree(s.Time, s.Duration))
-                        { MessageBox.Show(student3Name + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-
+            //
             int[] sIDs = { student.Id, 0, 0 };
             if (student2 != null) sIDs[1] = student2.Id;
             if (student3 != null) sIDs[2] = student3.Id;
+            ExamObject eo = new ExamObject(0, date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
+            if (EditExam != null) { if (!EditExam.Edit(date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration)) return; }
+            else if (EditExam == null && !eo.EditDatabase()) { Console.WriteLine(eo.Student.Fullname()); return; }
+            if (EditExam == null) { eo.AddToDatabase(); UpdateTimeline(); }
 
-            // Add / Edit
-            if (EditExam != null)
-                database.EditExam(EditExam.Id, date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
-            if (EditExam == null)
-                database.AddExam(date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
-            // Clear
+            /*foreach (Panel p in time_line_list)
+                if (p.Name == exam_room)
+                {
+                    p.Controls.Add(eo.GetTimelineEntity());
+                    p.Update();
+                }*/
             if (EditExam != null)
             {
-                EditExam.UpdatePanel(true);
                 EditExam.RemoveBorder();
+                EditExam.UpdatePanel();
+                if (time_line_list.Count(x => x.Name == EditExam.Examroom) == 0) UpdateTimeline();
+                else
+                    foreach (Panel p in time_line_list)
+                        if (p.Name == EditExam.Examroom)
+                        {
+                            p.Controls.Add(EditExam.GetTimelineEntity());
+                            p.Update();
+                        }
+                EditExam.RemoveBorder();
+                EditExam.UpdatePanel();
+                editPanel.Dispose();
             }
             EditExam = null;
-            editPanel.Dispose();
+            // Add / Edit
+            /*if (EditExam != null)
+                database.EditExam(EditExam.Id, date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
+            if (EditExam == null)
+                database.AddExam(date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);*/
+            // Clear
             this.lbl_mode.Text = edit_mode[0];
             this.btn_add_exam.Text = add_mode[0];
             this.dtp_timeline_date.Value = this.dtp_date.Value;
             Properties.Settings.Default.TimelineDate = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy");
             Properties.Settings.Default.Save();
-            UpdateTimeline();
+            //UpdateTimeline();
 
             if (this.cb_add_next_time.Checked) { this.dtp_time.Value = this.dtp_time.Value.AddMinutes(Int32.Parse(tb_duration.Text)); }
             if (this.cb_keep_data.Checked)
@@ -348,9 +297,6 @@ namespace ExamManager
             string subject = cb_subject.Text; if (subject.Length == 0) subject = null;
             string examRoom = cb_exam_room.Text; if (examRoom.Length == 0) examRoom = null;
             string preparationRoom = cb_preparation_room.Text; if (preparationRoom.Length == 0) preparationRoom = null;
-            /*string s1 = cb_student.Text; if (s1.Length == 0) s1 = null;
-            string s2 = cb_student2.Text; if (s2.Length == 0) s2 = null;
-            string s3 = cb_student3.Text; if (s3.Length == 0) s3 = null;*/
             DateTime dtime = DateTime.ParseExact(tl_entity_multiselect_list.First.Value.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             foreach (ExamObject eo in tl_entity_multiselect_list)
                 if (DateTime.ParseExact(eo.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None) < dtime)
@@ -388,9 +334,9 @@ namespace ExamManager
                 }
                 catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
                 // ---- teacher ----
-                string t1 = exam.Teacher1;
-                string t2 = exam.Teacher2;
-                string t3 = exam.Teacher3;
+                string t1 = exam.Teacher1Id;
+                string t2 = exam.Teacher2Id;
+                string t3 = exam.Teacher3Id;
                 try
                 {
                     if (Properties.Settings.Default.NameOrderTeacher)
@@ -410,19 +356,29 @@ namespace ExamManager
                 if (cb_teacher1.Text.Length > 1 && t1 == null) { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
                 if (cb_teacher2.Text.Length > 1 && t2 == null) { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
                 if (cb_teacher3.Text.Length > 1 && t3 == null) { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
-                if (t1 == null) t1 = exam.Teacher1;
-                if (t2 == null) t2 = exam.Teacher2;
-                if (t3 == null) t3 = exam.Teacher3;
+                if (t1 == null) t1 = exam.Teacher1Id;
+                if (t2 == null) t2 = exam.Teacher2Id;
+                if (t3 == null) t3 = exam.Teacher3Id;
+                // ---- edit ----
                 DateTime newTime = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).Add(timeDiff);
                 string eTime = newTime.ToString("HH:mm");
                 exam.Edit(time: eTime, subject: subject, examroom: examRoom, preparationroom: preparationRoom, teacher1: t1, teacher2: t2, teacher3: t3, duration: duration);
                 exam.RemoveBorder();
                 exam.UpdatePanel();
+                foreach (Panel p in time_line_list)
+                {
+                    if (p.Name == exam.Examroom)
+                    {
+                        p.Controls.Add(exam.GetTimelineEntity());
+                        p.Update();
+                        break;
+                    }
+                }
             }
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
             tl_entity_multiselect_list.Clear();
-            UpdateTimeline();
+            // UpdateTimeline();
         }
         public void UpdateTimeline()
         {
@@ -496,9 +452,9 @@ namespace ExamManager
                     bool border = false;
                     if (searchMode == Search.teacher)
                     { // teacher
-                        if (search.Equals(exam.Teacher1)) border = true;
-                        if (exam.Teacher2 != null && exam.Teacher2.Length > 1 && search.Equals(exam.Teacher2)) border = true;
-                        if (exam.Teacher3 != null && exam.Teacher3.Length > 1 && search.Equals(exam.Teacher3)) border = true;
+                        if (search.Equals(exam.Teacher1Id)) border = true;
+                        if (exam.Teacher2Id != null && exam.Teacher2Id.Length > 1 && search.Equals(exam.Teacher2Id)) border = true;
+                        if (exam.Teacher3Id != null && exam.Teacher3Id.Length > 1 && search.Equals(exam.Teacher3Id)) border = true;
                     }
                     if (searchMode == Search.student)
                     { // student
@@ -833,9 +789,9 @@ namespace ExamManager
                     this.cb_grade.SelectedItem = exam.Student.Grade;
                     try
                     {
-                        if (exam.Teacher1.Length > 1) this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Fullname(); else this.cb_teacher1.Text = "";
-                        if (exam.Teacher2.Length > 1) this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2).Fullname(); else this.cb_teacher2.Text = "";
-                        if (exam.Teacher3.Length > 1) this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3).Fullname(); else this.cb_teacher3.Text = "";
+                        if (exam.Teacher1Id.Length > 1) this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1Id).Fullname(); else this.cb_teacher1.Text = "";
+                        if (exam.Teacher2Id.Length > 1) this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2Id).Fullname(); else this.cb_teacher2.Text = "";
+                        if (exam.Teacher3Id.Length > 1) this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3Id).Fullname(); else this.cb_teacher3.Text = "";
                     }
                     catch (Exception) { }
                     this.cb_subject.Text = exam.Subject;
@@ -854,15 +810,18 @@ namespace ExamManager
             this.dtp_time.Value = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             this.cb_exam_room.SelectedItem = exam.Examroom;
             this.cb_preparation_room.SelectedItem = exam.Preparationroom;
-            StudentObject st = exam.Student;
-            if (st == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
-            else { this.cb_student.Text = st.Firstname + " " + st.Lastname; this.cb_grade.SelectedItem = st.Grade; }
-            if (database.GetTeacherByID(exam.Teacher1) == null) this.cb_teacher1.Text = "";
-            else this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Fullname();
-            if (database.GetTeacherByID(exam.Teacher2) == null) this.cb_teacher2.Text = "";
-            else this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2).Fullname();
-            if (database.GetTeacherByID(exam.Teacher3) == null) this.cb_teacher3.Text = "";
-            else this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3).Fullname();
+            if (exam.Student == null) { this.cb_student.Text = null; this.cb_grade.Text = null; }
+            else { this.cb_student.Text = exam.Student.Fullname(); this.cb_grade.SelectedItem = exam.Student.Grade; }
+            if (exam.Student2 == null) this.cb_student2.Text = null;
+            else this.cb_student2.Text = exam.Student2.Fullname();
+            if (exam.Student3 == null) this.cb_student3.Text = null;
+            else this.cb_student3.Text = exam.Student3.Fullname();
+            if (database.GetTeacherByID(exam.Teacher1Id) == null) this.cb_teacher1.Text = "";
+            else this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1Id).Fullname();
+            if (database.GetTeacherByID(exam.Teacher2Id) == null) this.cb_teacher2.Text = "";
+            else this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2Id).Fullname();
+            if (database.GetTeacherByID(exam.Teacher3Id) == null) this.cb_teacher3.Text = "";
+            else this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3Id).Fullname();
             this.cb_subject.Text = exam.Subject;
             this.tb_duration.Text = exam.Duration.ToString();
             if (EditExam != null)
@@ -870,6 +829,7 @@ namespace ExamManager
             EditExam = null;
             lbl_mode.Text = edit_mode[0];
             btn_add_exam.Text = add_mode[0];
+            UpdateEditPanel();
         }
         private void panel_menu_click_edit(object sender, EventArgs e)
         {
@@ -904,12 +864,12 @@ namespace ExamManager
             if (exam.Student3 == null) { this.cb_student3.Text = null; }
             else { this.cb_student3.Text = exam.Student3.Fullname(); }
             // teacher cbs
-            if (database.GetTeacherByID(exam.Teacher1) == null) this.cb_teacher1.Text = "";
-            else this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1).Fullname();
-            if (database.GetTeacherByID(exam.Teacher2) == null) this.cb_teacher2.Text = "";
-            else this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2).Fullname();
-            if (database.GetTeacherByID(exam.Teacher3) == null) this.cb_teacher3.Text = "";
-            else this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3).Fullname();
+            if (database.GetTeacherByID(exam.Teacher1Id) == null) this.cb_teacher1.Text = "";
+            else this.cb_teacher1.Text = database.GetTeacherByID(exam.Teacher1Id).Fullname();
+            if (database.GetTeacherByID(exam.Teacher2Id) == null) this.cb_teacher2.Text = "";
+            else this.cb_teacher2.Text = database.GetTeacherByID(exam.Teacher2Id).Fullname();
+            if (database.GetTeacherByID(exam.Teacher3Id) == null) this.cb_teacher3.Text = "";
+            else this.cb_teacher3.Text = database.GetTeacherByID(exam.Teacher3Id).Fullname();
 
             EditExam.SetBorder(Color.DarkRed, false);
             UpdateEditPanel();
@@ -1375,7 +1335,7 @@ namespace ExamManager
                         DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                         DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
                         string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
-                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Firstname + " " + teacher.Lastname, time, exam.Examroom, exam.Preparationroom, student.Firstname + " " + student.Lastname, exam.Teacher1, exam.Teacher2, exam.Teacher3, exam.Subject, exam.Duration);
+                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Firstname + " " + teacher.Lastname, time, exam.Examroom, exam.Preparationroom, student.Firstname + " " + student.Lastname, exam.Teacher1Id, exam.Teacher2Id, exam.Teacher3Id, exam.Subject, exam.Duration);
                         csv.AppendLine(newLine);
                     }
                 File.WriteAllText(sfd.FileName, csv.ToString());

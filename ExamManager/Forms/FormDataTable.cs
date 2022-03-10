@@ -49,7 +49,7 @@ namespace ExamManager
                     if (s1 == null) t1 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");
                     if (s2 == null) t2 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");
                     if (s3 == null) t3 = new TeacherObject("-", "nicht gefunden", "nicht gefunden", "-", "-", "-", "-", "-");*/
-                    dataGridView_exam.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s1.Fullname(), s2.Fullname(), s3.Fullname(), s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
+                    dataGridView_exam.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s1.Fullname(), s2.Fullname(), s3.Fullname(), s.Teacher1Id, s.Teacher2Id, s.Teacher3Id, s.Subject, s.Duration);
                 }
                 dataGridView = dataGridView_exam;
             }
@@ -119,7 +119,7 @@ namespace ExamManager
             foreach (ExamObject s in data)
             {
                 StudentObject student = s.Student;
-                this.dataGridView.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s.StudentId + " -> " + student.Firstname + " " + student.Lastname, s.Teacher1, s.Teacher2, s.Teacher3, s.Subject, s.Duration);
+                this.dataGridView.Rows.Add(s.Id, s.Date, s.Time, s.Examroom, s.Preparationroom, s.StudentId + " -> " + student.Firstname + " " + student.Lastname, s.Teacher1Id, s.Teacher2Id, s.Teacher3Id, s.Subject, s.Duration);
             }
         }
     }
