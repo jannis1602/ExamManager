@@ -367,6 +367,26 @@ namespace ExamManager
 
             foreach (ExamObject exam in tl_entity_multiselect_list)
             {
+                // ---- student ----
+                int s1 = exam.StudentId; // TODO: if(db.get==null) -> error
+                int s2 = exam.Student2Id;
+                int s3 = exam.Student3Id;
+                try
+                {
+                    if (Properties.Settings.Default.NameOrderTeacher)
+                    {
+                        if (cb_student.Text != null && cb_student.Text.Length > 1) s1 = database.GetStudentByName(cb_student.Text.Split(' ')[0], cb_student.Text.Split(' ')[1]).Id;
+                        if (cb_student2.Text != null && cb_student2.Text.Length > 1) s2 = database.GetStudentByName(cb_student2.Text.Split(' ')[0], cb_student2.Text.Split(' ')[1]).Id;
+                        if (cb_student3.Text != null && cb_student3.Text.Length > 1) s3 = database.GetStudentByName(cb_student3.Text.Split(' ')[0], cb_student3.Text.Split(' ')[1]).Id;
+                    }
+                    else
+                    {
+                        if (cb_student.Text != null && cb_student.Text.Length > 1) s1 = database.GetStudentByName(cb_student.Text.Split(' ')[1], cb_student.Text.Split(' ')[0]).Id;
+                        if (cb_student2.Text != null && cb_student2.Text.Length > 1) s2 = database.GetStudentByName(cb_student2.Text.Split(' ')[1], cb_student2.Text.Split(' ')[0]).Id;
+                        if (cb_student3.Text != null && cb_student3.Text.Length > 1) s3 = database.GetStudentByName(cb_student3.Text.Split(' ')[1], cb_student3.Text.Split(' ')[0]).Id;
+                    }
+                }
+                catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
                 // ---- teacher ----
                 string t1 = exam.Teacher1;
                 string t2 = exam.Teacher2;
@@ -387,42 +407,13 @@ namespace ExamManager
                     }
                 }
                 catch (Exception) { MessageBox.Show("Fehler beim Lehrernamen!", "Warnung"); return; }
-                if (cb_teacher1.Text.Length > 1 && t1 == null)
-                { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
-                if (cb_teacher2.Text.Length > 1 && t2 == null)
-                { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
-                if (cb_teacher3.Text.Length > 1 && t3 == null)
-                { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
+                if (cb_teacher1.Text.Length > 1 && t1 == null) { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
+                if (cb_teacher2.Text.Length > 1 && t2 == null) { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
+                if (cb_teacher3.Text.Length > 1 && t3 == null) { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
                 if (t1 == null) t1 = exam.Teacher1;
                 if (t2 == null) t2 = exam.Teacher2;
                 if (t3 == null) t3 = exam.Teacher3;
-                // ---- check teacher in other rooms ----
                 DateTime newTime = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).Add(timeDiff);
-                if (t1 != null && t1.Length > 1)
-                    foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t1))
-                        if (exam.Examroom != s.Examroom)
-                            if (!checkTimeIsFree(s.Time, s.Duration))
-                            { MessageBox.Show(database.GetTeacherByID(t1).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                if (t2 != null && t2.Length > 1)
-                    foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t2))
-                        if (exam.Examroom != s.Examroom)
-                            if (!checkTimeIsFree(s.Time, s.Duration))
-                            { MessageBox.Show(database.GetTeacherByID(t2).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                if (t3 != null && t3.Length > 1)
-                    foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, t3))
-                        if (exam.Examroom != s.Examroom)
-                            if (!checkTimeIsFree(s.Time, s.Duration))
-                            { MessageBox.Show(database.GetTeacherByID(t3).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                bool checkTimeIsFree(string t, int d)
-                {
-                    DateTime start = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime end = DateTime.ParseExact(t, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
-                    DateTime timestart = DateTime.ParseExact(newTime.ToString("HH:mm"), "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime timeend = DateTime.ParseExact(newTime.ToString("HH:mm"), "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
-                        return false;
-                    return true;
-                }
                 string eTime = newTime.ToString("HH:mm");
                 exam.Edit(time: eTime, subject: subject, examroom: examRoom, preparationroom: preparationRoom, teacher1: t1, teacher2: t2, teacher3: t3, duration: duration);
                 exam.RemoveBorder();

@@ -106,10 +106,10 @@ namespace ExamManager
             if (checkTeacher != null) MessageBox.Show(checkTeacher, "Fehler");
             string checkStudent = CheckStudent();
             if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
+            if (checkRoom == null && checkTeacher == null && checkStudent == null)
+                Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
+            else UpdateData();
 
-            UpdateData();
-
-            //Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
         }
 
 
@@ -186,9 +186,9 @@ namespace ExamManager
         private string CheckRoom()
         {
             foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom))
-                if (!CheckTime(s.Time, s.Duration)) return "Raum besetzt!";
+                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt " + s.Time;
             foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Preparationroom))
-                if (!CheckTime(s.Time, s.Duration)) return "Raum besetzt!";
+                if (Id != s.Id && CheckTime(s.Time, s.Duration)) return "Raum besetzt " + s.Time;
             return null;
         }
         private string CheckTeacher()
@@ -197,26 +197,27 @@ namespace ExamManager
             if (Teacher1 != null && Program.database.GetTeacherByID(Teacher1) == null) return "Lehrer " + Teacher1 + " nicht gefunden";
             if (Teacher2 != null && Program.database.GetTeacherByID(Teacher2) == null) return "Lehrer " + Teacher2 + " nicht gefunden";
             if (Teacher3 != null && Program.database.GetTeacherByID(Teacher3) == null) return "Lehrer " + Teacher3 + " nicht gefunden";
-
-            if (Teacher1 != null && TeacherInOtherRooms(Teacher1)) return Teacher1 + " befindet sich in einem anderem Raum";
-            if (Teacher2 != null && TeacherInOtherRooms(Teacher2)) return Teacher2 + " befindet sich in einem anderem Raum";
-            if (Teacher3 != null && TeacherInOtherRooms(Teacher3)) return Teacher3 + " befindet sich in einem anderem Raum";
+            string ts = null;
+            if (Teacher1 != null && (ts = TeacherInOtherRooms(Teacher1)) != null) return Teacher1 + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher2 != null && (ts = TeacherInOtherRooms(Teacher2)) != null) return Teacher2 + " befindet sich in einem anderem Raum " + ts;
+            if (Teacher3 != null && (ts = TeacherInOtherRooms(Teacher3)) != null) return Teacher3 + " befindet sich in einem anderem Raum " + ts;
             if (Teacher1 == null && Teacher2 == null && Teacher3 == null) return "Kein Lehrer!";
-            bool TeacherInOtherRooms(string teacher)
+            string TeacherInOtherRooms(string teacher)
             {
                 foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
-                    if (Examroom != s.Examroom)
-                        if (!CheckTime(s.Time, s.Duration)) return false;
-                return true;
+                    if (Id != s.Id && Examroom != s.Examroom)
+                        if (CheckTime(s.Time, s.Duration)) return s.Examroom;
+                return null;
             }
             return null;
         }
         private string CheckStudent()
         {
             if (Student == null) return "Schüler fehlt";
-            if (Student != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
-            if (Student2 != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
-            if (Student3 != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+            // check in db?
+            /*if (Student == null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+            if (Student2 == null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+            if (Student3 == null) return "Schüler " + Student.Fullname() + " nicht gefunden";*/
 
             if (Student != null && StudentInOtherRooms(Student)) return Student.Fullname() + " befindet sich in einem anderem Raum";
             if (Student2 != null && StudentInOtherRooms(Student2)) return Student2.Fullname() + " befindet sich in einem anderem Raum";
@@ -225,12 +226,13 @@ namespace ExamManager
             bool StudentInOtherRooms(StudentObject so)
             {
                 foreach (ExamObject s in Program.database.GetAllExamsFromStudentAtDate(Date, so.Id))
-                    if (Examroom != s.Examroom)
-                        if (!CheckTime(s.Time, s.Duration)) return false;
-                return true;
+                    if (Id != s.Id && Examroom != s.Examroom)
+                        if (CheckTime(s.Time, s.Duration)) return true;
+                return false;
             }
             return null;
         }
+        // returns true if timespan is in the Examtime
         private bool CheckTime(string tm, int d)
         {
             DateTime start = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -238,8 +240,8 @@ namespace ExamManager
             DateTime timestart = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime timeend = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Duration);
             if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
-                return false;
-            return true;
+                return true;
+            return false;
         }
 
 
