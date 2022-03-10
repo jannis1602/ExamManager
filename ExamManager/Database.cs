@@ -81,7 +81,7 @@ namespace ExamManager
             return sqlite_conn;
         }
 
-        // ---- STUDENT ---- ########################################################################################################################## 
+        #region -------- STUDENT --------
         // ID firstname lastname grade Email TelNummer
         /// <summary>Adds a new student to the database.</summary>
         /// <returns>returns <see langword="true"/> if the student was added successfully</returns>
@@ -113,7 +113,7 @@ namespace ExamManager
             return true;
         }
         /// <summary>Adds all students from a file into the database.</summary>
-        public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator)
+        public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator) // TODO: in FileReaderClass
         {
             bool editDoppelnamen = false;
             LinkedList<int> studentIdList = new LinkedList<int>();
@@ -324,23 +324,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@grade", grade);
             sqlite_cmd.ExecuteNonQuery();
         }
-        // ---- TEACHER ---- ##########################################################################################################################
-        // Kürzel firstname lastname TelNummer Faecher
-        /// <summary>Adds s teacher to the database.</summary>
-        /*public void AddTeacher(string short_name, string firstname, string lastname, string phone_number, string subject1, string subject2 = null, string subject3 = null)
-        {
-            if (GetTeacherByID(short_name) != null) { return; }
-            SQLiteCommand sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "INSERT INTO teacher (short_name, firstname, lastname, phone_number, subject1, subject2, subject3) VALUES(@short_name,@firstname,@lastname,@phone_number,@subject1,@subject2,@subject3); ";
-            sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
-            sqlite_cmd.Parameters.AddWithValue("@firstname", firstname);
-            sqlite_cmd.Parameters.AddWithValue("@lastname", lastname);
-            sqlite_cmd.Parameters.AddWithValue("@phone_number", phone_number);
-            sqlite_cmd.Parameters.AddWithValue("@subject1", subject1);
-            sqlite_cmd.Parameters.AddWithValue("@subject2", subject2);
-            sqlite_cmd.Parameters.AddWithValue("@subject3", subject3);
-            sqlite_cmd.ExecuteNonQuery();
-        }*/
+        #endregion
+        #region -------- TEACHER --------
         /// <summary>Adds s teacher to the database.</summary>
         public void AddTeacher(TeacherObject t)
         {
@@ -358,7 +343,7 @@ namespace ExamManager
             sqlite_cmd.ExecuteNonQuery();
         }
         /// <summary>Adds all teachers from a file into the database.</summary>
-        public void InsertTeacherFileIntoDB(string file, bool mailgenerator)  // TODO: Doppelnamen in file with _ info?
+        public void InsertTeacherFileIntoDB(string file, bool mailgenerator) // TODO: in FileReaderClass // TODO: Doppelnamen in file with _ info?
         {
             //bool editDoppelnamen = false;
             LinkedList<string> teacherIdList = new LinkedList<string>();    // TODO: Teacher mail generator
@@ -522,9 +507,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@short_name", short_name);
             sqlite_cmd.ExecuteNonQuery();
         }
-
-        // ---- EXAM ---- ##################################################################################################################################
-        // ID student_ID VorsitzKuerzel PrueferKuerzel ProtokollKuerzel Fach Raum_Pruefung Raum_Vorbereitung Raum_Abholen Datum Uhrzeit Schulstunden
+        #endregion
+        #region -------- EXAM --------
         /// <summary>Adds an exam to the database.</summary>
         public void AddExam(string date, string time, string exam_room, string preparation_room, int student, int student2, int student3, string t1, string t2, string t3, string subject, int duartion = 45)
         {
@@ -984,8 +968,8 @@ namespace ExamManager
             if (reader.HasRows) return true;
             else return false;
         }
-
-        // ---- room ---- #############################################################################################################################
+        #endregion
+        #region -------- ROOM --------
         /// <summary>Adds an room to the database.</summary>
         public void AddRoom(string room_name)
         {
@@ -1044,8 +1028,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@room_name", room_name);
             sqlite_cmd.ExecuteNonQuery();
         }
-
-        // ---- subject ---- ######################################################################################################################
+        #endregion
+        #region -------- SUBJECT --------
         /// <summary>Adds an subject to the database.</summary>
         public void AddSubject(string subject_name)
         {
@@ -1104,11 +1088,8 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject_name", subject_name);
             sqlite_cmd.ExecuteNonQuery();
         }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //// ---- CREATE-DATABASE ---- ////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        #endregion
+        #region -------- DBCreation --------
         private void CreateStudentDB()
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
@@ -1139,5 +1120,6 @@ namespace ExamManager
             sqlite_cmd.CommandText = "CREATE TABLE IF NOT EXISTS subject (subject_name TEXT NOT NULL)";
             sqlite_cmd.ExecuteNonQuery();
         }
+        #endregion
     }
 }

@@ -87,54 +87,6 @@ namespace ExamManager
         //TODO: return error string, if null-> added
         public void Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0)
         {
-            /*string _date = date; if (_date == null) _date = Date;
-            string _time = time; if (_time == null) _time = Time;
-            string _examroom = examroom; if (_examroom == null) _examroom = Examroom;
-            int _duration = duration; if (_duration == 0) _duration = Duration;
-            // check room and duration at date and time
-            if (date != null || time != null || examroom != null || duration != 0)
-                foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(_date, _examroom))
-                    if (Id != s.Id)
-                    {
-                        DateTime start = DateTime.ParseExact(s.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                        DateTime end = DateTime.ParseExact(s.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(s.Duration);
-                        DateTime timestart = DateTime.ParseExact(_time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                        DateTime timeend = DateTime.ParseExact(_time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(_duration);
-                        if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
-                        { MessageBox.Show("Raum besetzt!", "Warnung"); return; }
-                    }
-
-            string _t1 = teacher1; if (_t1 == null) _t1 = Teacher1;
-            string _t2 = teacher2; if (_t2 == null) _t2 = Teacher2;
-            string _t3 = teacher3; if (_t3 == null) _t3 = Teacher3;
-            if (CheckTeacher(_t1)) MessageBox.Show("Lehrer Fehler!", "Warnung");
-            if (CheckTeacher(_t2)) MessageBox.Show("Lehrer Fehler!", "Warnung");
-            if (CheckTeacher(_t3)) MessageBox.Show("Lehrer Fehler!", "Warnung");
-
-
-            bool CheckTeacher(string teacher)
-            {
-                TeacherObject t = Program.database.GetTeacherByID(teacher);
-                if (t == null) return false;
-                foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
-                    if (_examroom != s.Examroom)
-                        if (!checkTimeIsFree(s.Time, s.Duration)) return false;
-                return true;
-
-                bool checkTimeIsFree(string tm, int d)
-                {
-                    DateTime start = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime end = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
-                    DateTime timestart = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                    DateTime timeend = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Duration);
-                    if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
-                        return false;
-                    return true;
-                }
-
-            }*/
-
-            // TODO check teacher times
             if (date != null) this.Date = date;
             if (time != null) this.Time = time;
             if (examroom != null) this.Examroom = examroom;
@@ -147,7 +99,17 @@ namespace ExamManager
             if (teacher3 != null) this.Teacher3 = teacher3; if (teacher3 == "-") Teacher3 = null;
             if (subject != null) this.Subject = subject;
             if (duration != 0) this.Duration = duration;
-            Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
+
+            string checkRoom = CheckRoom();
+            if (checkRoom != null) MessageBox.Show(checkRoom, "Fehler");
+            string checkTeacher = CheckTeacher();
+            if (checkTeacher != null) MessageBox.Show(checkTeacher, "Fehler");
+            string checkStudent = CheckStudent();
+            if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
+
+            UpdateData();
+
+            //Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1, this.Teacher2, this.Teacher3, this.Subject, this.Duration);
         }
 
 
@@ -156,7 +118,7 @@ namespace ExamManager
             Program.database.DeleteExam(this.Id);
         }
 
-        public void CreatePanel()
+        public void CreatePanel() //TODO Update Panel: chenge size+text
         {
             this.Panel = new Panel();
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -201,7 +163,7 @@ namespace ExamManager
             this.Panel.Refresh();
         }
 
-        public void UpdateData(ExamObject eo)
+        public void UpdateData(ExamObject eo = null)
         {
             if (eo == null) eo = Program.database.GetExamById(Id);
             this.Date = eo.Date;
@@ -221,13 +183,73 @@ namespace ExamManager
             this.Duration = eo.Duration;
         }
 
+        private string CheckRoom()
+        {
+            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom))
+                if (!CheckTime(s.Time, s.Duration)) return "Raum besetzt!";
+            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Preparationroom))
+                if (!CheckTime(s.Time, s.Duration)) return "Raum besetzt!";
+            return null;
+        }
+        private string CheckTeacher()
+        {
+            // check if min 1 teacher != null
+            if (Teacher1 != null && Program.database.GetTeacherByID(Teacher1) == null) return "Lehrer " + Teacher1 + " nicht gefunden";
+            if (Teacher2 != null && Program.database.GetTeacherByID(Teacher2) == null) return "Lehrer " + Teacher2 + " nicht gefunden";
+            if (Teacher3 != null && Program.database.GetTeacherByID(Teacher3) == null) return "Lehrer " + Teacher3 + " nicht gefunden";
+
+            if (Teacher1 != null && TeacherInOtherRooms(Teacher1)) return Teacher1 + " befindet sich in einem anderem Raum";
+            if (Teacher2 != null && TeacherInOtherRooms(Teacher2)) return Teacher2 + " befindet sich in einem anderem Raum";
+            if (Teacher3 != null && TeacherInOtherRooms(Teacher3)) return Teacher3 + " befindet sich in einem anderem Raum";
+            if (Teacher1 == null && Teacher2 == null && Teacher3 == null) return "Kein Lehrer!";
+            bool TeacherInOtherRooms(string teacher)
+            {
+                foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
+                    if (Examroom != s.Examroom)
+                        if (!CheckTime(s.Time, s.Duration)) return false;
+                return true;
+            }
+            return null;
+        }
+        private string CheckStudent()
+        {
+            if (Student == null) return "Schüler fehlt";
+            if (Student != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+            if (Student2 != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+            if (Student3 != null) return "Schüler " + Student.Fullname() + " nicht gefunden";
+
+            if (Student != null && StudentInOtherRooms(Student)) return Student.Fullname() + " befindet sich in einem anderem Raum";
+            if (Student2 != null && StudentInOtherRooms(Student2)) return Student2.Fullname() + " befindet sich in einem anderem Raum";
+            if (Student3 != null && StudentInOtherRooms(Student3)) return Student3.Fullname() + " befindet sich in einem anderem Raum";
+
+            bool StudentInOtherRooms(StudentObject so)
+            {
+                foreach (ExamObject s in Program.database.GetAllExamsFromStudentAtDate(Date, so.Id))
+                    if (Examroom != s.Examroom)
+                        if (!CheckTime(s.Time, s.Duration)) return false;
+                return true;
+            }
+            return null;
+        }
+        private bool CheckTime(string tm, int d)
+        {
+            DateTime start = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime end = DateTime.ParseExact(tm, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(d);
+            DateTime timestart = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime timeend = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(Duration);
+            if ((start <= timestart && timestart < end) || (timestart <= start && start < timeend))
+                return false;
+            return true;
+        }
+
+
+
         public Panel GetTimelineEntity(bool preview = false)
         {
             if (this.Panel == null) CreatePanel();
             if (preview) Panel.BackColor = Color.FromArgb(80, Colors.TL_Entity);
             return this.Panel;
         }
-
         private void panel_time_line_entity_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl_entity = sender as Panel;
@@ -286,21 +308,13 @@ namespace ExamManager
             ToolTip sfToolTip1 = new ToolTip();
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);
         }
-
         public void SetBorder(Color borderColor, bool solidBorder)
         {
             this.Border = true;
             if (solidBorder) BorderStyle = ButtonBorderStyle.Solid;
             else BorderStyle = ButtonBorderStyle.Dashed;
             this.BorderColor = borderColor;
-            /*if (Panel != null)
-            {
-                Panel.Refresh();
-                Console.WriteLine("Refresh: " + Date + " " + Time);
-            }
-            else Console.WriteLine("ERROR! " + Date + " " + Time);*/
         }
-
         public void RemoveBorder()
         {
             Border = false;
