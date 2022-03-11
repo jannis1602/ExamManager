@@ -689,7 +689,7 @@ namespace ExamManager
             if (e.Button == MouseButtons.Left)
             {
                 Panel p = sender as Panel;
-                if (Form.ModifierKeys == Keys.Control)  // TODO: ctrl+single_click
+                if (Form.ModifierKeys == Keys.Control)
                 {
                     lbl_mode.Text = edit_mode[2];
                     btn_add_exam.Text = add_mode[2];
@@ -721,6 +721,8 @@ namespace ExamManager
                         tl_entity_multiselect_list.AddLast(exam);
                         exam.SetBorder(Color.Yellow, false);
                         exam.UpdatePanel();
+                        panel_time_line.Focus();
+
                     }
                 }
             }
@@ -1346,16 +1348,17 @@ namespace ExamManager
             panel_side_room.BackColor = Colors.TL_RoomBg;
             tlp_edit.BackColor = Colors.Edit_Bg;
             lbl_mode.BackColor = Colors.Edit_ModeBg;
+            Bitmap ImageToDinA4(Bitmap bmp1)
+            {
+                float fullWidth1 = panel_side_room.Width + panel_top_time.Width / 2;
+                float fullHeight1 = fullWidth1 / 297f * 210f;
+                Bitmap newTLbmp1 = new Bitmap(Convert.ToInt32(fullWidth1), Convert.ToInt32(fullHeight1));
+                Graphics g1 = Graphics.FromImage(newTLbmp1);
+                g1.DrawImage(bmp1, new Rectangle(0, 0, Convert.ToInt32(fullWidth1), panel_side_room.Height));
+                return newTLbmp1;
+            }
         }
-        private Bitmap ImageToDinA4(Bitmap bmp)
-        {
-            float fullWidth = panel_side_room.Width + panel_top_time.Width / 2;
-            float fullHeight = fullWidth / 297f * 210f;
-            Bitmap newTLbmp = new Bitmap(Convert.ToInt32(fullWidth), Convert.ToInt32(fullHeight));
-            Graphics g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmp, new Rectangle(0, 0, Convert.ToInt32(fullWidth), panel_side_room.Height));
-            return newTLbmp;
-        }
+
         private void tsmi_tools_deleteOldExams_Click(object sender, EventArgs e)
         {
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
@@ -1676,8 +1679,9 @@ namespace ExamManager
             UpdatePreviewPanel();
         }
         #endregion
-        private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) //TODO: --- KEYS
         {
+            Console.WriteLine(e.KeyData);
             if (tl_entity_multiselect_list.Count == 0) return;
             if (e.KeyData == Keys.Enter)
             {
@@ -1779,8 +1783,9 @@ namespace ExamManager
                                 if (!checkTimeIsFree(s.Time, s.Duration))
                                 { MessageBox.Show(exam.Student3.Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }*/
                     if (updateTL) UpdateTimeline(); // render on multimove up/down
-                    exam.Edit(time: dtime.ToString("HH:mm"));
+                    if (!exam.Edit(time: dtime.ToString("HH:mm"), excludeList: tl_entity_multiselect_list)) break;
                     exam.UpdatePanel();
+
                 }
                 if (tl_entity_multiselect_list.Count > 0)
                 {
