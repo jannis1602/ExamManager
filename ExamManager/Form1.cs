@@ -1214,8 +1214,34 @@ namespace ExamManager
         private void tsmi_tools_export_Click(object sender, EventArgs e)
         {
             Colors.Theme tempTheme = Colors.theme;
+            bool blackwhite = false;
             DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
+            if (result == DialogResult.Yes) { blackwhite = true; }
+
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            lbl_search.Text = date;
+            //tempPanel.Width = panel_side_room.Width + 2400;
+            //tempPanel.Height = panel_top_time.Height + 5 + 85 * time_line_list.Count + 15;
+
+            // TODO getLAstExam -> cut TimeLine
+            DateTime lastTime = DateTime.ParseExact("07:00", "HH:mm", null);
+            foreach (ExamObject exam in tl_exam_entity_list)
+            {
+                if (lastTime < DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration))
+                    lastTime = DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration);
+            }
+            // TODO if h<b || b<h
+            Double cutTime = (DateTime.ParseExact("18:30", "HH:mm", null) - lastTime).TotalMinutes;
+            float unit_per_minute = 200F / 60F;
+            int cutMinutes = Convert.ToInt32(cutTime * unit_per_minute);
+
+            float fullWidth = panel_side_room.Width + panel_top_time.Width;
+            float fullHeight = fullWidth / 297f * 210f;
+            //Console.WriteLine("FullSize: " + fullWidth + " x " + fullHeight + " -> FullFactor: " + (fullWidth / 297f) + " x " + (fullHeight / 210f));
+            float BmpWidth = (panel_side_room.Width + panel_top_time.Width - cutMinutes);
+            float BmpHeight = BmpWidth / 297f * 210f;
+            //Console.WriteLine("BMP-Size: " + BmpWidth + " x " + BmpHeight + " -> BMP-Factor: " + (BmpWidth / 297f) + " x " + (BmpHeight / 210f));
+            if (blackwhite)
             {
                 Colors.ColorTheme(Colors.Theme.bw);
                 UpdateTimeline(); // render on export colorchange
@@ -1224,17 +1250,42 @@ namespace ExamManager
                 panel_top_time.BackColor = Colors.TL_TimeBg;
                 panel_side_room.BackColor = Colors.TL_RoomBg;
             }
+            Panel tempPanel = new Panel
+            { Width = Convert.ToInt32(fullWidth), Height = Convert.ToInt32(fullHeight), BackColor = Color.White };
+            //tempPanel.Controls.Add(tlp_timeline_view);
+            Bitmap bmp = new Bitmap(Convert.ToInt32(BmpWidth), Convert.ToInt32(BmpHeight)); // -20
+            tempPanel.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            lbl_search.Text = date;
-            Panel tempPanel = new Panel();
-            tempPanel.Width = panel_side_room.Width + 2400; // 200 per houer
-            tempPanel.Height = panel_top_time.Height + 5 + 85 * time_line_list.Count + 15;
-            tempPanel.Controls.Add(tlp_timeline_view);
-            Bitmap bmp = new Bitmap(tempPanel.Width, tempPanel.Height - 20);
-            tempPanel.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
-            lbl_search.Text = null;
-            this.tlp_main.Controls.Add(this.tlp_timeline_view, 0, 1);
+            /////// test ////////
+            lbl_search.Text = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+
+            Panel tPanelRoom = new Panel { Width = 120, Height = panel_side_room.Height, BackColor = Color.White };
+            Panel tPanelTL = new Panel { Width = panel_top_time.Width, Height = panel_side_room.Height, BackColor = Color.White };
+            tPanelRoom.Controls.Add(panel_side_room);
+            tPanelTL.Controls.Add(panel_time_line);
+            Bitmap bmpTL = new Bitmap(2400, panel_side_room.Height);
+            tPanelTL.DrawToBitmap(bmpTL, new Rectangle(0, 0, bmpTL.Width, bmpTL.Height));
+            Bitmap bmpRoom = new Bitmap(120, panel_side_room.Height);
+            tPanelRoom.DrawToBitmap(bmpRoom, new Rectangle(0, 0, bmpRoom.Width, bmpRoom.Height));
+
+            Bitmap newTLbmp = new Bitmap(2520, panel_side_room.Height);
+            bmpTL = bmpTL.Clone(new Rectangle(203, 0, bmpTL.Width - 203, bmpTL.Height), PixelFormat.DontCare);
+
+            Graphics g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+            g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
+            newTLbmp.Save("E://newTL.png", ImageFormat.Png);
+            bmpTL.Save("E://tempFullTL.png", ImageFormat.Png);
+
+            /*Bitmap fullBmp = new Bitmap(2400, 2000);
+            tPanelRoom.DrawToBitmap(fullBmp, new Rectangle(0, 0, 120, fullBmp.Height));
+            tPanelTL.DrawToBitmap(fullBmp, new Rectangle(120, 0, fullBmp.Width - 120, fullBmp.Height));
+            fullBmp.Save("E://TimeLine.png", ImageFormat.Png);*/
+
+            // TODO Split tl in multiple pages
+
+            //return;
+
             SaveFileDialog sfd = new SaveFileDialog
             {
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
@@ -1247,9 +1298,11 @@ namespace ExamManager
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
             Console.WriteLine(sfd.FileName);
+            //bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
             bmp.Save(sfd.FileName, ImageFormat.Png);
-            bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
-
+            // restore 
+            this.tlp_main.Controls.Add(this.tlp_timeline_view, 0, 1);
+            lbl_search.Text = null;
             Colors.ColorTheme(tempTheme);
             UpdateTimeline(); // render on export colorchange
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;

@@ -355,7 +355,7 @@
     <value>Tools</value>
   </data>
   <data name="tsmi_options_keepdata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_keepdata.Text" xml:space="preserve">
     <value>Daten behalten</value>
@@ -379,13 +379,13 @@
     <value>Lehrer</value>
   </data>
   <data name="tsmi_options_table.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_table.Text" xml:space="preserve">
     <value>Tabellen</value>
   </data>
   <data name="tsmi_options_settings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_settings.Text" xml:space="preserve">
     <value>Einstellungen</value>
@@ -412,7 +412,7 @@
     <value>102, 0</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 24</value>
+    <value>523, 24</value>
   </data>
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
