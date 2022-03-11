@@ -914,7 +914,7 @@ namespace ExamManager
         {
             Panel panel_tl = sender as Panel;
             Color c = Colors.TL_TimeBorder;
-            byte b = 3; // border
+            byte b = 4; // border
             ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
             c, 3, ButtonBorderStyle.Solid,
             c, 3, ButtonBorderStyle.Solid,
@@ -1252,39 +1252,49 @@ namespace ExamManager
             }
             Panel tempPanel = new Panel
             { Width = Convert.ToInt32(fullWidth), Height = Convert.ToInt32(fullHeight), BackColor = Color.White };
-            //tempPanel.Controls.Add(tlp_timeline_view);
+            tempPanel.Controls.Add(tlp_timeline_view);
             Bitmap bmp = new Bitmap(Convert.ToInt32(BmpWidth), Convert.ToInt32(BmpHeight)); // -20
             tempPanel.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
             /////// test ////////
+
+            // TODO: cutMinutes...
             lbl_search.Text = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
 
             Panel tPanelRoom = new Panel { Width = 120, Height = panel_side_room.Height, BackColor = Color.White };
             Panel tPanelTL = new Panel { Width = panel_top_time.Width, Height = panel_side_room.Height, BackColor = Color.White };
             tPanelRoom.Controls.Add(panel_side_room);
             tPanelTL.Controls.Add(panel_time_line);
-            Bitmap bmpTL = new Bitmap(2400, panel_side_room.Height);
-            tPanelTL.DrawToBitmap(bmpTL, new Rectangle(0, 0, bmpTL.Width, bmpTL.Height));
             Bitmap bmpRoom = new Bitmap(120, panel_side_room.Height);
+            Bitmap bmpTL = new Bitmap(2400, panel_side_room.Height);
             tPanelRoom.DrawToBitmap(bmpRoom, new Rectangle(0, 0, bmpRoom.Width, bmpRoom.Height));
+            tPanelTL.DrawToBitmap(bmpTL, new Rectangle(0, 0, bmpTL.Width, bmpTL.Height));
 
-            Bitmap newTLbmp = new Bitmap(2520, panel_side_room.Height);
-            bmpTL = bmpTL.Clone(new Rectangle(203, 0, bmpTL.Width - 203, bmpTL.Height), PixelFormat.DontCare);
-
+            bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
+            Bitmap newTLbmp = new Bitmap(120 + 1205, panel_side_room.Height);
             Graphics g = Graphics.FromImage(newTLbmp);
             g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
             g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
-            newTLbmp.Save("E://newTL.png", ImageFormat.Png);
-            bmpTL.Save("E://tempFullTL.png", ImageFormat.Png);
+            Bitmap bmpPart1 = ImageToDinA4(newTLbmp);
+
+            bmpTL = bmpTL.Clone(new Rectangle(1203, 0, bmpTL.Width - 1203, bmpTL.Height), PixelFormat.DontCare);
+            newTLbmp = new Bitmap(120 + 1200, panel_side_room.Height);
+            g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+            g.DrawImage(bmpTL, new Rectangle(120, 0, 1200, newTLbmp.Height));
+            Bitmap bmpPart2 = ImageToDinA4(newTLbmp);
+
+            /*bmpTL = bmpTL.Clone(new Rectangle(203, 0, bmpTL.Width - 203, bmpTL.Height), PixelFormat.DontCare);
+            Bitmap newTLbmp = new Bitmap(2520, panel_side_room.Height);
+            Graphics g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+            g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
+            newTLbmp.Save("E://newTL.png", ImageFormat.Png);*/
 
             /*Bitmap fullBmp = new Bitmap(2400, 2000);
             tPanelRoom.DrawToBitmap(fullBmp, new Rectangle(0, 0, 120, fullBmp.Height));
             tPanelTL.DrawToBitmap(fullBmp, new Rectangle(120, 0, fullBmp.Width - 120, fullBmp.Height));
             fullBmp.Save("E://TimeLine.png", ImageFormat.Png);*/
-
-            // TODO Split tl in multiple pages
-
-            //return;
 
             SaveFileDialog sfd = new SaveFileDialog
             {
@@ -1297,10 +1307,14 @@ namespace ExamManager
                 RestoreDirectory = true
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
-            Console.WriteLine(sfd.FileName);
-            //bmp.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            //Console.WriteLine(sfd.FileName);
             bmp.Save(sfd.FileName, ImageFormat.Png);
+            bmpPart1.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "Part1.png", ImageFormat.Png);
+            bmpPart2.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "Part2.png", ImageFormat.Png);
+
             // restore 
+            this.tlp_timeline_view.Controls.Add(panel_side_room);
+            this.tlp_timeline_view.Controls.Add(panel_time_line);
             this.tlp_main.Controls.Add(this.tlp_timeline_view, 0, 1);
             lbl_search.Text = null;
             Colors.ColorTheme(tempTheme);
@@ -1311,6 +1325,15 @@ namespace ExamManager
             panel_side_room.BackColor = Colors.TL_RoomBg;
             tlp_edit.BackColor = Colors.Edit_Bg;
             lbl_mode.BackColor = Colors.Edit_ModeBg;
+        }
+        private Bitmap ImageToDinA4(Bitmap bmp)
+        {
+            float fullWidth = panel_side_room.Width + panel_top_time.Width / 2;
+            float fullHeight = fullWidth / 297f * 210f;
+            Bitmap newTLbmp = new Bitmap(Convert.ToInt32(fullWidth), Convert.ToInt32(fullHeight));
+            Graphics g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmp, new Rectangle(0, 0, Convert.ToInt32(fullWidth), panel_side_room.Height));
+            return newTLbmp;
         }
         private void tsmi_tools_deleteOldExams_Click(object sender, EventArgs e)
         {
