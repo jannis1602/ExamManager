@@ -249,5 +249,12 @@ namespace ExamManager
                 Properties.Settings.Default.NameOrderTeacher = true;
             else Properties.Settings.Default.NameOrderTeacher = false;
         }
+
+        private void btn_cleardb_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Datenbankinhalt löschen?", "Achtung", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+                Program.database.ClearDatabase();
+        }
     }
 }

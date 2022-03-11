@@ -33,6 +33,8 @@ namespace ExamManager
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.panel_main = new System.Windows.Forms.TabControl();
             this.tp_common = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_exampreview = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_exambreak = new System.Windows.Forms.Label();
             this.dtp_exambreak = new System.Windows.Forms.DateTimePicker();
@@ -86,11 +88,13 @@ namespace ExamManager
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cb_exampreview = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btn_cleardb = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flp_nameorder.SuspendLayout();
@@ -108,7 +112,7 @@ namespace ExamManager
             this.flp_current_db.SuspendLayout();
             this.flp_select_localdb.SuspendLayout();
             this.tlp_btns.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -154,6 +158,28 @@ namespace ExamManager
             this.tp_common.TabIndex = 0;
             this.tp_common.Text = "Allgemein";
             this.tp_common.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel3.Controls.Add(this.cb_exampreview);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 115);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel3.TabIndex = 11;
+            // 
+            // cb_exampreview
+            // 
+            this.cb_exampreview.AutoSize = true;
+            this.cb_exampreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_exampreview.Location = new System.Drawing.Point(5, 3);
+            this.cb_exampreview.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
+            this.cb_exampreview.Name = "cb_exampreview";
+            this.cb_exampreview.Size = new System.Drawing.Size(156, 24);
+            this.cb_exampreview.TabIndex = 5;
+            this.cb_exampreview.Text = "Prüfungsvorschau";
+            this.cb_exampreview.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel2
             // 
@@ -613,6 +639,7 @@ namespace ExamManager
             // 
             this.flp_db_main.Controls.Add(this.flp_current_db);
             this.flp_db_main.Controls.Add(this.flp_select_localdb);
+            this.flp_db_main.Controls.Add(this.flowLayoutPanel4);
             this.flp_db_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_db_main.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flp_db_main.Location = new System.Drawing.Point(3, 3);
@@ -777,27 +804,38 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // flowLayoutPanel3
+            // flowLayoutPanel4
             // 
-            this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel3.Controls.Add(this.cb_exampreview);
-            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 115);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(780, 28);
-            this.flowLayoutPanel3.TabIndex = 11;
+            this.flowLayoutPanel4.Controls.Add(this.label2);
+            this.flowLayoutPanel4.Controls.Add(this.btn_cleardb);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 75);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(774, 30);
+            this.flowLayoutPanel4.TabIndex = 6;
             // 
-            // cb_exampreview
+            // label2
             // 
-            this.cb_exampreview.AutoSize = true;
-            this.cb_exampreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_exampreview.Location = new System.Drawing.Point(5, 3);
-            this.cb_exampreview.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
-            this.cb_exampreview.Name = "cb_exampreview";
-            this.cb_exampreview.Size = new System.Drawing.Size(156, 24);
-            this.cb_exampreview.TabIndex = 5;
-            this.cb_exampreview.Text = "Prüfungsvorschau";
-            this.cb_exampreview.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(5, 5);
+            this.label2.Margin = new System.Windows.Forms.Padding(5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(92, 20);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Datenbank:";
+            // 
+            // btn_cleardb
+            // 
+            this.btn_cleardb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_cleardb.Location = new System.Drawing.Point(104, 2);
+            this.btn_cleardb.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_cleardb.Name = "btn_cleardb";
+            this.btn_cleardb.Size = new System.Drawing.Size(140, 26);
+            this.btn_cleardb.TabIndex = 9;
+            this.btn_cleardb.Text = "Datenbankinhalt löschen";
+            this.btn_cleardb.UseVisualStyleBackColor = true;
+            this.btn_cleardb.Click += new System.EventHandler(this.btn_cleardb_Click);
             // 
             // FormSettings
             // 
@@ -813,6 +851,8 @@ namespace ExamManager
             this.tlp_main.ResumeLayout(false);
             this.panel_main.ResumeLayout(false);
             this.tp_common.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -841,8 +881,8 @@ namespace ExamManager
             this.flp_select_localdb.ResumeLayout(false);
             this.flp_select_localdb.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -908,5 +948,8 @@ namespace ExamManager
         private System.Windows.Forms.DateTimePicker dtp_exambreak;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.CheckBox cb_exampreview;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_cleardb;
     }
 }

@@ -1090,6 +1090,20 @@ namespace ExamManager
         }
         #endregion
         #region -------- DBCreation --------
+        public void ClearDatabase()
+        {
+            SQLiteCommand sqlite_cmd = connection.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM exam";
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_cmd.CommandText = "DELETE FROM student";
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_cmd.CommandText = "DELETE FROM teacher";
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_cmd.CommandText = "DELETE FROM room";
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_cmd.CommandText = "DELETE FROM subject";
+            sqlite_cmd.ExecuteNonQuery();
+        }
         private void CreateStudentDB()
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();

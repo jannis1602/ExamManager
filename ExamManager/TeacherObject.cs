@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ExamManager
 {
@@ -56,6 +57,34 @@ namespace ExamManager
             if (subject2 != null) this.Subject2 = subject2;
             if (subject3 != null) this.Subject3 = subject3;
             Program.database.EditTeacher(this.Shortname, this.Firstname, this.Lastname, this.Email, this.Phonenumber, this.Subject1, this.Subject2, this.Subject3);
+        }
+        public bool AddToDatabase()
+        {
+            // TODO: check data
+            string check = null;
+            if (Program.database.GetTeacherByID(Shortname) != null) check = "Lehrer mit gleichem Kürzel exestiert bereits";
+            if (Program.database.GetTeacherByName(Firstname, Lastname) != null) check = "Lehrer mit gleichem Namen exestiert bereits";
+            if (check == null)
+            {
+                Program.database.AddTeacher(this);
+                UpdateDBData();
+                return true;
+            }
+            else { MessageBox.Show(check, "Fehler"); } // UpdateDBData(); }
+            return false;
+        }
+        public void UpdateDBData(TeacherObject to = null)
+        {
+            if (to == null) to = Program.database.GetTeacherByID(Shortname);
+            if (to == null) return;
+            this.Shortname = to.Shortname;
+            this.Firstname = to.Firstname;
+            this.Lastname = to.Lastname;
+            this.Email = to.Email;
+            this.Phonenumber = to.Phonenumber;
+            this.Subject1 = to.Subject1;
+            this.Subject2 = to.Subject2;
+            this.Subject3 = to.Subject3;
         }
 
         public void Delete()

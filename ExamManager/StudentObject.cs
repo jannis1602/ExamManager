@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ExamManager
 {
@@ -19,16 +20,6 @@ namespace ExamManager
             this.Id = id;
             this.Firstname = firstname;
             this.Lastname = lastname;
-            /*if (!Properties.Settings.Default.NameOrderStudent)
-            {
-                this.Firstname = firstname;
-                this.Lastname = lastname;
-            }
-            else
-            {
-                this.Firstname = lastname;
-                this.Lastname = firstname;
-            }*/
             this.Grade = grade;
             this.Email = email;
             this.Phonenumber = phone_number;
@@ -61,6 +52,37 @@ namespace ExamManager
             /*if (!Properties.Settings.Default.NameOrderStudent)
                 Program.database.EditStudent(this.Id, this.Firstname, this.Lastname, this.Grade, this.Email, this.Phonenumber);
             else Program.database.EditStudent(this.Id, this.Lastname, this.Firstname, this.Grade, this.Email, this.Phonenumber);*/
+        }
+
+        public bool AddToDatabase()
+        {
+            string check = null;
+            if (Program.database.GetStudentByName(Firstname, Lastname) != null) check = "Schüler mit gleichem Namen exestiert bereits: " + Fullname();
+            if (check == null)
+            {
+                Console.WriteLine("check=null " + Fullname());
+                Program.database.AddStudent(this);
+                UpdateDBData();
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("!!! check!=null " + Fullname());
+                MessageBox.Show(check, "Fehler");
+            } // UpdateDBData(); }
+            return false;
+        }
+        public void UpdateDBData(StudentObject so = null)
+        {
+            if (Id == 0 && so == null) so = Program.database.GetStudentByName(Firstname, Lastname);
+            if (so == null) so = Program.database.GetStudentByID(Id);
+            if (so == null) return;
+            this.Id = so.Id;
+            this.Firstname = so.Firstname;
+            this.Lastname = so.Lastname;
+            this.Grade = so.Grade;
+            this.Email = so.Email;
+            this.Phonenumber = so.Phonenumber;
         }
 
         public void Delete()

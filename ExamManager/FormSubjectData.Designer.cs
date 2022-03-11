@@ -50,16 +50,16 @@ namespace ExamManager
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(384, 211);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(284, 361);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // btn_add
             // 
             this.btn_add.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_add.Location = new System.Drawing.Point(50, 171);
+            this.btn_add.Location = new System.Drawing.Point(50, 321);
             this.btn_add.Margin = new System.Windows.Forms.Padding(50, 10, 50, 10);
             this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(284, 30);
+            this.btn_add.Size = new System.Drawing.Size(184, 30);
             this.btn_add.TabIndex = 1;
             this.btn_add.Text = "Hinzufügen";
             this.btn_add.UseVisualStyleBackColor = true;
@@ -69,10 +69,10 @@ namespace ExamManager
             // 
             this.tb_add.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tb_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tb_add.Location = new System.Drawing.Point(30, 120);
+            this.tb_add.Location = new System.Drawing.Point(30, 270);
             this.tb_add.Margin = new System.Windows.Forms.Padding(30, 15, 30, 15);
             this.tb_add.Name = "tb_add";
-            this.tb_add.Size = new System.Drawing.Size(324, 26);
+            this.tb_add.Size = new System.Drawing.Size(224, 26);
             this.tb_add.TabIndex = 0;
             this.tb_add.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_add_KeyPress);
             // 
@@ -82,7 +82,7 @@ namespace ExamManager
             this.lb_subjectlist.FormattingEnabled = true;
             this.lb_subjectlist.Location = new System.Drawing.Point(3, 3);
             this.lb_subjectlist.Name = "lb_subjectlist";
-            this.lb_subjectlist.Size = new System.Drawing.Size(378, 99);
+            this.lb_subjectlist.Size = new System.Drawing.Size(278, 249);
             this.lb_subjectlist.TabIndex = 2;
             this.lb_subjectlist.DoubleClick += new System.EventHandler(this.lb_subjectlist_DoubleClick);
             // 
@@ -90,7 +90,7 @@ namespace ExamManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 211);
+            this.ClientSize = new System.Drawing.Size(284, 361);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormSubjectData";
