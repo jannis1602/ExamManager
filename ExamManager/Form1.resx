@@ -271,25 +271,25 @@
     <value>Suche</value>
   </data>
   <data name="tsmi_filter_grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_filter_grade.Text" xml:space="preserve">
     <value>Stufe</value>
   </data>
   <data name="tsmi_filter_subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_filter_subject.Text" xml:space="preserve">
     <value>Fach</value>
   </data>
   <data name="tsmi_filter_teacher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_filter_teacher.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_filter_all.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_filter_all.Text" xml:space="preserve">
     <value>Filter löschen</value>
@@ -355,7 +355,7 @@
     <value>Tools</value>
   </data>
   <data name="tsmi_options_keepdata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_keepdata.Text" xml:space="preserve">
     <value>Daten behalten</value>
@@ -379,13 +379,13 @@
     <value>Lehrer</value>
   </data>
   <data name="tsmi_options_table.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_table.Text" xml:space="preserve">
     <value>Tabellen</value>
   </data>
   <data name="tsmi_options_settings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="tsmi_options_settings.Text" xml:space="preserve">
     <value>Einstellungen</value>
@@ -396,23 +396,11 @@
   <data name="tsmi_options.Text" xml:space="preserve">
     <value>Optionen</value>
   </data>
-  <data name="tsmi_info_keys.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 22</value>
-  </data>
-  <data name="tsmi_info_keys.Text" xml:space="preserve">
-    <value>Tastenbelegung[DEV]</value>
-  </data>
-  <data name="infoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 20</value>
-  </data>
-  <data name="infoToolStripMenuItem.Text" xml:space="preserve">
-    <value>Info [DEV]</value>
-  </data>
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>102, 0</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 24</value>
+    <value>331, 24</value>
   </data>
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -4680,18 +4668,6 @@
     <value>tsmi_options_settings</value>
   </data>
   <data name="&gt;&gt;tsmi_options_settings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;infoToolStripMenuItem.Name" xml:space="preserve">
-    <value>infoToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;infoToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmi_info_keys.Name" xml:space="preserve">
-    <value>tsmi_info_keys</value>
-  </data>
-  <data name="&gt;&gt;tsmi_info_keys.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolTip.Name" xml:space="preserve">

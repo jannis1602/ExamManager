@@ -39,19 +39,16 @@ namespace ExamManager
             this.cb_grade = new System.Windows.Forms.ComboBox();
             this.flp_date = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_date = new System.Windows.Forms.Label();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cb_addnewstudents = new System.Windows.Forms.CheckBox();
-            this.btn_add = new System.Windows.Forms.Button();
             this.dtp_date = new System.Windows.Forms.DateTimePicker();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.tb_duration = new System.Windows.Forms.TextBox();
+            this.btn_add = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.flp_main.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flp_grade.SuspendLayout();
             this.flp_date.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,7 +73,6 @@ namespace ExamManager
             this.flp_main.Controls.Add(this.flp_grade);
             this.flp_main.Controls.Add(this.flp_date);
             this.flp_main.Controls.Add(this.flowLayoutPanel2);
-            this.flp_main.Controls.Add(this.flowLayoutPanel3);
             this.flp_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_main.Location = new System.Drawing.Point(3, 3);
             this.flp_main.Name = "flp_main";
@@ -132,16 +128,16 @@ namespace ExamManager
             this.lbl_grade.Location = new System.Drawing.Point(3, 3);
             this.lbl_grade.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_grade.Name = "lbl_grade";
-            this.lbl_grade.Size = new System.Drawing.Size(132, 20);
+            this.lbl_grade.Size = new System.Drawing.Size(52, 20);
             this.lbl_grade.TabIndex = 1;
-            this.lbl_grade.Text = "Stufe auswählen:";
+            this.lbl_grade.Text = "Stufe:";
             this.lbl_grade.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cb_grade
             // 
             this.cb_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_grade.FormattingEnabled = true;
-            this.cb_grade.Location = new System.Drawing.Point(141, 3);
+            this.cb_grade.Location = new System.Drawing.Point(61, 3);
             this.cb_grade.Name = "cb_grade";
             this.cb_grade.Size = new System.Drawing.Size(100, 24);
             this.cb_grade.TabIndex = 2;
@@ -163,48 +159,17 @@ namespace ExamManager
             this.lbl_date.Location = new System.Drawing.Point(3, 3);
             this.lbl_date.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_date.Name = "lbl_date";
-            this.lbl_date.Size = new System.Drawing.Size(120, 20);
+            this.lbl_date.Size = new System.Drawing.Size(40, 20);
             this.lbl_date.TabIndex = 1;
-            this.lbl_date.Text = "Tag auswählen:";
+            this.lbl_date.Text = "Tag:";
             this.lbl_date.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.cb_addnewstudents);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 147);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(794, 30);
-            this.flowLayoutPanel3.TabIndex = 3;
-            // 
-            // cb_addnewstudents
-            // 
-            this.cb_addnewstudents.AutoSize = true;
-            this.cb_addnewstudents.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_addnewstudents.Location = new System.Drawing.Point(3, 3);
-            this.cb_addnewstudents.Name = "cb_addnewstudents";
-            this.cb_addnewstudents.Size = new System.Drawing.Size(205, 24);
-            this.cb_addnewstudents.TabIndex = 0;
-            this.cb_addnewstudents.Text = "neue Schüler hinzufügen";
-            this.cb_addnewstudents.UseVisualStyleBackColor = true;
-            // 
-            // btn_add
-            // 
-            this.btn_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add.Location = new System.Drawing.Point(699, 413);
-            this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(98, 34);
-            this.btn_add.TabIndex = 2;
-            this.btn_add.Text = "Hinzufügen";
-            this.btn_add.UseVisualStyleBackColor = true;
-            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // dtp_date
             // 
             this.dtp_date.Dock = System.Windows.Forms.DockStyle.Top;
             this.dtp_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.dtp_date.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_date.Location = new System.Drawing.Point(127, 1);
+            this.dtp_date.Location = new System.Drawing.Point(47, 1);
             this.dtp_date.Margin = new System.Windows.Forms.Padding(1);
             this.dtp_date.Name = "dtp_date";
             this.dtp_date.Size = new System.Drawing.Size(100, 23);
@@ -241,7 +206,19 @@ namespace ExamManager
             this.tb_duration.Size = new System.Drawing.Size(50, 23);
             this.tb_duration.TabIndex = 2;
             this.tb_duration.Text = "30";
-            this.tb_duration.TextChanged += new System.EventHandler(this.t);
+            this.tb_duration.TextChanged += new System.EventHandler(this.tb_duration_TextChanged);
+            // 
+            // btn_add
+            // 
+            this.btn_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_add.Location = new System.Drawing.Point(699, 413);
+            this.btn_add.Name = "btn_add";
+            this.btn_add.Size = new System.Drawing.Size(98, 34);
+            this.btn_add.TabIndex = 2;
+            this.btn_add.Text = "Hinzufügen";
+            this.btn_add.UseVisualStyleBackColor = true;
+            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // FormLoadTable
             // 
@@ -260,8 +237,6 @@ namespace ExamManager
             this.flp_grade.PerformLayout();
             this.flp_date.ResumeLayout(false);
             this.flp_date.PerformLayout();
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
@@ -279,8 +254,6 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flp_grade;
         private System.Windows.Forms.Label lbl_grade;
         private System.Windows.Forms.ComboBox cb_grade;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-        private System.Windows.Forms.CheckBox cb_addnewstudents;
         private System.Windows.Forms.FlowLayoutPanel flp_date;
         private System.Windows.Forms.Label lbl_date;
         private System.Windows.Forms.DateTimePicker dtp_date;

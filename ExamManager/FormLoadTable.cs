@@ -90,7 +90,7 @@ namespace ExamManager
                 // ---- room names ----
                 if (list.Count == examCount) break;
                 DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration * t);
-                if (time.AddMinutes(duration).Hour > DateTime.ParseExact("17:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).Hour)
+                if (time.AddMinutes(duration).Hour > DateTime.ParseExact("17:30", "HH:mm", null, System.Globalization.DateTimeStyles.None).Hour)
                 { t = 1; room++; time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration * t); }
                 string[] d = list.ElementAt(element);
                 string s = d[2].Replace(", ", ",").Replace(" ", "_");
@@ -107,7 +107,8 @@ namespace ExamManager
                 { missingStudentList.AddLast(new StudentObject(0, s.Split(',')[1], s.Split(',')[0], grade)); }
                 else if (Program.database.GetTeacherByID(d[1]) == null)
                 { missingTeacherList.AddLast(d[1]); }
-                //Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30); ;
+                //Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30);
+                t++;
                 element++;
             }
 
@@ -116,9 +117,10 @@ namespace ExamManager
             foreach (StudentObject so in missingStudentList)
             { Console.WriteLine(so.Fullname()); students += so.Fullname() + " "; }
 
-            DialogResult resultAddStudents = MessageBox.Show(missingStudentList.Count + " Schüler hinzufügen?\n" + students, "Achtung", MessageBoxButtons.YesNo);
+            DialogResult resultAddStudents = MessageBox.Show(missingStudentList.Count + " Schüler hinzufügen?\n" + students, "Achtung", MessageBoxButtons.YesNoCancel);
             if (resultAddStudents == DialogResult.Yes) foreach (StudentObject so in missingStudentList)
                     if (Program.database.GetStudentByName(so.Firstname, so.Lastname) == null) so.AddToDatabase();
+            if (resultAddStudents == DialogResult.Cancel) return;
 
             string subjects = "";
             Console.WriteLine("Missing Subjects: ");
@@ -140,46 +142,45 @@ namespace ExamManager
             int examCount = 0;
             int room = 0;
             LinkedList<ExamObject> examList = new LinkedList<ExamObject>();
+            int element = 0;
+            int t = 1;
             while (list.Count > examCount)
             {
-                for (int t = 1; t < 20 + 1; t++)
+                examCount++;
+                if (list.Count == examCount) break;
+                DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration * t);
+                if (time.AddMinutes(duration).Hour > DateTime.ParseExact("17:30", "HH:mm", null, System.Globalization.DateTimeStyles.None).Hour)
+                { t = 1; room++; time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration * t); }
+
+                string[] d = list.ElementAt(element);
+                string s = d[2].Replace(", ", ",").Replace(" ", "_"); // TODO: teacher -> t1/t2/t3?
+                Program.database.AddRoom("R" + room);
+                //if (Program.database.GetSubject(d[0]) == null && !missingSubjectList.Contains(d[0])) missingSubjectList.AddLast(d[0]);
+                if (Program.database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("HH:mm"), "R" + room).Count == 0)
                 {
-                    examCount++;
-                    if (list.Count == examCount) break;
-                    string[] d = list.ElementAt(room * 20 + t);
-                    string s = d[2].Replace(", ", ",").Replace(" ", "_"); // TODO: teacher -> t1/t2/t3?
-                    Program.database.AddRoom("R" + room);
-                    //if (Program.database.GetSubject(d[0]) == null && !missingSubjectList.Contains(d[0])) missingSubjectList.AddLast(d[0]);
-                    DateTime time = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(duration * t);
-                    if (Program.database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("HH:mm"), "R" + room).Count == 0)
+                    if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && Program.database.GetTeacherByID(d[1]) == null)
                     {
-                        if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null || Program.database.GetTeacherByID(d[1]) == null)
-                        {
-                            if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && Program.database.GetTeacherByID(d[1]) == null)
-                            {
-                                examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, d[1] + "*", null, null, d[0], duration));
-                                Console.WriteLine("NOTFOUND-TS: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration); ;
-                            }
-                            else if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
-                            {
-                                examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
-                                Console.WriteLine("NOTFOUND-S: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
-                            }
-                            else if (Program.database.GetTeacherByID(d[1]) == null)
-                            {
-                                examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], duration));
-                                Console.WriteLine("NOTFOUND-T: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
-                            }
-                            //Console.WriteLine("NOTFOUND: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + 30); ;
-                        }
-                        else
-                        {
-                            Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + Program.database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + duration);
-                            examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
-                        }
+                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, 0, 0, 0, d[1] + "*", null, null, d[0], duration));
+                        Console.WriteLine("NOTFOUND-TS: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " NODB:" + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration); ;
                     }
+                    else if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
+                    {
+                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
+                        Console.WriteLine("NOTFOUND-S: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
+                    }
+                    else if (Program.database.GetTeacherByID(d[1]) == null)
+                    {
+                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], duration));
+                        Console.WriteLine("NOTFOUND-T: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
+                    }
+                    else
+                    {
+                        Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + Program.database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + duration);
+                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
+                    }
+                    element++;
+                    t++;
                 }
-                room++;
             }
             foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false);
         }
@@ -204,12 +205,9 @@ namespace ExamManager
 
         private void tb_duration_TextChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void t(object sender, EventArgs e)
-        {
-
+            if (tb_duration.Text.Length == 0) return;
+            if (System.Text.RegularExpressions.Regex.IsMatch(tb_duration.Text, "[^0-9]"))
+                tb_duration.Text = tb_duration.Text.Remove(tb_duration.Text.Length - 1);
         }
     }
 }

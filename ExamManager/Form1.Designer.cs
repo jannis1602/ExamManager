@@ -73,8 +73,6 @@ namespace ExamManager
             this.tsmi_table_students = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_table_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_options_settings = new System.Windows.Forms.ToolStripMenuItem();
-            this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_info_keys = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_edit = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_add_exam = new System.Windows.Forms.Button();
@@ -203,8 +201,7 @@ namespace ExamManager
             this.tsmi_filter,
             this.examToolStripMenuItem,
             this.toolsToolStripMenuItem,
-            this.tsmi_options,
-            this.infoToolStripMenuItem});
+            this.tsmi_options});
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -475,18 +472,6 @@ namespace ExamManager
             this.tsmi_options_settings.Name = "tsmi_options_settings";
             resources.ApplyResources(this.tsmi_options_settings, "tsmi_options_settings");
             this.tsmi_options_settings.Click += new System.EventHandler(this.tsmi_options_settings_Click);
-            // 
-            // infoToolStripMenuItem
-            // 
-            this.infoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_info_keys});
-            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            resources.ApplyResources(this.infoToolStripMenuItem, "infoToolStripMenuItem");
-            // 
-            // tsmi_info_keys
-            // 
-            this.tsmi_info_keys.Name = "tsmi_info_keys";
-            resources.ApplyResources(this.tsmi_info_keys, "tsmi_info_keys");
             // 
             // tlp_edit
             // 
@@ -1078,8 +1063,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_grade;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_deleteOldExams;
-        private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_info_keys;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_table;
         private System.Windows.Forms.ToolStripMenuItem tsmi_table_exams;
