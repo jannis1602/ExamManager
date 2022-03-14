@@ -1404,7 +1404,10 @@ namespace ExamManager
         }
         private void tsmi_open_excel_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            new FormLoadTable().ShowDialog();
+            // TODO Update timeline
+            return;
+            /*OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = false;
             ofd.Filter = "XLSX files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
             ofd.FilterIndex = 1;
@@ -1576,13 +1579,13 @@ namespace ExamManager
                 }
                 room++;
             }
-            /*Console.WriteLine("Teacher or Student NotFound: ");
+            *//*Console.WriteLine("Teacher or Student NotFound: ");
             foreach (string[] s in listNotFound)
-                Console.WriteLine(s[0] + " " + s[1] + " " + s[2]);*/
+                Console.WriteLine(s[0] + " " + s[1] + " " + s[2]);*//*
 
-            foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false);
+            foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false);*/
 
-            UpdateTimeline(); // render on LoadExcel
+            // UpdateTimeline(); // render on LoadExcel
         }
         // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)

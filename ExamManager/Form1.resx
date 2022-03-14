@@ -187,13 +187,13 @@
     <value>Fächer</value>
   </data>
   <data name="tsmi_data_editgrade_move.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>175, 22</value>
   </data>
   <data name="tsmi_data_editgrade_move.Text" xml:space="preserve">
     <value>Stufe umbenennen</value>
   </data>
   <data name="tsmi_data_editgrade_delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>175, 22</value>
   </data>
   <data name="tsmi_data_editgrade_delete.Text" xml:space="preserve">
     <value>Stufe Löschen</value>
@@ -229,37 +229,37 @@
     <value>Daten</value>
   </data>
   <data name="tsmi_search_teacher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_teacher.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_search_student.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_student.Text" xml:space="preserve">
     <value>Schüler</value>
   </data>
   <data name="tsmi_search_subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_subject.Text" xml:space="preserve">
     <value>Fach</value>
   </data>
   <data name="tsmi_search_room.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_room.Text" xml:space="preserve">
     <value>Raum</value>
   </data>
   <data name="tsmi_search_grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_grade.Text" xml:space="preserve">
     <value>Stufe</value>
   </data>
   <data name="tsmi_search_delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsmi_search_delete.Text" xml:space="preserve">
     <value>Suche löschen</value>
@@ -271,25 +271,25 @@
     <value>Suche</value>
   </data>
   <data name="tsmi_filter_grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_grade.Text" xml:space="preserve">
     <value>Stufe</value>
   </data>
   <data name="tsmi_filter_subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_subject.Text" xml:space="preserve">
     <value>Fach</value>
   </data>
   <data name="tsmi_filter_teacher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_teacher.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_filter_all.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_all.Text" xml:space="preserve">
     <value>Filter löschen</value>
@@ -355,7 +355,7 @@
     <value>Tools</value>
   </data>
   <data name="tsmi_options_keepdata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_keepdata.Text" xml:space="preserve">
     <value>Daten behalten</value>
@@ -379,13 +379,13 @@
     <value>Lehrer</value>
   </data>
   <data name="tsmi_options_table.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_table.Text" xml:space="preserve">
     <value>Tabellen</value>
   </data>
   <data name="tsmi_options_settings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_settings.Text" xml:space="preserve">
     <value>Einstellungen</value>

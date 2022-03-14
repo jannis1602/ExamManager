@@ -743,7 +743,7 @@ namespace ExamManager
         }
         /// <summary>Searches all exams in a room at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
-        public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)
+        public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)   // TODO: split examroom and preparationroom
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;
