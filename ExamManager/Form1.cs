@@ -1,5 +1,4 @@
-﻿using ExcelDataReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -7,39 +6,41 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace ExamManager
 {
     public partial class Form1 : Form
     {
-        public string search = null;
-        public enum Search { all, student, teacher, subject, room, grade }
-        public Search searchMode = Search.all;
-        public string filter = null;
-        public enum Filter { all, grade, teacher, student, subject }
-        public Filter filterMode = Filter.all;
-        private ExamObject SwapExam = null;
-
-        //private readonly bool editExamPreview = true;
-        private Panel editPanel = null; // TODO: EditPanel in ExamObject
-        private Point oldPoint;
-        private Panel oldTimeLine;
-
         private readonly Database database;
-        private ExamObject EditExam = null;
+        private readonly LinkedList<Panel> time_line_room_list;
         private readonly LinkedList<Panel> time_line_list;
         private LinkedList<ExamObject> tl_exam_entity_list;
-
-        private readonly LinkedList<Panel> time_line_room_list;
         private readonly string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten", "mehrere Prüfungen bearbeiten" };
         private readonly string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen", "Prüfungen ändern" };
-        private Point panelScrollPos1 = new Point();
-        private Point panelScrollPos2 = new Point();
-        private Panel panel_empty;
-
+        private Point SyncScrollPos1 = new Point();
+        private Point SyncScrollPos2 = new Point();
+        private Panel panel_room_bottom;
+        // Search/Filter
+        public enum Search { all, student, teacher, subject, room, grade }
+        public enum Filter { all, grade, teacher, student, subject, room }
+        public string search = null;
+        public string filter = null;
+        public Search searchMode = Search.all;
+        public Filter filterMode = Filter.all;
+        LinkedList<string> RoomNameFilterList;
+        // EditMode
+        private ExamObject EditExam = null;
+        private ExamObject SwapExam = null;
+        private Panel editPanel = null; // TODO: EditPanel in ExamObject
+        private Point EditExamMovePanelOldPos;
+        private Panel EditExamOldTL;
         private LinkedList<ExamObject> tl_entity_multiselect_list;
+
+        // ---- TEMP ----
+        private int StartTimeTL = 7; // todo
+        private int LengthTL = 12;
+        public static int PixelPerHour = 200;  // Check min length
         public Form1()
         {
             database = Program.database;
@@ -48,6 +49,7 @@ namespace ExamManager
             tl_entity_multiselect_list = new LinkedList<ExamObject>();
             time_line_room_list = new LinkedList<Panel>();
             InitializeComponent();
+            panel_top_time.Width = PixelPerHour * LengthTL;
 
             if (Properties.Settings.Default.TimelineDate.Length > 2)
                 dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.TimelineDate, "dd.MM.yyyy", null);
@@ -139,7 +141,10 @@ namespace ExamManager
                 Name = room,
                 Size = new Size(2400, 80),
                 BackColor = Colors.TL_TimeLineBg,
+                // Dock = DockStyle.Top,  // TODO: TL Dock top ----------------------------------------------
             };
+            panel_tl.Width = PixelPerHour * LengthTL; // TEST
+            // panel_tl.Width = panel_top_time.Width;
             panel_tl.Paint += panel_time_line_Paint;
             panel_tl.MouseDown += panel_time_line_MouseDown;
             void panel_time_line_MouseDown(object sender, MouseEventArgs e)
@@ -147,8 +152,8 @@ namespace ExamManager
                 if (e.Button == MouseButtons.Left && editPanel != null)
                 {
                     Panel p = sender as Panel;
-                    if (oldTimeLine == p) return;
-                    oldTimeLine = p;
+                    if (EditExamOldTL == p) return;
+                    EditExamOldTL = p;
                     cb_exam_room.SelectedItem = p.Name;
                     UpdatePreviewPanel();
                 }
@@ -390,8 +395,8 @@ namespace ExamManager
         }
         public void UpdateTimeline()
         {
-            if (filter == null || filter.Length == 0) filterMode = Filter.all;
-            if (panel_empty != null) panel_side_room.Controls.Remove(panel_empty);
+            if ((filter == null || filter.Length == 0) && RoomNameFilterList == null) filterMode = Filter.all;
+            if (panel_room_bottom != null) panel_side_room.Controls.Remove(panel_room_bottom);
             foreach (Panel p in time_line_list) p.Dispose();
             foreach (Panel p in time_line_room_list) p.Dispose();
             time_line_list.Clear();
@@ -402,6 +407,15 @@ namespace ExamManager
             if (filterMode == Filter.teacher) examList = database.GetAllExamsFromTeacherAtDate(date, filter);
             else if (filterMode == Filter.subject) examList = database.GetAllExamsFromSubjectAtDate(date, filter);
             else if (filterMode == Filter.grade) examList = database.GetAllExamsFromGradeAtDate(date, filter);
+            else if (filterMode == Filter.room)
+            {
+                examList = database.GetAllExamsAtDate(date);
+                LinkedList<ExamObject> tempList = new LinkedList<ExamObject>();
+                foreach (ExamObject eo in examList)
+                    if (RoomNameFilterList.Contains(eo.Examroom))
+                        tempList.AddLast(eo);
+                examList = tempList;
+            }
             else examList = database.GetAllExamsAtDate(date);
             LinkedList<ExamObject> newExams = new LinkedList<ExamObject>();
             LinkedList<ExamObject> removeExams = new LinkedList<ExamObject>();
@@ -476,10 +490,10 @@ namespace ExamManager
             room_list = new LinkedList<string>(temp_room_list);
             foreach (string s in room_list) AddTimeline(s);
             // SideBottomPanel 
-            if (panel_empty == null) panel_empty = new Panel();
-            panel_empty.Location = new Point(0, panel_top_time.Height + 5 + 85 * time_line_list.Count);
-            panel_empty.Size = new Size(panel_side_room.Width - 17, 12);
-            panel_side_room.Controls.Add(panel_empty);
+            if (panel_room_bottom == null) panel_room_bottom = new Panel();
+            panel_room_bottom.Location = new Point(0, panel_top_time.Height + 5 + 85 * time_line_list.Count);
+            panel_room_bottom.Size = new Size(panel_side_room.Width - 17, 12);
+            panel_side_room.Controls.Add(panel_room_bottom);
 
             foreach (ExamObject exam in tl_exam_entity_list)
             {
@@ -548,7 +562,7 @@ namespace ExamManager
             editPanel = exam.GetTimelineEntity(true);
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);     // TODO UnitPerMinute etc. --------------------------------
             float unit_per_minute = 200F / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
 
@@ -565,12 +579,12 @@ namespace ExamManager
             editPanel.MouseMove += editPanel_MouseMove;
             editPanel.MouseDown += editPanel_MouseDown;
             void editPanel_MouseDown(object sender, MouseEventArgs e)
-            { oldPoint = new Point(e.X, e.Y); }
+            { EditExamMovePanelOldPos = new Point(e.X, e.Y); }
             void editPanel_MouseMove(object sender, MouseEventArgs e) // TODO: better previewpanel moving
             {
                 DateTime oldTime = dtp_time.Value;
-                if (oldPoint == null)
-                    oldPoint = new Point(e.X, e.Y);
+                if (EditExamMovePanelOldPos == null)
+                    EditExamMovePanelOldPos = new Point(e.X, e.Y);
                 Panel p = sender as Panel;
                 if (e.Button == MouseButtons.Left)  // panel position relative to mouse position (mouse enter -> set start)
                 {
@@ -578,15 +592,15 @@ namespace ExamManager
                     if (Form.ModifierKeys == Keys.Control) dragTime = 10;
                     if (Form.ModifierKeys == Keys.Shift) dragTime = 5;
                     if (Form.ModifierKeys == Keys.Alt) dragTime = 1;
-                    if (e.X - oldPoint.X > 2)
+                    if (e.X - EditExamMovePanelOldPos.X > 2)
                     {
-                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - oldPoint.X) / 4);
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes((e.X - EditExamMovePanelOldPos.X) / 4);
                         string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
                         this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(dragTime));
                     }
-                    else if (oldPoint.X - e.X > 2)
+                    else if (EditExamMovePanelOldPos.X - e.X > 2)
                     {       // float unit_per_minute = 200F / 60F;
-                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(oldPoint.X - e.X) / 4);
+                        this.dtp_time.Value = this.dtp_time.Value.AddMinutes(-(EditExamMovePanelOldPos.X - e.X) / 4);
                         string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
                         this.dtp_time.Value = RoundUp(dtp_time.Value, TimeSpan.FromMinutes(dragTime));
                     }
@@ -908,31 +922,30 @@ namespace ExamManager
         #endregion
         #region -------- PAINT --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void panel_side_room_Paint(object sender, PaintEventArgs e)
         {
-            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            if (panel_time_line.AutoScrollPosition != SyncScrollPos1)
             {
                 panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
-                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+                SyncScrollPos1 = panel_side_room.AutoScrollPosition;
             }
-            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            else if (panel_side_room.AutoScrollPosition != SyncScrollPos2)
             {
                 panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
-                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+                SyncScrollPos2 = panel_side_room.AutoScrollPosition;
             }
         }
         private void panel_time_line_master_Paint(object sender, PaintEventArgs e)
         {
-            if (panel_time_line.AutoScrollPosition != panelScrollPos1)
+            if (panel_time_line.AutoScrollPosition != SyncScrollPos1)
             {
                 panel_side_room.AutoScrollPosition = new Point(-panel_time_line.AutoScrollPosition.X, -panel_time_line.AutoScrollPosition.Y);
-                panelScrollPos1 = panel_side_room.AutoScrollPosition;
+                SyncScrollPos1 = panel_side_room.AutoScrollPosition;
             }
-            else if (panel_side_room.AutoScrollPosition != panelScrollPos2)
+            else if (panel_side_room.AutoScrollPosition != SyncScrollPos2)
             {
                 panel_time_line.AutoScrollPosition = new Point(-panel_side_room.AutoScrollPosition.X, -panel_side_room.AutoScrollPosition.Y);
-                panelScrollPos2 = panel_side_room.AutoScrollPosition;
+                SyncScrollPos2 = panel_side_room.AutoScrollPosition;
             }
         }
         private void panel_top_time_Paint(object sender, PaintEventArgs e)
@@ -947,7 +960,7 @@ namespace ExamManager
             c, 3, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Microsoft Sans Serif", 10);
             StringFormat drawFormat = new StringFormat();
-            for (int i = 0; i < 12; i++)
+            /*for (int i = 0; i < 12; i++)
             {
                 float[] dashValues = { 1, 1 };
                 Pen pen = new Pen(Colors.TL_MinLine, 1);
@@ -959,12 +972,25 @@ namespace ExamManager
                 e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - b);
                 e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - b);
                 e.Graphics.DrawString(7 + i + " Uhr", drawFont, new SolidBrush(Colors.TL_MinLine), 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
+            }*/
+            for (int i = 0; i < LengthTL; i++)
+            {
+                float[] dashValues = { 1, 1 };
+                Pen pen = new Pen(Colors.TL_MinLine, 1);
+                pen.DashPattern = dashValues;
+                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
+                pen2.DashPattern = dashValues;
+                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), b + panel_tl.Width / LengthTL * i, b, b + panel_tl.Width / LengthTL * i, panel_tl.Height - b);
+                e.Graphics.DrawLine(pen2, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 2), b, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 2), panel_tl.Height - b);
+                e.Graphics.DrawLine(pen, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4), b, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4), panel_tl.Height - b);
+                e.Graphics.DrawLine(pen, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4) * 3, b, b + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4) * 3, panel_tl.Height - b);
+                e.Graphics.DrawString(StartTimeTL + i + " Uhr", drawFont, new SolidBrush(Colors.TL_MinLine), 5 + panel_tl.Width / LengthTL * i, panel_tl.Height - 20, drawFormat);
             }
         }
         private void panel_time_line_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
-            for (int i = 0; i < 12; i++)
+            /*for (int i = 0; i < 12; i++)
             {
                 float[] dashValues = { 2, 2 };
                 float[] dashValues2 = { 1, 1 };
@@ -976,6 +1002,19 @@ namespace ExamManager
                 e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
                 e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
+            }*/
+            for (int i = 0; i < LengthTL; i++)
+            {
+                float[] dashValues = { 2, 2 };
+                float[] dashValues2 = { 1, 1 };
+                Pen pen = new Pen(Colors.TL_MinLine, 1);
+                pen.DashPattern = dashValues;
+                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
+                pen2.DashPattern = dashValues2;
+                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), 4 + panel_tl.Width / LengthTL * i, 4, 4 + panel_tl.Width / LengthTL * i, panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 2), 4, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 2), panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4), 4, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4), panel_tl.Height - 4);
+                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4) * 3, 4, 4 + panel_tl.Width / LengthTL * i + panel_tl.Width / (LengthTL * 4) * 3, panel_tl.Height - 4);
             }
             ControlPaint.DrawBorder(e.Graphics, panel_tl.ClientRectangle,
             Colors.TL_TimeLineBorder, 4, ButtonBorderStyle.Solid,
@@ -1212,6 +1251,7 @@ namespace ExamManager
         private void tsmi_filter_all_Click(object sender, EventArgs e)
         {
             filterMode = Filter.all;
+            RoomNameFilterList = null;
             filter = null;
             UpdateTimeline();// render on filterchange to all
         }
@@ -1222,12 +1262,6 @@ namespace ExamManager
             form.UpdateSearch += update_filter_Event;
             form.ShowDialog();
         }
-        private void update_filter_Event(object sender, EventArgs e)
-        {
-            string s = sender as string;
-            filter = s;
-            UpdateTimeline(); // render on filterchange
-        }
         private void tsmi_filter_subject_Click(object sender, EventArgs e)
         {
             filterMode = Filter.subject;
@@ -1235,9 +1269,55 @@ namespace ExamManager
             form.UpdateSearch += update_filter_Event;
             form.ShowDialog();
         }
+        private void tsmi_filter_room_Click(object sender, EventArgs e)
+        {
+            LinkedList<string> roomNameList = new LinkedList<string>();
+            foreach (Panel p in time_line_room_list)
+                roomNameList.AddLast(p.Name);
+            FormRoomFilter form = new FormRoomFilter(roomNameList);
+            form.SelectedRoomList += roomList_Event;
+            form.ShowDialog();
+
+            void roomList_Event(object sender1, EventArgs a)
+            {
+                LinkedList<string> list = sender1 as LinkedList<string>;
+                foreach (string s in list)
+                    Console.WriteLine(s);
+                filterMode = Filter.room;
+                RoomNameFilterList = list;
+                UpdateTimeline();
+            }
+        }
         // ----------------- tsmi tools -----------------
         private void tsmi_tools_export_Click(object sender, EventArgs e)
         {
+            bool split = false;
+            DialogResult resultSplit = MessageBox.Show("Zeitachse teilen?", "Achtung", MessageBoxButtons.YesNo);
+            if (resultSplit == DialogResult.Yes)
+            {
+                split = true;
+                if (time_line_room_list.Count > 10)
+                {
+                    MessageBox.Show("Maximal 10 Räume auswählen", "Info");
+                    LinkedList<string> roomNameList = new LinkedList<string>();
+                    foreach (Panel p in time_line_room_list)
+                        roomNameList.AddLast(p.Name);
+                    FormRoomFilter form = new FormRoomFilter(roomNameList);
+                    form.SelectedRoomList += roomList_Event;
+                    form.ShowDialog();
+
+                    void roomList_Event(object sender1, EventArgs a)
+                    {
+                        LinkedList<string> list = sender1 as LinkedList<string>;
+                        foreach (string s in list)
+                            Console.WriteLine(s);
+                        while (list.Count > 10) list.RemoveLast();
+                        filterMode = Filter.room;
+                        RoomNameFilterList = list;
+                        UpdateTimeline();
+                    }
+                }
+            }
             Colors.Theme tempTheme = Colors.theme;
             bool blackwhite = false;
             DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
@@ -1254,15 +1334,13 @@ namespace ExamManager
             }
             // TODO if h<b || b<h
             Double cutTime = (DateTime.ParseExact("18:30", "HH:mm", null) - lastTime).TotalMinutes;
-            float unit_per_minute = 200F / 60F;
+            float unit_per_minute = PixelPerHour / 60F;
             int cutMinutes = Convert.ToInt32(cutTime * unit_per_minute);
 
             float fullWidth = panel_side_room.Width + panel_top_time.Width;
             float fullHeight = fullWidth / 297f * 210f;
-            //Console.WriteLine("FullSize: " + fullWidth + " x " + fullHeight + " -> FullFactor: " + (fullWidth / 297f) + " x " + (fullHeight / 210f));
             float BmpWidth = (panel_side_room.Width + panel_top_time.Width - cutMinutes);
             float BmpHeight = BmpWidth / 297f * 210f;
-            //Console.WriteLine("BMP-Size: " + BmpWidth + " x " + BmpHeight + " -> BMP-Factor: " + (BmpWidth / 297f) + " x " + (BmpHeight / 210f));
             if (blackwhite)
             {
                 Colors.ColorTheme(Colors.Theme.bw);
@@ -1289,12 +1367,12 @@ namespace ExamManager
             tPanelRoom.Controls.Add(panel_side_room);
             tPanelTL.Controls.Add(panel_time_line);
             Bitmap bmpRoom = new Bitmap(120, panel_side_room.Height);
-            Bitmap bmpTL = new Bitmap(2400, panel_side_room.Height);
+            Bitmap bmpTL = new Bitmap(LengthTL * PixelPerHour, panel_side_room.Height);
             tPanelRoom.DrawToBitmap(bmpRoom, new Rectangle(0, 0, bmpRoom.Width, bmpRoom.Height));
             tPanelTL.DrawToBitmap(bmpTL, new Rectangle(0, 0, bmpTL.Width, bmpTL.Height));
 
-            bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
-            Bitmap newTLbmp = new Bitmap(120 + 1205, panel_side_room.Height);
+            /*bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
+            Bitmap newTLbmp = new Bitmap(120 + 1200 + 5, panel_side_room.Height);
             Graphics g = Graphics.FromImage(newTLbmp);
             g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
             g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
@@ -1305,6 +1383,20 @@ namespace ExamManager
             g = Graphics.FromImage(newTLbmp);
             g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
             g.DrawImage(bmpTL, new Rectangle(120, 0, 1200, newTLbmp.Height));
+            Bitmap bmpPart2 = ImageToDinA4(newTLbmp);*/
+
+            bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
+            Bitmap newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2 + 5, panel_side_room.Height);
+            Graphics g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+            g.DrawImage(bmpTL, new Rectangle(120, 0, LengthTL * PixelPerHour, newTLbmp.Height));
+            Bitmap bmpPart1 = ImageToDinA4(newTLbmp);
+
+            bmpTL = bmpTL.Clone(new Rectangle((LengthTL * PixelPerHour) / 2 - 3, 0, bmpTL.Width - (LengthTL * PixelPerHour) / 2 - 3, bmpTL.Height), PixelFormat.DontCare);
+            newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2, panel_side_room.Height);
+            g = Graphics.FromImage(newTLbmp);
+            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+            g.DrawImage(bmpTL, new Rectangle(120, 0, (LengthTL * PixelPerHour) / 2, newTLbmp.Height));
             Bitmap bmpPart2 = ImageToDinA4(newTLbmp);
 
             /*bmpTL = bmpTL.Clone(new Rectangle(203, 0, bmpTL.Width - 203, bmpTL.Height), PixelFormat.DontCare);
@@ -1329,17 +1421,23 @@ namespace ExamManager
                 FilterIndex = 2,
                 RestoreDirectory = true
             };
-            if (sfd.ShowDialog() != DialogResult.OK) return;
-            //Console.WriteLine(sfd.FileName);
-            bmp.Save(sfd.FileName, ImageFormat.Png);
-            bmpPart1.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part1.png", ImageFormat.Png);
-            bmpPart2.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part2.png", ImageFormat.Png);
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                if (!split) bmp.Save(sfd.FileName, ImageFormat.Png);
+                if (split)
+                {
+                    bmpPart1.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part1.png", ImageFormat.Png); // TODO: SaveDialog
+                    bmpPart2.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part2.png", ImageFormat.Png);
+                }
+            }
 
             // restore 
             this.tlp_timeline_view.Controls.Add(panel_side_room);
             this.tlp_timeline_view.Controls.Add(panel_time_line);
             this.tlp_main.Controls.Add(this.tlp_timeline_view, 0, 1);
             lbl_search.Text = null;
+            filterMode = Filter.all;
+            RoomNameFilterList = null;
             Colors.ColorTheme(tempTheme);
             UpdateTimeline(); // render on export colorchange
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
@@ -1450,6 +1548,12 @@ namespace ExamManager
         private void update_timeline_Event(object sender, EventArgs a)
         {
             UpdateTimeline(); // render on UpdateEvent(changeExamRoom)
+        }
+        private void update_filter_Event(object sender, EventArgs e)
+        {
+            string s = sender as string;
+            filter = s;
+            UpdateTimeline(); // render on filterchange
         }
         private void update_color_Event(object sender, EventArgs a)
         {
@@ -1619,5 +1723,12 @@ namespace ExamManager
                 }
             }
         }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            UpdateTimeline();
+        }
+
+
     }
 }

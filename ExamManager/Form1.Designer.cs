@@ -57,6 +57,7 @@ namespace ExamManager
             this.tsmi_filter_subject = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_filter_room = new System.Windows.Forms.ToolStripMenuItem();
             this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_examdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -336,6 +337,7 @@ namespace ExamManager
             this.tsmi_filter_grade,
             this.tsmi_filter_subject,
             this.tsmi_filter_teacher,
+            this.tsmi_filter_room,
             this.tsmi_filter_all});
             this.tsmi_filter.Name = "tsmi_filter";
             resources.ApplyResources(this.tsmi_filter, "tsmi_filter");
@@ -363,6 +365,12 @@ namespace ExamManager
             this.tsmi_filter_all.Name = "tsmi_filter_all";
             resources.ApplyResources(this.tsmi_filter_all, "tsmi_filter_all");
             this.tsmi_filter_all.Click += new System.EventHandler(this.tsmi_filter_all_Click);
+            // 
+            // tsmi_filter_room
+            // 
+            this.tsmi_filter_room.Name = "tsmi_filter_room";
+            resources.ApplyResources(this.tsmi_filter_room, "tsmi_filter_room");
+            this.tsmi_filter_room.Click += new System.EventHandler(this.tsmi_filter_room_Click);
             // 
             // examToolStripMenuItem
             // 
@@ -931,6 +939,7 @@ namespace ExamManager
             this.Name = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.tlp_main.ResumeLayout(false);
             this.flp_menu.ResumeLayout(false);
             this.flp_menu.PerformLayout();
@@ -1091,5 +1100,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_options_settings;
         private System.Windows.Forms.ToolStripMenuItem tsmi_open_excel;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_subject;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_filter_room;
     }
 }
