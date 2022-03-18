@@ -17,7 +17,6 @@ namespace ExamManager
         public string Subject1 { get; private set; }
         public string Subject2 { get; private set; }
         public string Subject3 { get; private set; }
-        // TODO: get fullname
 
         public TeacherObject(string shortname, string firstname, string lastname, string email, string phonenumber, string subject1, string subject2, string subject3)
         {
@@ -60,7 +59,6 @@ namespace ExamManager
         }
         public bool AddToDatabase()
         {
-            // TODO: check data
             string check = null;
             if (Program.database.GetTeacherByID(Shortname) != null) check = "Lehrer mit gleichem Kürzel exestiert bereits";
             if (Program.database.GetTeacherByName(Firstname, Lastname) != null) check = "Lehrer mit gleichem Namen exestiert bereits";

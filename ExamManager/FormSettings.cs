@@ -121,7 +121,6 @@ namespace ExamManager
                     Properties.Settings.Default.DatabasePath = filePath;
                     lbl_current_database_path.Text = filePath + "*";
                     changedDatabase = true;
-                    // TODO: no restart
                 }
             }
         }

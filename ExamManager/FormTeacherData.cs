@@ -323,7 +323,7 @@ namespace ExamManager
             string subject1 = cb_subject1.Text;
             string subject2 = cb_subject2.Text;
             string subject3 = cb_subject3.Text;
-            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0) // phonenumber.Length == 0 ||
+            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0) 
             {
                 MessageBox.Show("Alle Felder mit * ausfüllen!", "Warnung"); return;
             }
@@ -331,7 +331,7 @@ namespace ExamManager
             {
                 if (database.GetTeacherByID(shortname) != null)
                 { MessageBox.Show("Lehrer schon vorhanden", "Warnung"); return; }
-                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3)); // TODO: email
+                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3)); 
             }
             else
             {

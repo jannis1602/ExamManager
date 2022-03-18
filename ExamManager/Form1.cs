@@ -40,7 +40,7 @@ namespace ExamManager
         // ---- TEMP ----
         private int StartTimeTL = 7; // todo
         private int LengthTL = 12;
-        public static int PixelPerHour = 200;  // Check min length
+        public static int PixelPerHour = 150;  // Check min length
         public Form1()
         {
             database = Program.database;
@@ -488,6 +488,7 @@ namespace ExamManager
             List<string> temp_room_list = new List<string>(room_list);
             temp_room_list.Sort();
             room_list = new LinkedList<string>(temp_room_list);
+            // TODO: topTimePanel add panel? -> dock top
             foreach (string s in room_list) AddTimeline(s);
             // SideBottomPanel 
             if (panel_room_bottom == null) panel_room_bottom = new Panel();
@@ -562,8 +563,8 @@ namespace ExamManager
             editPanel = exam.GetTimelineEntity(true);
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);     // TODO UnitPerMinute etc. --------------------------------
-            float unit_per_minute = 200F / 60F;
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);    
+            float unit_per_minute = PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
 
             foreach (Panel p in time_line_list) // TODO: if no room add new temp timeline
@@ -580,7 +581,7 @@ namespace ExamManager
             editPanel.MouseDown += editPanel_MouseDown;
             void editPanel_MouseDown(object sender, MouseEventArgs e)
             { EditExamMovePanelOldPos = new Point(e.X, e.Y); }
-            void editPanel_MouseMove(object sender, MouseEventArgs e) // TODO: better previewpanel moving
+            void editPanel_MouseMove(object sender, MouseEventArgs e)
             {
                 DateTime oldTime = dtp_time.Value;
                 if (EditExamMovePanelOldPos == null)
@@ -708,7 +709,7 @@ namespace ExamManager
                     lbl_mode.Text = edit_mode[2];
                     btn_add_exam.Text = add_mode[2];
                     ExamObject exam = database.GetExamById(Int32.Parse(p.Name));
-                    tb_duration.Text = exam.Duration.ToString(); // TODO: smallest time to dtp_time -> change: add to all exams the t.difference
+                    tb_duration.Text = exam.Duration.ToString(); 
                     DateTime time = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     if (tl_entity_multiselect_list.Count > 0)
                     {
@@ -960,19 +961,6 @@ namespace ExamManager
             c, 3, ButtonBorderStyle.Solid);
             Font drawFont = new Font("Microsoft Sans Serif", 10);
             StringFormat drawFormat = new StringFormat();
-            /*for (int i = 0; i < 12; i++)
-            {
-                float[] dashValues = { 1, 1 };
-                Pen pen = new Pen(Colors.TL_MinLine, 1);
-                pen.DashPattern = dashValues;
-                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
-                pen2.DashPattern = dashValues;
-                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), b + panel_tl.Width / 12 * i, b, b + panel_tl.Width / 12 * i, panel_tl.Height - b);
-                e.Graphics.DrawLine(pen2, b + panel_tl.Width / 12 * i + panel_tl.Width / 24, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - b);
-                e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - b);
-                e.Graphics.DrawLine(pen, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, b, b + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - b);
-                e.Graphics.DrawString(7 + i + " Uhr", drawFont, new SolidBrush(Colors.TL_MinLine), 5 + panel_tl.Width / 12 * i, panel_tl.Height - 20, drawFormat);
-            }*/
             for (int i = 0; i < LengthTL; i++)
             {
                 float[] dashValues = { 1, 1 };
@@ -990,19 +978,6 @@ namespace ExamManager
         private void panel_time_line_Paint(object sender, PaintEventArgs e)
         {
             Panel panel_tl = sender as Panel;
-            /*for (int i = 0; i < 12; i++)
-            {
-                float[] dashValues = { 2, 2 };
-                float[] dashValues2 = { 1, 1 };
-                Pen pen = new Pen(Colors.TL_MinLine, 1);
-                pen.DashPattern = dashValues;
-                Pen pen2 = new Pen(Colors.TL_MinLine, 2);
-                pen2.DashPattern = dashValues2;
-                e.Graphics.DrawLine(new Pen(Colors.TL_MinLine, 2), 4 + panel_tl.Width / 12 * i, 4, 4 + panel_tl.Width / 12 * i, panel_tl.Height - 4);
-                e.Graphics.DrawLine(pen2, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 24, panel_tl.Height - 4);
-                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48, panel_tl.Height - 4);
-                e.Graphics.DrawLine(pen, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, 4, 4 + panel_tl.Width / 12 * i + panel_tl.Width / 48 * 3, panel_tl.Height - 4);
-            }*/
             for (int i = 0; i < LengthTL; i++)
             {
                 float[] dashValues = { 2, 2 };
@@ -1281,8 +1256,6 @@ namespace ExamManager
             void roomList_Event(object sender1, EventArgs a)
             {
                 LinkedList<string> list = sender1 as LinkedList<string>;
-                foreach (string s in list)
-                    Console.WriteLine(s);
                 filterMode = Filter.room;
                 RoomNameFilterList = list;
                 UpdateTimeline();
@@ -1298,7 +1271,7 @@ namespace ExamManager
                 split = true;
                 if (time_line_room_list.Count > 10)
                 {
-                    MessageBox.Show("Maximal 10 Räume auswählen", "Info");
+                    MessageBox.Show("Räume auswählen", "Info");
                     LinkedList<string> roomNameList = new LinkedList<string>();
                     foreach (Panel p in time_line_room_list)
                         roomNameList.AddLast(p.Name);
@@ -1309,8 +1282,6 @@ namespace ExamManager
                     void roomList_Event(object sender1, EventArgs a)
                     {
                         LinkedList<string> list = sender1 as LinkedList<string>;
-                        foreach (string s in list)
-                            Console.WriteLine(s);
                         while (list.Count > 10) list.RemoveLast();
                         filterMode = Filter.room;
                         RoomNameFilterList = list;
@@ -1322,9 +1293,7 @@ namespace ExamManager
             bool blackwhite = false;
             DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes) { blackwhite = true; }
-
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            lbl_search.Text = date;
 
             DateTime lastTime = DateTime.ParseExact("07:00", "HH:mm", null);
             foreach (ExamObject exam in tl_exam_entity_list)
@@ -1332,7 +1301,7 @@ namespace ExamManager
                 if (lastTime < DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration))
                     lastTime = DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration);
             }
-            // TODO if h<b || b<h
+            // TODO if Height<Width || Width<Height
             Double cutTime = (DateTime.ParseExact("18:30", "HH:mm", null) - lastTime).TotalMinutes;
             float unit_per_minute = PixelPerHour / 60F;
             int cutMinutes = Convert.ToInt32(cutTime * unit_per_minute);
@@ -1350,17 +1319,14 @@ namespace ExamManager
                 panel_top_time.BackColor = Colors.TL_TimeBg;
                 panel_side_room.BackColor = Colors.TL_RoomBg;
             }
+            lbl_search.Text = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
             Panel tempPanel = new Panel
             { Width = Convert.ToInt32(fullWidth), Height = Convert.ToInt32(fullHeight), BackColor = Color.White };
             tempPanel.Controls.Add(tlp_timeline_view);
             Bitmap bmp = new Bitmap(Convert.ToInt32(BmpWidth), Convert.ToInt32(BmpHeight)); // -20
             tempPanel.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
 
-            /////// test ////////
-
-            // TODO: cutMinutes...
-            // TODO: check if h<b || b<h
-            lbl_search.Text = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            // TODO: check if Height<Width || Width<Height
 
             Panel tPanelRoom = new Panel { Width = 120, Height = panel_side_room.Height, BackColor = Color.White };
             Panel tPanelTL = new Panel { Width = panel_top_time.Width, Height = panel_side_room.Height, BackColor = Color.White };
@@ -1371,64 +1337,60 @@ namespace ExamManager
             tPanelRoom.DrawToBitmap(bmpRoom, new Rectangle(0, 0, bmpRoom.Width, bmpRoom.Height));
             tPanelTL.DrawToBitmap(bmpTL, new Rectangle(0, 0, bmpTL.Width, bmpTL.Height));
 
-            /*bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
-            Bitmap newTLbmp = new Bitmap(120 + 1200 + 5, panel_side_room.Height);
-            Graphics g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
-            g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
-            Bitmap bmpPart1 = ImageToDinA4(newTLbmp);
-
-            bmpTL = bmpTL.Clone(new Rectangle(1203, 0, bmpTL.Width - 1203, bmpTL.Height), PixelFormat.DontCare);
-            newTLbmp = new Bitmap(120 + 1200, panel_side_room.Height);
-            g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
-            g.DrawImage(bmpTL, new Rectangle(120, 0, 1200, newTLbmp.Height));
-            Bitmap bmpPart2 = ImageToDinA4(newTLbmp);*/
-
-            bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
-            Bitmap newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2 + 5, panel_side_room.Height);
-            Graphics g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
-            g.DrawImage(bmpTL, new Rectangle(120, 0, LengthTL * PixelPerHour, newTLbmp.Height));
-            Bitmap bmpPart1 = ImageToDinA4(newTLbmp);
-
-            bmpTL = bmpTL.Clone(new Rectangle((LengthTL * PixelPerHour) / 2 - 3, 0, bmpTL.Width - (LengthTL * PixelPerHour) / 2 - 3, bmpTL.Height), PixelFormat.DontCare);
-            newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2, panel_side_room.Height);
-            g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
-            g.DrawImage(bmpTL, new Rectangle(120, 0, (LengthTL * PixelPerHour) / 2, newTLbmp.Height));
-            Bitmap bmpPart2 = ImageToDinA4(newTLbmp);
-
-            /*bmpTL = bmpTL.Clone(new Rectangle(203, 0, bmpTL.Width - 203, bmpTL.Height), PixelFormat.DontCare);
-            Bitmap newTLbmp = new Bitmap(2520, panel_side_room.Height);
-            Graphics g = Graphics.FromImage(newTLbmp);
-            g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
-            g.DrawImage(bmpTL, new Rectangle(120, 0, 2400, newTLbmp.Height));
-            newTLbmp.Save("E://newTL.png", ImageFormat.Png);*/
-
-            /*Bitmap fullBmp = new Bitmap(2400, 2000);
-            tPanelRoom.DrawToBitmap(fullBmp, new Rectangle(0, 0, 120, fullBmp.Height));
-            tPanelTL.DrawToBitmap(fullBmp, new Rectangle(120, 0, fullBmp.Width - 120, fullBmp.Height));
-            fullBmp.Save("E://TimeLine.png", ImageFormat.Png);*/
-
-            SaveFileDialog sfd = new SaveFileDialog
+            if (!split)
             {
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                Title = "Save Timeline",
-                FileName = "Prüfungen-" + date + ".png",
-                DefaultExt = "png",
-                Filter = "Image files (*.png)|*.png|All files (*.*)|*.*",
-                FilterIndex = 2,
-                RestoreDirectory = true
-            };
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                if (!split) bmp.Save(sfd.FileName, ImageFormat.Png);
-                if (split)
+                SaveFileDialog sfd = new SaveFileDialog
                 {
-                    bmpPart1.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part1.png", ImageFormat.Png); // TODO: SaveDialog
-                    bmpPart2.Save(Path.GetDirectoryName(sfd.FileName) + "\\Prüfungen-" + date + "_Part2.png", ImageFormat.Png);
-                }
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    Title = "Save Timeline",
+                    FileName = "Prüfungen-" + date + ".png",
+                    DefaultExt = "png",
+                    Filter = "Image files (*.png)|*.png|All files (*.*)|*.*",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+                if (sfd.ShowDialog() == DialogResult.OK)
+                    bmp.Save(sfd.FileName, ImageFormat.Png);
+            }
+            if (split)
+            {
+                bmpTL = bmpTL.Clone(new Rectangle(0, 0, bmpTL.Width, bmpTL.Height), PixelFormat.DontCare);
+                Bitmap newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2 + 5, panel_side_room.Height);
+                Graphics g = Graphics.FromImage(newTLbmp);
+                g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+                g.DrawImage(bmpTL, new Rectangle(120, 0, LengthTL * PixelPerHour, newTLbmp.Height));
+                Bitmap bmpPart1 = ImageToDinA4(newTLbmp);
+
+                bmpTL = bmpTL.Clone(new Rectangle((LengthTL * PixelPerHour) / 2 + 3, 0, bmpTL.Width - ((LengthTL * PixelPerHour) / 2 + 3), bmpTL.Height), PixelFormat.DontCare);
+                newTLbmp = new Bitmap(120 + (LengthTL * PixelPerHour) / 2, panel_side_room.Height);
+                g = Graphics.FromImage(newTLbmp);
+                g.DrawImage(bmpRoom, new Rectangle(0, 0, 120, newTLbmp.Height));
+                g.DrawImage(bmpTL, new Rectangle(120, 0, (LengthTL * PixelPerHour) / 2, newTLbmp.Height));
+                Bitmap bmpPart2 = ImageToDinA4(newTLbmp);
+                SaveFileDialog sfd = new SaveFileDialog
+                {
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    Title = "Save Timeline",
+                    FileName = "Prüfungen-" + date + "_Part1.png",
+                    DefaultExt = "png",
+                    Filter = "Image files (*.png)|*.png|All files (*.*)|*.*",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+                if (sfd.ShowDialog() == DialogResult.OK)
+                    bmpPart1.Save(sfd.FileName, ImageFormat.Png);
+                SaveFileDialog sfd2 = new SaveFileDialog
+                {
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    Title = "Save Timeline",
+                    FileName = "Prüfungen-" + date + "_Part2.png",
+                    DefaultExt = "png",
+                    Filter = "Image files (*.png)|*.png|All files (*.*)|*.*",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+                if (sfd2.ShowDialog() == DialogResult.OK)
+                    bmpPart2.Save(sfd2.FileName, ImageFormat.Png);
             }
 
             // restore 
@@ -1605,7 +1567,7 @@ namespace ExamManager
             UpdatePreviewPanel();
         }
         #endregion
-        private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) //TODO: --- KEYS
+        private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) //TODO: ---- KEYS
         {
             Console.WriteLine(e.KeyData);
             if (tl_entity_multiselect_list.Count == 0) return;
@@ -1655,7 +1617,7 @@ namespace ExamManager
                         }
                     }
                     string time = dtime.ToString("HH:mm");
-                    foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(exam.Date, exam.Examroom))
+                    /*foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(exam.Date, exam.Examroom))
                     {
                         if (exam.Id != s.Id && selectedExams.Count(x => x.Id == s.Id) != 0)
                             if (!checkTimeIsFree(s.Time, s.Duration))
@@ -1670,44 +1632,13 @@ namespace ExamManager
                         if ((start < timestart && timestart < end) || (timestart < start && start < timeend))
                             return false;
                         return true;
-                    }
+                    }*/
                     // check if preparationroom is free
-                    if (exam.Preparationroom.Length > 1)
+                    /*if (exam.Preparationroom.Length > 1)
                         foreach (ExamObject s in database.GetAllExamsAtDateAndRoom(exam.Date, exam.Preparationroom))
                             if (exam.Examroom != s.Examroom)
                                 if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show("Vorbereitungsraum belegt: " + s.Examroom, "Warnung"); return; }
-                    // ---- check teacher in other rooms ----
-                    /*if (exam.Teacher1 != null && exam.Teacher1.Length > 1)
-                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, exam.Teacher1))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(database.GetTeacherByID(exam.Teacher1).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                    if (exam.Teacher2 != null && exam.Teacher2.Length > 1)
-                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, exam.Teacher2))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(database.GetTeacherByID(exam.Teacher2).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                    if (exam.Teacher3 != null && exam.Teacher3.Length > 1)
-                        foreach (ExamObject s in database.GetAllExamsFromTeacherAtDate(exam.Date, exam.Teacher3))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(database.GetTeacherByID(exam.Teacher3).Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                    // ---- check student in other rooms ----
-                    if (exam.Student != null)
-                        foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(exam.Date, exam.Student.Id))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(exam.Student.Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                    if (exam.Student2 != null)
-                        foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(exam.Date, exam.Student2.Id))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(exam.Student2.Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }
-                    if (exam.Student3 != null) foreach (ExamObject s in database.GetAllExamsFromStudentAtDate(exam.Date, exam.Student3.Id))
-                            if (EditExam == null || (exam.Examroom != s.Examroom && s.Examroom != EditExam.Examroom))
-                                if (!checkTimeIsFree(s.Time, s.Duration))
-                                { MessageBox.Show(exam.Student3.Fullname() + " befindet sich in einem anderem Raum: " + s.Examroom, "Warnung"); return; }*/
+                                { MessageBox.Show("Raum belegt: " + s.Examroom, "Warnung"); return; }*/
                     if (updateTL) UpdateTimeline(); // render on multimove up/down
                     if (!exam.Edit(time: dtime.ToString("HH:mm"), excludeList: tl_entity_multiselect_list)) break;
                     exam.UpdatePanel();
@@ -1723,12 +1654,6 @@ namespace ExamManager
                 }
             }
         }
-
-        private void Form1_ResizeEnd(object sender, EventArgs e)
-        {
-            UpdateTimeline();
-        }
-
 
     }
 }

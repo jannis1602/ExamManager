@@ -271,31 +271,31 @@
     <value>Suche</value>
   </data>
   <data name="tsmi_filter_grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_grade.Text" xml:space="preserve">
     <value>Stufe</value>
   </data>
   <data name="tsmi_filter_subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_subject.Text" xml:space="preserve">
     <value>Fach</value>
   </data>
   <data name="tsmi_filter_teacher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_teacher.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_filter_room.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_room.Text" xml:space="preserve">
     <value>Räume</value>
   </data>
   <data name="tsmi_filter_all.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_all.Text" xml:space="preserve">
     <value>Filter löschen</value>
@@ -406,7 +406,7 @@
     <value>102, 0</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>451, 24</value>
+    <value>331, 24</value>
   </data>
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -4574,16 +4574,16 @@
   <data name="&gt;&gt;tsmi_filter_teacher.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmi_filter_all.Name" xml:space="preserve">
-    <value>tsmi_filter_all</value>
-  </data>
-  <data name="&gt;&gt;tsmi_filter_all.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tsmi_filter_room.Name" xml:space="preserve">
     <value>tsmi_filter_room</value>
   </data>
   <data name="&gt;&gt;tsmi_filter_room.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmi_filter_all.Name" xml:space="preserve">
+    <value>tsmi_filter_all</value>
+  </data>
+  <data name="&gt;&gt;tsmi_filter_all.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;examToolStripMenuItem.Name" xml:space="preserve">

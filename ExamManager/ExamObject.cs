@@ -87,7 +87,7 @@ namespace ExamManager
             this.Subject = subject;
             this.Duration = duration;
         }
-        //TODO: return error string, if null-> added
+        //TODO: return error string, if null -> added
         public bool Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0, LinkedList<ExamObject> excludeList = null)
         {
             if (date != null) this.Date = date;
@@ -177,7 +177,7 @@ namespace ExamManager
         {
             Program.database.DeleteExam(this.Id);
         }
-        private void CreatePanel() // TODO Update Panel: change size+text
+        private void CreatePanel()
         {
             this.Panel = new Panel();
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
@@ -220,15 +220,14 @@ namespace ExamManager
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-            // float unit_per_minute = 200F / 60F;
-            float unit_per_minute = Form1.PixelPerHour / 60F; // TODO TLEntity pos etc.
+            float unit_per_minute = Form1.PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Refresh();
         }
         private string CheckRoom(LinkedList<ExamObject> excludeList = null)
         {
-            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom)) // TODO return if examroom or preproom
+            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom)) // TODO: return if examroom or preproom
             {
                 if (excludeList != null)
                 {
