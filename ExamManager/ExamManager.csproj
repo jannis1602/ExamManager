@@ -104,16 +104,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormLoadTable.cs">
+    <Compile Include="Forms\FormLoadTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormLoadTable.Designer.cs">
+    <Compile Include="Forms\FormLoadTable.Designer.cs">
       <DependentUpon>FormLoadTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormRoomFilter.cs">
+    <Compile Include="Forms\FormRoomFilter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormRoomFilter.Designer.cs">
+    <Compile Include="Forms\FormRoomFilter.Designer.cs">
       <DependentUpon>FormRoomFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSettings.cs">
@@ -224,10 +224,10 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormLoadTable.resx">
+    <EmbeddedResource Include="Forms\FormLoadTable.resx">
       <DependentUpon>FormLoadTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormRoomFilter.resx">
+    <EmbeddedResource Include="Forms\FormRoomFilter.resx">
       <DependentUpon>FormRoomFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSettings.resx">

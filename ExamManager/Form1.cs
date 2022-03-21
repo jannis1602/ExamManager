@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Windows.Forms;
 
@@ -13,8 +16,8 @@ namespace ExamManager
     public partial class Form1 : Form
     {
         private readonly Database database;
-        private readonly LinkedList<Panel> time_line_room_list;
-        private readonly LinkedList<Panel> time_line_list;
+        private LinkedList<Panel> time_line_room_list;
+        private LinkedList<Panel> time_line_list;
         private LinkedList<ExamObject> tl_exam_entity_list;
         private readonly string[] edit_mode = { "neue Prüfung erstellen", "Prüfung bearbeiten", "mehrere Prüfungen bearbeiten" };
         private readonly string[] add_mode = { "Prüfung hinzufügen", "Prüfung übernehmen", "Prüfungen ändern" };
@@ -38,9 +41,9 @@ namespace ExamManager
         private LinkedList<ExamObject> tl_entity_multiselect_list;
 
         // ---- TEMP ----
-        private int StartTimeTL = 7; // todo
-        private int LengthTL = 12;
-        public static int PixelPerHour = 150;  // Check min length
+        private readonly int StartTimeTL = 7; // todo
+        private readonly int LengthTL = 12;
+        public readonly static int PixelPerHour = 150;  // Check min length
         public Form1()
         {
             database = Program.database;
@@ -563,7 +566,7 @@ namespace ExamManager
             editPanel = exam.GetTimelineEntity(true);
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(dtp_time.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);    
+            int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
             float unit_per_minute = PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
 
@@ -709,7 +712,7 @@ namespace ExamManager
                     lbl_mode.Text = edit_mode[2];
                     btn_add_exam.Text = add_mode[2];
                     ExamObject exam = database.GetExamById(Int32.Parse(p.Name));
-                    tb_duration.Text = exam.Duration.ToString(); 
+                    tb_duration.Text = exam.Duration.ToString();
                     DateTime time = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     if (tl_entity_multiselect_list.Count > 0)
                     {
@@ -1655,5 +1658,79 @@ namespace ExamManager
             }
         }
 
+        private bool ExportCsvFile(string file, string date, LinkedList<string> teacherShortnameList)
+        {
+            var csv = new StringBuilder();
+            var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
+            csv.AppendLine(firstLine);
+            if (teacherShortnameList == null || teacherShortnameList.Count == 0) return false;
+            foreach (string teacher in teacherShortnameList)
+                foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, teacher))
+                {
+                    StudentObject student = exam.Student;
+                    DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                    string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Replace("*", ""), time, exam.Examroom, exam.Preparationroom, student.Firstname + " " + student.Lastname, exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    if (exam.Teacher1 != null)
+                        newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", exam.Teacher1.Fullname(), time, exam.Examroom, exam.Preparationroom, student.Firstname + " " + student.Lastname, exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    csv.AppendLine(newLine);
+                }
+            File.WriteAllText(file, csv.ToString());
+            return true;
+        }
+
+        private void tsmi_options_sendmail_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            string file = " Prüfungstag_" + date + ".csv";
+            LinkedList<string> list = new LinkedList<string>();
+            foreach (ExamObject exam in database.GetAllExamsAtDate(date))
+            {
+                if (exam.Teacher1Id != null && !list.Contains(exam.Teacher1Id)) list.AddLast(exam.Teacher1Id);
+                if (exam.Teacher2Id != null && !list.Contains(exam.Teacher2Id)) list.AddLast(exam.Teacher2Id);
+                if (exam.Teacher3Id != null && !list.Contains(exam.Teacher3Id)) list.AddLast(exam.Teacher3Id);
+            }
+            ExportCsvFile(file, date, list);
+
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient(Properties.Settings.Default.SMTP_server)
+                {
+                    Port = int.Parse(Properties.Settings.Default.SMTP_port),
+                    Credentials = new NetworkCredential(Properties.Settings.Default.SMTP_email, Properties.Settings.Default.SMTP_password),
+                    EnableSsl = true,
+                };
+                string senderName = Properties.Settings.Default.SMTP_email_name;
+                string mail_title = Properties.Settings.Default.SMTP_email_title;
+                string mail_receiver = Properties.Settings.Default.SMTP_email; // TODO: change to var ----------------------------------------------
+                string mail_text = "Prüfungen"; // TODO: change email text
+                if (mail_receiver.Length == 0 || senderName.Length == 0 || mail_title.Length == 0 || mail_text.Length == 0) { MessageBox.Show("alle Felder ausfüllen!", "Achtung!"); return; }
+                try
+                {
+                    MailAddress from = new MailAddress(Properties.Settings.Default.SMTP_email, senderName);
+                    MailAddress to = new MailAddress(mail_receiver);
+                    MailMessage message = new MailMessage(from, to)
+                    {
+                        Subject = mail_title,
+                        Body = mail_text,
+                    };
+                    if (file != null)
+                    {
+                        Attachment data = new Attachment(file, MediaTypeNames.Application.Octet);
+                        ContentDisposition disposition = data.ContentDisposition;
+                        disposition.CreationDate = File.GetCreationTime(file);
+                        disposition.ModificationDate = File.GetLastWriteTime(file);
+                        disposition.ReadDate = File.GetLastAccessTime(file);
+                        message.Attachments.Add(data);
+                    }
+
+                    smtpClient.Send(message);
+                    MessageBox.Show("Email gesendet!", "Mitteilung");
+                }
+                catch (Exception) { MessageBox.Show("Fehler beim Senden", "Error"); return; }
+            }
+            catch (Exception) { MessageBox.Show("Fehler beim Senden", "Fehler"); }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -307,6 +308,17 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@grade", new_grade);
             sqlite_cmd.Parameters.AddWithValue("@old_grade", old_grade);
             sqlite_cmd.ExecuteNonQuery();
+        }
+        public LinkedList<string> GetAllGrades()
+        {
+            LinkedList<string> gradeList = new LinkedList<string>();
+            foreach (StudentObject s in GetAllStudents())
+                if (!gradeList.Contains(s.Grade))
+                    gradeList.AddLast(s.Grade);
+            List<string> templist = new List<string>(gradeList);
+            templist = templist.OrderBy(x => x).ToList();
+            gradeList = new LinkedList<string>(templist);
+            return gradeList;
         }
         /// <summary>Removes a student from the database.</summary>
         public void DeleteStudent(int id)
@@ -1090,19 +1102,31 @@ namespace ExamManager
         }
         #endregion
         #region -------- DBCreation --------
-        public void ClearDatabase()
+        public void ClearDatabase(bool keepStudents = false, bool keepTeacher = false, bool keepRooms = false, bool keepSubjects = false)
         {
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "DELETE FROM exam";
             sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = "DELETE FROM student";
-            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = "DELETE FROM teacher";
-            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = "DELETE FROM room";
-            sqlite_cmd.ExecuteNonQuery();
-            sqlite_cmd.CommandText = "DELETE FROM subject";
-            sqlite_cmd.ExecuteNonQuery();
+            if (!keepStudents)
+            {
+                sqlite_cmd.CommandText = "DELETE FROM student";
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (!keepTeacher)
+            {
+                sqlite_cmd.CommandText = "DELETE FROM teacher";
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (!keepRooms)
+            {
+                sqlite_cmd.CommandText = "DELETE FROM room";
+                sqlite_cmd.ExecuteNonQuery();
+            }
+            if (!keepSubjects)
+            {
+                sqlite_cmd.CommandText = "DELETE FROM subject";
+                sqlite_cmd.ExecuteNonQuery();
+            }
         }
         private void CreateStudentDB()
         {

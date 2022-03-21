@@ -84,13 +84,18 @@ namespace ExamManager
             this.btn_new_database = new System.Windows.Forms.Button();
             this.lbl_daefaultdb = new System.Windows.Forms.Button();
             this.lbl_changedb_info = new System.Windows.Forms.Label();
+            this.v = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btn_cleardb = new System.Windows.Forms.Button();
+            this.lbl_keep_dbdata = new System.Windows.Forms.Label();
+            this.cb_keepstudents = new System.Windows.Forms.CheckBox();
+            this.cb_keepteacher = new System.Windows.Forms.CheckBox();
+            this.cb_keeprooms = new System.Windows.Forms.CheckBox();
+            this.cb_keepsubjects = new System.Windows.Forms.CheckBox();
             this.tlp_btns = new System.Windows.Forms.TableLayoutPanel();
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btn_cleardb = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
@@ -111,8 +116,8 @@ namespace ExamManager
             this.flp_db_main.SuspendLayout();
             this.flp_current_db.SuspendLayout();
             this.flp_select_localdb.SuspendLayout();
+            this.v.SuspendLayout();
             this.tlp_btns.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -622,7 +627,6 @@ namespace ExamManager
             this.tb_smtp_email_titel.Name = "tb_smtp_email_titel";
             this.tb_smtp_email_titel.Size = new System.Drawing.Size(175, 23);
             this.tb_smtp_email_titel.TabIndex = 8;
-            this.tb_smtp_email_titel.UseSystemPasswordChar = true;
             // 
             // tp_database
             // 
@@ -639,7 +643,7 @@ namespace ExamManager
             // 
             this.flp_db_main.Controls.Add(this.flp_current_db);
             this.flp_db_main.Controls.Add(this.flp_select_localdb);
-            this.flp_db_main.Controls.Add(this.flowLayoutPanel4);
+            this.flp_db_main.Controls.Add(this.v);
             this.flp_db_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_db_main.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flp_db_main.Location = new System.Drawing.Point(3, 3);
@@ -756,6 +760,97 @@ namespace ExamManager
             this.lbl_changedb_info.TabIndex = 11;
             this.lbl_changedb_info.Text = "Neustart erforderlich";
             // 
+            // v
+            // 
+            this.v.Controls.Add(this.label2);
+            this.v.Controls.Add(this.btn_cleardb);
+            this.v.Controls.Add(this.lbl_keep_dbdata);
+            this.v.Controls.Add(this.cb_keepstudents);
+            this.v.Controls.Add(this.cb_keepteacher);
+            this.v.Controls.Add(this.cb_keeprooms);
+            this.v.Controls.Add(this.cb_keepsubjects);
+            this.v.Dock = System.Windows.Forms.DockStyle.Top;
+            this.v.Location = new System.Drawing.Point(3, 75);
+            this.v.Name = "v";
+            this.v.Size = new System.Drawing.Size(774, 30);
+            this.v.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(5, 5);
+            this.label2.Margin = new System.Windows.Forms.Padding(5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(92, 20);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Datenbank:";
+            // 
+            // btn_cleardb
+            // 
+            this.btn_cleardb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_cleardb.Location = new System.Drawing.Point(104, 2);
+            this.btn_cleardb.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_cleardb.Name = "btn_cleardb";
+            this.btn_cleardb.Size = new System.Drawing.Size(140, 26);
+            this.btn_cleardb.TabIndex = 9;
+            this.btn_cleardb.Text = "Datenbankinhalt löschen";
+            this.btn_cleardb.UseVisualStyleBackColor = true;
+            this.btn_cleardb.Click += new System.EventHandler(this.btn_cleardb_Click);
+            // 
+            // lbl_keep_dbdata
+            // 
+            this.lbl_keep_dbdata.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_keep_dbdata.AutoSize = true;
+            this.lbl_keep_dbdata.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_keep_dbdata.Location = new System.Drawing.Point(249, 3);
+            this.lbl_keep_dbdata.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_keep_dbdata.Name = "lbl_keep_dbdata";
+            this.lbl_keep_dbdata.Size = new System.Drawing.Size(114, 24);
+            this.lbl_keep_dbdata.TabIndex = 14;
+            this.lbl_keep_dbdata.Text = "Daten behalten: ";
+            // 
+            // cb_keepstudents
+            // 
+            this.cb_keepstudents.AutoSize = true;
+            this.cb_keepstudents.Location = new System.Drawing.Point(369, 3);
+            this.cb_keepstudents.Name = "cb_keepstudents";
+            this.cb_keepstudents.Size = new System.Drawing.Size(75, 21);
+            this.cb_keepstudents.TabIndex = 10;
+            this.cb_keepstudents.Text = "Schüler";
+            this.cb_keepstudents.UseVisualStyleBackColor = true;
+            // 
+            // cb_keepteacher
+            // 
+            this.cb_keepteacher.AutoSize = true;
+            this.cb_keepteacher.Location = new System.Drawing.Point(450, 3);
+            this.cb_keepteacher.Name = "cb_keepteacher";
+            this.cb_keepteacher.Size = new System.Drawing.Size(69, 21);
+            this.cb_keepteacher.TabIndex = 11;
+            this.cb_keepteacher.Text = "Lehrer";
+            this.cb_keepteacher.UseVisualStyleBackColor = true;
+            // 
+            // cb_keeprooms
+            // 
+            this.cb_keeprooms.AutoSize = true;
+            this.cb_keeprooms.Location = new System.Drawing.Point(525, 3);
+            this.cb_keeprooms.Name = "cb_keeprooms";
+            this.cb_keeprooms.Size = new System.Drawing.Size(72, 21);
+            this.cb_keeprooms.TabIndex = 12;
+            this.cb_keeprooms.Text = "Räume";
+            this.cb_keeprooms.UseVisualStyleBackColor = true;
+            // 
+            // cb_keepsubjects
+            // 
+            this.cb_keepsubjects.AutoSize = true;
+            this.cb_keepsubjects.Location = new System.Drawing.Point(603, 3);
+            this.cb_keepsubjects.Name = "cb_keepsubjects";
+            this.cb_keepsubjects.Size = new System.Drawing.Size(71, 21);
+            this.cb_keepsubjects.TabIndex = 13;
+            this.cb_keepsubjects.Text = "Fächer";
+            this.cb_keepsubjects.UseVisualStyleBackColor = true;
+            // 
             // tlp_btns
             // 
             this.tlp_btns.ColumnCount = 4;
@@ -804,39 +899,6 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.Controls.Add(this.label2);
-            this.flowLayoutPanel4.Controls.Add(this.btn_cleardb);
-            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 75);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(774, 30);
-            this.flowLayoutPanel4.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(5, 5);
-            this.label2.Margin = new System.Windows.Forms.Padding(5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 20);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Datenbank:";
-            // 
-            // btn_cleardb
-            // 
-            this.btn_cleardb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_cleardb.Location = new System.Drawing.Point(104, 2);
-            this.btn_cleardb.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_cleardb.Name = "btn_cleardb";
-            this.btn_cleardb.Size = new System.Drawing.Size(140, 26);
-            this.btn_cleardb.TabIndex = 9;
-            this.btn_cleardb.Text = "Datenbankinhalt löschen";
-            this.btn_cleardb.UseVisualStyleBackColor = true;
-            this.btn_cleardb.Click += new System.EventHandler(this.btn_cleardb_Click);
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -880,9 +942,9 @@ namespace ExamManager
             this.flp_current_db.PerformLayout();
             this.flp_select_localdb.ResumeLayout(false);
             this.flp_select_localdb.PerformLayout();
+            this.v.ResumeLayout(false);
+            this.v.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -948,8 +1010,13 @@ namespace ExamManager
         private System.Windows.Forms.DateTimePicker dtp_exambreak;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.CheckBox cb_exampreview;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.FlowLayoutPanel v;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_cleardb;
+        private System.Windows.Forms.CheckBox cb_keepstudents;
+        private System.Windows.Forms.CheckBox cb_keepteacher;
+        private System.Windows.Forms.Label lbl_keep_dbdata;
+        private System.Windows.Forms.CheckBox cb_keeprooms;
+        private System.Windows.Forms.CheckBox cb_keepsubjects;
     }
 }

@@ -11,7 +11,7 @@ namespace ExamManager
     {
         private bool saved = false;
         private bool changedColor = false;
-        private bool changedDatabase = false;
+        private bool restart = false;
         public FormSettings()
         {
             InitializeComponent();
@@ -35,10 +35,17 @@ namespace ExamManager
             UpdateColor.Invoke(this, null);
             Properties.Settings.Default.EmailDomain = tb_emaildomain.Text; // -> on change
                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
+            Properties.Settings.Default.SMTP_server = tb_smtp_server.Text;
+            Properties.Settings.Default.SMTP_port = tb_smtp_port.Text;
+            Properties.Settings.Default.SMTP_email = tb_smtp_email.Text;
+            Properties.Settings.Default.SMTP_password = tb_smtp_pwd.Text;
+            Properties.Settings.Default.SMTP_email_name = tb_smtp_sendername.Text;
+            Properties.Settings.Default.SMTP_email_title = tb_smtp_email_titel.Text;
+
             Properties.Settings.Default.ExamPreview = cb_exampreview.Checked;
             Properties.Settings.Default.Save(); // on exit
             saved = true;
-            if (changedDatabase)
+            if (restart)
             {
                 DialogResult result = MessageBox.Show("Jetzt neustarten?", "Achtung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
@@ -58,7 +65,7 @@ namespace ExamManager
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!saved && !changedDatabase)
+            if (!saved && !restart)
             {
                 DialogResult result = MessageBox.Show("Schließen ohne zu speichern?", "Achtung!", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes) this.Dispose();
@@ -90,6 +97,12 @@ namespace ExamManager
                 cb_teacher_nameorder.SelectedIndex = 0;
             else cb_teacher_nameorder.SelectedIndex = 1;
             // TODO load settings
+            tb_smtp_server.Text = Properties.Settings.Default.SMTP_server;
+            tb_smtp_port.Text = Properties.Settings.Default.SMTP_port;
+            tb_smtp_email.Text = Properties.Settings.Default.SMTP_email;
+            tb_smtp_pwd.Text = Properties.Settings.Default.SMTP_password;
+            tb_smtp_sendername.Text = Properties.Settings.Default.SMTP_email_name;
+            tb_smtp_email_titel.Text = Properties.Settings.Default.SMTP_email_title;
         }
 
         private void cb_color_SelectedIndexChanged(object sender, EventArgs e)
@@ -103,7 +116,7 @@ namespace ExamManager
             string path = Environment.ExpandEnvironmentVariables("%AppData%\\ExamManager\\") + "database.db";
             Properties.Settings.Default.DatabasePath = path;
             lbl_current_database_path.Text = path + "*";
-            changedDatabase = true;
+            restart = true;
         }
 
         private void btn_select_localdb_Click(object sender, EventArgs e)
@@ -120,7 +133,7 @@ namespace ExamManager
                     string filePath = openFileDialog.FileName;
                     Properties.Settings.Default.DatabasePath = filePath;
                     lbl_current_database_path.Text = filePath + "*";
-                    changedDatabase = true;
+                    restart = true;
                 }
             }
         }
@@ -140,12 +153,13 @@ namespace ExamManager
             File.Create(sfd.FileName);
             Properties.Settings.Default.DatabasePath = sfd.FileName;
             lbl_current_database_path.Text = sfd.FileName + "*";
-            changedDatabase = true;
+            restart = true;
         }
 
         private void btn_reset_Click(object sender, EventArgs e)
         {
-            // Properties.Settings.Default.Reset(); // TODO reset settings
+            Properties.Settings.Default.Reset();
+            restart = true;
         }
         private void btn_settings_export_Click(object sender, EventArgs e)
         {
@@ -253,7 +267,7 @@ namespace ExamManager
         {
             DialogResult result = MessageBox.Show("Datenbankinhalt löschen?", "Achtung", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
-                Program.database.ClearDatabase();
+                Program.database.ClearDatabase(cb_keepstudents.Checked, cb_keepteacher.Checked, cb_keeprooms.Checked, cb_keepsubjects.Checked);
         }
     }
 }

@@ -139,6 +139,7 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
+            this.tsmi_options_sendmail = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -438,7 +439,8 @@ namespace ExamManager
             this.tsmi_options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_options_keepdata,
             this.tsmi_options_table,
-            this.tsmi_options_settings});
+            this.tsmi_options_settings,
+            this.tsmi_options_sendmail});
             this.tsmi_options.Name = "tsmi_options";
             resources.ApplyResources(this.tsmi_options, "tsmi_options");
             // 
@@ -929,6 +931,12 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
+            // tsmi_options_sendmail
+            // 
+            this.tsmi_options_sendmail.Name = "tsmi_options_sendmail";
+            resources.ApplyResources(this.tsmi_options_sendmail, "tsmi_options_sendmail");
+            this.tsmi_options_sendmail.Click += new System.EventHandler(this.tsmi_options_sendmail_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -1100,5 +1108,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_open_excel;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_subject;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_room;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_options_sendmail;
     }
 }
