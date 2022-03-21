@@ -10,11 +10,14 @@ namespace ExamManager
     public partial class FormStudentData : Form
     {
         readonly Database database;
+        FlowLayoutPanel panel_page;
+        LinkedList<LinkedList<StudentObject>> chunkList;
         readonly LinkedList<FlowLayoutPanel> student_entity_list;
         private int edit_id = 0;
         private string grade = null;
         readonly string[] add_mode = { "Schüler hinzufügen", "Schüler übernehmen" };
         readonly LinkedList<int> studentIdList;
+        int page = 1;
         public enum Order { firstname, lastname }
         public Order listOrder = Order.lastname;
         public FormStudentData(LinkedList<int> studentIdList = null)
@@ -68,7 +71,18 @@ namespace ExamManager
             if (listOrder == Order.lastname) studentList = database.GetAllStudents();
             else if (listOrder == Order.firstname) studentList = database.GetAllStudents(true);
 
+            int chunkLength = Properties.Settings.Default.EntitiesPerPage;
+            chunkList = new LinkedList<LinkedList<StudentObject>>();
+            chunkList.AddLast(new LinkedList<StudentObject>());
             foreach (StudentObject s in studentList)
+            {
+                if (chunkList.Last.Value.Count() > chunkLength)
+                    chunkList.AddLast(new LinkedList<StudentObject>());
+                chunkList.Last.Value.AddLast(s);
+            }
+
+
+            foreach (StudentObject s in chunkList.ElementAt(page - 1)) //studentList)
             {
                 if (grade == null || grade.Length < 1 || s.Grade == grade)
                     if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
@@ -86,6 +100,47 @@ namespace ExamManager
             this.flp_student_entitys.Controls.AddRange(c);
             foreach (Panel p in student_entity_list)
                 this.flp_student_entitys.SetFlowBreak(p, true);
+
+
+            // TEST multiple pages ------------------------------------------------------
+
+            panel_page = new FlowLayoutPanel();
+            panel_page.Width = flp_student_entitys.Width - 28;
+            panel_page.Height = 50;
+            panel_page.Margin = new Padding(5);
+            panel_page.BackColor = Color.LightBlue;
+            panel_page.Name = "pages";
+            // --  lbl --
+            Label lbl_page = new Label();
+            lbl_page.Size = new Size(60, panel_page.Height);
+            lbl_page.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular);
+            lbl_page.Text = "Seite ";
+            lbl_page.TextAlign = ContentAlignment.MiddleLeft;
+            panel_page.Controls.Add(lbl_page);
+            // -- BTN --
+            for (int i = 1; i < chunkList.Count; i++)
+            {
+                if (i != page)
+                {
+                    Button btn_page = new Button();
+                    btn_page.Size = new Size(40, 30);
+                    btn_page.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular);
+                    btn_page.Text = i.ToString();
+                    btn_page.Name = i.ToString();
+                    btn_page.Margin = new Padding(4, 10, 4, 10);
+                    btn_page.BackColor = Color.LightGray;
+                    btn_page.Click += page_button_event;
+                    panel_page.Controls.Add(btn_page);
+                }
+            }
+            flp_student_entitys.Controls.Add(panel_page);
+
+            void page_button_event(object sender, EventArgs e)
+            {
+                Button btn = sender as Button;
+                page = int.Parse(btn.Name);
+                UpdateStudentList();
+            }
         }
 
         private void AddStudentEntity(int id)
@@ -236,7 +291,8 @@ namespace ExamManager
             int id = database.GetStudentByName(firstname, lastname, grade).Id;
             if (studentIdList != null) studentIdList.AddLast(id);
             UpdateAutocomplete();
-            AddStudentEntity(id);
+            UpdateStudentList();
+            // AddStudentEntity(id);
             tb_firstname.Clear();
             tb_lastname.Clear();
             tb_email.Clear();
@@ -269,6 +325,7 @@ namespace ExamManager
         {
             foreach (Panel p in student_entity_list)
                 p.Width = flp_student_entitys.Width - 28;
+            panel_page.Width = flp_student_entitys.Width - 28;
         }
         private void tb_firstname_TextChanged(object sender, EventArgs e)
         {

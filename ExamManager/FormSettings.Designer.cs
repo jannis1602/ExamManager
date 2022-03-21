@@ -96,6 +96,9 @@ namespace ExamManager
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_entities_per_page = new System.Windows.Forms.ComboBox();
+            this.lbl_pagelength = new System.Windows.Forms.Label();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
@@ -118,6 +121,7 @@ namespace ExamManager
             this.flp_select_localdb.SuspendLayout();
             this.v.SuspendLayout();
             this.tlp_btns.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -150,6 +154,7 @@ namespace ExamManager
             // 
             // tp_common
             // 
+            this.tp_common.Controls.Add(this.flowLayoutPanel4);
             this.tp_common.Controls.Add(this.flowLayoutPanel3);
             this.tp_common.Controls.Add(this.flowLayoutPanel2);
             this.tp_common.Controls.Add(this.flowLayoutPanel1);
@@ -357,7 +362,7 @@ namespace ExamManager
             this.lbl_color.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_color.AutoSize = true;
-            this.lbl_color.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline);
+            this.lbl_color.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lbl_color.Location = new System.Drawing.Point(5, 5);
             this.lbl_color.Margin = new System.Windows.Forms.Padding(5);
             this.lbl_color.MinimumSize = new System.Drawing.Size(60, 0);
@@ -899,6 +904,52 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel4.Controls.Add(this.lbl_pagelength);
+            this.flowLayoutPanel4.Controls.Add(this.cb_entities_per_page);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 143);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel4.TabIndex = 12;
+            // 
+            // cb_entities_per_page
+            // 
+            this.cb_entities_per_page.AutoCompleteCustomSource.AddRange(new string[] {
+            "20",
+            "30",
+            "40",
+            "50",
+            "60"});
+            this.cb_entities_per_page.FormattingEnabled = true;
+            this.cb_entities_per_page.Items.AddRange(new object[] {
+            "20",
+            "30",
+            "40",
+            "50",
+            "60"});
+            this.cb_entities_per_page.Location = new System.Drawing.Point(154, 3);
+            this.cb_entities_per_page.Name = "cb_entities_per_page";
+            this.cb_entities_per_page.Size = new System.Drawing.Size(100, 24);
+            this.cb_entities_per_page.TabIndex = 6;
+            // 
+            // lbl_pagelength
+            // 
+            this.lbl_pagelength.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_pagelength.AutoSize = true;
+            this.lbl_pagelength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_pagelength.Location = new System.Drawing.Point(5, 5);
+            this.lbl_pagelength.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_pagelength.MinimumSize = new System.Drawing.Size(60, 0);
+            this.lbl_pagelength.Name = "lbl_pagelength";
+            this.lbl_pagelength.Size = new System.Drawing.Size(141, 20);
+            this.lbl_pagelength.TabIndex = 7;
+            this.lbl_pagelength.Text = "Einträge pro Seite:";
+            this.lbl_pagelength.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -945,6 +996,8 @@ namespace ExamManager
             this.v.ResumeLayout(false);
             this.v.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1018,5 +1071,8 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_keep_dbdata;
         private System.Windows.Forms.CheckBox cb_keeprooms;
         private System.Windows.Forms.CheckBox cb_keepsubjects;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label lbl_pagelength;
+        private System.Windows.Forms.ComboBox cb_entities_per_page;
     }
 }

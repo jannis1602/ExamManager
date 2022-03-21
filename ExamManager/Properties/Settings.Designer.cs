@@ -250,5 +250,17 @@ namespace ExamManager.Properties {
                 this["SMTP_email_title"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int EntitiesPerPage {
+            get {
+                return ((int)(this["EntitiesPerPage"]));
+            }
+            set {
+                this["EntitiesPerPage"] = value;
+            }
+        }
     }
 }

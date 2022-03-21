@@ -9,6 +9,8 @@ namespace ExamManager
     public partial class FormTeacherData : Form
     {
         Database database;
+        FlowLayoutPanel panel_page;
+        LinkedList<LinkedList<TeacherObject>> chunkList;
         LinkedList<FlowLayoutPanel> teacher_entity_list;
         string edit_id = null;
         string subject = null;
@@ -16,6 +18,7 @@ namespace ExamManager
         LinkedList<string> teacherIdList;
         public enum Order { firstname, lastname }
         public Order listOrder = Order.lastname;
+        int page = 1;
         public FormTeacherData(LinkedList<string> teacherIdList = null)
         {
             database = Program.database;
@@ -84,7 +87,17 @@ namespace ExamManager
             if (listOrder == Order.lastname) teacherList = database.GetAllTeachers();
             else if (listOrder == Order.lastname) teacherList = database.GetAllTeachers(true);
 
+            int chunkLength = Properties.Settings.Default.EntitiesPerPage;
+            chunkList = new LinkedList<LinkedList<TeacherObject>>();
+            chunkList.AddLast(new LinkedList<TeacherObject>());
             foreach (TeacherObject s in teacherList)
+            {
+                if (chunkList.Last.Value.Count() > chunkLength)
+                    chunkList.AddLast(new LinkedList<TeacherObject>());
+                chunkList.Last.Value.AddLast(s);
+            }
+
+            foreach (TeacherObject s in chunkList.ElementAt(page - 1))
             {
                 if (subject == null || subject.Length < 1 || s.Subject1 == subject || s.Subject2 == subject || s.Subject3 == subject)
                     if ((teacherIdList != null && teacherIdList.Contains(s.Shortname)) || teacherIdList == null)
@@ -100,6 +113,44 @@ namespace ExamManager
                 flp_teacher_entitys.Controls.Add(p);
                 this.flp_teacher_entitys.SetFlowBreak(p, true);
             }
+
+            // TEST multiple pages ------------------------------------------------------
+
+            panel_page = new FlowLayoutPanel();
+            panel_page.Width = flp_teacher_entitys.Width - 28;
+            panel_page.Height = 50;
+            panel_page.Margin = new Padding(5);
+            panel_page.BackColor = Color.LightBlue;
+            panel_page.Name = "pages";
+            // --  lbl --
+            Label lbl_page = new Label();
+            lbl_page.Size = new Size(60, panel_page.Height);
+            lbl_page.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular);
+            lbl_page.Text = "Seite ";
+            lbl_page.TextAlign = ContentAlignment.MiddleLeft;
+            panel_page.Controls.Add(lbl_page);
+            // -- BTN --
+            for (int i = 1; i < chunkList.Count; i++)
+            {
+                Button btn_page = new Button();
+                btn_page.Size = new Size(40, 30);
+                btn_page.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular);
+                btn_page.Text = i.ToString();
+                btn_page.Name = i.ToString();
+                btn_page.Margin = new Padding(4, 10, 4, 10);
+                btn_page.BackColor = Color.LightGray;
+                btn_page.Click += page_button_event;
+                panel_page.Controls.Add(btn_page);
+            }
+            flp_teacher_entitys.Controls.Add(panel_page);
+
+            void page_button_event(object sender, EventArgs e)
+            {
+                Button btn = sender as Button;
+                page = int.Parse(btn.Name);
+                UpdateTeacherList();
+            }
+
         }
 
 
@@ -301,7 +352,7 @@ namespace ExamManager
             Button btn = sender as Button;
             edit_id = btn.Name;
             btn_add_teacher.Text = add_mode[1];
-            tb_shortname.ReadOnly = true;
+            //tb_shortname.ReadOnly = true;
             TeacherObject t = database.GetTeacherByID(btn.Name);
             tb_shortname.Text = t.Shortname;
             tb_firstname.Text = t.Firstname;
@@ -323,21 +374,23 @@ namespace ExamManager
             string subject1 = cb_subject1.Text;
             string subject2 = cb_subject2.Text;
             string subject3 = cb_subject3.Text;
-            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0) 
-            {
+            if (shortname.Length == 0 || firstname.Length == 0 || lastname.Length == 0 || subject1.Length == 0)
                 MessageBox.Show("Alle Felder mit * ausfüllen!", "Warnung"); return;
-            }
             if (edit_id == null)
             {
                 if (database.GetTeacherByID(shortname) != null)
                 { MessageBox.Show("Lehrer schon vorhanden", "Warnung"); return; }
-                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3)); 
+                database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3));
             }
             else
             {
                 if (database.GetTeacherByID(shortname) == null)
-                { MessageBox.Show("Lehrer nicht vorhanden", "Warnung"); return; }
-                database.EditTeacher(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3);
+                {
+                    database.AddTeacher(new TeacherObject(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3));
+                    database.DeleteTeacher(edit_id);
+                }
+                else
+                    database.EditTeacher(shortname, firstname, lastname, email, phonenumber, subject1, subject2, subject3);
                 foreach (FlowLayoutPanel flp in teacher_entity_list)
                 {
                     if (flp.Name == edit_id)
@@ -348,8 +401,8 @@ namespace ExamManager
                     }
                 }
             }
-            //UpdateTeacherList();
-            AddTeacherEntity(shortname);
+            UpdateTeacherList();
+            //AddTeacherEntity(shortname);
             tb_shortname.Clear();
             tb_firstname.Clear();
             tb_lastname.Clear();
@@ -377,13 +430,14 @@ namespace ExamManager
 
             edit_id = null;
             btn_add_teacher.Text = add_mode[0];
-            tb_shortname.ReadOnly = false;
+            //tb_shortname.ReadOnly = false;
         }
 
         private void flp_teacher_entitys_SizeChanged(object sender, EventArgs e)
         {
             foreach (Panel p in teacher_entity_list)
                 p.Width = flp_teacher_entitys.Width - 28;
+            panel_page.Width = flp_teacher_entitys.Width - 28;
         }
 
         private void tb_firstname_TextChanged(object sender, EventArgs e)

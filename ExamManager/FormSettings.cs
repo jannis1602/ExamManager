@@ -42,6 +42,7 @@ namespace ExamManager
             Properties.Settings.Default.SMTP_email_name = tb_smtp_sendername.Text;
             Properties.Settings.Default.SMTP_email_title = tb_smtp_email_titel.Text;
 
+            Properties.Settings.Default.EntitiesPerPage = int.Parse(cb_entities_per_page.Text);
             Properties.Settings.Default.ExamPreview = cb_exampreview.Checked;
             Properties.Settings.Default.Save(); // on exit
             saved = true;
@@ -89,6 +90,7 @@ namespace ExamManager
             cb_color.SelectedIndex = Properties.Settings.Default.ColorTheme;
             lbl_current_database_path.Text = Properties.Settings.Default.DatabasePath;
             cb_exampreview.Checked = Properties.Settings.Default.ExamPreview;
+            cb_entities_per_page.Text = Properties.Settings.Default.EntitiesPerPage.ToString();
 
             if (Properties.Settings.Default.NameOrderStudent)
                 cb_student_nameorder.SelectedIndex = 0;
