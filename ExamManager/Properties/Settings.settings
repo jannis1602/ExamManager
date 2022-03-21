@@ -62,5 +62,8 @@
     <Setting Name="EntitiesPerPage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
+    <Setting Name="PixelPerHour" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

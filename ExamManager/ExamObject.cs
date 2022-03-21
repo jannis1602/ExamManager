@@ -184,7 +184,7 @@ namespace ExamManager
             DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
             //float unit_per_minute = 200F / 60F;
-            float unit_per_minute = Form1.PixelPerHour / 60F;
+            float unit_per_minute = Properties.Settings.Default.PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
@@ -220,7 +220,7 @@ namespace ExamManager
             DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
             DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-            float unit_per_minute = Form1.PixelPerHour / 60F;
+            float unit_per_minute = Properties.Settings.Default.PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Refresh();

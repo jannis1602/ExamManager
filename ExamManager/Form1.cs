@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -43,7 +44,7 @@ namespace ExamManager
         // ---- TEMP ----
         private readonly int StartTimeTL = 7; // todo
         private readonly int LengthTL = 12;
-        public readonly static int PixelPerHour = 150;  // Check min length
+        public int PixelPerHour = Properties.Settings.Default.PixelPerHour;  // Check min length
         public Form1()
         {
             database = Program.database;
@@ -1522,6 +1523,8 @@ namespace ExamManager
         }
         private void update_color_Event(object sender, EventArgs a)
         {
+            PixelPerHour = Properties.Settings.Default.PixelPerHour;
+            panel_top_time.Width = Properties.Settings.Default.PixelPerHour * LengthTL;
             UpdateTimeline(); // render on Colorchange
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
             panel_time_line.BackColor = Colors.TL_Bg;
@@ -1660,6 +1663,9 @@ namespace ExamManager
 
         private bool ExportCsvFile(string file, string date, LinkedList<string> teacherShortnameList)
         {
+            FormProgressBar bar = new FormProgressBar();
+            bar.Show();
+            bar.StartPrograssBar(1, database.GetAllExamsAtDate(date).Count);
             var csv = new StringBuilder();
             var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
             csv.AppendLine(firstLine);
@@ -1667,6 +1673,7 @@ namespace ExamManager
             foreach (string teacher in teacherShortnameList)
                 foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, teacher))
                 {
+                    bar.AddOne();
                     StudentObject student = exam.Student;
                     DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
@@ -1680,10 +1687,11 @@ namespace ExamManager
             return true;
         }
 
-        private void tsmi_options_sendmail_Click(object sender, EventArgs e)
+        private void SendEmail()
         {
+            LinkedList<string> files = new LinkedList<string>();
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            string file = " Prüfungstag_" + date + ".csv";
+            string fileExamDay = " Prüfungstag_" + date + ".csv";
             LinkedList<string> list = new LinkedList<string>();
             foreach (ExamObject exam in database.GetAllExamsAtDate(date))
             {
@@ -1691,8 +1699,20 @@ namespace ExamManager
                 if (exam.Teacher2Id != null && !list.Contains(exam.Teacher2Id)) list.AddLast(exam.Teacher2Id);
                 if (exam.Teacher3Id != null && !list.Contains(exam.Teacher3Id)) list.AddLast(exam.Teacher3Id);
             }
-            ExportCsvFile(file, date, list);
+            ExportCsvFile(fileExamDay, date, list);
+            files.AddLast(fileExamDay);
 
+            // email text
+            string examstring = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy") + "\n";
+            foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, list.First.Value))
+            {
+                DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                examstring += string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                examstring += "\n";
+            }
+            // ---- send email ----
             try
             {
                 SmtpClient smtpClient = new SmtpClient(Properties.Settings.Default.SMTP_server)
@@ -1704,33 +1724,156 @@ namespace ExamManager
                 string senderName = Properties.Settings.Default.SMTP_email_name;
                 string mail_title = Properties.Settings.Default.SMTP_email_title;
                 string mail_receiver = Properties.Settings.Default.SMTP_email; // TODO: change to var ----------------------------------------------
-                string mail_text = "Prüfungen"; // TODO: change email text
-                if (mail_receiver.Length == 0 || senderName.Length == 0 || mail_title.Length == 0 || mail_text.Length == 0) { MessageBox.Show("alle Felder ausfüllen!", "Achtung!"); return; }
+                string mail_text = "Prüfungen " + examstring; // TODO: change email text
+                if (mail_receiver.Length == 0 || senderName.Length == 0 || mail_title.Length == 0 || mail_text.Length == 0) { MessageBox.Show("alle Daten ausfüllen!", "Achtung"); return; }
                 try
                 {
                     MailAddress from = new MailAddress(Properties.Settings.Default.SMTP_email, senderName);
                     MailAddress to = new MailAddress(mail_receiver);
                     MailMessage message = new MailMessage(from, to)
-                    {
-                        Subject = mail_title,
-                        Body = mail_text,
-                    };
-                    if (file != null)
-                    {
-                        Attachment data = new Attachment(file, MediaTypeNames.Application.Octet);
-                        ContentDisposition disposition = data.ContentDisposition;
-                        disposition.CreationDate = File.GetCreationTime(file);
-                        disposition.ModificationDate = File.GetLastWriteTime(file);
-                        disposition.ReadDate = File.GetLastAccessTime(file);
-                        message.Attachments.Add(data);
-                    }
-
+                    { Subject = mail_title, Body = mail_text };
+                    if (files.Count > 0)
+                        foreach (string f in files)
+                        {
+                            Attachment data = new Attachment(f, MediaTypeNames.Application.Octet);
+                            message.Attachments.Add(data);
+                        }
                     smtpClient.Send(message);
                     MessageBox.Show("Email gesendet!", "Mitteilung");
                 }
-                catch (Exception) { MessageBox.Show("Fehler beim Senden", "Error"); return; }
+                catch (Exception) { MessageBox.Show("Fehler beim Senden", "Fehler"); return; }
             }
-            catch (Exception) { MessageBox.Show("Fehler beim Senden", "Fehler"); }
+            catch (Exception) { MessageBox.Show("Fehler bei der Email", "Fehler"); }
         }
+
+        private void SendTeacherEmails()
+        {
+            int errorCounter = 0;
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            LinkedList<string> files = new LinkedList<string>();
+            string fileExamDay = Path.GetTempPath() + "\\Prüfungstag_" + date + ".csv";
+
+            FormProgressBar bar = new FormProgressBar();
+            bar.Show();
+            // ---- CSV ----
+            var csv = new StringBuilder();
+            var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
+            csv.AppendLine(firstLine);
+            LinkedList<string> teacherList = new LinkedList<string>();
+            foreach (ExamObject exam in database.GetAllExamsAtDate(date))
+            {
+                if (exam.Teacher1Id != null && !teacherList.Contains(exam.Teacher1Id)) teacherList.AddLast(exam.Teacher1Id);
+                if (exam.Teacher2Id != null && !teacherList.Contains(exam.Teacher2Id)) teacherList.AddLast(exam.Teacher2Id);
+                if (exam.Teacher3Id != null && !teacherList.Contains(exam.Teacher3Id)) teacherList.AddLast(exam.Teacher3Id);
+            }
+            bar.StartPrograssBar(1, teacherList.Count * 2);
+            foreach (string teacher in teacherList)
+            {
+                foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, teacher))
+                {
+                    StudentObject student = exam.Student;
+                    DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                    DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                    string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Replace("*", ""), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    if (exam.Teacher1 != null)
+                        newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", exam.Teacher1.Fullname(), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    csv.AppendLine(newLine);
+                }
+                bar.AddOne();
+            }
+            File.WriteAllText(fileExamDay, csv.ToString());
+            // ---- Email ----
+            files.AddLast(fileExamDay);
+
+
+            foreach (string to in teacherList)
+            {
+                files.Clear();
+                files.AddLast(fileExamDay);
+                bar.AddOne();
+                if (database.GetTeacherByID(to) != null)
+                {
+                    //////////////////////////////////
+
+                    var csv1 = new StringBuilder();
+                    var firstLine1 = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
+                    csv1.AppendLine(firstLine1);
+                    foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, to))
+                    {
+                        DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                        string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                        var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", to.Replace("*", ""), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                        if (exam.Teacher1 != null)
+                            newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", exam.Teacher1.Fullname(), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                        csv1.AppendLine(newLine);
+                    }
+                    string tempTeacherFile = Path.GetTempPath() + "\\Prüfungstag_" + date + "_" + to + ".csv"; ;
+                    File.WriteAllText(tempTeacherFile, csv1.ToString());
+                    files.AddLast(tempTeacherFile);
+
+
+                    //////////////////////////////////
+
+                    TeacherObject teacher = database.GetTeacherByID(to);
+                    // email text
+                    string examstring = this.dtp_timeline_date.Value.ToString("dd.MM.yyyy") + "\n";
+                    foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, teacher.Shortname))
+                    {
+                        DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+                        DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
+                        string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
+                        examstring += string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                        examstring += "\n";
+                    }
+                    // ---- send email ----
+                    try
+                    {
+                        SmtpClient smtpClient = new SmtpClient(Properties.Settings.Default.SMTP_server)
+                        {
+                            Port = int.Parse(Properties.Settings.Default.SMTP_port),
+                            Credentials = new NetworkCredential(Properties.Settings.Default.SMTP_email, Properties.Settings.Default.SMTP_password),
+                            EnableSsl = true,
+                        };
+                        string senderName = Properties.Settings.Default.SMTP_email_name;
+                        string mail_title = Properties.Settings.Default.SMTP_email_title;
+                        string mail_receiver = Properties.Settings.Default.SMTP_email;  // TODO: change to var ----------------------------------------------
+                        string mail_text = "Prüfungen " + examstring; // TODO: change email text
+                        if (mail_receiver.Length == 0 || senderName.Length == 0 || mail_title.Length == 0 || mail_text.Length == 0) { MessageBox.Show("alle Daten ausfüllen!", "Achtung"); return; }
+                        try
+                        {
+                            MailAddress from = new MailAddress(Properties.Settings.Default.SMTP_email, senderName);
+                            MailAddress receiver = new MailAddress(mail_receiver);
+                            MailMessage message = new MailMessage(from, receiver)
+                            { Subject = mail_title, Body = mail_text };
+                            if (files.Count > 0)
+                                foreach (string f in files)
+                                {
+                                    Attachment data = new Attachment(f, MediaTypeNames.Application.Octet);
+                                    message.Attachments.Add(data);
+                                }
+                            smtpClient.Send(message);
+                            Console.WriteLine("Email gesendet " + to);
+                            Thread.Sleep(500);
+                            //MessageBox.Show("Email gesendet!", "Mitteilung");
+                        }
+                        catch (Exception) { MessageBox.Show("Fehler beim Senden", "Fehler"); errorCounter++; }
+                    }
+                    catch (Exception) { MessageBox.Show("Fehler bei der Email", "Fehler"); errorCounter++; }
+                    if (errorCounter > 2) { bar.Exit(); MessageBox.Show("Senden wurde abgebrochen", "Achtung"); return; }
+                }
+            }
+            Console.WriteLine("Ende");
+            MessageBox.Show("Emails gesendet!", "Mitteilung");
+        }
+
+
+        private void tsmi_tools_sendemail_Click(object sender, EventArgs e)
+        {
+            //SendEmail();
+            SendTeacherEmails();
+        }
+
     }
 }

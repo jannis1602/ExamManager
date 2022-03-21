@@ -262,5 +262,17 @@ namespace ExamManager.Properties {
                 this["EntitiesPerPage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int PixelPerHour {
+            get {
+                return ((int)(this["PixelPerHour"]));
+            }
+            set {
+                this["PixelPerHour"] = value;
+            }
+        }
     }
 }

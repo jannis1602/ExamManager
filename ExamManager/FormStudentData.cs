@@ -76,13 +76,21 @@ namespace ExamManager
             chunkList.AddLast(new LinkedList<StudentObject>());
             foreach (StudentObject s in studentList)
             {
-                if (chunkList.Last.Value.Count() > chunkLength)
-                    chunkList.AddLast(new LinkedList<StudentObject>());
-                chunkList.Last.Value.AddLast(s);
+                string search = tstb_search.Text;
+                if (search.Length > 0 && (s.Firstname.ToLower().Contains(search.ToLower()) || s.Lastname.ToLower().Contains(search.ToLower())))
+                {
+                    if (chunkList.Last.Value.Count() > chunkLength)
+                        chunkList.AddLast(new LinkedList<StudentObject>());
+                    chunkList.Last.Value.AddLast(s);
+                }
+                else if (search.Length == 0)
+                {
+                    if (chunkList.Last.Value.Count() > chunkLength)
+                        chunkList.AddLast(new LinkedList<StudentObject>());
+                    chunkList.Last.Value.AddLast(s);
+                }
             }
-
-
-            foreach (StudentObject s in chunkList.ElementAt(page - 1)) //studentList)
+            foreach (StudentObject s in chunkList.ElementAt(page - 1))
             {
                 if (grade == null || grade.Length < 1 || s.Grade == grade)
                     if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
@@ -93,16 +101,10 @@ namespace ExamManager
                     }
             }
 
-            /*List<FlowLayoutPanel> temp_panel_list = new List<FlowLayoutPanel>(student_entity_list);
-            temp_panel_list = temp_panel_list.OrderBy(x => x.Name).ToList(); // .ThenBy( x => x.Bar)
-            student_entity_list = new LinkedList<FlowLayoutPanel>(temp_panel_list);*/
             Control[] c = student_entity_list.ToArray();
             this.flp_student_entitys.Controls.AddRange(c);
             foreach (Panel p in student_entity_list)
                 this.flp_student_entitys.SetFlowBreak(p, true);
-
-
-            // TEST multiple pages ------------------------------------------------------
 
             panel_page = new FlowLayoutPanel();
             panel_page.Width = flp_student_entitys.Width - 28;
@@ -118,7 +120,7 @@ namespace ExamManager
             lbl_page.TextAlign = ContentAlignment.MiddleLeft;
             panel_page.Controls.Add(lbl_page);
             // -- BTN --
-            for (int i = 1; i < chunkList.Count; i++)
+            for (int i = 1; i <= chunkList.Count; i++)
             {
                 if (i != page)
                 {
@@ -142,18 +144,6 @@ namespace ExamManager
                 UpdateStudentList();
             }
         }
-
-        private void AddStudentEntity(int id)
-        {
-            student_entity_list.AddLast(CreateEntityPanel(id));
-            flp_student_entitys.Controls.Clear();
-            foreach (Panel p in student_entity_list)
-            {
-                this.flp_student_entitys.Controls.Add(p);
-                this.flp_student_entitys.SetFlowBreak(p, true);
-            }
-        }
-
         private FlowLayoutPanel CreateEntityPanel(int id)
         {
             StudentObject s = database.GetStudentByID(id);
@@ -230,41 +220,7 @@ namespace ExamManager
             panel_student.Controls.Add(btn_student_delete);
             return panel_student;
         }
-
-        private void btn_student_delete_Click(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
-            string name = s.Firstname + " " + s.Lastname;
-            DialogResult result = MessageBox.Show("Schüler " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                database.DeleteStudent(Int32.Parse(btn.Name));
-                foreach (FlowLayoutPanel flp in student_entity_list)
-                {
-                    if (flp.Name == btn.Name)
-                    {
-                        flp.Dispose();
-                        flp_student_entitys.Update();
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void btn_student_edit_Click(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            edit_id = Int32.Parse(btn.Name);
-            btn_add_student.Text = add_mode[1];
-            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
-            tb_firstname.Text = s.Firstname;
-            tb_lastname.Text = s.Lastname;
-            cb_grade.Text = s.Grade;
-            tb_email.Text = s.Email;
-            tb_phonenumber.Text = s.Phonenumber;
-        }
-
+        #region Button
         private void btn_add_student_Click(object sender, EventArgs e)
         {
             string firstname = tb_firstname.Text;
@@ -292,7 +248,6 @@ namespace ExamManager
             if (studentIdList != null) studentIdList.AddLast(id);
             UpdateAutocomplete();
             UpdateStudentList();
-            // AddStudentEntity(id);
             tb_firstname.Clear();
             tb_lastname.Clear();
             tb_email.Clear();
@@ -300,6 +255,38 @@ namespace ExamManager
 
             edit_id = 0;
             btn_add_student.Text = add_mode[0];
+        }
+        private void btn_student_delete_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
+            string name = s.Firstname + " " + s.Lastname;
+            DialogResult result = MessageBox.Show("Schüler " + name + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                database.DeleteStudent(Int32.Parse(btn.Name));
+                foreach (FlowLayoutPanel flp in student_entity_list)
+                {
+                    if (flp.Name == btn.Name)
+                    {
+                        flp.Dispose();
+                        flp_student_entitys.Update();
+                        break;
+                    }
+                }
+            }
+        }
+        private void btn_student_edit_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            edit_id = Int32.Parse(btn.Name);
+            btn_add_student.Text = add_mode[1];
+            StudentObject s = database.GetStudentByID(Int32.Parse(btn.Name));
+            tb_firstname.Text = s.Firstname;
+            tb_lastname.Text = s.Lastname;
+            cb_grade.Text = s.Grade;
+            tb_email.Text = s.Email;
+            tb_phonenumber.Text = s.Phonenumber;
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
@@ -309,7 +296,6 @@ namespace ExamManager
             tb_lastname.Clear();
             tb_email.Clear();
             tb_phonenumber.Clear();
-
             edit_id = 0;
             btn_add_student.Text = add_mode[0];
         }
@@ -320,6 +306,11 @@ namespace ExamManager
             if (domain.Length < 2) MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
             tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
+        private void btn_hint_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Lehrzeichen vermeiden!\nDoppelnamen: name_name2", "Hinweis");
+        }
+        #endregion
 
         private void flp_student_entitys_SizeChanged(object sender, EventArgs e)
         {
@@ -333,9 +324,22 @@ namespace ExamManager
                 btn_hint.Visible = true;
             else btn_hint.Visible = false;
         }
-        private void btn_hint_Click(object sender, EventArgs e)
+        #region tsmi
+        private void tsmi_tools_editgrade_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Lehrzeichen vermeiden!\nDoppelnamen: name_name2", "Hinweis");
+            FormRenameGrade form = new FormRenameGrade();
+            void update_Event(object se, EventArgs ea)
+            { UpdateAutocomplete(); UpdateStudentList(); }
+            form.FormClosed += update_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_tools_delete_grade_Click(object sender, EventArgs e)
+        {
+            FormDeleteGrade form = new FormDeleteGrade();
+            void update_Event(object se, EventArgs ea)
+            { UpdateAutocomplete(); UpdateStudentList(); }
+            form.FormClosed += update_Event;
+            form.ShowDialog();
         }
         private void tsmi_sort_lastname_Click(object sender, EventArgs e)
         {
@@ -347,25 +351,6 @@ namespace ExamManager
             listOrder = Order.firstname;
             UpdateStudentList();
         }
-
-        private void tstb_search_TextChanged(object sender, EventArgs e)
-        {
-            string search = tstb_search.Text;
-            if (search.Length > 0)
-            {
-                foreach (FlowLayoutPanel flp in student_entity_list)
-                {
-                    StudentObject student = database.GetStudentByID(Int32.Parse(flp.Name));
-                    if (!student.Firstname.ToLower().Contains(search.ToLower()) && !student.Lastname.ToLower().Contains(search.ToLower()))
-                        flp.Hide();
-                    else if (student.Firstname.ToLower().Contains(search.ToLower()) || student.Lastname.ToLower().Contains(search.ToLower()))
-                        flp.Show();
-                }
-            }
-            else foreach (FlowLayoutPanel flp in student_entity_list) flp.Show();
-
-        }
-
         private void tsmi_search_doublenames_Click(object sender, EventArgs e)
         {
             foreach (FlowLayoutPanel flp in student_entity_list)
@@ -375,7 +360,6 @@ namespace ExamManager
                     flp.Hide();
             }
         }
-
         private void tsmi_search_delete_Click(object sender, EventArgs e)
         {
             foreach (FlowLayoutPanel flp in student_entity_list)
@@ -383,7 +367,6 @@ namespace ExamManager
                 flp.Show();
             }
         }
-
         private void tsmi_generate_email_click(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.EmailDomain.Length < 2) { MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); return; }
@@ -394,6 +377,16 @@ namespace ExamManager
                 {
                     so.GenerateEmail(true);
                 }
+            }
+        }
+        #endregion
+
+        private void tstb_search_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            if (e.KeyData == Keys.Enter)
+            {
+                UpdateStudentList();
             }
         }
     }

@@ -32,7 +32,6 @@ namespace ExamManager
                     case 1: Colors.ColorTheme(Colors.Theme.dark); break;
                     case 2: Colors.ColorTheme(Colors.Theme.bw); break;
                 }
-            UpdateColor.Invoke(this, null);
             Properties.Settings.Default.EmailDomain = tb_emaildomain.Text; // -> on change
                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
             Properties.Settings.Default.SMTP_server = tb_smtp_server.Text;
@@ -42,9 +41,11 @@ namespace ExamManager
             Properties.Settings.Default.SMTP_email_name = tb_smtp_sendername.Text;
             Properties.Settings.Default.SMTP_email_title = tb_smtp_email_titel.Text;
 
+            Properties.Settings.Default.PixelPerHour = int.Parse(cb_pixelperhour.Text);
             Properties.Settings.Default.EntitiesPerPage = int.Parse(cb_entities_per_page.Text);
             Properties.Settings.Default.ExamPreview = cb_exampreview.Checked;
             Properties.Settings.Default.Save(); // on exit
+            UpdateColor.Invoke(this, null);
             saved = true;
             if (restart)
             {
@@ -91,6 +92,8 @@ namespace ExamManager
             lbl_current_database_path.Text = Properties.Settings.Default.DatabasePath;
             cb_exampreview.Checked = Properties.Settings.Default.ExamPreview;
             cb_entities_per_page.Text = Properties.Settings.Default.EntitiesPerPage.ToString();
+            cb_pixelperhour.Text = Properties.Settings.Default.PixelPerHour.ToString();
+
 
             if (Properties.Settings.Default.NameOrderStudent)
                 cb_student_nameorder.SelectedIndex = 0;

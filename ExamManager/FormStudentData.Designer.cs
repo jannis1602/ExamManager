@@ -64,6 +64,8 @@ namespace ExamManager
             this.tsmi_search_doublenames = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_delete = new System.Windows.Forms.ToolStripMenuItem();
             this.tstb_search = new System.Windows.Forms.ToolStripTextBox();
+            this.tsmi_tools_editgrade = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_tools_delete_grade = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel_main.SuspendLayout();
             this.tlp_edit.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -352,7 +354,9 @@ namespace ExamManager
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_generate_email});
+            this.tsmi_generate_email,
+            this.tsmi_tools_editgrade,
+            this.tsmi_tools_delete_grade});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 23);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -430,7 +434,21 @@ namespace ExamManager
             this.tstb_search.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstb_search.Name = "tstb_search";
             this.tstb_search.Size = new System.Drawing.Size(200, 23);
-            this.tstb_search.TextChanged += new System.EventHandler(this.tstb_search_TextChanged);
+            this.tstb_search.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstb_search_KeyDown);
+            // 
+            // tsmi_tools_editgrade
+            // 
+            this.tsmi_tools_editgrade.Name = "tsmi_tools_editgrade";
+            this.tsmi_tools_editgrade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_tools_editgrade.Text = "Stufe umbenennen";
+            this.tsmi_tools_editgrade.Click += new System.EventHandler(this.tsmi_tools_editgrade_Click);
+            // 
+            // tsmi_tools_delete_grade
+            // 
+            this.tsmi_tools_delete_grade.Name = "tsmi_tools_delete_grade";
+            this.tsmi_tools_delete_grade.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_tools_delete_grade.Text = "Stufe löschen";
+            this.tsmi_tools_delete_grade.Click += new System.EventHandler(this.tsmi_tools_delete_grade_Click);
             // 
             // FormStudentData
             // 
@@ -495,5 +513,7 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_delete;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmi_generate_email;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_tools_editgrade;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_tools_delete_grade;
     }
 }

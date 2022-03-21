@@ -499,7 +499,7 @@ namespace ExamManager
             this.tstb_search.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstb_search.Name = "tstb_search";
             this.tstb_search.Size = new System.Drawing.Size(200, 23);
-            this.tstb_search.TextChanged += new System.EventHandler(this.tstb_search_TextChanged);
+            this.tstb_search.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstb_search_KeyDown);
             // 
             // menuStrip1
             // 
@@ -526,7 +526,7 @@ namespace ExamManager
             // tsmi_generate_email
             // 
             this.tsmi_generate_email.Name = "tsmi_generate_email";
-            this.tsmi_generate_email.Size = new System.Drawing.Size(167, 22);
+            this.tsmi_generate_email.Size = new System.Drawing.Size(180, 22);
             this.tsmi_generate_email.Text = "Emails generieren";
             this.tsmi_generate_email.Click += new System.EventHandler(this.tsmi_generate_email_Click);
             // 
