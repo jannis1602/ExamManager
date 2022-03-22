@@ -85,6 +85,11 @@ namespace ExamManager
             this.Phonenumber = so.Phonenumber;
         }
 
+        public void SetGrade(string grade)
+        {
+            this.Grade = grade;
+        }
+
         public void Delete()
         {
             Program.database.DeleteStudent(this.Id);

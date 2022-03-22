@@ -43,10 +43,10 @@ namespace ExamManager
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.tb_duration = new System.Windows.Forms.TextBox();
-            this.btn_add = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_subjectname = new System.Windows.Forms.Label();
             this.cb_remove_numbers = new System.Windows.Forms.CheckBox();
+            this.btn_add = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.flp_main.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -68,7 +68,7 @@ namespace ExamManager
             this.tlp_main.RowCount = 2;
             this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlp_main.Size = new System.Drawing.Size(800, 450);
+            this.tlp_main.Size = new System.Drawing.Size(531, 254);
             this.tlp_main.TabIndex = 0;
             // 
             // flp_main
@@ -81,7 +81,7 @@ namespace ExamManager
             this.flp_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_main.Location = new System.Drawing.Point(3, 3);
             this.flp_main.Name = "flp_main";
-            this.flp_main.Size = new System.Drawing.Size(794, 404);
+            this.flp_main.Size = new System.Drawing.Size(525, 208);
             this.flp_main.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -108,7 +108,8 @@ namespace ExamManager
             // btn_select_file
             // 
             this.btn_select_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_select_file.Location = new System.Drawing.Point(153, 3);
+            this.btn_select_file.Location = new System.Drawing.Point(151, 1);
+            this.btn_select_file.Margin = new System.Windows.Forms.Padding(1);
             this.btn_select_file.Name = "btn_select_file";
             this.btn_select_file.Size = new System.Drawing.Size(150, 27);
             this.btn_select_file.TabIndex = 1;
@@ -213,18 +214,6 @@ namespace ExamManager
             this.tb_duration.Text = "30";
             this.tb_duration.TextChanged += new System.EventHandler(this.tb_duration_TextChanged);
             // 
-            // btn_add
-            // 
-            this.btn_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add.Location = new System.Drawing.Point(699, 413);
-            this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(98, 34);
-            this.btn_add.TabIndex = 2;
-            this.btn_add.Text = "Hinzufügen";
-            this.btn_add.UseVisualStyleBackColor = true;
-            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
-            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.lbl_subjectname);
@@ -259,11 +248,23 @@ namespace ExamManager
             this.cb_remove_numbers.Text = "Zahlen entfernen";
             this.cb_remove_numbers.UseVisualStyleBackColor = true;
             // 
+            // btn_add
+            // 
+            this.btn_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_add.Location = new System.Drawing.Point(430, 217);
+            this.btn_add.Name = "btn_add";
+            this.btn_add.Size = new System.Drawing.Size(98, 34);
+            this.btn_add.TabIndex = 2;
+            this.btn_add.Text = "Hinzufügen";
+            this.btn_add.UseVisualStyleBackColor = true;
+            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
+            // 
             // FormLoadTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(531, 254);
             this.Controls.Add(this.tlp_main);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormLoadTable";

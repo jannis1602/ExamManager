@@ -21,6 +21,9 @@ namespace ExamManager
             database = new Database();
             Application.Run(new Form1());
 
+            // InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+
+
             /*Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
             Console.WriteLine(Properties.strings.test);
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
