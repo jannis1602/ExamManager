@@ -34,6 +34,7 @@ namespace ExamManager
             tabControl.SelectedIndex = tab;
             dtp_table_date.Value = DateTime.Now;
             cb_export_days.Visible = false;
+            cb_export_grade.Visible = false;
             cb_import_nameorder.SelectedIndex = 0;
             StudentList = new LinkedList<StudentObject>();
             TeacherList = new LinkedList<TeacherObject>();
@@ -51,6 +52,8 @@ namespace ExamManager
             for (int i = 0; i < gradeList.Count; i++)
                 list[i] = gradeList.ElementAt(i);
             cb_import_grade.Items.AddRange(list);
+            cb_export_grade.Items.Add("");
+            cb_export_grade.Items.AddRange(list);
             // examdays
             LinkedList<Item> dayList = new LinkedList<Item>();
             foreach (ExamObject s in Program.database.GetAllExams(true))
@@ -418,7 +421,10 @@ namespace ExamManager
                 RestoreDirectory = true
             };
             if (sfd.ShowDialog() != DialogResult.OK) return;
-            var json = JsonConvert.SerializeObject(Program.database.GetAllStudents(), Formatting.Indented);
+            LinkedList<StudentObject> sList = null;
+            if (cb_export_singlegrade.Checked && cb_export_grade.Text.Length > 0) sList = database.GetAllStudentsFromGrade(cb_export_grade.Text);
+            else sList = database.GetAllStudents();
+            var json = JsonConvert.SerializeObject(sList, Formatting.Indented);
             File.WriteAllText(sfd.FileName, json);
         }
         private void btn_export_teacher_json_Click(object sender, EventArgs e)
@@ -480,16 +486,70 @@ namespace ExamManager
         }
         private void btn_export_student_csv_Click(object sender, EventArgs e)
         {
-            // all or single grade
+            // TODO: all or single grade
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Schülerdaten speichern",
+                FileName = "StudentData.csv",
+                DefaultExt = "csv",
+                Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            if (!File.Exists(sfd.FileName))
+            {
+                var csv = new StringBuilder();
+                var firstLine = string.Format("{0},{1},{2},{3},{4}", "Vorname", "Nachname", "Stufe", "Email", "Telefonnummer");
+                csv.AppendLine(firstLine);
+                LinkedList<StudentObject> sList = null;
+                if (cb_export_singlegrade.Checked && cb_export_grade.Text.Length > 0)
+                    sList = database.GetAllStudentsFromGrade(cb_export_grade.Text);
+                else sList = database.GetAllStudents();
+                foreach (StudentObject so in sList)
+                {
+                    var newLine = string.Format("{0},{1},{2},{3},{4}", so.Firstname, so.Lastname, so.Grade, so.Email, so.Phonenumber);
+                    csv.AppendLine(newLine);
+                }
+                File.WriteAllText(sfd.FileName, csv.ToString());
+            }
         }
         private void btn_export_teacher_csv_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Lehrerdaten speichern",
+                FileName = "TeacherData.csv",
+                DefaultExt = "csv",
+                Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            if (!File.Exists(sfd.FileName))
+            {
+                var csv = new StringBuilder();
+                var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", "Kürzel", "Vorname", "Nachname", "Email", "Telefonnummer", "Fach1", "Fach2", "Fach3");
+                csv.AppendLine(firstLine);
+                foreach (TeacherObject to in database.GetAllTeachers())
+                {
+                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", to.Shortname, to.Firstname, to.Lastname, to.Email, to.Phonenumber, to.Subject1, to.Subject2, to.Subject3);
+                    csv.AppendLine(newLine);
+                }
+                File.WriteAllText(sfd.FileName, csv.ToString());
+            }
         }
         ////
         private void cb_export_singleexamday_CheckedChanged(object sender, EventArgs e)
         {
             cb_export_days.Visible = cb_export_singleexamday.Checked;
+        }
+        private void cb_export_singlegrade_CheckedChanged(object sender, EventArgs e)
+        {
+            cb_export_grade.Visible = cb_export_singlegrade.Checked;
         }
         class Item
         {
@@ -688,6 +748,5 @@ namespace ExamManager
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_table_duration.Text, "[^0-9]"))
                 tb_table_duration.Text = tb_table_duration.Text.Remove(tb_table_duration.Text.Length - 1);
         }
-
     }
 }

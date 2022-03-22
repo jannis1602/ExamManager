@@ -99,6 +99,9 @@ namespace ExamManager
             this.lbl_import_nameorder = new System.Windows.Forms.Label();
             this.cb_import_nameorder = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.flp_export_grade = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_export_grade = new System.Windows.Forms.ComboBox();
+            this.cb_export_singlegrade = new System.Windows.Forms.CheckBox();
             this.page_table.SuspendLayout();
             this.tlp_table_main.SuspendLayout();
             this.flp_table_main.SuspendLayout();
@@ -121,6 +124,7 @@ namespace ExamManager
             this.flp_import_email.SuspendLayout();
             this.flp_import_nameorder.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.flp_export_grade.SuspendLayout();
             this.SuspendLayout();
             // 
             // page_table
@@ -372,6 +376,7 @@ namespace ExamManager
             // 
             this.flp_export_options.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flp_export_options.Controls.Add(this.flp_export_date);
+            this.flp_export_options.Controls.Add(this.flp_export_grade);
             this.flp_export_options.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_export_options.Location = new System.Drawing.Point(3, 129);
             this.flp_export_options.Name = "flp_export_options";
@@ -983,6 +988,39 @@ namespace ExamManager
             this.tabControl.Size = new System.Drawing.Size(764, 391);
             this.tabControl.TabIndex = 3;
             // 
+            // flp_export_grade
+            // 
+            this.flp_export_grade.Controls.Add(this.cb_export_singlegrade);
+            this.flp_export_grade.Controls.Add(this.cb_export_grade);
+            this.flp_export_grade.Location = new System.Drawing.Point(2, 38);
+            this.flp_export_grade.Margin = new System.Windows.Forms.Padding(2);
+            this.flp_export_grade.Name = "flp_export_grade";
+            this.flp_export_grade.Size = new System.Drawing.Size(736, 30);
+            this.flp_export_grade.TabIndex = 5;
+            // 
+            // cb_export_grade
+            // 
+            this.cb_export_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_export_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_export_grade.FormattingEnabled = true;
+            this.cb_export_grade.Location = new System.Drawing.Point(228, 1);
+            this.cb_export_grade.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
+            this.cb_export_grade.Name = "cb_export_grade";
+            this.cb_export_grade.Size = new System.Drawing.Size(120, 28);
+            this.cb_export_grade.TabIndex = 11;
+            // 
+            // cb_export_singlegrade
+            // 
+            this.cb_export_singlegrade.AutoSize = true;
+            this.cb_export_singlegrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_export_singlegrade.Location = new System.Drawing.Point(3, 3);
+            this.cb_export_singlegrade.Name = "cb_export_singlegrade";
+            this.cb_export_singlegrade.Size = new System.Drawing.Size(219, 24);
+            this.cb_export_singlegrade.TabIndex = 14;
+            this.cb_export_singlegrade.Text = "Einzelne Stufe exportieren:";
+            this.cb_export_singlegrade.UseVisualStyleBackColor = true;
+            this.cb_export_singlegrade.CheckedChanged += new System.EventHandler(this.cb_export_singlegrade_CheckedChanged);
+            // 
             // FormImportExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1026,6 +1064,8 @@ namespace ExamManager
             this.flp_import_nameorder.ResumeLayout(false);
             this.flp_import_nameorder.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.flp_export_grade.ResumeLayout(false);
+            this.flp_export_grade.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1101,5 +1141,8 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flp_import_nameorder;
         private System.Windows.Forms.Label lbl_import_nameorder;
         private System.Windows.Forms.ComboBox cb_import_nameorder;
+        private System.Windows.Forms.FlowLayoutPanel flp_export_grade;
+        private System.Windows.Forms.ComboBox cb_export_grade;
+        private System.Windows.Forms.CheckBox cb_export_singlegrade;
     }
 }
