@@ -58,6 +58,7 @@ namespace ExamManager
             for (int i = 0; i < gradeList.Count; i++)
                 list[i] = gradeList.ElementAt(i);
             // grade tsmi
+            tsmi_subject.DropDownItems.Clear();
             ToolStripMenuItem tsmi_grade_entity_clear = new ToolStripMenuItem
             { Name = null, Size = new Size(188, 22), Text = "Alle" };
             tsmi_grade_entity_clear.Click += new EventHandler(tsmi_grade_entity_click);
@@ -71,6 +72,7 @@ namespace ExamManager
             }
             void tsmi_grade_entity_click(object sender, EventArgs e)
             {
+                page = 1;
                 ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
                 subject = tsmi.Name;
                 UpdateTeacherList();
@@ -91,29 +93,30 @@ namespace ExamManager
             foreach (TeacherObject s in teacherList)
             {
                 string search = tstb_search.Text;
-                if (search.Length > 0 && (s.Firstname.ToLower().Contains(search.ToLower()) || s.Lastname.ToLower().Contains(search.ToLower())))
-                {
-                    if (chunkList.Last.Value.Count() > chunkLength)
-                        chunkList.AddLast(new LinkedList<TeacherObject>());
-                    chunkList.Last.Value.AddLast(s);
-                }
-                else if (search.Length == 0)
-                {
-                    if (chunkList.Last.Value.Count() > chunkLength)
-                        chunkList.AddLast(new LinkedList<TeacherObject>());
-                    chunkList.Last.Value.AddLast(s);
-                }
+                if (subject == null || subject.Length < 1 || s.Subject1 == subject || s.Subject2 == subject || s.Subject3 == subject)
+                    if (search.Length > 0 && (s.Firstname.ToLower().Contains(search.ToLower()) || s.Lastname.ToLower().Contains(search.ToLower())))
+                    {
+                        if (chunkList.Last.Value.Count() > chunkLength)
+                            chunkList.AddLast(new LinkedList<TeacherObject>());
+                        chunkList.Last.Value.AddLast(s);
+                    }
+                    else if (search.Length == 0)
+                    {
+                        if (chunkList.Last.Value.Count() > chunkLength)
+                            chunkList.AddLast(new LinkedList<TeacherObject>());
+                        chunkList.Last.Value.AddLast(s);
+                    }
             }
 
             foreach (TeacherObject s in chunkList.ElementAt(page - 1))
             {
-                if (subject == null || subject.Length < 1 || s.Subject1 == subject || s.Subject2 == subject || s.Subject3 == subject)
-                    if ((teacherIdList != null && teacherIdList.Contains(s.Shortname)) || teacherIdList == null)
-                    {
-                        FlowLayoutPanel panel_teacher = CreateEntityPanel(s);
-                        this.flp_teacher_entitys.HorizontalScroll.Value = 0;
-                        teacher_entity_list.AddLast(panel_teacher);
-                    }
+                //if (subject == null || subject.Length < 1 || s.Subject1 == subject || s.Subject2 == subject || s.Subject3 == subject)
+                if ((teacherIdList != null && teacherIdList.Contains(s.Shortname)) || teacherIdList == null)
+                {
+                    FlowLayoutPanel panel_teacher = CreateEntityPanel(s);
+                    this.flp_teacher_entitys.HorizontalScroll.Value = 0;
+                    teacher_entity_list.AddLast(panel_teacher);
+                }
             }
 
             foreach (Panel p in teacher_entity_list)
@@ -151,7 +154,8 @@ namespace ExamManager
                     panel_page.Controls.Add(btn_page);
                 }
             }
-            flp_teacher_entitys.Controls.Add(panel_page);
+            if (chunkList.Count > 1)
+                flp_teacher_entitys.Controls.Add(panel_page);
 
             void page_button_event(object sender, EventArgs e)
             {

@@ -53,6 +53,7 @@ namespace ExamManager
                 if (edr.GetValue(2) != null && edr.GetValue(2).ToString().Length > 3)
                 {
                     subject = edr.GetValue(2).ToString().Split(' ')[0];
+                    if (cb_remove_numbers.Checked) subject = string.Concat(subject.Where(char.IsLetter));
                     course = edr.GetValue(2).ToString().Split(' ')[1];
                 }
                 if (edr.GetValue(4) != null && edr.GetValue(4).ToString().Length > 1)

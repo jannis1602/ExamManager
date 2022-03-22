@@ -87,13 +87,18 @@ namespace ExamManager
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            LoadSettings();
+        }
+
+
+        private void LoadSettings()
+        {
             tb_emaildomain.Text = Properties.Settings.Default.EmailDomain;
             cb_color.SelectedIndex = Properties.Settings.Default.ColorTheme;
             lbl_current_database_path.Text = Properties.Settings.Default.DatabasePath;
             cb_exampreview.Checked = Properties.Settings.Default.ExamPreview;
             cb_entities_per_page.Text = Properties.Settings.Default.EntitiesPerPage.ToString();
             cb_pixelperhour.Text = Properties.Settings.Default.PixelPerHour.ToString();
-
 
             if (Properties.Settings.Default.NameOrderStudent)
                 cb_student_nameorder.SelectedIndex = 0;
@@ -230,11 +235,17 @@ namespace ExamManager
                     }
                     if (settings.SMTPSettings != null)
                     {
-                        tb_smtp_server.Text = settings.SMTPSettings.Server;
-                        tb_smtp_port.Text = settings.SMTPSettings.Port;
+                        Properties.Settings.Default.SMTP_server = settings.SMTPSettings.Server;
+                        Properties.Settings.Default.SMTP_port = settings.SMTPSettings.Port;
+                        Properties.Settings.Default.SMTP_email = settings.SMTPSettings.Email;
+                        Properties.Settings.Default.SMTP_password = settings.SMTPSettings.Password;
+                        Properties.Settings.Default.SMTP_email_name = settings.SMTPSettings.SenderName;
+                        Properties.Settings.Default.SMTP_email_title = settings.SMTPSettings.EmailTitel;
                     }
+                    Properties.Settings.Default.Save();
                 }
             }
+            LoadSettings();
         }
         class SettingsObject
         {

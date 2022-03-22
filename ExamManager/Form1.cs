@@ -1771,7 +1771,6 @@ namespace ExamManager
             {
                 foreach (ExamObject exam in database.GetAllExamsFromTeacherAtDate(date, teacher))
                 {
-                    StudentObject student = exam.Student;
                     DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
                     string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
@@ -1785,8 +1784,16 @@ namespace ExamManager
             File.WriteAllText(fileExamDay, csv.ToString());
             // ---- Email ----
             files.AddLast(fileExamDay);
+            bool emails = true;
+            foreach (string to in teacherList)
+            {
+                TeacherObject teacher = database.GetTeacherByID(to);
+                if (teacher.Email == null || teacher.Email.Length < 2)
+                    emails = false;
+            }
+            if (!emails) { MessageBox.Show("fehlende Email", "Achtung"); return; }
 
-
+            Console.WriteLine("sending " + teacherList.Count + " Emails");
             foreach (string to in teacherList)
             {
                 files.Clear();
@@ -1812,7 +1819,6 @@ namespace ExamManager
                     string tempTeacherFile = Path.GetTempPath() + "\\Prüfungstag_" + date + "_" + to + ".csv"; ;
                     File.WriteAllText(tempTeacherFile, csv1.ToString());
                     files.AddLast(tempTeacherFile);
-
 
                     //////////////////////////////////
 
@@ -1854,18 +1860,17 @@ namespace ExamManager
                                     message.Attachments.Add(data);
                                 }
                             smtpClient.Send(message);
-                            Console.WriteLine("Email gesendet " + to);
+                            Console.WriteLine("Email gesendet: " + to);
                             Thread.Sleep(500);
                             //MessageBox.Show("Email gesendet!", "Mitteilung");
                         }
                         catch (Exception) { MessageBox.Show("Fehler beim Senden", "Fehler"); errorCounter++; }
                     }
                     catch (Exception) { MessageBox.Show("Fehler bei der Email", "Fehler"); errorCounter++; }
-                    if (errorCounter > 2) { bar.Exit(); MessageBox.Show("Senden wurde abgebrochen", "Achtung"); return; }
+                    if (errorCounter > 1) { bar.Exit(); MessageBox.Show("Senden wurde abgebrochen", "Achtung"); return; }
                 }
             }
-            Console.WriteLine("Ende");
-            MessageBox.Show("Emails gesendet!", "Mitteilung");
+            MessageBox.Show(teacherList.Count + " Emails gesendet!", "Mitteilung");
         }
 
 

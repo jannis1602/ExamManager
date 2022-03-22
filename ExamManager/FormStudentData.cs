@@ -44,6 +44,7 @@ namespace ExamManager
                 list[i] = gradeList.ElementAt(i);
             cb_grade.Items.AddRange(list);
             // grade tsmi
+            tsmi_grade.DropDownItems.Clear();
             ToolStripMenuItem tsmi_grade_entity_clear = new ToolStripMenuItem
             { Name = null, Size = new Size(188, 22), Text = "Alle" };
             tsmi_grade_entity_clear.Click += new EventHandler(tsmi_grade_entity_click);
@@ -57,6 +58,7 @@ namespace ExamManager
             }
             void tsmi_grade_entity_click(object sender, EventArgs e)
             {
+                page = 1;
                 ToolStripMenuItem tsmi = sender as ToolStripMenuItem;
                 grade = tsmi.Name;
                 UpdateStudentList();
@@ -77,28 +79,29 @@ namespace ExamManager
             foreach (StudentObject s in studentList)
             {
                 string search = tstb_search.Text;
-                if (search.Length > 0 && (s.Firstname.ToLower().Contains(search.ToLower()) || s.Lastname.ToLower().Contains(search.ToLower())))
-                {
-                    if (chunkList.Last.Value.Count() > chunkLength)
-                        chunkList.AddLast(new LinkedList<StudentObject>());
-                    chunkList.Last.Value.AddLast(s);
-                }
-                else if (search.Length == 0)
-                {
-                    if (chunkList.Last.Value.Count() > chunkLength)
-                        chunkList.AddLast(new LinkedList<StudentObject>());
-                    chunkList.Last.Value.AddLast(s);
-                }
+                if (grade == null || grade.Length < 1 || s.Grade == grade)
+                    if (search.Length > 0 && (s.Firstname.ToLower().Contains(search.ToLower()) || s.Lastname.ToLower().Contains(search.ToLower())))
+                    {
+                        if (chunkList.Last.Value.Count() > chunkLength)
+                            chunkList.AddLast(new LinkedList<StudentObject>());
+                        chunkList.Last.Value.AddLast(s);
+                    }
+                    else if (search.Length == 0)
+                    {
+                        if (chunkList.Last.Value.Count() > chunkLength)
+                            chunkList.AddLast(new LinkedList<StudentObject>());
+                        chunkList.Last.Value.AddLast(s);
+                    }
             }
             foreach (StudentObject s in chunkList.ElementAt(page - 1))
             {
-                if (grade == null || grade.Length < 1 || s.Grade == grade)
-                    if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
-                    {
-                        FlowLayoutPanel panel_student = CreateEntityPanel(s.Id);
-                        this.flp_student_entitys.HorizontalScroll.Value = 0;
-                        student_entity_list.AddLast(panel_student);
-                    }
+                //if (grade == null || grade.Length < 1 || s.Grade == grade)
+                if ((studentIdList != null && studentIdList.Contains(s.Id)) || studentIdList == null)
+                {
+                    FlowLayoutPanel panel_student = CreateEntityPanel(s.Id);
+                    this.flp_student_entitys.HorizontalScroll.Value = 0;
+                    student_entity_list.AddLast(panel_student);
+                }
             }
 
             Control[] c = student_entity_list.ToArray();

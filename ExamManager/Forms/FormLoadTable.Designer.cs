@@ -44,12 +44,16 @@ namespace ExamManager
             this.label1 = new System.Windows.Forms.Label();
             this.tb_duration = new System.Windows.Forms.TextBox();
             this.btn_add = new System.Windows.Forms.Button();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_subjectname = new System.Windows.Forms.Label();
+            this.cb_remove_numbers = new System.Windows.Forms.CheckBox();
             this.tlp_main.SuspendLayout();
             this.flp_main.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flp_grade.SuspendLayout();
             this.flp_date.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -73,6 +77,7 @@ namespace ExamManager
             this.flp_main.Controls.Add(this.flp_grade);
             this.flp_main.Controls.Add(this.flp_date);
             this.flp_main.Controls.Add(this.flowLayoutPanel2);
+            this.flp_main.Controls.Add(this.flowLayoutPanel3);
             this.flp_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_main.Location = new System.Drawing.Point(3, 3);
             this.flp_main.Name = "flp_main";
@@ -220,6 +225,40 @@ namespace ExamManager
             this.btn_add.UseVisualStyleBackColor = true;
             this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.lbl_subjectname);
+            this.flowLayoutPanel3.Controls.Add(this.cb_remove_numbers);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 147);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(794, 30);
+            this.flowLayoutPanel3.TabIndex = 6;
+            // 
+            // lbl_subjectname
+            // 
+            this.lbl_subjectname.AutoSize = true;
+            this.lbl_subjectname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_subjectname.Location = new System.Drawing.Point(3, 3);
+            this.lbl_subjectname.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_subjectname.Name = "lbl_subjectname";
+            this.lbl_subjectname.Size = new System.Drawing.Size(112, 20);
+            this.lbl_subjectname.TabIndex = 1;
+            this.lbl_subjectname.Text = "Fächernamen:";
+            this.lbl_subjectname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cb_remove_numbers
+            // 
+            this.cb_remove_numbers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cb_remove_numbers.AutoSize = true;
+            this.cb_remove_numbers.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_remove_numbers.Location = new System.Drawing.Point(121, 3);
+            this.cb_remove_numbers.Name = "cb_remove_numbers";
+            this.cb_remove_numbers.Size = new System.Drawing.Size(136, 22);
+            this.cb_remove_numbers.TabIndex = 2;
+            this.cb_remove_numbers.Text = "Zahlen entfernen";
+            this.cb_remove_numbers.UseVisualStyleBackColor = true;
+            // 
             // FormLoadTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,6 +278,8 @@ namespace ExamManager
             this.flp_date.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -260,5 +301,8 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tb_duration;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.Label lbl_subjectname;
+        private System.Windows.Forms.CheckBox cb_remove_numbers;
     }
 }
