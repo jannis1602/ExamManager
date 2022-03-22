@@ -937,6 +937,7 @@ namespace ExamManager
             this.cb_import_generateemail.TabIndex = 14;
             this.cb_import_generateemail.Text = "Emails generieren";
             this.cb_import_generateemail.UseVisualStyleBackColor = true;
+            this.cb_import_generateemail.CheckedChanged += new System.EventHandler(this.cb_import_generateemail_CheckedChanged);
             // 
             // flp_import_nameorder
             // 

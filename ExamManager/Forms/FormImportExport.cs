@@ -75,6 +75,7 @@ namespace ExamManager
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        #region Import
 
         private void btn_import_add_Click(object sender, EventArgs e)
         {
@@ -89,7 +90,7 @@ namespace ExamManager
                     {
                         so.SetGrade(cb_import_grade.Text);
                         if (cb_import_generateemail.Checked) so.GenerateEmail();
-                        // ---->>>> addToDB
+                        so.AddToDatabase();
                     }
                     Console.WriteLine(StudentList.Count());
                     foreach (StudentObject so in StudentList)
@@ -100,8 +101,10 @@ namespace ExamManager
                     foreach (TeacherObject to in TeacherList)
                     {
                         if (cb_import_generateemail.Checked) to.GenerateEmail();
-                        // check subjects else add to DB
-                        // ---->>>> addToDB
+                        if (to.Subject1 != null && to.Subject1.Length > 0) database.AddSubject(to.Subject1);
+                        if (to.Subject2 != null && to.Subject2.Length > 0) database.AddSubject(to.Subject2);
+                        if (to.Subject3 != null && to.Subject3.Length > 0) database.AddSubject(to.Subject3);
+                        to.AddToDatabase();
                     }
                     Console.WriteLine(TeacherList.Count());
                     foreach (TeacherObject to in TeacherList)
@@ -114,8 +117,11 @@ namespace ExamManager
                 {
                     foreach (ExamObject eo in ExamList)
                     {
+                        eo.Student.AddToDatabase();
+                        eo.Teacher1.AddToDatabase();
+                        // TODO: check t2+t3 & s2+s3
                         // check student & teacher -> add
-                        // ---->>>> addToDB
+                        eo.AddToDatabase();
                     }
                     Console.WriteLine(ExamList.Count());
                     foreach (ExamObject eo in ExamList)
@@ -127,7 +133,7 @@ namespace ExamManager
                     foreach (StudentObject so in StudentList)
                     {
                         if (cb_import_generateemail.Checked) so.GenerateEmail();
-                        // ---->>>> addToDB
+                        so.AddToDatabase();
                     }
                     Console.WriteLine(StudentList.Count());
                     foreach (StudentObject so in StudentList)
@@ -138,8 +144,10 @@ namespace ExamManager
                     foreach (TeacherObject to in TeacherList)
                     {
                         if (cb_import_generateemail.Checked) to.GenerateEmail();
-                        // check subjects else add to DB
-                        // ---->>>> addToDB
+                        if (to.Subject1 != null && to.Subject1.Length > 0) database.AddSubject(to.Subject1);
+                        if (to.Subject2 != null && to.Subject2.Length > 0) database.AddSubject(to.Subject2);
+                        if (to.Subject3 != null && to.Subject3.Length > 0) database.AddSubject(to.Subject3);
+                        to.AddToDatabase();
                     }
                     Console.WriteLine(TeacherList.Count());
                     foreach (TeacherObject to in TeacherList)
@@ -154,7 +162,7 @@ namespace ExamManager
                     foreach (ExamObject eo in ExamList)
                     {
                         // check student & teacher -> add
-                        // ---->>>> addToDB
+                        eo.AddToDatabase();
                     }
                     Console.WriteLine(ExamList.Count());
                     foreach (ExamObject eo in ExamList)
@@ -166,7 +174,7 @@ namespace ExamManager
                     foreach (StudentObject so in StudentList)
                     {
                         if (cb_import_generateemail.Checked) so.GenerateEmail();
-                        // ---->>>> addToDB
+                        so.AddToDatabase();
                     }
                     Console.WriteLine(StudentList.Count());
                     foreach (StudentObject so in StudentList)
@@ -177,17 +185,19 @@ namespace ExamManager
                     foreach (TeacherObject to in TeacherList)
                     {
                         if (cb_import_generateemail.Checked) to.GenerateEmail();
-                        // TODO: check subjects else add to DB
-                        // ---->>>> addToDB
+                        if (to.Subject1 != null && to.Subject1.Length > 0) database.AddSubject(to.Subject1);
+                        if (to.Subject2 != null && to.Subject2.Length > 0) database.AddSubject(to.Subject2);
+                        if (to.Subject3 != null && to.Subject3.Length > 0) database.AddSubject(to.Subject3);
+                        to.AddToDatabase();
                     }
                     Console.WriteLine(TeacherList.Count());
                     foreach (TeacherObject to in TeacherList)
                         Console.WriteLine(to.Fullname());
                 }
             }
+            MessageBox.Show("Daten hinzugefügt", "Info");
 
         }
-        #region Import
         // txt
         private void btn_import_exam_txt_Click(object sender, EventArgs e)
         {
@@ -267,7 +277,7 @@ namespace ExamManager
                     {
                         if (!line[0].Equals('#'))
                         {
-                            string[] t = line.Replace("Dr.", "").Replace(",", "").Split(' ');
+                            string[] t = line.Replace("Dr. ", "").Replace(",", "").Split(' ');
                             if (cb_import_nameorder.SelectedIndex == 1)
                             {
                                 string ln = t[2];
@@ -565,12 +575,8 @@ namespace ExamManager
 
         #endregion
 
-
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
+        #region table
         private LinkedList<string[]> ReadFile()
         {
             DataArrayList = new LinkedList<string[]>();
@@ -663,7 +669,6 @@ namespace ExamManager
             if (missingSubjectList.Count > 0)
             {
                 string subjects = "";
-                Console.WriteLine("Missing Subjects: ");
                 foreach (string su in missingSubjectList) subjects += su + " ";
                 DialogResult resultSubjects = MessageBox.Show(missingSubjectList.Count + " Fächer hinzufügen?\n" + subjects, "Achtung", MessageBoxButtons.YesNo);
                 if (resultSubjects == DialogResult.Yes) foreach (string su in missingSubjectList)
@@ -672,7 +677,6 @@ namespace ExamManager
 
             DialogResult result = MessageBox.Show(list.Count() + " Prüfungen hinzufügen?", "Warnung", MessageBoxButtons.YesNo);
             if (result != DialogResult.Yes) return;
-            Console.WriteLine("Add missing data to db");
             AddMissingDataToDB(list);
         }
 
@@ -697,33 +701,33 @@ namespace ExamManager
                 string s = d[2].Replace(", ", ",").Replace(" ", "_"); // TODO: teacher -> t1/t2/t3?
                 Program.database.AddRoom("R" + room);
                 //if (Program.database.GetSubject(d[0]) == null && !missingSubjectList.Contains(d[0])) missingSubjectList.AddLast(d[0]);
-                if (Program.database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("HH:mm"), "R" + room).Count == 0)
+                //if (Program.database.GetAllExamsAtDateTimeAndRoom(date, time.ToString("HH:mm"), "R" + room).Count == 0)
+                //{
+                if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && Program.database.GetTeacherByID(d[1]) == null)
                 {
-                    if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null && Program.database.GetTeacherByID(d[1]) == null)
-                    {
-                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, 0, 0, 0, d[1] + "*", null, null, d[0], duration));
-                        Console.WriteLine("NOTFOUND-TS: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " NODB:" + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration); ;
-                    }
-                    else if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
-                    {
-                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
-                        Console.WriteLine("NOTFOUND-S: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
-                    }
-                    else if (Program.database.GetTeacherByID(d[1]) == null)
-                    {
-                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], duration));
-                        Console.WriteLine("NOTFOUND-T: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
-                    }
-                    else
-                    {
-                        Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + Program.database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + duration);
-                        examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
-                    }
-                    element++;
-                    t++;
+                    examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, 0, 0, 0, d[1] + "*", null, null, d[0], duration));
+                    Console.WriteLine("NOTFOUND-TS: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " NODB:" + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration); ;
                 }
+                else if (Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]) == null)
+                {
+                    examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, "", 0, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
+                    Console.WriteLine("NOTFOUND-S: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
+                }
+                else if (Program.database.GetTeacherByID(d[1]) == null)
+                {
+                    examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, d[1] + "*", null, null, d[0], duration));
+                    Console.WriteLine("NOTFOUND-T: " + examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + d[1] + " -  - " + d[0] + " " + duration);
+                }
+                else
+                {
+                    Console.WriteLine(examCount + " " + date + " " + time.ToString("HH:mm") + " " + "R" + room + " " + "" + " " + Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id + " " + s.Split(',')[1] + s.Split(',')[0] + " 0  0 " + Program.database.GetTeacherByID(d[1]).Shortname + " -  - " + d[0] + " " + duration);
+                    examList.AddLast(new ExamObject(0, date, time.ToString("HH:mm"), "R" + room, null, Program.database.GetStudentByName(s.Split(',')[1], s.Split(',')[0]).Id, 0, 0, Program.database.GetTeacherByID(d[1]).Shortname, null, null, d[0], duration));
+                }
+                element++;
+                t++;
+                //}
             }
-            foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false);
+            foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false, noError: true);
         }
 
         private void btn_table_select_file_Click(object sender, EventArgs e)
@@ -747,6 +751,13 @@ namespace ExamManager
             if (tb_table_duration.Text.Length == 0) return;
             if (System.Text.RegularExpressions.Regex.IsMatch(tb_table_duration.Text, "[^0-9]"))
                 tb_table_duration.Text = tb_table_duration.Text.Remove(tb_table_duration.Text.Length - 1);
+        }
+        #endregion
+
+        private void cb_import_generateemail_CheckedChanged(object sender, EventArgs e)
+        {
+            string domain = Properties.Settings.Default.EmailDomain;
+            if (cb_import_generateemail.Checked && domain.Length < 2) { cb_import_generateemail.Checked = false; MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); }
         }
     }
 }

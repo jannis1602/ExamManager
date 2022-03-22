@@ -54,21 +54,19 @@ namespace ExamManager
             else Program.database.EditStudent(this.Id, this.Lastname, this.Firstname, this.Grade, this.Email, this.Phonenumber);*/
         }
 
-        public bool AddToDatabase()
+        public bool AddToDatabase(bool showError = false)
         {
             string check = null;
             if (Program.database.GetStudentByName(Firstname, Lastname) != null) check = "Schüler mit gleichem Namen exestiert bereits: " + Fullname();
             if (check == null)
             {
-                Console.WriteLine("check=null " + Fullname());
                 Program.database.AddStudent(this);
                 UpdateDBData();
                 return true;
             }
             else
             {
-                Console.WriteLine("!!! check!=null " + Fullname());
-                MessageBox.Show(check, "Fehler");
+                if (showError) MessageBox.Show(check, "Fehler");
             } // UpdateDBData(); }
             return false;
         }

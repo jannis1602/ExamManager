@@ -1087,55 +1087,6 @@ namespace ExamManager
         #region -------- TSMI --------
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // ----------------- tsmi search -----------------
-        private void update_search_Event(object sender, EventArgs e)
-        {
-            string s = sender as string;
-            search = s;
-            UpdateTimeline(); // render on updatesearch
-        }
-        private void tsmi_search_teacher_Click(object sender, EventArgs e)
-        {
-            searchMode = Search.teacher;
-            FormSearch form = new FormSearch(0);
-            form.UpdateSearch += update_search_Event;
-            form.ShowDialog();
-        }
-        private void tsmi_search_student_Click(object sender, EventArgs e)
-        {
-            searchMode = Search.student;
-            FormSearch form = new FormSearch(1);
-            form.UpdateSearch += update_search_Event;
-            form.ShowDialog();
-        }
-        private void tsmi_search_subject_Click(object sender, EventArgs e)
-        {
-            searchMode = Search.subject;
-            FormSearch form = new FormSearch(2);
-            form.UpdateSearch += update_search_Event;
-            form.ShowDialog();
-
-        }
-        private void tsmi_search_room_Click(object sender, EventArgs e)
-        {
-            searchMode = Search.room;
-            FormSearch form = new FormSearch(3);
-            form.UpdateSearch += update_search_Event;
-            form.ShowDialog();
-        }
-        private void tsmi_search_grade_Click(object sender, EventArgs e)
-        {
-            searchMode = Search.grade;
-            FormSearch form = new FormSearch(4);
-            form.UpdateSearch += update_search_Event;
-            form.ShowDialog();
-        }
-        private void tsmi_search_delete_Click(object sender, EventArgs e)
-        {
-            search = null;
-            searchMode = Search.all;
-            UpdateTimeline(); // render on searchchange to all
-        }
         // ----------------- tsmi data -----------------
         private void tsmi_data_students_Click(object sender, EventArgs e)
         {
@@ -1207,17 +1158,54 @@ namespace ExamManager
             form.FormClosed += update_autocomplete_Event;
             form.ShowDialog();
         }
-        // ----------------- tsmi exam -----------------
-        private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
+        // ----------------- tsmi search -----------------
+        private void update_search_Event(object sender, EventArgs e)
         {
-            FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
-            form.FormClosed += update_timeline_Event;
+            string s = sender as string;
+            search = s;
+            UpdateTimeline(); // render on updatesearch
+        }
+        private void tsmi_search_teacher_Click(object sender, EventArgs e)
+        {
+            searchMode = Search.teacher;
+            FormSearch form = new FormSearch(0);
+            form.UpdateSearch += update_search_Event;
             form.ShowDialog();
         }
-        private void tsmi_exam_examdates_Click(object sender, EventArgs e)
+        private void tsmi_search_student_Click(object sender, EventArgs e)
         {
-            FormExamDateListView form = new FormExamDateListView(this);
+            searchMode = Search.student;
+            FormSearch form = new FormSearch(1);
+            form.UpdateSearch += update_search_Event;
             form.ShowDialog();
+        }
+        private void tsmi_search_subject_Click(object sender, EventArgs e)
+        {
+            searchMode = Search.subject;
+            FormSearch form = new FormSearch(2);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog();
+
+        }
+        private void tsmi_search_room_Click(object sender, EventArgs e)
+        {
+            searchMode = Search.room;
+            FormSearch form = new FormSearch(3);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_search_grade_Click(object sender, EventArgs e)
+        {
+            searchMode = Search.grade;
+            FormSearch form = new FormSearch(4);
+            form.UpdateSearch += update_search_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_search_delete_Click(object sender, EventArgs e)
+        {
+            search = null;
+            searchMode = Search.all;
+            UpdateTimeline(); // render on searchchange to all
         }
         // ----------------- tsmi filter -----------------
         private void tsmi_filter_grade_Click(object sender, EventArgs e)
@@ -1264,6 +1252,32 @@ namespace ExamManager
                 RoomNameFilterList = list;
                 UpdateTimeline();
             }
+        }
+        // ----------------- tsmi exam -----------------
+        private void tsmi_exam_changeroom_Click(object sender, EventArgs e)
+        {
+            FormChangeRoom form = new FormChangeRoom(this.dtp_date.Value.ToString("yyyy-MM-dd"));
+            form.FormClosed += update_timeline_Event;
+            form.ShowDialog();
+        }
+        private void tsmi_exam_examdates_Click(object sender, EventArgs e)
+        {
+            FormExamDateListView form = new FormExamDateListView(this);
+            form.ShowDialog();
+        }
+        private void tsmi_exam_delete_examday_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsAtDate(date).Count() + " Prüfungen vor dem " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes) foreach (ExamObject eo in database.GetAllExamsAtDate(date)) eo.Delete();
+            else return;
+        }
+        private void tsmi_tools_deleteoedexams_Click(object sender, EventArgs e)
+        {
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+            DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsBeforeDate(date).Count() + " Prüfungen vor dem " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes) database.DeleteOldExams(date);
+            else return;
         }
         // ----------------- tsmi tools -----------------
         private void tsmi_tools_export_Click(object sender, EventArgs e)
@@ -1461,11 +1475,11 @@ namespace ExamManager
                 File.WriteAllText(sfd.FileName, csv.ToString());
             }
         }
-        private void tsmi_import_export_Click(object sender, EventArgs e)
+        private void tsmi_tools_import_export_Click(object sender, EventArgs e)
         {
             new FormImportExport().ShowDialog();
         }
-        private void tsmi_open_excel_Click(object sender, EventArgs e)
+        private void tsmi_tools_open_excel_Click(object sender, EventArgs e)
         {
             FormImportExport form = new FormImportExport(2);
             form.FormClosed += update_timeline_Event;
@@ -1473,6 +1487,11 @@ namespace ExamManager
             /*FormLoadTable form = new FormLoadTable();
             form.FormClosed += update_timeline_Event;
             form.ShowDialog();*/
+        }
+        private void tsmi_tools_sendemail_Click(object sender, EventArgs e)
+        {
+            //SendEmail();
+            SendTeacherEmails();
         }
         // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)
@@ -1874,13 +1893,6 @@ namespace ExamManager
                 }
             }
             MessageBox.Show(teacherList.Count + " Emails gesendet!", "Mitteilung");
-        }
-
-
-        private void tsmi_tools_sendemail_Click(object sender, EventArgs e)
-        {
-            //SendEmail();
-            SendTeacherEmails();
         }
 
     }

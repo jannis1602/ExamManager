@@ -307,7 +307,7 @@ namespace ExamManager
         {
             string domain = Properties.Settings.Default.EmailDomain;
             if (domain.Length < 2) MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung");
-            tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
+            else tb_email.Text = tb_firstname.Text.ToLower().Replace(' ', '.').Replace('_', '.') + "." + tb_lastname.Text.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
         }
         private void btn_hint_Click(object sender, EventArgs e)
         {
@@ -380,6 +380,7 @@ namespace ExamManager
                 {
                     so.GenerateEmail(true);
                 }
+                UpdateStudentList();
             }
         }
         #endregion
@@ -387,7 +388,7 @@ namespace ExamManager
         private void tstb_search_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (e.KeyData == Keys.Enter)
+            if (e.KeyData == Keys.Enter || (tstb_search.Text.Length == 1 && e.KeyData == Keys.Back))
             {
                 UpdateStudentList();
             }

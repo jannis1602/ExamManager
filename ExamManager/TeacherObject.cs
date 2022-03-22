@@ -57,7 +57,7 @@ namespace ExamManager
             if (subject3 != null) this.Subject3 = subject3;
             Program.database.EditTeacher(this.Shortname, this.Firstname, this.Lastname, this.Email, this.Phonenumber, this.Subject1, this.Subject2, this.Subject3);
         }
-        public bool AddToDatabase()
+        public bool AddToDatabase(bool showError = false)
         {
             string check = null;
             if (Program.database.GetTeacherByID(Shortname) != null) check = "Lehrer mit gleichem Kürzel exestiert bereits";
@@ -68,7 +68,7 @@ namespace ExamManager
                 UpdateDBData();
                 return true;
             }
-            else { MessageBox.Show(check, "Fehler"); } // UpdateDBData(); }
+            else { if (showError) MessageBox.Show(check, "Fehler"); } // UpdateDBData(); }
             return false;
         }
         public void UpdateDBData(TeacherObject to = null)

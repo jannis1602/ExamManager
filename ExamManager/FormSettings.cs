@@ -32,8 +32,8 @@ namespace ExamManager
                     case 1: Colors.ColorTheme(Colors.Theme.dark); break;
                     case 2: Colors.ColorTheme(Colors.Theme.bw); break;
                 }
-            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text; // -> on change
-                                                                           //Properties.Settings.Default.Reload(); // TODO restore old settings
+            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text.Replace("@", ""); // -> on change
+                                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
             Properties.Settings.Default.SMTP_server = tb_smtp_server.Text;
             Properties.Settings.Default.SMTP_port = tb_smtp_port.Text;
             Properties.Settings.Default.SMTP_email = tb_smtp_email.Text;
