@@ -31,7 +31,7 @@ namespace ExamManager
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormImportExport));
             this.page_table = new System.Windows.Forms.TabPage();
-            this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_table_main = new System.Windows.Forms.TableLayoutPanel();
             this.flp_table_main = new System.Windows.Forms.FlowLayoutPanel();
             this.flp_table_1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_table_file = new System.Windows.Forms.Label();
@@ -50,21 +50,25 @@ namespace ExamManager
             this.cb_table_remove_numbers = new System.Windows.Forms.CheckBox();
             this.btn_table_add = new System.Windows.Forms.Button();
             this.page_export = new System.Windows.Forms.TabPage();
-            this.tlp_main_grid_export = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_export_main_grid = new System.Windows.Forms.TableLayoutPanel();
+            this.flp_export_options = new System.Windows.Forms.FlowLayoutPanel();
+            this.flp_export_date = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_export_singleexamday = new System.Windows.Forms.CheckBox();
+            this.cb_export_days = new System.Windows.Forms.ComboBox();
             this.tlp_grid_export = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
+            this.btn_export_teacher_csv = new System.Windows.Forms.Button();
+            this.btn_export_student_csv = new System.Windows.Forms.Button();
+            this.btn_export_exam_csv = new System.Windows.Forms.Button();
+            this.btn_export_exam_json = new System.Windows.Forms.Button();
+            this.btn_export_student_json = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
+            this.btn_export_teacher_json = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.page_import = new System.Windows.Forms.TabPage();
-            this.tlp_main_grid_import = new System.Windows.Forms.TableLayoutPanel();
+            this.tlp_import_main_grid = new System.Windows.Forms.TableLayoutPanel();
             this.btn_import_add = new System.Windows.Forms.Button();
             this.tlp_grid_import = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -83,17 +87,20 @@ namespace ExamManager
             this.label5 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.flp_import_options = new System.Windows.Forms.FlowLayoutPanel();
+            this.flp_import_file = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_import_filetext = new System.Windows.Forms.Label();
+            this.lbl_import_file = new System.Windows.Forms.Label();
             this.flp_import_grade = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_import_grade = new System.Windows.Forms.Label();
             this.cb_import_grade = new System.Windows.Forms.ComboBox();
             this.flp_import_email = new System.Windows.Forms.FlowLayoutPanel();
             this.cb_import_generateemail = new System.Windows.Forms.CheckBox();
+            this.flp_import_nameorder = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_import_nameorder = new System.Windows.Forms.Label();
+            this.cb_import_nameorder = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.flp_import_file = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbl_import_filetext = new System.Windows.Forms.Label();
-            this.lbl_import_file = new System.Windows.Forms.Label();
             this.page_table.SuspendLayout();
-            this.tlp_main.SuspendLayout();
+            this.tlp_table_main.SuspendLayout();
             this.flp_table_main.SuspendLayout();
             this.flp_table_1.SuspendLayout();
             this.flp_table_2.SuspendLayout();
@@ -101,21 +108,24 @@ namespace ExamManager
             this.flp_table_4.SuspendLayout();
             this.flp_table_5.SuspendLayout();
             this.page_export.SuspendLayout();
-            this.tlp_main_grid_export.SuspendLayout();
+            this.tlp_export_main_grid.SuspendLayout();
+            this.flp_export_options.SuspendLayout();
+            this.flp_export_date.SuspendLayout();
             this.tlp_grid_export.SuspendLayout();
             this.page_import.SuspendLayout();
-            this.tlp_main_grid_import.SuspendLayout();
+            this.tlp_import_main_grid.SuspendLayout();
             this.tlp_grid_import.SuspendLayout();
             this.flp_import_options.SuspendLayout();
+            this.flp_import_file.SuspendLayout();
             this.flp_import_grade.SuspendLayout();
             this.flp_import_email.SuspendLayout();
+            this.flp_import_nameorder.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.flp_import_file.SuspendLayout();
             this.SuspendLayout();
             // 
             // page_table
             // 
-            this.page_table.Controls.Add(this.tlp_main);
+            this.page_table.Controls.Add(this.tlp_table_main);
             this.page_table.Location = new System.Drawing.Point(4, 25);
             this.page_table.Name = "page_table";
             this.page_table.Padding = new System.Windows.Forms.Padding(3);
@@ -124,20 +134,20 @@ namespace ExamManager
             this.page_table.Text = "Tabelle";
             this.page_table.UseVisualStyleBackColor = true;
             // 
-            // tlp_main
+            // tlp_table_main
             // 
-            this.tlp_main.ColumnCount = 1;
-            this.tlp_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main.Controls.Add(this.flp_table_main, 0, 0);
-            this.tlp_main.Controls.Add(this.btn_table_add, 0, 1);
-            this.tlp_main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_main.Location = new System.Drawing.Point(3, 3);
-            this.tlp_main.Name = "tlp_main";
-            this.tlp_main.RowCount = 2;
-            this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlp_main.Size = new System.Drawing.Size(750, 356);
-            this.tlp_main.TabIndex = 1;
+            this.tlp_table_main.ColumnCount = 1;
+            this.tlp_table_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_table_main.Controls.Add(this.flp_table_main, 0, 0);
+            this.tlp_table_main.Controls.Add(this.btn_table_add, 0, 1);
+            this.tlp_table_main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_table_main.Location = new System.Drawing.Point(3, 3);
+            this.tlp_table_main.Name = "tlp_table_main";
+            this.tlp_table_main.RowCount = 2;
+            this.tlp_table_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_table_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlp_table_main.Size = new System.Drawing.Size(750, 356);
+            this.tlp_table_main.TabIndex = 1;
             // 
             // flp_table_main
             // 
@@ -156,7 +166,8 @@ namespace ExamManager
             // 
             this.flp_table_1.Controls.Add(this.lbl_table_file);
             this.flp_table_1.Controls.Add(this.btn_table_select_file);
-            this.flp_table_1.Location = new System.Drawing.Point(3, 3);
+            this.flp_table_1.Location = new System.Drawing.Point(2, 2);
+            this.flp_table_1.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_1.Name = "flp_table_1";
             this.flp_table_1.Size = new System.Drawing.Size(739, 30);
             this.flp_table_1.TabIndex = 0;
@@ -183,12 +194,14 @@ namespace ExamManager
             this.btn_table_select_file.TabIndex = 1;
             this.btn_table_select_file.Text = "Auswählen";
             this.btn_table_select_file.UseVisualStyleBackColor = true;
+            this.btn_table_select_file.Click += new System.EventHandler(this.btn_table_select_file_Click);
             // 
             // flp_table_2
             // 
             this.flp_table_2.Controls.Add(this.lbl_table_grade);
             this.flp_table_2.Controls.Add(this.cb_table_grade);
-            this.flp_table_2.Location = new System.Drawing.Point(3, 39);
+            this.flp_table_2.Location = new System.Drawing.Point(2, 36);
+            this.flp_table_2.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_2.Name = "flp_table_2";
             this.flp_table_2.Size = new System.Drawing.Size(739, 30);
             this.flp_table_2.TabIndex = 1;
@@ -218,7 +231,8 @@ namespace ExamManager
             // 
             this.flp_table_3.Controls.Add(this.lbl_table_date);
             this.flp_table_3.Controls.Add(this.dtp_table_date);
-            this.flp_table_3.Location = new System.Drawing.Point(3, 75);
+            this.flp_table_3.Location = new System.Drawing.Point(2, 70);
+            this.flp_table_3.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_3.Name = "flp_table_3";
             this.flp_table_3.Size = new System.Drawing.Size(739, 30);
             this.flp_table_3.TabIndex = 4;
@@ -252,7 +266,8 @@ namespace ExamManager
             // 
             this.flp_table_4.Controls.Add(this.lbl_table_duration);
             this.flp_table_4.Controls.Add(this.tb_table_duration);
-            this.flp_table_4.Location = new System.Drawing.Point(3, 111);
+            this.flp_table_4.Location = new System.Drawing.Point(2, 104);
+            this.flp_table_4.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_4.Name = "flp_table_4";
             this.flp_table_4.Size = new System.Drawing.Size(739, 30);
             this.flp_table_4.TabIndex = 5;
@@ -277,12 +292,14 @@ namespace ExamManager
             this.tb_table_duration.Size = new System.Drawing.Size(50, 23);
             this.tb_table_duration.TabIndex = 2;
             this.tb_table_duration.Text = "30";
+            this.tb_table_duration.TextChanged += new System.EventHandler(this.tb_table_duration_TextChanged);
             // 
             // flp_table_5
             // 
             this.flp_table_5.Controls.Add(this.lbl_table_subjectname);
             this.flp_table_5.Controls.Add(this.cb_table_remove_numbers);
-            this.flp_table_5.Location = new System.Drawing.Point(3, 147);
+            this.flp_table_5.Location = new System.Drawing.Point(2, 138);
+            this.flp_table_5.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_5.Name = "flp_table_5";
             this.flp_table_5.Size = new System.Drawing.Size(739, 30);
             this.flp_table_5.TabIndex = 6;
@@ -322,10 +339,11 @@ namespace ExamManager
             this.btn_table_add.TabIndex = 2;
             this.btn_table_add.Text = "Hinzufügen";
             this.btn_table_add.UseVisualStyleBackColor = true;
+            this.btn_table_add.Click += new System.EventHandler(this.btn_table_add_Click);
             // 
             // page_export
             // 
-            this.page_export.Controls.Add(this.tlp_main_grid_export);
+            this.page_export.Controls.Add(this.tlp_export_main_grid);
             this.page_export.Location = new System.Drawing.Point(4, 25);
             this.page_export.Name = "page_export";
             this.page_export.Padding = new System.Windows.Forms.Padding(3);
@@ -334,20 +352,66 @@ namespace ExamManager
             this.page_export.Text = "Export";
             this.page_export.UseVisualStyleBackColor = true;
             // 
-            // tlp_main_grid_export
+            // tlp_export_main_grid
             // 
-            this.tlp_main_grid_export.ColumnCount = 1;
-            this.tlp_main_grid_export.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main_grid_export.Controls.Add(this.tlp_grid_export, 0, 0);
-            this.tlp_main_grid_export.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_main_grid_export.Location = new System.Drawing.Point(3, 3);
-            this.tlp_main_grid_export.Name = "tlp_main_grid_export";
-            this.tlp_main_grid_export.RowCount = 2;
-            this.tlp_main_grid_export.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
-            this.tlp_main_grid_export.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main_grid_export.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlp_main_grid_export.Size = new System.Drawing.Size(750, 356);
-            this.tlp_main_grid_export.TabIndex = 2;
+            this.tlp_export_main_grid.ColumnCount = 1;
+            this.tlp_export_main_grid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_export_main_grid.Controls.Add(this.flp_export_options, 0, 1);
+            this.tlp_export_main_grid.Controls.Add(this.tlp_grid_export, 0, 0);
+            this.tlp_export_main_grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_export_main_grid.Location = new System.Drawing.Point(3, 3);
+            this.tlp_export_main_grid.Name = "tlp_export_main_grid";
+            this.tlp_export_main_grid.RowCount = 2;
+            this.tlp_export_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tlp_export_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_export_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlp_export_main_grid.Size = new System.Drawing.Size(750, 356);
+            this.tlp_export_main_grid.TabIndex = 2;
+            // 
+            // flp_export_options
+            // 
+            this.flp_export_options.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flp_export_options.Controls.Add(this.flp_export_date);
+            this.flp_export_options.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flp_export_options.Location = new System.Drawing.Point(3, 129);
+            this.flp_export_options.Name = "flp_export_options";
+            this.flp_export_options.Size = new System.Drawing.Size(744, 224);
+            this.flp_export_options.TabIndex = 3;
+            // 
+            // flp_export_date
+            // 
+            this.flp_export_date.Controls.Add(this.cb_export_singleexamday);
+            this.flp_export_date.Controls.Add(this.cb_export_days);
+            this.flp_export_date.Location = new System.Drawing.Point(3, 3);
+            this.flp_export_date.Name = "flp_export_date";
+            this.flp_export_date.Size = new System.Drawing.Size(736, 30);
+            this.flp_export_date.TabIndex = 4;
+            // 
+            // cb_export_singleexamday
+            // 
+            this.cb_export_singleexamday.AutoSize = true;
+            this.cb_export_singleexamday.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_export_singleexamday.Location = new System.Drawing.Point(3, 3);
+            this.cb_export_singleexamday.Name = "cb_export_singleexamday";
+            this.cb_export_singleexamday.Size = new System.Drawing.Size(272, 24);
+            this.cb_export_singleexamday.TabIndex = 13;
+            this.cb_export_singleexamday.Text = "Einzelnen Prüfungstag exportieren";
+            this.cb_export_singleexamday.UseVisualStyleBackColor = true;
+            this.cb_export_singleexamday.CheckedChanged += new System.EventHandler(this.cb_export_singleexamday_CheckedChanged);
+            // 
+            // cb_export_days
+            // 
+            this.cb_export_days.DropDownHeight = 200;
+            this.cb_export_days.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_export_days.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_export_days.FormattingEnabled = true;
+            this.cb_export_days.IntegralHeight = false;
+            this.cb_export_days.Location = new System.Drawing.Point(281, 1);
+            this.cb_export_days.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
+            this.cb_export_days.MaximumSize = new System.Drawing.Size(220, 0);
+            this.cb_export_days.Name = "cb_export_days";
+            this.cb_export_days.Size = new System.Drawing.Size(220, 28);
+            this.cb_export_days.TabIndex = 14;
             // 
             // tlp_grid_export
             // 
@@ -359,13 +423,13 @@ namespace ExamManager
             this.tlp_grid_export.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlp_grid_export.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlp_grid_export.Controls.Add(this.label2, 0, 1);
-            this.tlp_grid_export.Controls.Add(this.button10, 2, 3);
-            this.tlp_grid_export.Controls.Add(this.button9, 2, 2);
-            this.tlp_grid_export.Controls.Add(this.button11, 2, 1);
-            this.tlp_grid_export.Controls.Add(this.button8, 1, 1);
-            this.tlp_grid_export.Controls.Add(this.button14, 1, 2);
+            this.tlp_grid_export.Controls.Add(this.btn_export_teacher_csv, 2, 3);
+            this.tlp_grid_export.Controls.Add(this.btn_export_student_csv, 2, 2);
+            this.tlp_grid_export.Controls.Add(this.btn_export_exam_csv, 2, 1);
+            this.tlp_grid_export.Controls.Add(this.btn_export_exam_json, 1, 1);
+            this.tlp_grid_export.Controls.Add(this.btn_export_student_json, 1, 2);
             this.tlp_grid_export.Controls.Add(this.label4, 1, 0);
-            this.tlp_grid_export.Controls.Add(this.button7, 1, 3);
+            this.tlp_grid_export.Controls.Add(this.btn_export_teacher_json, 1, 3);
             this.tlp_grid_export.Controls.Add(this.label6, 2, 0);
             this.tlp_grid_export.Controls.Add(this.label7, 0, 2);
             this.tlp_grid_export.Controls.Add(this.label8, 0, 3);
@@ -392,61 +456,65 @@ namespace ExamManager
             this.label2.TabIndex = 1;
             this.label2.Text = "Prüfungen:";
             // 
-            // button10
+            // btn_export_teacher_csv
             // 
-            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(474, 89);
-            this.button10.Margin = new System.Windows.Forms.Padding(1);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(100, 28);
-            this.button10.TabIndex = 10;
-            this.button10.Text = "export";
-            this.button10.UseVisualStyleBackColor = true;
+            this.btn_export_teacher_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_teacher_csv.Location = new System.Drawing.Point(474, 89);
+            this.btn_export_teacher_csv.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_teacher_csv.Name = "btn_export_teacher_csv";
+            this.btn_export_teacher_csv.Size = new System.Drawing.Size(100, 28);
+            this.btn_export_teacher_csv.TabIndex = 10;
+            this.btn_export_teacher_csv.Text = "export";
+            this.btn_export_teacher_csv.UseVisualStyleBackColor = true;
+            this.btn_export_teacher_csv.Click += new System.EventHandler(this.btn_export_teacher_csv_Click);
             // 
-            // button9
+            // btn_export_student_csv
             // 
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(474, 60);
-            this.button9.Margin = new System.Windows.Forms.Padding(1);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(100, 26);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "export";
-            this.button9.UseVisualStyleBackColor = true;
+            this.btn_export_student_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_student_csv.Location = new System.Drawing.Point(474, 60);
+            this.btn_export_student_csv.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_student_csv.Name = "btn_export_student_csv";
+            this.btn_export_student_csv.Size = new System.Drawing.Size(100, 26);
+            this.btn_export_student_csv.TabIndex = 9;
+            this.btn_export_student_csv.Text = "export";
+            this.btn_export_student_csv.UseVisualStyleBackColor = true;
+            this.btn_export_student_csv.Click += new System.EventHandler(this.btn_export_student_csv_Click);
             // 
-            // button11
+            // btn_export_exam_csv
             // 
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(474, 31);
-            this.button11.Margin = new System.Windows.Forms.Padding(1);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(100, 26);
-            this.button11.TabIndex = 11;
-            this.button11.Text = "export";
-            this.button11.UseVisualStyleBackColor = true;
+            this.btn_export_exam_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_exam_csv.Location = new System.Drawing.Point(474, 31);
+            this.btn_export_exam_csv.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_exam_csv.Name = "btn_export_exam_csv";
+            this.btn_export_exam_csv.Size = new System.Drawing.Size(100, 26);
+            this.btn_export_exam_csv.TabIndex = 11;
+            this.btn_export_exam_csv.Text = "export";
+            this.btn_export_exam_csv.UseVisualStyleBackColor = true;
+            this.btn_export_exam_csv.Click += new System.EventHandler(this.btn_export_exam_csv_Click);
             // 
-            // button8
+            // btn_export_exam_json
             // 
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(203, 31);
-            this.button8.Margin = new System.Windows.Forms.Padding(1);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(100, 26);
-            this.button8.TabIndex = 10;
-            this.button8.Text = "export";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.btn_export_exam_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_exam_json.Location = new System.Drawing.Point(203, 31);
+            this.btn_export_exam_json.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_exam_json.Name = "btn_export_exam_json";
+            this.btn_export_exam_json.Size = new System.Drawing.Size(100, 26);
+            this.btn_export_exam_json.TabIndex = 10;
+            this.btn_export_exam_json.Text = "export";
+            this.btn_export_exam_json.UseVisualStyleBackColor = true;
+            this.btn_export_exam_json.Click += new System.EventHandler(this.btn_export_exam_json_Click);
             // 
-            // button14
+            // btn_export_student_json
             // 
-            this.button14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button14.Location = new System.Drawing.Point(203, 60);
-            this.button14.Margin = new System.Windows.Forms.Padding(1);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(100, 26);
-            this.button14.TabIndex = 8;
-            this.button14.Text = "export";
-            this.button14.UseVisualStyleBackColor = true;
+            this.btn_export_student_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_student_json.Location = new System.Drawing.Point(203, 60);
+            this.btn_export_student_json.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_student_json.Name = "btn_export_student_json";
+            this.btn_export_student_json.Size = new System.Drawing.Size(100, 26);
+            this.btn_export_student_json.TabIndex = 8;
+            this.btn_export_student_json.Text = "export";
+            this.btn_export_student_json.UseVisualStyleBackColor = true;
+            this.btn_export_student_json.Click += new System.EventHandler(this.btn_export_student_json_Click);
             // 
             // label4
             // 
@@ -460,16 +528,17 @@ namespace ExamManager
             this.label4.TabIndex = 4;
             this.label4.Text = "JSON:";
             // 
-            // button7
+            // btn_export_teacher_json
             // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(203, 89);
-            this.button7.Margin = new System.Windows.Forms.Padding(1);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(100, 28);
-            this.button7.TabIndex = 9;
-            this.button7.Text = "export";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btn_export_teacher_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_export_teacher_json.Location = new System.Drawing.Point(203, 89);
+            this.btn_export_teacher_json.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_export_teacher_json.Name = "btn_export_teacher_json";
+            this.btn_export_teacher_json.Size = new System.Drawing.Size(100, 28);
+            this.btn_export_teacher_json.TabIndex = 9;
+            this.btn_export_teacher_json.Text = "export";
+            this.btn_export_teacher_json.UseVisualStyleBackColor = true;
+            this.btn_export_teacher_json.Click += new System.EventHandler(this.btn_export_teacher_json_Click);
             // 
             // label6
             // 
@@ -509,7 +578,7 @@ namespace ExamManager
             // 
             // page_import
             // 
-            this.page_import.Controls.Add(this.tlp_main_grid_import);
+            this.page_import.Controls.Add(this.tlp_import_main_grid);
             this.page_import.Location = new System.Drawing.Point(4, 25);
             this.page_import.Name = "page_import";
             this.page_import.Padding = new System.Windows.Forms.Padding(3);
@@ -518,22 +587,22 @@ namespace ExamManager
             this.page_import.Text = "Import";
             this.page_import.UseVisualStyleBackColor = true;
             // 
-            // tlp_main_grid_import
+            // tlp_import_main_grid
             // 
-            this.tlp_main_grid_import.ColumnCount = 1;
-            this.tlp_main_grid_import.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main_grid_import.Controls.Add(this.btn_import_add, 0, 2);
-            this.tlp_main_grid_import.Controls.Add(this.tlp_grid_import, 0, 0);
-            this.tlp_main_grid_import.Controls.Add(this.flp_import_options, 0, 1);
-            this.tlp_main_grid_import.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_main_grid_import.Location = new System.Drawing.Point(3, 3);
-            this.tlp_main_grid_import.Name = "tlp_main_grid_import";
-            this.tlp_main_grid_import.RowCount = 3;
-            this.tlp_main_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
-            this.tlp_main_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_main_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlp_main_grid_import.Size = new System.Drawing.Size(750, 356);
-            this.tlp_main_grid_import.TabIndex = 2;
+            this.tlp_import_main_grid.ColumnCount = 1;
+            this.tlp_import_main_grid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_import_main_grid.Controls.Add(this.btn_import_add, 0, 2);
+            this.tlp_import_main_grid.Controls.Add(this.tlp_grid_import, 0, 0);
+            this.tlp_import_main_grid.Controls.Add(this.flp_import_options, 0, 1);
+            this.tlp_import_main_grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_import_main_grid.Location = new System.Drawing.Point(3, 3);
+            this.tlp_import_main_grid.Name = "tlp_import_main_grid";
+            this.tlp_import_main_grid.RowCount = 3;
+            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlp_import_main_grid.Size = new System.Drawing.Size(750, 356);
+            this.tlp_import_main_grid.TabIndex = 2;
             // 
             // btn_import_add
             // 
@@ -769,17 +838,53 @@ namespace ExamManager
             this.flp_import_options.Controls.Add(this.flp_import_file);
             this.flp_import_options.Controls.Add(this.flp_import_grade);
             this.flp_import_options.Controls.Add(this.flp_import_email);
+            this.flp_import_options.Controls.Add(this.flp_import_nameorder);
             this.flp_import_options.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flp_import_options.Location = new System.Drawing.Point(3, 129);
             this.flp_import_options.Name = "flp_import_options";
             this.flp_import_options.Size = new System.Drawing.Size(744, 184);
             this.flp_import_options.TabIndex = 2;
             // 
+            // flp_import_file
+            // 
+            this.flp_import_file.Controls.Add(this.lbl_import_filetext);
+            this.flp_import_file.Controls.Add(this.lbl_import_file);
+            this.flp_import_file.Location = new System.Drawing.Point(2, 2);
+            this.flp_import_file.Margin = new System.Windows.Forms.Padding(2);
+            this.flp_import_file.Name = "flp_import_file";
+            this.flp_import_file.Size = new System.Drawing.Size(736, 30);
+            this.flp_import_file.TabIndex = 4;
+            // 
+            // lbl_import_filetext
+            // 
+            this.lbl_import_filetext.AutoSize = true;
+            this.lbl_import_filetext.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_import_filetext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_import_filetext.Location = new System.Drawing.Point(0, 4);
+            this.lbl_import_filetext.Margin = new System.Windows.Forms.Padding(0, 4, 3, 3);
+            this.lbl_import_filetext.Name = "lbl_import_filetext";
+            this.lbl_import_filetext.Size = new System.Drawing.Size(51, 20);
+            this.lbl_import_filetext.TabIndex = 2;
+            this.lbl_import_filetext.Text = "Datei:";
+            // 
+            // lbl_import_file
+            // 
+            this.lbl_import_file.AutoSize = true;
+            this.lbl_import_file.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_import_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_import_file.Location = new System.Drawing.Point(54, 4);
+            this.lbl_import_file.Margin = new System.Windows.Forms.Padding(0, 4, 3, 3);
+            this.lbl_import_file.Name = "lbl_import_file";
+            this.lbl_import_file.Size = new System.Drawing.Size(14, 20);
+            this.lbl_import_file.TabIndex = 3;
+            this.lbl_import_file.Text = "-";
+            // 
             // flp_import_grade
             // 
             this.flp_import_grade.Controls.Add(this.lbl_import_grade);
             this.flp_import_grade.Controls.Add(this.cb_import_grade);
-            this.flp_import_grade.Location = new System.Drawing.Point(3, 39);
+            this.flp_import_grade.Location = new System.Drawing.Point(2, 36);
+            this.flp_import_grade.Margin = new System.Windows.Forms.Padding(2);
             this.flp_import_grade.Name = "flp_import_grade";
             this.flp_import_grade.Size = new System.Drawing.Size(736, 30);
             this.flp_import_grade.TabIndex = 2;
@@ -810,7 +915,8 @@ namespace ExamManager
             // flp_import_email
             // 
             this.flp_import_email.Controls.Add(this.cb_import_generateemail);
-            this.flp_import_email.Location = new System.Drawing.Point(3, 75);
+            this.flp_import_email.Location = new System.Drawing.Point(2, 70);
+            this.flp_import_email.Margin = new System.Windows.Forms.Padding(2);
             this.flp_import_email.Name = "flp_import_email";
             this.flp_import_email.Size = new System.Drawing.Size(736, 30);
             this.flp_import_email.TabIndex = 3;
@@ -827,6 +933,43 @@ namespace ExamManager
             this.cb_import_generateemail.Text = "Emails generieren";
             this.cb_import_generateemail.UseVisualStyleBackColor = true;
             // 
+            // flp_import_nameorder
+            // 
+            this.flp_import_nameorder.Controls.Add(this.lbl_import_nameorder);
+            this.flp_import_nameorder.Controls.Add(this.cb_import_nameorder);
+            this.flp_import_nameorder.Location = new System.Drawing.Point(2, 104);
+            this.flp_import_nameorder.Margin = new System.Windows.Forms.Padding(2);
+            this.flp_import_nameorder.Name = "flp_import_nameorder";
+            this.flp_import_nameorder.Size = new System.Drawing.Size(736, 30);
+            this.flp_import_nameorder.TabIndex = 5;
+            // 
+            // lbl_import_nameorder
+            // 
+            this.lbl_import_nameorder.AutoSize = true;
+            this.lbl_import_nameorder.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_import_nameorder.Location = new System.Drawing.Point(0, 4);
+            this.lbl_import_nameorder.Margin = new System.Windows.Forms.Padding(0, 4, 3, 3);
+            this.lbl_import_nameorder.Name = "lbl_import_nameorder";
+            this.lbl_import_nameorder.Size = new System.Drawing.Size(151, 20);
+            this.lbl_import_nameorder.TabIndex = 10;
+            this.lbl_import_nameorder.Text = "Namensreihenfolge:";
+            this.lbl_import_nameorder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cb_import_nameorder
+            // 
+            this.cb_import_nameorder.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_import_nameorder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_import_nameorder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.cb_import_nameorder.FormattingEnabled = true;
+            this.cb_import_nameorder.Items.AddRange(new object[] {
+            "Vorname Nachname",
+            "Nachname Vorname"});
+            this.cb_import_nameorder.Location = new System.Drawing.Point(156, 2);
+            this.cb_import_nameorder.Margin = new System.Windows.Forms.Padding(2);
+            this.cb_import_nameorder.Name = "cb_import_nameorder";
+            this.cb_import_nameorder.Size = new System.Drawing.Size(160, 24);
+            this.cb_import_nameorder.TabIndex = 11;
+            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.page_import);
@@ -840,39 +983,6 @@ namespace ExamManager
             this.tabControl.Size = new System.Drawing.Size(764, 391);
             this.tabControl.TabIndex = 3;
             // 
-            // flp_import_file
-            // 
-            this.flp_import_file.Controls.Add(this.lbl_import_filetext);
-            this.flp_import_file.Controls.Add(this.lbl_import_file);
-            this.flp_import_file.Location = new System.Drawing.Point(3, 3);
-            this.flp_import_file.Name = "flp_import_file";
-            this.flp_import_file.Size = new System.Drawing.Size(736, 30);
-            this.flp_import_file.TabIndex = 4;
-            // 
-            // lbl_import_filetext
-            // 
-            this.lbl_import_filetext.AutoSize = true;
-            this.lbl_import_filetext.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lbl_import_filetext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_import_filetext.Location = new System.Drawing.Point(0, 4);
-            this.lbl_import_filetext.Margin = new System.Windows.Forms.Padding(0, 4, 3, 3);
-            this.lbl_import_filetext.Name = "lbl_import_filetext";
-            this.lbl_import_filetext.Size = new System.Drawing.Size(51, 20);
-            this.lbl_import_filetext.TabIndex = 2;
-            this.lbl_import_filetext.Text = "Datei:";
-            // 
-            // lbl_import_file
-            // 
-            this.lbl_import_file.AutoSize = true;
-            this.lbl_import_file.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lbl_import_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_import_file.Location = new System.Drawing.Point(54, 4);
-            this.lbl_import_file.Margin = new System.Windows.Forms.Padding(0, 4, 3, 3);
-            this.lbl_import_file.Name = "lbl_import_file";
-            this.lbl_import_file.Size = new System.Drawing.Size(14, 20);
-            this.lbl_import_file.TabIndex = 3;
-            this.lbl_import_file.Text = "-";
-            // 
             // FormImportExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -883,7 +993,7 @@ namespace ExamManager
             this.Name = "FormImportExport";
             this.Text = "Import Export";
             this.page_table.ResumeLayout(false);
-            this.tlp_main.ResumeLayout(false);
+            this.tlp_table_main.ResumeLayout(false);
             this.flp_table_main.ResumeLayout(false);
             this.flp_table_1.ResumeLayout(false);
             this.flp_table_1.PerformLayout();
@@ -896,21 +1006,26 @@ namespace ExamManager
             this.flp_table_5.ResumeLayout(false);
             this.flp_table_5.PerformLayout();
             this.page_export.ResumeLayout(false);
-            this.tlp_main_grid_export.ResumeLayout(false);
+            this.tlp_export_main_grid.ResumeLayout(false);
+            this.flp_export_options.ResumeLayout(false);
+            this.flp_export_date.ResumeLayout(false);
+            this.flp_export_date.PerformLayout();
             this.tlp_grid_export.ResumeLayout(false);
             this.tlp_grid_export.PerformLayout();
             this.page_import.ResumeLayout(false);
-            this.tlp_main_grid_import.ResumeLayout(false);
+            this.tlp_import_main_grid.ResumeLayout(false);
             this.tlp_grid_import.ResumeLayout(false);
             this.tlp_grid_import.PerformLayout();
             this.flp_import_options.ResumeLayout(false);
+            this.flp_import_file.ResumeLayout(false);
+            this.flp_import_file.PerformLayout();
             this.flp_import_grade.ResumeLayout(false);
             this.flp_import_grade.PerformLayout();
             this.flp_import_email.ResumeLayout(false);
             this.flp_import_email.PerformLayout();
+            this.flp_import_nameorder.ResumeLayout(false);
+            this.flp_import_nameorder.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            this.flp_import_file.ResumeLayout(false);
-            this.flp_import_file.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -918,7 +1033,7 @@ namespace ExamManager
         #endregion
 
         private System.Windows.Forms.TabPage page_table;
-        private System.Windows.Forms.TableLayoutPanel tlp_main;
+        private System.Windows.Forms.TableLayoutPanel tlp_table_main;
         private System.Windows.Forms.FlowLayoutPanel flp_table_main;
         private System.Windows.Forms.FlowLayoutPanel flp_table_1;
         private System.Windows.Forms.Label lbl_table_file;
@@ -939,7 +1054,7 @@ namespace ExamManager
         private System.Windows.Forms.TabPage page_export;
         private System.Windows.Forms.TabPage page_import;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TableLayoutPanel tlp_main_grid_import;
+        private System.Windows.Forms.TableLayoutPanel tlp_import_main_grid;
         private System.Windows.Forms.TableLayoutPanel tlp_grid_import;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_import_teacher_txt;
@@ -956,16 +1071,16 @@ namespace ExamManager
         private System.Windows.Forms.Button btn_import_exam_json;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TableLayoutPanel tlp_main_grid_export;
+        private System.Windows.Forms.TableLayoutPanel tlp_export_main_grid;
         private System.Windows.Forms.TableLayoutPanel tlp_grid_export;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button btn_export_teacher_csv;
+        private System.Windows.Forms.Button btn_export_student_csv;
+        private System.Windows.Forms.Button btn_export_exam_csv;
+        private System.Windows.Forms.Button btn_export_exam_json;
+        private System.Windows.Forms.Button btn_export_student_json;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btn_export_teacher_json;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
@@ -979,5 +1094,12 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flp_import_file;
         private System.Windows.Forms.Label lbl_import_filetext;
         private System.Windows.Forms.Label lbl_import_file;
+        private System.Windows.Forms.FlowLayoutPanel flp_export_options;
+        private System.Windows.Forms.FlowLayoutPanel flp_export_date;
+        private System.Windows.Forms.CheckBox cb_export_singleexamday;
+        private System.Windows.Forms.ComboBox cb_export_days;
+        private System.Windows.Forms.FlowLayoutPanel flp_import_nameorder;
+        private System.Windows.Forms.Label lbl_import_nameorder;
+        private System.Windows.Forms.ComboBox cb_import_nameorder;
     }
 }

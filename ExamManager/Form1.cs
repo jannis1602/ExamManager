@@ -63,7 +63,7 @@ namespace ExamManager
                 dtp_date.Value = DateTime.ParseExact(Properties.Settings.Default.TimelineDate, "dd.MM.yyyy", null);
             date = this.dtp_date.Value.ToString("yyyy-MM-dd");
             if (database.GetAllExamsAtDate(date).Count < 1) dtp_date.Value = DateTime.Now;
-            //UpdateTimeline();// render TL on startup
+            UpdateTimeline();// render TL on startup
             UpdateAutocomplete();
         }
 
@@ -1456,7 +1456,7 @@ namespace ExamManager
                         DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
                         string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
                         var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Firstname + " " + teacher.Lastname, time, exam.Examroom, exam.Preparationroom, student.Firstname + " " + student.Lastname, exam.Teacher1Id, exam.Teacher2Id, exam.Teacher3Id, exam.Subject, exam.Duration);
-                        csv.AppendLine(newLine);
+                        csv.AppendLine(newLine); // TODO: fullname()
                     }
                 File.WriteAllText(sfd.FileName, csv.ToString());
             }
@@ -1467,9 +1467,12 @@ namespace ExamManager
         }
         private void tsmi_open_excel_Click(object sender, EventArgs e)
         {
-            FormLoadTable form = new FormLoadTable();
+            FormImportExport form = new FormImportExport(2);
             form.FormClosed += update_timeline_Event;
             form.ShowDialog();
+            /*FormLoadTable form = new FormLoadTable();
+            form.FormClosed += update_timeline_Event;
+            form.ShowDialog();*/
         }
         // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)
