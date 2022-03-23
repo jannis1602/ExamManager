@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ExamManager
@@ -9,17 +12,22 @@ namespace ExamManager
         [STAThread]
         static void Main()
         {
-            if (Properties.Settings.Default.ColorTheme == 0)
-                Colors.ColorTheme(Colors.Theme.light);
-            else if (Properties.Settings.Default.ColorTheme == 1)
-                Colors.ColorTheme(Colors.Theme.dark);
-            else if (Properties.Settings.Default.ColorTheme == 2)
-                Colors.ColorTheme(Colors.Theme.bw);
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            /*FormRegistration form = new FormRegistration();
+            if (form.locked)
+                form.ShowDialog();
+            if (form.locked) Application.Exit();
+            if (!form.locked)
+            {*/
+            if (Properties.Settings.Default.ColorTheme == 0) Colors.ColorTheme(Colors.Theme.light);
+            else if (Properties.Settings.Default.ColorTheme == 1) Colors.ColorTheme(Colors.Theme.dark);
+            else if (Properties.Settings.Default.ColorTheme == 2) Colors.ColorTheme(Colors.Theme.bw);
+
             database = new Database();
             Application.Run(new Form1());
+            //}
+
 
             // InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
 

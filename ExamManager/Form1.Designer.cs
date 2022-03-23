@@ -59,9 +59,10 @@ namespace ExamManager
             this.tsmi_filter_room = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_filter_all = new System.Windows.Forms.ToolStripMenuItem();
             this.examToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_examdates = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_exam_changeroom = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_exam_delete_examday = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_tools_deleteoedexams = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_tools_sendemail = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_import_export = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,7 +141,6 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
-            this.tsmi_tools_deleteoedexams = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -384,23 +384,29 @@ namespace ExamManager
             this.examToolStripMenuItem.Name = "examToolStripMenuItem";
             resources.ApplyResources(this.examToolStripMenuItem, "examToolStripMenuItem");
             // 
-            // tsmi_exam_changeroom
-            // 
-            this.tsmi_exam_changeroom.Name = "tsmi_exam_changeroom";
-            resources.ApplyResources(this.tsmi_exam_changeroom, "tsmi_exam_changeroom");
-            this.tsmi_exam_changeroom.Click += new System.EventHandler(this.tsmi_exam_changeroom_Click);
-            // 
             // tsmi_exam_examdates
             // 
             this.tsmi_exam_examdates.Name = "tsmi_exam_examdates";
             resources.ApplyResources(this.tsmi_exam_examdates, "tsmi_exam_examdates");
             this.tsmi_exam_examdates.Click += new System.EventHandler(this.tsmi_exam_examdates_Click);
             // 
+            // tsmi_exam_changeroom
+            // 
+            this.tsmi_exam_changeroom.Name = "tsmi_exam_changeroom";
+            resources.ApplyResources(this.tsmi_exam_changeroom, "tsmi_exam_changeroom");
+            this.tsmi_exam_changeroom.Click += new System.EventHandler(this.tsmi_exam_changeroom_Click);
+            // 
             // tsmi_exam_delete_examday
             // 
             this.tsmi_exam_delete_examday.Name = "tsmi_exam_delete_examday";
             resources.ApplyResources(this.tsmi_exam_delete_examday, "tsmi_exam_delete_examday");
             this.tsmi_exam_delete_examday.Click += new System.EventHandler(this.tsmi_exam_delete_examday_Click);
+            // 
+            // tsmi_tools_deleteoedexams
+            // 
+            this.tsmi_tools_deleteoedexams.Name = "tsmi_tools_deleteoedexams";
+            resources.ApplyResources(this.tsmi_tools_deleteoedexams, "tsmi_tools_deleteoedexams");
+            this.tsmi_tools_deleteoedexams.Click += new System.EventHandler(this.tsmi_tools_deleteoedexams_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -938,12 +944,6 @@ namespace ExamManager
             // toolTip
             // 
             this.toolTip.Tag = "";
-            // 
-            // tsmi_tools_deleteoedexams
-            // 
-            this.tsmi_tools_deleteoedexams.Name = "tsmi_tools_deleteoedexams";
-            resources.ApplyResources(this.tsmi_tools_deleteoedexams, "tsmi_tools_deleteoedexams");
-            this.tsmi_tools_deleteoedexams.Click += new System.EventHandler(this.tsmi_tools_deleteoedexams_Click);
             // 
             // Form1
             // 

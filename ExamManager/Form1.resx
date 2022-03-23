@@ -271,31 +271,31 @@
     <value>Suche</value>
   </data>
   <data name="tsmi_filter_grade.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_grade.Text" xml:space="preserve">
     <value>Stufe</value>
   </data>
   <data name="tsmi_filter_subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_subject.Text" xml:space="preserve">
     <value>Fach</value>
   </data>
   <data name="tsmi_filter_teacher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_teacher.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_filter_room.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_room.Text" xml:space="preserve">
     <value>Räume</value>
   </data>
   <data name="tsmi_filter_all.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>144, 22</value>
   </data>
   <data name="tsmi_filter_all.Text" xml:space="preserve">
     <value>Filter löschen</value>
@@ -4604,22 +4604,28 @@
   <data name="&gt;&gt;examToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmi_exam_changeroom.Name" xml:space="preserve">
-    <value>tsmi_exam_changeroom</value>
-  </data>
-  <data name="&gt;&gt;tsmi_exam_changeroom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tsmi_exam_examdates.Name" xml:space="preserve">
     <value>tsmi_exam_examdates</value>
   </data>
   <data name="&gt;&gt;tsmi_exam_examdates.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsmi_exam_changeroom.Name" xml:space="preserve">
+    <value>tsmi_exam_changeroom</value>
+  </data>
+  <data name="&gt;&gt;tsmi_exam_changeroom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tsmi_exam_delete_examday.Name" xml:space="preserve">
     <value>tsmi_exam_delete_examday</value>
   </data>
   <data name="&gt;&gt;tsmi_exam_delete_examday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmi_tools_deleteoedexams.Name" xml:space="preserve">
+    <value>tsmi_tools_deleteoedexams</value>
+  </data>
+  <data name="&gt;&gt;tsmi_tools_deleteoedexams.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolsToolStripMenuItem.Name" xml:space="preserve">
@@ -4711,12 +4717,6 @@
   </data>
   <data name="&gt;&gt;tooltip_search_filter.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmi_tools_deleteoedexams.Name" xml:space="preserve">
-    <value>tsmi_tools_deleteoedexams</value>
-  </data>
-  <data name="&gt;&gt;tsmi_tools_deleteoedexams.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Form1</value>
