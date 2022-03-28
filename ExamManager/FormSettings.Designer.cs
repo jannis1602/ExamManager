@@ -33,6 +33,9 @@ namespace ExamManager
             this.tlp_main = new System.Windows.Forms.TableLayoutPanel();
             this.panel_main = new System.Windows.Forms.TabControl();
             this.tp_common = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_pixelperhour = new System.Windows.Forms.Label();
+            this.cb_pixelperhour = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_pagelength = new System.Windows.Forms.Label();
             this.cb_entities_per_page = new System.Windows.Forms.ComboBox();
@@ -99,12 +102,10 @@ namespace ExamManager
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbl_pixelperhour = new System.Windows.Forms.Label();
-            this.cb_pixelperhour = new System.Windows.Forms.ComboBox();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -125,7 +126,6 @@ namespace ExamManager
             this.flp_select_localdb.SuspendLayout();
             this.v.SuspendLayout();
             this.tlp_btns.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -173,6 +173,53 @@ namespace ExamManager
             this.tp_common.TabIndex = 0;
             this.tp_common.Text = "Allgemein";
             this.tp_common.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel5.Controls.Add(this.lbl_pixelperhour);
+            this.flowLayoutPanel5.Controls.Add(this.cb_pixelperhour);
+            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 171);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel5.TabIndex = 13;
+            // 
+            // lbl_pixelperhour
+            // 
+            this.lbl_pixelperhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_pixelperhour.AutoSize = true;
+            this.lbl_pixelperhour.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_pixelperhour.Location = new System.Drawing.Point(5, 5);
+            this.lbl_pixelperhour.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_pixelperhour.MinimumSize = new System.Drawing.Size(60, 0);
+            this.lbl_pixelperhour.Name = "lbl_pixelperhour";
+            this.lbl_pixelperhour.Size = new System.Drawing.Size(128, 20);
+            this.lbl_pixelperhour.TabIndex = 7;
+            this.lbl_pixelperhour.Text = "Pixel pro Stunde:";
+            this.lbl_pixelperhour.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cb_pixelperhour
+            // 
+            this.cb_pixelperhour.AutoCompleteCustomSource.AddRange(new string[] {
+            "20",
+            "30",
+            "40",
+            "50",
+            "60"});
+            this.cb_pixelperhour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_pixelperhour.FormattingEnabled = true;
+            this.cb_pixelperhour.Items.AddRange(new object[] {
+            "150",
+            "175",
+            "200",
+            "225",
+            "250"});
+            this.cb_pixelperhour.Location = new System.Drawing.Point(141, 3);
+            this.cb_pixelperhour.Name = "cb_pixelperhour";
+            this.cb_pixelperhour.Size = new System.Drawing.Size(100, 24);
+            this.cb_pixelperhour.TabIndex = 6;
             // 
             // flowLayoutPanel4
             // 
@@ -956,67 +1003,22 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel5.Controls.Add(this.lbl_pixelperhour);
-            this.flowLayoutPanel5.Controls.Add(this.cb_pixelperhour);
-            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 171);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(780, 28);
-            this.flowLayoutPanel5.TabIndex = 13;
-            // 
-            // lbl_pixelperhour
-            // 
-            this.lbl_pixelperhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_pixelperhour.AutoSize = true;
-            this.lbl_pixelperhour.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lbl_pixelperhour.Location = new System.Drawing.Point(5, 5);
-            this.lbl_pixelperhour.Margin = new System.Windows.Forms.Padding(5);
-            this.lbl_pixelperhour.MinimumSize = new System.Drawing.Size(60, 0);
-            this.lbl_pixelperhour.Name = "lbl_pixelperhour";
-            this.lbl_pixelperhour.Size = new System.Drawing.Size(128, 20);
-            this.lbl_pixelperhour.TabIndex = 7;
-            this.lbl_pixelperhour.Text = "Pixel pro Stunde:";
-            this.lbl_pixelperhour.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cb_pixelperhour
-            // 
-            this.cb_pixelperhour.AutoCompleteCustomSource.AddRange(new string[] {
-            "20",
-            "30",
-            "40",
-            "50",
-            "60"});
-            this.cb_pixelperhour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_pixelperhour.FormattingEnabled = true;
-            this.cb_pixelperhour.Items.AddRange(new object[] {
-            "150",
-            "175",
-            "200",
-            "225",
-            "250"});
-            this.cb_pixelperhour.Location = new System.Drawing.Point(141, 3);
-            this.cb_pixelperhour.Name = "cb_pixelperhour";
-            this.cb_pixelperhour.Size = new System.Drawing.Size(100, 24);
-            this.cb_pixelperhour.TabIndex = 6;
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tlp_main);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormSettings";
+            this.ShowIcon = false;
             this.Text = "Einstellungen";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
             this.Load += new System.EventHandler(this.FormSettings_Load);
             this.tlp_main.ResumeLayout(false);
             this.panel_main.ResumeLayout(false);
             this.tp_common.ResumeLayout(false);
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
@@ -1051,8 +1053,6 @@ namespace ExamManager
             this.v.ResumeLayout(false);
             this.v.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }

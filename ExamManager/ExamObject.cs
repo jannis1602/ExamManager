@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ExamManager
 {
-    class ExamObject
+    public class ExamObject
     {
         private bool Border;
         private ButtonBorderStyle BorderStyle;
@@ -223,6 +223,7 @@ namespace ExamManager
             float unit_per_minute = Properties.Settings.Default.PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
+            this.Panel.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
             this.Panel.Refresh();
         }
         private string CheckRoom(LinkedList<ExamObject> excludeList = null)
@@ -331,7 +332,7 @@ namespace ExamManager
                 BorderColor, 2, BorderStyle,
                 BorderColor, 2, BorderStyle);
             }
-
+            // ---- Text ----
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Near;
             stringFormat.LineAlignment = StringAlignment.Center;

@@ -30,7 +30,7 @@ namespace ExamManager
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             { }
             InitializeComponent();
         }

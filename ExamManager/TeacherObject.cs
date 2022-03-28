@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ExamManager
 {
-    class TeacherObject
+    public class TeacherObject
     {
         public string Shortname { get; private set; }
         public string Firstname { get; private set; }

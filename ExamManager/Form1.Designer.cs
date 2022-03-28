@@ -194,6 +194,7 @@ namespace ExamManager
             this.dtp_timeline_date.Name = "dtp_timeline_date";
             this.dtp_timeline_date.Value = new System.DateTime(2022, 1, 29, 0, 0, 0, 0);
             this.dtp_timeline_date.ValueChanged += new System.EventHandler(this.dtp_timeline_date_ValueChanged);
+            this.dtp_timeline_date.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtp_timeline_date_KeyDown);
             // 
             // menuStrip1
             // 
@@ -565,6 +566,7 @@ namespace ExamManager
             this.cb_student3.DropDownHeight = 200;
             this.cb_student3.FormattingEnabled = true;
             this.cb_student3.Name = "cb_student3";
+            this.cb_student3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_student3
             // 
@@ -584,6 +586,7 @@ namespace ExamManager
             this.cb_student2.DropDownHeight = 200;
             this.cb_student2.FormattingEnabled = true;
             this.cb_student2.Name = "cb_student2";
+            this.cb_student2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_student2
             // 
@@ -603,6 +606,7 @@ namespace ExamManager
             this.cb_student.DropDownHeight = 200;
             this.cb_student.FormattingEnabled = true;
             this.cb_student.Name = "cb_student";
+            this.cb_student.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_student
             // 
@@ -630,6 +634,7 @@ namespace ExamManager
             this.cb_teacher3.DropDownHeight = 200;
             this.cb_teacher3.FormattingEnabled = true;
             this.cb_teacher3.Name = "cb_teacher3";
+            this.cb_teacher3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_teacher3
             // 
@@ -649,6 +654,7 @@ namespace ExamManager
             this.cb_teacher1.DropDownHeight = 200;
             this.cb_teacher1.FormattingEnabled = true;
             this.cb_teacher1.Name = "cb_teacher1";
+            this.cb_teacher1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_teacher1
             // 
@@ -668,6 +674,7 @@ namespace ExamManager
             this.cb_teacher2.DropDownHeight = 200;
             this.cb_teacher2.FormattingEnabled = true;
             this.cb_teacher2.Name = "cb_teacher2";
+            this.cb_teacher2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_teacher2
             // 
@@ -757,6 +764,7 @@ namespace ExamManager
             resources.ApplyResources(this.lbl_mode, "lbl_mode");
             this.lbl_mode.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.lbl_mode.Name = "lbl_mode";
+            this.lbl_mode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.lbl_mode_PreviewKeyDown);
             // 
             // flp_edit_btns
             // 
@@ -858,6 +866,7 @@ namespace ExamManager
             this.dtp_date.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtp_date.Name = "dtp_date";
             this.dtp_date.Value = new System.DateTime(2022, 1, 29, 0, 0, 0, 0);
+            this.dtp_date.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // tlp_duration
             // 
@@ -871,6 +880,7 @@ namespace ExamManager
             resources.ApplyResources(this.tb_duration, "tb_duration");
             this.tb_duration.Name = "tb_duration";
             this.tb_duration.TextChanged += new System.EventHandler(this.tb_duration_TextChanged);
+            this.tb_duration.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_duration
             // 
@@ -892,6 +902,7 @@ namespace ExamManager
             this.dtp_time.Name = "dtp_time";
             this.dtp_time.ShowUpDown = true;
             this.dtp_time.Value = new System.DateTime(2022, 1, 24, 8, 0, 0, 0);
+            this.dtp_time.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escae_KeyDown);
             // 
             // lbl_time
             // 

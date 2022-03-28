@@ -142,7 +142,7 @@
     <value>100, 23</value>
   </data>
   <data name="dtp_timeline_date.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>100</value>
   </data>
   <data name="&gt;&gt;dtp_timeline_date.Name" xml:space="preserve">
     <value>dtp_timeline_date</value>
@@ -490,7 +490,7 @@
     <value>186, 40</value>
   </data>
   <data name="btn_add_exam.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>16</value>
   </data>
   <data name="btn_add_exam.Text" xml:space="preserve">
     <value>Prüfung hinzufügen</value>
@@ -529,7 +529,7 @@
     <value>100, 28</value>
   </data>
   <data name="cb_grade.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;cb_grade.Name" xml:space="preserve">
     <value>cb_grade</value>
@@ -643,7 +643,7 @@
     <value>98, 28</value>
   </data>
   <data name="cb_student3.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;cb_student3.Name" xml:space="preserve">
     <value>cb_student3</value>
@@ -757,7 +757,7 @@
     <value>96, 28</value>
   </data>
   <data name="cb_student2.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;cb_student2.Name" xml:space="preserve">
     <value>cb_student2</value>
@@ -871,7 +871,7 @@
     <value>105, 28</value>
   </data>
   <data name="cb_student.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;cb_student.Name" xml:space="preserve">
     <value>cb_student</value>
@@ -1057,7 +1057,7 @@
     <value>170, 28</value>
   </data>
   <data name="cb_teacher3.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;cb_teacher3.Name" xml:space="preserve">
     <value>cb_teacher3</value>
@@ -1165,7 +1165,7 @@
     <value>181, 28</value>
   </data>
   <data name="cb_teacher1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cb_teacher1.Name" xml:space="preserve">
     <value>cb_teacher1</value>
@@ -1273,7 +1273,7 @@
     <value>187, 28</value>
   </data>
   <data name="cb_teacher2.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;cb_teacher2.Name" xml:space="preserve">
     <value>cb_teacher2</value>
@@ -1456,7 +1456,7 @@
     <value>180, 28</value>
   </data>
   <data name="cb_subject.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;cb_subject.Name" xml:space="preserve">
     <value>cb_subject</value>
@@ -1627,7 +1627,7 @@
     <value>90, 28</value>
   </data>
   <data name="cb_exam_room.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;cb_exam_room.Name" xml:space="preserve">
     <value>cb_exam_room</value>
@@ -1801,7 +1801,7 @@
     <value>45, 44</value>
   </data>
   <data name="btn_cancel.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
@@ -1834,7 +1834,7 @@
     <value>44, 44</value>
   </data>
   <data name="btn_reuse_exam.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="btn_reuse_exam.ToolTip" xml:space="preserve">
     <value>Kopieren</value>
@@ -1864,7 +1864,7 @@
     <value>44, 44</value>
   </data>
   <data name="btn_delete_exam.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="btn_delete_exam.ToolTip" xml:space="preserve">
     <value>Löschen</value>
@@ -1927,7 +1927,7 @@
     <value>194, 23</value>
   </data>
   <data name="cb_student_onetime.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>15</value>
   </data>
   <data name="cb_student_onetime.Text" xml:space="preserve">
     <value>Schüler nur 1x pro Tag</value>
@@ -1966,7 +1966,7 @@
     <value>142, 23</value>
   </data>
   <data name="cb_add_next_time.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>13</value>
   </data>
   <data name="cb_add_next_time.Text" xml:space="preserve">
     <value>Nächste +45min</value>
@@ -1999,7 +1999,7 @@
     <value>142, 23</value>
   </data>
   <data name="cb_keep_data.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>12</value>
   </data>
   <data name="cb_keep_data.Text" xml:space="preserve">
     <value>Daten behalten</value>
@@ -2032,7 +2032,7 @@
     <value>194, 23</value>
   </data>
   <data name="cb_show_subjectteacher.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>14</value>
   </data>
   <data name="cb_show_subjectteacher.Text" xml:space="preserve">
     <value>Nur Fachlehrer anzeigen</value>
@@ -2242,7 +2242,7 @@
     <value>60, 26</value>
   </data>
   <data name="tb_duration.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="tb_duration.Text" xml:space="preserve">
     <value>45</value>

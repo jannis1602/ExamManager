@@ -65,6 +65,7 @@ namespace ExamManager
             if (database.GetAllExamsAtDate(date).Count < 1) dtp_date.Value = DateTime.Now;
             UpdateTimeline();// render TL on startup
             UpdateAutocomplete();
+            this.ActiveControl = panel_time_line;
         }
 
         #region -------- Methods --------
@@ -1268,7 +1269,7 @@ namespace ExamManager
         private void tsmi_exam_delete_examday_Click(object sender, EventArgs e)
         {
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
-            DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsAtDate(date).Count() + " Prüfungen vor dem " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Alle " + database.GetAllExamsAtDate(date).Count() + " Prüfungen am " + date + " löschen?", "Warnung!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes) foreach (ExamObject eo in database.GetAllExamsAtDate(date)) eo.Delete();
             else return;
         }
@@ -1491,7 +1492,22 @@ namespace ExamManager
         private void tsmi_tools_sendemail_Click(object sender, EventArgs e)
         {
             //SendEmail();
-            SendTeacherEmails();
+            //SendTeacherEmails();
+            FormEmail form = new FormEmail();
+            string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
+
+            LinkedList<string> teacherList = new LinkedList<string>();
+            foreach (ExamObject exam in database.GetAllExamsAtDate(date))
+            {
+                if (exam.Teacher1Id != null && !teacherList.Contains(exam.Teacher1Id)) teacherList.AddLast(exam.Teacher1Id);
+                if (exam.Teacher2Id != null && !teacherList.Contains(exam.Teacher2Id)) teacherList.AddLast(exam.Teacher2Id);
+                if (exam.Teacher3Id != null && !teacherList.Contains(exam.Teacher3Id)) teacherList.AddLast(exam.Teacher3Id);
+            }
+            LinkedList<TeacherObject> tList = new LinkedList<TeacherObject>();
+            foreach (string s in teacherList)
+                if (database.GetTeacherByID(s) != null) tList.AddLast(database.GetTeacherByID(s));
+            form.SetReceivers(tList, date);
+            form.ShowDialog();
         }
         // ----------------- tsmi table-----------------
         private void tsmi_table_exams_Click(object sender, EventArgs e)
@@ -1895,5 +1911,21 @@ namespace ExamManager
             MessageBox.Show(teacherList.Count + " Emails gesendet!", "Mitteilung");
         }
 
+        private void dtp_timeline_date_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Escape) lbl_mode.Focus();
+            if (e.KeyData == Keys.Enter) lbl_mode.Focus();
+
+        }
+        private void lbl_mode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Console.WriteLine(e.KeyData);
+        }
+        private void cb_escae_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            if (e.KeyData == Keys.Escape) lbl_mode.Focus();
+            // Console.WriteLine(e.KeyData);
+        }
     }
 }
