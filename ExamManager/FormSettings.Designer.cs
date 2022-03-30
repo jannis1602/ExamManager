@@ -102,6 +102,12 @@ namespace ExamManager
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.btnm_cancel = new System.Windows.Forms.Button();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_tl_starttime = new System.Windows.Forms.Label();
+            this.nud_tl_starttime = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_tl_length = new System.Windows.Forms.Label();
+            this.nud_tl_length = new System.Windows.Forms.NumericUpDown();
             this.tlp_main.SuspendLayout();
             this.panel_main.SuspendLayout();
             this.tp_common.SuspendLayout();
@@ -126,6 +132,10 @@ namespace ExamManager
             this.flp_select_localdb.SuspendLayout();
             this.v.SuspendLayout();
             this.tlp_btns.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_tl_starttime)).BeginInit();
+            this.flowLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_tl_length)).BeginInit();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -158,6 +168,8 @@ namespace ExamManager
             // 
             // tp_common
             // 
+            this.tp_common.Controls.Add(this.flowLayoutPanel7);
+            this.tp_common.Controls.Add(this.flowLayoutPanel6);
             this.tp_common.Controls.Add(this.flowLayoutPanel5);
             this.tp_common.Controls.Add(this.flowLayoutPanel4);
             this.tp_common.Controls.Add(this.flowLayoutPanel3);
@@ -1003,6 +1015,82 @@ namespace ExamManager
             this.btnm_cancel.UseVisualStyleBackColor = true;
             this.btnm_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel6.Controls.Add(this.lbl_tl_starttime);
+            this.flowLayoutPanel6.Controls.Add(this.nud_tl_starttime);
+            this.flowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 199);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel6.TabIndex = 14;
+            // 
+            // lbl_tl_starttime
+            // 
+            this.lbl_tl_starttime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_tl_starttime.AutoSize = true;
+            this.lbl_tl_starttime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_tl_starttime.Location = new System.Drawing.Point(5, 5);
+            this.lbl_tl_starttime.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_tl_starttime.MinimumSize = new System.Drawing.Size(60, 0);
+            this.lbl_tl_starttime.Name = "lbl_tl_starttime";
+            this.lbl_tl_starttime.Size = new System.Drawing.Size(147, 20);
+            this.lbl_tl_starttime.TabIndex = 7;
+            this.lbl_tl_starttime.Text = "Zeitachse Startzeit:";
+            this.lbl_tl_starttime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // nud_tl_starttime
+            // 
+            this.nud_tl_starttime.Location = new System.Drawing.Point(160, 3);
+            this.nud_tl_starttime.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.nud_tl_starttime.Name = "nud_tl_starttime";
+            this.nud_tl_starttime.Size = new System.Drawing.Size(56, 23);
+            this.nud_tl_starttime.TabIndex = 8;
+            // 
+            // flowLayoutPanel7
+            // 
+            this.flowLayoutPanel7.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel7.Controls.Add(this.lbl_tl_length);
+            this.flowLayoutPanel7.Controls.Add(this.nud_tl_length);
+            this.flowLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 227);
+            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(780, 28);
+            this.flowLayoutPanel7.TabIndex = 15;
+            // 
+            // lbl_tl_length
+            // 
+            this.lbl_tl_length.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_tl_length.AutoSize = true;
+            this.lbl_tl_length.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lbl_tl_length.Location = new System.Drawing.Point(5, 5);
+            this.lbl_tl_length.Margin = new System.Windows.Forms.Padding(5);
+            this.lbl_tl_length.MinimumSize = new System.Drawing.Size(60, 0);
+            this.lbl_tl_length.Name = "lbl_tl_length";
+            this.lbl_tl_length.Size = new System.Drawing.Size(132, 20);
+            this.lbl_tl_length.TabIndex = 7;
+            this.lbl_tl_length.Text = "Zeitachse Länge:";
+            this.lbl_tl_length.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // nud_tl_length
+            // 
+            this.nud_tl_length.Location = new System.Drawing.Point(145, 3);
+            this.nud_tl_length.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.nud_tl_length.Name = "nud_tl_length";
+            this.nud_tl_length.Size = new System.Drawing.Size(56, 23);
+            this.nud_tl_length.TabIndex = 8;
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1053,6 +1141,12 @@ namespace ExamManager
             this.v.ResumeLayout(false);
             this.v.PerformLayout();
             this.tlp_btns.ResumeLayout(false);
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_tl_starttime)).EndInit();
+            this.flowLayoutPanel7.ResumeLayout(false);
+            this.flowLayoutPanel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_tl_length)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1132,5 +1226,11 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private System.Windows.Forms.Label lbl_pixelperhour;
         private System.Windows.Forms.ComboBox cb_pixelperhour;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+        private System.Windows.Forms.Label lbl_tl_length;
+        private System.Windows.Forms.NumericUpDown nud_tl_length;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.Label lbl_tl_starttime;
+        private System.Windows.Forms.NumericUpDown nud_tl_starttime;
     }
 }

@@ -14,7 +14,7 @@ namespace ExamManager
         private bool Border;
         private ButtonBorderStyle BorderStyle;
         private Color BorderColor = Colors.TL_EntityBorder;
-        public Panel Panel { get; private set; }
+        [JsonIgnore] public Panel Panel { get; private set; }
         public int Id { get; private set; }
         public string Date { get; private set; } // DateTime?
         public string Time { get; private set; }
@@ -33,7 +33,11 @@ namespace ExamManager
         public TeacherObject Teacher2 { get; private set; }
         public TeacherObject Teacher3 { get; private set; }
         public string Subject { get; private set; }
-        public int Duration { get; private set; }
+        public int Duration { get; set; }
+        [JsonIgnore] public int PixelPerHour { get; set; }
+        [JsonIgnore] public int TLStartTime { get; set; }
+        [JsonIgnore] public int TLLength { get; set; }
+
         [JsonConstructor]
         public ExamObject(int id, string date, string time, string examroom, string preparationroom, int studentid, int student2id, int student3id, StudentObject student, StudentObject student2, StudentObject student3, string teacher1id, string teacher2id, string teacher3id, TeacherObject t1, TeacherObject t2, TeacherObject t3, string subject, int duration)
         {
@@ -68,8 +72,8 @@ namespace ExamManager
                 this.Date = dt.ToString("yyyy-MM-dd");
             }
             this.Time = time;
-            if (DateTime.ParseExact(time, "HH:mm", null).Hour > 18) Edit(time: "18:00");
-            if (DateTime.ParseExact(time, "HH:mm", null).Hour < 7) Edit(time: "07:00");
+            //if (DateTime.ParseExact(time, "HH:mm", null).Hour > 18) Edit(time: "18:00");
+            //if (DateTime.ParseExact(time, "HH:mm", null).Hour < 7) Edit(time: "07:00");
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
             this.StudentId = student;
@@ -86,6 +90,9 @@ namespace ExamManager
             if (teacher3 != null) { this.Teacher3Id = teacher3; this.Teacher3 = Program.database.GetTeacherByID(teacher3); }
             this.Subject = subject;
             this.Duration = duration;
+            PixelPerHour = Properties.Settings.Default.PixelPerHour;
+            TLStartTime = Properties.Settings.Default.TLStartTime;
+            TLLength = Properties.Settings.Default.TLLength;
         }
         //TODO: return error string, if null -> added
         public bool Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0, LinkedList<ExamObject> excludeList = null)
@@ -177,14 +184,14 @@ namespace ExamManager
         {
             Program.database.DeleteExam(this.Id);
         }
-        private void CreatePanel()
+        public void CreatePanel()
         {
             this.Panel = new Panel();
-            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
-            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime startTime = DateTime.ParseExact("00:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddHours(TLStartTime);
+            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None); // TODO: set temp startTime
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
             //float unit_per_minute = 200F / 60F;
-            float unit_per_minute = Properties.Settings.Default.PixelPerHour / 60F;
+            float unit_per_minute = PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
@@ -217,10 +224,10 @@ namespace ExamManager
                 this.Subject = eo.Subject;
                 this.Duration = eo.Duration;
             }
-            DateTime startTime = DateTime.ParseExact("07:00", "HH:mm", null, System.Globalization.DateTimeStyles.None);
+            DateTime startTime = DateTime.ParseExact("00:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddHours(TLStartTime);
             DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-            float unit_per_minute = Properties.Settings.Default.PixelPerHour / 60F;
+            float unit_per_minute = PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
             this.Panel.Size = new Size(Convert.ToInt32(unit_per_minute * Duration), 60);
@@ -268,7 +275,7 @@ namespace ExamManager
                 if (to != null) tName = to.Fullname();
                 return tName + " (" + Teacher3Id + ") befindet sich in einem anderem Raum: " + ts;
             }
-            if (Teacher1Id == null && Teacher2Id == null && Teacher3Id == null) return "Kein Lehrer!";
+            // if (Teacher1Id == null && Teacher2Id == null && Teacher3Id == null) return "Kein Lehrer!";
             string TeacherInOtherRooms(string teacher)
             {
                 foreach (ExamObject s in Program.database.GetAllExamsFromTeacherAtDate(Date, teacher))
@@ -280,7 +287,7 @@ namespace ExamManager
         }
         private string CheckStudent()
         {
-            if (Student == null && (Student = Program.database.GetStudentByID(StudentId)) == null) return "Schüler fehlt";
+            //if (Student == null && (Student = Program.database.GetStudentByID(StudentId)) == null) return "Schüler fehlt";
             if (Student != null && StudentInOtherRooms(Student)) return Student.Fullname() + " befindet sich in einem anderem Raum";
             if (Student2 != null && StudentInOtherRooms(Student2)) return Student2.Fullname() + " befindet sich in einem anderem Raum";
             if (Student3 != null && StudentInOtherRooms(Student3)) return Student3.Fullname() + " befindet sich in einem anderem Raum";
@@ -324,6 +331,8 @@ namespace ExamManager
             StudentObject student = Student;
             if (student == null)
                 student = new StudentObject(0, "Schüler nicht gefunden!", " ", "-");
+            if (StudentId == 0)
+                student = new StudentObject(0, "-", " ", "-");
             if (Border)
             {
                 ControlPaint.DrawBorder(e.Graphics, panel_tl_entity.ClientRectangle,

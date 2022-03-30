@@ -33,15 +33,18 @@ namespace ExamManager
                     case 1: Colors.ColorTheme(Colors.Theme.dark); break;
                     case 2: Colors.ColorTheme(Colors.Theme.bw); break;
                 }
-            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text.Replace("@", ""); // -> on change
-                                                                                            //Properties.Settings.Default.Reload(); // TODO restore old settings
+            // -> on change Properties.Settings.Default.Reload(); // TODO restore old settings
+            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text.Replace("@", "");
+            // smtp
             Properties.Settings.Default.SMTP_server = tb_smtp_server.Text;
             Properties.Settings.Default.SMTP_port = tb_smtp_port.Text;
             Properties.Settings.Default.SMTP_email = tb_smtp_email.Text;
             Properties.Settings.Default.SMTP_password = tb_smtp_pwd.Text;
             Properties.Settings.Default.SMTP_email_name = tb_smtp_sendername.Text;
             Properties.Settings.Default.SMTP_email_title = tb_smtp_email_titel.Text;
-
+            // -
+            Properties.Settings.Default.TLStartTime = int.Parse(nud_tl_starttime.Value.ToString());
+            Properties.Settings.Default.TLLength = int.Parse(nud_tl_length.Value.ToString());
             Properties.Settings.Default.PixelPerHour = int.Parse(cb_pixelperhour.Text);
             Properties.Settings.Default.EntitiesPerPage = int.Parse(cb_entities_per_page.Text);
             Properties.Settings.Default.ExamPreview = cb_exampreview.Checked;
@@ -59,11 +62,6 @@ namespace ExamManager
                     Environment.Exit(0);
                 }
             }
-            /*{
-                Application.Restart();
-                Environment.Exit(0);
-            }*/
-            // save propeties...
         }
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -100,6 +98,8 @@ namespace ExamManager
             cb_exampreview.Checked = Properties.Settings.Default.ExamPreview;
             cb_entities_per_page.Text = Properties.Settings.Default.EntitiesPerPage.ToString();
             cb_pixelperhour.Text = Properties.Settings.Default.PixelPerHour.ToString();
+            nud_tl_starttime.Text = Properties.Settings.Default.TLStartTime.ToString();
+            nud_tl_length.Text = Properties.Settings.Default.TLLength.ToString();
 
             if (Properties.Settings.Default.NameOrderStudent)
                 cb_student_nameorder.SelectedIndex = 0;

@@ -42,18 +42,20 @@ namespace ExamManager
         private LinkedList<ExamObject> tl_entity_multiselect_list;
 
         // ---- TEMP ----
-        private readonly int StartTimeTL = 7; // todo
-        private readonly int LengthTL = 12;
+        private int StartTimeTL = Properties.Settings.Default.TLStartTime;
+        private int LengthTL = Properties.Settings.Default.TLLength;
         public int PixelPerHour = Properties.Settings.Default.PixelPerHour;  // Check min length
         public Form1()
         {
+
             database = Program.database;
             time_line_list = new LinkedList<Panel>();
             tl_exam_entity_list = new LinkedList<ExamObject>();
             tl_entity_multiselect_list = new LinkedList<ExamObject>();
             time_line_room_list = new LinkedList<Panel>();
             InitializeComponent();
-            panel_top_time.Width = PixelPerHour * LengthTL;
+            dtp_time.MouseWheel += Dtp_time_MouseWheel;
+            tb_duration.MouseWheel += Tb_duration_MouseWheel;
 
             if (Properties.Settings.Default.TimelineDate.Length > 2)
                 dtp_timeline_date.Value = DateTime.ParseExact(Properties.Settings.Default.TimelineDate, "dd.MM.yyyy", null);
@@ -205,49 +207,58 @@ namespace ExamManager
             if (cb_teacher1.Text.Length > 1 && teacher1 == null) { MessageBox.Show("Lehrer 1 nicht gefunden!", "Warnung"); return; }
             if (cb_teacher2.Text.Length > 1 && teacher2 == null) { MessageBox.Show("Lehrer 2 nicht gefunden!", "Warnung"); return; }
             if (cb_teacher3.Text.Length > 1 && teacher3 == null) { MessageBox.Show("Lehrer 3 nicht gefunden!", "Warnung"); return; }
-            if (teacher1 == null && teacher2 == null && teacher3 == null) { MessageBox.Show("Kein Lehrer!", "Warnung"); return; }
+            if (teacher1 == null && teacher2 == null && teacher3 == null)
+            {
+                DialogResult res = MessageBox.Show("Kein Lehrer!\nPrüfung ohne Lehrer hinzufügen?", "Warnung", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (res != DialogResult.Yes) return;
+            }
             // check if not empty
-            if (exam_room.Length == 0 || studentName.Length == 0 || subject.Length == 0 || duration == 0)
-            { MessageBox.Show("Felder fehlen!", "Warnung"); return; }
+            if (exam_room.Length == 0)
+            { MessageBox.Show("Prüfungsraum fehlt!", "Warnung"); return; }
+            if (subject.Length == 0)
+            { MessageBox.Show("Fach fehlt!", "Warnung"); return; }
+            if (duration == 0)
+            { MessageBox.Show("Prüfungsdauer fehlt!", "Warnung"); return; }
+            //if (exam_room.Length == 0 || studentName.Length == 0 || subject.Length == 0 || duration == 0)
+            //{ MessageBox.Show("Felder fehlen!", "Warnung"); return; }
             // -------- student --------
-            StudentObject student;
+            StudentObject student = null;
             StudentObject student2 = null;
             StudentObject student3 = null;
             try
             {
                 if (Properties.Settings.Default.NameOrderStudent)
                 {
-                    student = database.GetStudentByName(studentName.Split(' ')[0], studentName.Split(' ')[1], grade);
+                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[0], studentName.Split(' ')[1], grade);
                     if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[0], student2Name.Split(' ')[1], grade);
                     if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[0], student3Name.Split(' ')[1], grade);
                 }
                 else
                 {
-                    student = database.GetStudentByName(studentName.Split(' ')[1], studentName.Split(' ')[0], grade);
+                    if (studentName.Length > 1) student = database.GetStudentByName(studentName.Split(' ')[1], studentName.Split(' ')[0], grade);
                     if (student2Name.Length > 1) student2 = database.GetStudentByName(student2Name.Split(' ')[1], student2Name.Split(' ')[0], grade);
                     if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[1], student3Name.Split(' ')[0], grade);
                 }
             }
             catch (Exception) { MessageBox.Show("Fehler beim Schülernamen!", "Warnung"); return; }
-            if (student == null) { MessageBox.Show("Schüler nicht gefunden!", "Warnung"); return; }
+            if (studentName.Length > 1 && student == null) { MessageBox.Show("Schüler 1 nicht gefunden!", "Warnung"); return; }
             if (student2Name.Length > 1 && student2 == null) { MessageBox.Show("Schüler 2 nicht gefunden!", "Warnung"); return; }
             if (student3Name.Length > 1 && student3 == null) { MessageBox.Show("Schüler 3 nicht gefunden!", "Warnung"); return; }
-            if (student2 == null && student3 != null) { MessageBox.Show("erst Schüler 2 vor Schüler 3 belegen!", "Warnung"); return; }
+            if (student == null && student2 == null && student3 == null)
+            {
+                DialogResult res = MessageBox.Show("Kein Schüler!\nPrüfung ohne Schüler hinzufügen?", "Warnung", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (res != DialogResult.Yes) return;
+            }
+            //if (student2 == null && student3 != null) { MessageBox.Show("erst Schüler 2 vor Schüler 3 belegen!", "Warnung"); return; }
             //
-            int[] sIDs = { student.Id, 0, 0 };
+            int[] sIDs = { 0, 0, 0 };
+            if (student != null) sIDs[0] = student.Id;
             if (student2 != null) sIDs[1] = student2.Id;
             if (student3 != null) sIDs[2] = student3.Id;
             ExamObject eo = new ExamObject(0, date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration);
             if (EditExam != null) { if (!EditExam.Edit(date, time, exam_room, preparation_room, sIDs[0], sIDs[1], sIDs[2], teacher1, teacher2, teacher3, subject, duration)) return; }
-            else if (EditExam == null && !eo.EditDatabase()) { Console.WriteLine(eo.Student.Fullname()); return; }
+            else if (EditExam == null && !eo.EditDatabase()) { return; }
             if (EditExam == null) { eo.AddToDatabase(); UpdateTimeline(); }
-
-            /*foreach (Panel p in time_line_list)
-                if (p.Name == exam_room)
-                {
-                    p.Controls.Add(eo.GetTimelineEntity());
-                    p.Update();
-                }*/
             if (EditExam != null)
             {
                 EditExam.RemoveBorder();
@@ -319,8 +330,8 @@ namespace ExamManager
             foreach (ExamObject eo in tl_entity_multiselect_list)
             {
                 DateTime eoTime = DateTime.ParseExact(eo.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
-                if (eoTime.Add(timeDiff).Hour > 18) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
-                if (eoTime.Add(timeDiff).Hour < 7) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
+                if (eoTime.Add(timeDiff).Hour > StartTimeTL + LengthTL) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
+                if (eoTime.Add(timeDiff).Hour < StartTimeTL) { MessageBox.Show("Zeit nicht zwischen 7-18 Uhr", "Warnung!", MessageBoxButtons.OK); return; }
             }
             bool UpdateTL = false;
             foreach (ExamObject exam in tl_entity_multiselect_list)
@@ -456,6 +467,7 @@ namespace ExamManager
                 if (SwapExam != null && SwapExam.Id == exam.Id) exam.SetBorder(Color.Orange, false);
                 if (EditExam != null && EditExam.Id == exam.Id) exam.SetBorder(Color.DarkRed, false);
                 // exam panel
+                exam.PixelPerHour = PixelPerHour;
                 Panel panel_tl_entity = exam.GetTimelineEntity();
                 panel_tl_entity.MouseClick += panel_tl_entity_click;
                 panel_tl_entity.MouseDoubleClick += panel_tl_entity_double_click;
@@ -501,13 +513,18 @@ namespace ExamManager
             panel_room_bottom.Size = new Size(panel_side_room.Width - 17, 12);
             panel_side_room.Controls.Add(panel_room_bottom);
 
+            DateTime tlStartTime = DateTime.ParseExact("00:00", "HH:mm", null).AddHours(StartTimeTL);
+            DateTime tlEndTime = DateTime.ParseExact("00:00", "HH:mm", null).AddHours(StartTimeTL + LengthTL);
             foreach (ExamObject exam in tl_exam_entity_list)
             {
-                foreach (Panel p in time_line_list)
-                {
-                    if (p.Name.Equals(exam.Examroom))
-                    { p.Controls.Add(exam.GetTimelineEntity()); break; }
-                }
+                DateTime examStartTime = DateTime.ParseExact(exam.Time, "HH:mm", null);
+                DateTime examEndTime = DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration);
+                if (examStartTime >= tlStartTime && examEndTime <= tlEndTime)
+                    foreach (Panel p in time_line_list)
+                    {
+                        if (p.Name.Equals(exam.Examroom))
+                        { p.Controls.Add(exam.GetTimelineEntity()); break; }
+                    }
             }
         }
         private void UpdatePreviewPanel()
@@ -558,7 +575,7 @@ namespace ExamManager
                     if (student3Name.Length > 1) student3 = database.GetStudentByName(student3Name.Split(' ')[1], student3Name.Split(' ')[0]);
                 }
             }
-            catch (Exception) { }
+            catch (Exception) { return; }
             int[] sIDs = { 0, 0, 0 };
             if (student != null) sIDs[0] = student.Id;
             if (student2 != null) sIDs[1] = student2.Id;
@@ -1284,7 +1301,7 @@ namespace ExamManager
         private void tsmi_tools_export_Click(object sender, EventArgs e)
         {
             bool split = false;
-            DialogResult resultSplit = MessageBox.Show("Zeitachse teilen?", "Achtung", MessageBoxButtons.YesNo);
+            DialogResult resultSplit = MessageBox.Show("Zeitachse teilen?", "Achtung", MessageBoxButtons.YesNoCancel);
             if (resultSplit == DialogResult.Yes)
             {
                 split = true;
@@ -1308,10 +1325,12 @@ namespace ExamManager
                     }
                 }
             }
+            if (resultSplit == DialogResult.Cancel) { return; }
             Colors.Theme tempTheme = Colors.theme;
             bool blackwhite = false;
-            DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Zeitstrahl in schwarz-weiß exportieren?", "Achtung!", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes) { blackwhite = true; }
+            if (result == DialogResult.Cancel) { return; }
             string date = this.dtp_timeline_date.Value.ToString("yyyy-MM-dd");
 
             DateTime lastTime = DateTime.ParseExact("07:00", "HH:mm", null);
@@ -1530,7 +1549,7 @@ namespace ExamManager
         private void tsmi_options_settings_Click(object sender, EventArgs e)
         {
             FormSettings form = new FormSettings();
-            form.UpdateColor += update_color_Event;
+            form.UpdateColor += update_tl_settings_Event;
             form.ShowDialog(this);
         }
         #endregion
@@ -1544,6 +1563,10 @@ namespace ExamManager
             panel_side_room.BackColor = Colors.TL_RoomBg;
             tlp_edit.BackColor = Colors.Edit_Bg;
             lbl_mode.BackColor = Colors.Edit_ModeBg;
+
+            panel_top_time.Width = PixelPerHour * LengthTL;
+            PixelPerHour = panel_top_time.Width / LengthTL;
+            UpdateTimeline();
         }
         private void update_autocomplete_Event(object sender, EventArgs a)
         {
@@ -1559,11 +1582,28 @@ namespace ExamManager
             filter = s;
             UpdateTimeline(); // render on filterchange
         }
-        private void update_color_Event(object sender, EventArgs a)
+        private void update_tl_settings_Event(object sender, EventArgs a)
         {
             PixelPerHour = Properties.Settings.Default.PixelPerHour;
+            StartTimeTL = Properties.Settings.Default.TLStartTime;
+            LengthTL = Properties.Settings.Default.TLLength;
             panel_top_time.Width = Properties.Settings.Default.PixelPerHour * LengthTL;
+            panel_time_line.Refresh();
             UpdateTimeline(); // render on Colorchange
+            Console.WriteLine(time_line_list.First.Value.Width);
+            Console.WriteLine(panel_time_line.Width);
+            if (time_line_list.First.Value.Width < panel_time_line.Width)
+                Console.WriteLine("Scale");
+            while (LengthTL * PixelPerHour < panel_time_line.Width) // time_line_list.First.Value.Width
+            {
+                PixelPerHour += 10;
+                //panel_time_line.Refresh();
+                //UpdateTimeline();
+            }
+            Properties.Settings.Default.PixelPerHour = PixelPerHour;
+            UpdateTimeline();
+            Console.WriteLine(time_line_list.First.Value.Width);
+            Console.WriteLine(panel_time_line.Width);
             panel_sidetop_empty.BackColor = Colors.TL_RoomBg;
             panel_time_line.BackColor = Colors.TL_Bg;
             panel_top_time.BackColor = Colors.TL_TimeBg;
@@ -1588,7 +1628,6 @@ namespace ExamManager
         {
             if (cb_show_subjectteacher.Checked)
                 UpdateAutocompleteTeacher(database.GetTeacherBySubject(cb_subject.Text));
-            else UpdateAutocompleteTeacher(database.GetAllTeachers());
         }
         private void cb_show_subjectteacher_CheckedChanged(object sender, EventArgs e)
         {
@@ -1613,7 +1652,7 @@ namespace ExamManager
         #endregion
         private void panel_time_line_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) //TODO: ---- KEYS
         {
-            Console.WriteLine(e.KeyData);
+            //Console.WriteLine(e.KeyData);
             if (tl_entity_multiselect_list.Count == 0) return;
             if (e.KeyData == Keys.Enter)
             {
@@ -1917,15 +1956,38 @@ namespace ExamManager
             if (e.KeyData == Keys.Enter) lbl_mode.Focus();
 
         }
-        private void lbl_mode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            Console.WriteLine(e.KeyData);
-        }
-        private void cb_escae_KeyDown(object sender, KeyEventArgs e)
+        private void cb_escape_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
             if (e.KeyData == Keys.Escape) lbl_mode.Focus();
+        }
+        private void lbl_mode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            // -- default focused panel --
             // Console.WriteLine(e.KeyData);
+
+        }
+
+        private void Dtp_time_MouseWheel(object sender, MouseEventArgs e)
+        {
+            dtp_time.Value = dtp_time.Value.AddMinutes(15 * (-e.Delta / 120));
+            UpdatePreviewPanel();
+        }
+
+        private void Tb_duration_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if ((int.Parse(tb_duration.Text) + 15 * (-e.Delta / 120)) > 0)
+            {
+                tb_duration.Text = (int.Parse(tb_duration.Text) + 15 * (-e.Delta / 120)).ToString();
+                UpdatePreviewPanel();
+            }
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            panel_top_time.Width = PixelPerHour * LengthTL;
+            PixelPerHour = panel_top_time.Width / LengthTL;
+            UpdateTimeline();
         }
     }
 }

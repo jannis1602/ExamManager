@@ -274,5 +274,29 @@ namespace ExamManager.Properties {
                 this["PixelPerHour"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int TLStartTime {
+            get {
+                return ((int)(this["TLStartTime"]));
+            }
+            set {
+                this["TLStartTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int TLLength {
+            get {
+                return ((int)(this["TLLength"]));
+            }
+            set {
+                this["TLLength"] = value;
+            }
+        }
     }
 }

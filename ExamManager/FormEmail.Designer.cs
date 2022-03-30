@@ -34,22 +34,22 @@ namespace ExamManager
             this.flp_title = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_email_titel = new System.Windows.Forms.Label();
             this.tb_email_title = new System.Windows.Forms.TextBox();
-            this.btn_preview = new System.Windows.Forms.Button();
-            this.btn_ok = new System.Windows.Forms.Button();
             this.flp_var_btns = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_vars = new System.Windows.Forms.Label();
             this.tlp_receivers = new System.Windows.Forms.TableLayoutPanel();
             this.rtb_receivers = new System.Windows.Forms.RichTextBox();
             this.flp_receiveroptions = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_receivers = new System.Windows.Forms.Label();
             this.tlp_bottom = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_attachment = new System.Windows.Forms.Label();
             this.cb_fullexamlist = new System.Windows.Forms.CheckBox();
             this.cb_teacher_examlist = new System.Windows.Forms.CheckBox();
-            this.lbl_receivers = new System.Windows.Forms.Label();
-            this.lbl_attachment = new System.Windows.Forms.Label();
-            this.cb_timeline = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cb_fulltimeline = new System.Windows.Forms.CheckBox();
+            this.cb_teacher_timeline = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_send = new System.Windows.Forms.Button();
+            this.btn_preview = new System.Windows.Forms.Button();
             this.tlp_main.SuspendLayout();
             this.flp_title.SuspendLayout();
             this.flp_var_btns.SuspendLayout();
@@ -123,30 +123,6 @@ namespace ExamManager
             this.tb_email_title.Size = new System.Drawing.Size(600, 26);
             this.tb_email_title.TabIndex = 1;
             // 
-            // btn_preview
-            // 
-            this.btn_preview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_preview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_preview.Location = new System.Drawing.Point(29, 3);
-            this.btn_preview.Name = "btn_preview";
-            this.btn_preview.Size = new System.Drawing.Size(80, 31);
-            this.btn_preview.TabIndex = 5;
-            this.btn_preview.Text = "Vorschau";
-            this.btn_preview.UseVisualStyleBackColor = true;
-            this.btn_preview.Click += new System.EventHandler(this.btn_preview_Click);
-            // 
-            // btn_ok
-            // 
-            this.btn_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ok.Location = new System.Drawing.Point(115, 3);
-            this.btn_ok.Name = "btn_ok";
-            this.btn_ok.Size = new System.Drawing.Size(80, 31);
-            this.btn_ok.TabIndex = 4;
-            this.btn_ok.Text = "OK";
-            this.btn_ok.UseVisualStyleBackColor = true;
-            this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
-            // 
             // flp_var_btns
             // 
             this.flp_var_btns.Controls.Add(this.lbl_vars);
@@ -190,6 +166,7 @@ namespace ExamManager
             this.rtb_receivers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtb_receivers.Location = new System.Drawing.Point(103, 3);
             this.rtb_receivers.Name = "rtb_receivers";
+            this.rtb_receivers.ReadOnly = true;
             this.rtb_receivers.Size = new System.Drawing.Size(782, 68);
             this.rtb_receivers.TabIndex = 2;
             this.rtb_receivers.Text = "";
@@ -202,6 +179,17 @@ namespace ExamManager
             this.flp_receiveroptions.Name = "flp_receiveroptions";
             this.flp_receiveroptions.Size = new System.Drawing.Size(98, 72);
             this.flp_receiveroptions.TabIndex = 3;
+            // 
+            // lbl_receivers
+            // 
+            this.lbl_receivers.AutoSize = true;
+            this.lbl_receivers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_receivers.Location = new System.Drawing.Point(3, 6);
+            this.lbl_receivers.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
+            this.lbl_receivers.Name = "lbl_receivers";
+            this.lbl_receivers.Size = new System.Drawing.Size(92, 20);
+            this.lbl_receivers.TabIndex = 1;
+            this.lbl_receivers.Text = "Empfänger:";
             // 
             // tlp_bottom
             // 
@@ -224,8 +212,8 @@ namespace ExamManager
             this.flowLayoutPanel1.Controls.Add(this.lbl_attachment);
             this.flowLayoutPanel1.Controls.Add(this.cb_fullexamlist);
             this.flowLayoutPanel1.Controls.Add(this.cb_teacher_examlist);
-            this.flowLayoutPanel1.Controls.Add(this.cb_timeline);
-            this.flowLayoutPanel1.Controls.Add(this.checkBox1);
+            this.flowLayoutPanel1.Controls.Add(this.cb_fulltimeline);
+            this.flowLayoutPanel1.Controls.Add(this.cb_teacher_timeline);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(1, 1);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
@@ -233,17 +221,16 @@ namespace ExamManager
             this.flowLayoutPanel1.Size = new System.Drawing.Size(740, 36);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // flowLayoutPanel2
+            // lbl_attachment
             // 
-            this.flowLayoutPanel2.Controls.Add(this.btn_ok);
-            this.flowLayoutPanel2.Controls.Add(this.btn_preview);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(743, 1);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(198, 36);
-            this.flowLayoutPanel2.TabIndex = 1;
+            this.lbl_attachment.AutoSize = true;
+            this.lbl_attachment.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_attachment.Location = new System.Drawing.Point(3, 6);
+            this.lbl_attachment.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
+            this.lbl_attachment.Name = "lbl_attachment";
+            this.lbl_attachment.Size = new System.Drawing.Size(78, 20);
+            this.lbl_attachment.TabIndex = 2;
+            this.lbl_attachment.Text = "Anhänge:";
             // 
             // cb_fullexamlist
             // 
@@ -267,49 +254,63 @@ namespace ExamManager
             this.cb_teacher_examlist.Text = "Lehrer Prüfungsliste";
             this.cb_teacher_examlist.UseVisualStyleBackColor = true;
             // 
-            // lbl_receivers
+            // cb_fulltimeline
             // 
-            this.lbl_receivers.AutoSize = true;
-            this.lbl_receivers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_receivers.Location = new System.Drawing.Point(3, 6);
-            this.lbl_receivers.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
-            this.lbl_receivers.Name = "lbl_receivers";
-            this.lbl_receivers.Size = new System.Drawing.Size(92, 20);
-            this.lbl_receivers.TabIndex = 1;
-            this.lbl_receivers.Text = "Empfänger:";
+            this.cb_fulltimeline.AutoSize = true;
+            this.cb_fulltimeline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_fulltimeline.Location = new System.Drawing.Point(386, 3);
+            this.cb_fulltimeline.Name = "cb_fulltimeline";
+            this.cb_fulltimeline.Size = new System.Drawing.Size(98, 24);
+            this.cb_fulltimeline.TabIndex = 3;
+            this.cb_fulltimeline.Text = "Zeitachse";
+            this.cb_fulltimeline.UseVisualStyleBackColor = true;
             // 
-            // lbl_attachment
+            // cb_teacher_timeline
             // 
-            this.lbl_attachment.AutoSize = true;
-            this.lbl_attachment.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_attachment.Location = new System.Drawing.Point(3, 6);
-            this.lbl_attachment.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
-            this.lbl_attachment.Name = "lbl_attachment";
-            this.lbl_attachment.Size = new System.Drawing.Size(78, 20);
-            this.lbl_attachment.TabIndex = 2;
-            this.lbl_attachment.Text = "Anhänge:";
+            this.cb_teacher_timeline.AutoSize = true;
+            this.cb_teacher_timeline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_teacher_timeline.Location = new System.Drawing.Point(490, 3);
+            this.cb_teacher_timeline.Name = "cb_teacher_timeline";
+            this.cb_teacher_timeline.Size = new System.Drawing.Size(148, 24);
+            this.cb_teacher_timeline.TabIndex = 4;
+            this.cb_teacher_timeline.Text = "Lehrer Zeitachse";
+            this.cb_teacher_timeline.UseVisualStyleBackColor = true;
             // 
-            // cb_timeline
+            // flowLayoutPanel2
             // 
-            this.cb_timeline.AutoSize = true;
-            this.cb_timeline.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_timeline.Location = new System.Drawing.Point(386, 3);
-            this.cb_timeline.Name = "cb_timeline";
-            this.cb_timeline.Size = new System.Drawing.Size(98, 24);
-            this.cb_timeline.TabIndex = 3;
-            this.cb_timeline.Text = "Zeitachse";
-            this.cb_timeline.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel2.Controls.Add(this.btn_send);
+            this.flowLayoutPanel2.Controls.Add(this.btn_preview);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(743, 1);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(198, 36);
+            this.flowLayoutPanel2.TabIndex = 1;
             // 
-            // checkBox1
+            // btn_send
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(490, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(148, 24);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Lehrer Zeitachse";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.btn_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_send.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_send.Location = new System.Drawing.Point(115, 3);
+            this.btn_send.Name = "btn_send";
+            this.btn_send.Size = new System.Drawing.Size(80, 31);
+            this.btn_send.TabIndex = 4;
+            this.btn_send.Text = "Senden";
+            this.btn_send.UseVisualStyleBackColor = true;
+            this.btn_send.Click += new System.EventHandler(this.btn_ok_Click);
+            // 
+            // btn_preview
+            // 
+            this.btn_preview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_preview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_preview.Location = new System.Drawing.Point(29, 3);
+            this.btn_preview.Name = "btn_preview";
+            this.btn_preview.Size = new System.Drawing.Size(80, 31);
+            this.btn_preview.TabIndex = 5;
+            this.btn_preview.Text = "Vorschau";
+            this.btn_preview.UseVisualStyleBackColor = true;
+            this.btn_preview.Click += new System.EventHandler(this.btn_preview_Click);
             // 
             // FormEmail
             // 
@@ -349,7 +350,7 @@ namespace ExamManager
         private System.Windows.Forms.RichTextBox rtb_receivers;
         private System.Windows.Forms.Label lbl_vars;
         private System.Windows.Forms.FlowLayoutPanel flp_receiveroptions;
-        private System.Windows.Forms.Button btn_ok;
+        private System.Windows.Forms.Button btn_send;
         private System.Windows.Forms.Button btn_preview;
         private System.Windows.Forms.TableLayoutPanel tlp_bottom;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -358,7 +359,7 @@ namespace ExamManager
         private System.Windows.Forms.Label lbl_attachment;
         private System.Windows.Forms.CheckBox cb_fullexamlist;
         private System.Windows.Forms.CheckBox cb_teacher_examlist;
-        private System.Windows.Forms.CheckBox cb_timeline;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cb_fulltimeline;
+        private System.Windows.Forms.CheckBox cb_teacher_timeline;
     }
 }

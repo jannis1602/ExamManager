@@ -224,6 +224,12 @@
     <Compile Include="Forms\FormKeepData.Designer.cs">
       <DependentUpon>FormKeepData.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTLPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTLPreview.Designer.cs">
+      <DependentUpon>FormTLPreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\strings.Designer.cs">
@@ -233,6 +239,7 @@
     </Compile>
     <Compile Include="StudentObject.cs" />
     <Compile Include="TeacherObject.cs" />
+    <Compile Include="TimeLineObject.cs" />
     <EmbeddedResource Include="Form1.de.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,6 +248,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormEmail.resx">
       <DependentUpon>FormEmail.cs</DependentUpon>
@@ -301,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormKeepData.resx">
       <DependentUpon>FormKeepData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTLPreview.resx">
+      <DependentUpon>FormTLPreview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
