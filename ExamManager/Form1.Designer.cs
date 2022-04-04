@@ -126,6 +126,7 @@ namespace ExamManager
             this.dtp_date = new System.Windows.Forms.DateTimePicker();
             this.tlp_duration = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_duration = new System.Windows.Forms.Label();
+            this.nud_duration = new System.Windows.Forms.NumericUpDown();
             this.tlp_time = new System.Windows.Forms.TableLayoutPanel();
             this.dtp_time = new System.Windows.Forms.DateTimePicker();
             this.lbl_time = new System.Windows.Forms.Label();
@@ -137,7 +138,6 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
-            this.nud_duration = new System.Windows.Forms.NumericUpDown();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -162,12 +162,12 @@ namespace ExamManager
             this.tlp_2.SuspendLayout();
             this.tlp_date.SuspendLayout();
             this.tlp_duration.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).BeginInit();
             this.tlp_time.SuspendLayout();
             this.tlp_timeline_view.SuspendLayout();
             this.panel_side_room.SuspendLayout();
             this.panel_sidetop_empty.SuspendLayout();
             this.panel_time_line.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).BeginInit();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -859,6 +859,27 @@ namespace ExamManager
             resources.ApplyResources(this.lbl_duration, "lbl_duration");
             this.lbl_duration.Name = "lbl_duration";
             // 
+            // nud_duration
+            // 
+            resources.ApplyResources(this.nud_duration, "nud_duration");
+            this.nud_duration.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.nud_duration.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_duration.Name = "nud_duration";
+            this.nud_duration.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.nud_duration.SizeChanged += new System.EventHandler(this.nud_duration_SizeChanged);
+            // 
             // tlp_time
             // 
             resources.ApplyResources(this.tlp_time, "tlp_time");
@@ -928,27 +949,6 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
-            // nud_duration
-            // 
-            resources.ApplyResources(this.nud_duration, "nud_duration");
-            this.nud_duration.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.nud_duration.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nud_duration.Name = "nud_duration";
-            this.nud_duration.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.nud_duration.SizeChanged += new System.EventHandler(this.nud_duration_SizeChanged);
-            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -999,6 +999,7 @@ namespace ExamManager
             this.tlp_date.PerformLayout();
             this.tlp_duration.ResumeLayout(false);
             this.tlp_duration.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).EndInit();
             this.tlp_time.ResumeLayout(false);
             this.tlp_time.PerformLayout();
             this.tlp_timeline_view.ResumeLayout(false);
@@ -1006,7 +1007,6 @@ namespace ExamManager
             this.panel_sidetop_empty.ResumeLayout(false);
             this.panel_sidetop_empty.PerformLayout();
             this.panel_time_line.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).EndInit();
             this.ResumeLayout(false);
 
         }

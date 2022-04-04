@@ -125,7 +125,7 @@ namespace ExamManager
             {
                 if (addToDB) Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
             }
-            else { UpdateDBData(); return checkError; }
+            else { if (addToDB) UpdateDBData(); return checkError; }
             return null;
         }
         public bool EditDatabase()

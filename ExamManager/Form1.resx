@@ -163,43 +163,43 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tsmi_data_students.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>160, 22</value>
   </data>
   <data name="tsmi_data_students.Text" xml:space="preserve">
     <value>Schüler</value>
   </data>
   <data name="tsmi_data_teachers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>160, 22</value>
   </data>
   <data name="tsmi_data_teachers.Text" xml:space="preserve">
     <value>Lehrer</value>
   </data>
   <data name="tsmi_data_rooms.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>160, 22</value>
   </data>
   <data name="tsmi_data_rooms.Text" xml:space="preserve">
     <value>Räume</value>
   </data>
   <data name="tsmi_data_subjects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>160, 22</value>
   </data>
   <data name="tsmi_data_subjects.Text" xml:space="preserve">
     <value>Fächer</value>
   </data>
   <data name="tsmi_data_editgrade_move.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>175, 22</value>
   </data>
   <data name="tsmi_data_editgrade_move.Text" xml:space="preserve">
     <value>Stufe umbenennen</value>
   </data>
   <data name="tsmi_data_editgrade_delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>175, 22</value>
   </data>
   <data name="tsmi_data_editgrade_delete.Text" xml:space="preserve">
     <value>Stufe Löschen</value>
   </data>
   <data name="stufeVerschiebenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>160, 22</value>
   </data>
   <data name="stufeVerschiebenToolStripMenuItem.Text" xml:space="preserve">
     <value>Stufe bearbeiten</value>
@@ -355,7 +355,7 @@
     <value>Tools</value>
   </data>
   <data name="tsmi_options_keepdata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_keepdata.Text" xml:space="preserve">
     <value>Daten behalten</value>
@@ -379,13 +379,13 @@
     <value>Lehrer</value>
   </data>
   <data name="tsmi_options_table.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_table.Text" xml:space="preserve">
     <value>Tabellen</value>
   </data>
   <data name="tsmi_options_settings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="tsmi_options_settings.Text" xml:space="preserve">
     <value>Einstellungen</value>
@@ -2296,7 +2296,7 @@
     <value>1</value>
   </data>
   <data name="tlp_duration.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lbl_duration" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="nud_duration" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lbl_duration" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="nud_duration" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100,Absolute,40" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tlp_time.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>

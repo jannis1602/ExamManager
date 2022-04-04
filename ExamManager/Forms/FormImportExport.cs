@@ -73,6 +73,7 @@ namespace ExamManager
             List<Item> item = new List<Item>();
             // table page
             cb_table_grade.Items.AddRange(list);
+            cb_table_teacher_position.SelectedIndex = 1;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -792,6 +793,17 @@ namespace ExamManager
                 t++;
                 //}
             }
+            if (cb_table_teacher_position.SelectedIndex == 1)
+            {
+                foreach (ExamObject eo in examList)
+                    eo.Edit(teacher1: "-", teacher2: eo.Teacher1Id, addToDB: false);
+            }
+            else if (cb_table_teacher_position.SelectedIndex == 2)
+            {
+                foreach (ExamObject eo in examList)
+                    eo.Edit(teacher1: "-", teacher3: eo.Teacher1Id, addToDB: false);
+            }
+
             foreach (ExamObject eo in examList) eo.AddToDatabase(checkTeacherDB: false, noError: true);
         }
 
