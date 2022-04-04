@@ -227,6 +227,7 @@ namespace ExamManager
                 Title = "Schülerliste auswählen",
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
 
@@ -271,6 +272,7 @@ namespace ExamManager
                 Title = "Lehrerliste auswählen",
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
 
@@ -285,16 +287,20 @@ namespace ExamManager
                     {
                         if (!line[0].Equals('#'))
                         {
-                            string[] t = line.Replace("Dr. ", "").Replace(",", "").Split(' ');
+                            string s = line;
+                            if (line.Contains("Herr")) s = s.Replace("Herr ", "");
+                            if (line.Contains("Frau")) s = s.Replace("Frau ", "");
+                            if (line.Contains("Dr.")) s = s.Replace("Dr. ", "");
+                            string[] t = s.Replace(",", "").Split(' ');
                             if (cb_import_nameorder.SelectedIndex == 1)
                             {
-                                string ln = t[2];
-                                t[2] = t[1];
-                                t[1] = ln;
+                                string ln = t[1];
+                                t[1] = t[0];
+                                t[0] = ln;
                             }
-                            if (t.Length == 5) TeacherList.AddLast(new TeacherObject(t[3], t[1], t[2], null, null, t[4], null, null));
-                            else if (t.Length == 6) TeacherList.AddLast(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], null));
-                            else if (t.Length == 7) TeacherList.AddLast(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], t[6]));
+                            if (t.Length == 4) TeacherList.AddLast(new TeacherObject(t[2], t[0], t[1], null, null, t[3], null, null));
+                            else if (t.Length == 5) TeacherList.AddLast(new TeacherObject(t[2], t[0], t[1], null, null, t[3], t[4], null));
+                            else if (t.Length == 6) TeacherList.AddLast(new TeacherObject(t[2], t[0], t[1], null, null, t[3], t[4], t[5]));
                         }
                     }
                 }
@@ -315,6 +321,7 @@ namespace ExamManager
                 Title = "Raumliste auswählen",
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
 
@@ -348,6 +355,7 @@ namespace ExamManager
                 Title = "Prüfungsdatei auswählen",
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -374,6 +382,7 @@ namespace ExamManager
                 Title = "Schülerdatei auswählen",
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -400,6 +409,7 @@ namespace ExamManager
                 Title = "Lehrerdatei auswählen",
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
                 FilterIndex = 1,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 RestoreDirectory = true
             };
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -414,6 +424,13 @@ namespace ExamManager
                 }
             }
         }
+        private void btn_import_room_json_Click(object sender, EventArgs e)
+        {
+            flp_import_grade.Visible = false;
+            flp_import_email.Visible = false;
+            flp_import_nameorder.Visible = false;
+            MessageBox.Show("keine Funktion", "Achtung");
+        }
         // csv
         private void btn_import_exam_csv_Click(object sender, EventArgs e)
         {
@@ -426,6 +443,13 @@ namespace ExamManager
         }
         private void btn_import_teacher_csv_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("keine Funktion", "Achtung");
+        }
+        private void btn_import_room_csv_Click(object sender, EventArgs e)
+        {
+            flp_import_grade.Visible = false;
+            flp_import_email.Visible = false;
+            flp_import_nameorder.Visible = false;
             MessageBox.Show("keine Funktion", "Achtung");
         }
         #endregion
@@ -800,6 +824,5 @@ namespace ExamManager
             string domain = Properties.Settings.Default.EmailDomain;
             if (cb_import_generateemail.Checked && domain.Length < 2) { cb_import_generateemail.Checked = false; MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); }
         }
-
     }
 }

@@ -45,58 +45,31 @@ namespace ExamManager
         //UpdateList.Invoke(this,null);
         // if (e.KeyData == (Keys.Control | Keys.Enter))
 
-        // exam preview on/off
         // tl_entity mouse up -> move timeline up?
-        // im/export data form
         // nur 1/2 teacher 
-        // update exampreview on change
-
         // Doc: Data etc. unterpunkte erklären 
-
         // student/teacher obj -> panel...
         // database change summary
         // Database: int StudentId
-        // student/Teacher Object.Delete()
         // editpanel cursor: move
         // cb teacher 2+3 add "-"
-        // editExam.RemoveBorder bug
-        // move panel with mouse add 15min per move (new+5min))
         // editpanel preview change if data change
-        // search filter student: filter s2+s3! etc.
-        // exam / student edit in db ifx!=null
 
-        // student/teacher data loading window
         // info vorsitz prüfer protokoll
         // tabindex
-        // unterschiedliche prüfungsarten (1 schueler, 2/3 schueler)
-        // teacher email ?
         // exam gleicher lehrer
-        // edit_students_form faster load
-        // teacherData filter subject
-        // editteacher = null etc. (teacher)
         // class for filereader + formart manager
-        // data -> expand default
         // studentdata menu: load from file?
-        // student/teacherdata -> tableview edit/delet
         // namen immer mit mit _
-        // studentdata max entities -> multiple pages
         // list clear thread: create new pannels add...
-        // search etc. in taskbar(top)
         // DB getStudent(grade=null) if>1 -> error
         // EditStudent(id,fn=null,ln=null,...)
         // roompanel empty size y+1?
-        // + Settings last/firstname || first/lastname -> [student,teacher]
-        // - autocomplete lastname
         // FileReaderClass (#grade, #format,...)
         // Student/teacher Data paintPanel
-        // Student/teacher Data multiple pages
         // Student Data default grade = all
         // + ReadOnlyMode [-> if(readonly)return;] enum mode{all,read,write} disable write/edit
-        // + export data as csv / json (student/teacher/exam) 
         // + export exam with student and teacher -> keep id / change to same
-        // import data from csv
-        // *Extra load Exel file
-        // Settings Form
         // + load exams -> check if teacher exists
         // custom autocomplete? if string.contains...-> show...
 

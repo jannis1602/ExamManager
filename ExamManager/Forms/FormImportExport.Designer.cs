@@ -36,6 +36,7 @@ namespace ExamManager
             this.flp_table_1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_table_file = new System.Windows.Forms.Label();
             this.btn_table_select_file = new System.Windows.Forms.Button();
+            this.lbl_table_filename = new System.Windows.Forms.Label();
             this.flp_table_2 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_table_grade = new System.Windows.Forms.Label();
             this.cb_table_grade = new System.Windows.Forms.ComboBox();
@@ -106,7 +107,6 @@ namespace ExamManager
             this.lbl_import_nameorder = new System.Windows.Forms.Label();
             this.cb_import_nameorder = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.lbl_table_filename = new System.Windows.Forms.Label();
             this.page_table.SuspendLayout();
             this.tlp_table_main.SuspendLayout();
             this.flp_table_main.SuspendLayout();
@@ -205,6 +205,18 @@ namespace ExamManager
             this.btn_table_select_file.Text = "Auswählen";
             this.btn_table_select_file.UseVisualStyleBackColor = true;
             this.btn_table_select_file.Click += new System.EventHandler(this.btn_table_select_file_Click);
+            // 
+            // lbl_table_filename
+            // 
+            this.lbl_table_filename.AutoSize = true;
+            this.lbl_table_filename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_table_filename.Location = new System.Drawing.Point(309, 5);
+            this.lbl_table_filename.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.lbl_table_filename.Name = "lbl_table_filename";
+            this.lbl_table_filename.Size = new System.Drawing.Size(14, 20);
+            this.lbl_table_filename.TabIndex = 2;
+            this.lbl_table_filename.Text = "-";
+            this.lbl_table_filename.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // flp_table_2
             // 
@@ -642,7 +654,7 @@ namespace ExamManager
             this.tlp_import_main_grid.Location = new System.Drawing.Point(3, 3);
             this.tlp_import_main_grid.Name = "tlp_import_main_grid";
             this.tlp_import_main_grid.RowCount = 3;
-            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
+            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 156F));
             this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlp_import_main_grid.Size = new System.Drawing.Size(750, 356);
@@ -696,7 +708,7 @@ namespace ExamManager
             this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlp_grid_import.Size = new System.Drawing.Size(744, 156);
+            this.tlp_grid_import.Size = new System.Drawing.Size(744, 150);
             this.tlp_grid_import.TabIndex = 1;
             // 
             // lbl_import_room
@@ -913,6 +925,7 @@ namespace ExamManager
             this.btn_import_room_json.TabIndex = 16;
             this.btn_import_room_json.Text = "import";
             this.btn_import_room_json.UseVisualStyleBackColor = true;
+            this.btn_import_room_json.Click += new System.EventHandler(this.btn_import_room_json_Click);
             // 
             // btn_import_room_csv
             // 
@@ -924,6 +937,7 @@ namespace ExamManager
             this.btn_import_room_csv.TabIndex = 17;
             this.btn_import_room_csv.Text = "import";
             this.btn_import_room_csv.UseVisualStyleBackColor = true;
+            this.btn_import_room_csv.Click += new System.EventHandler(this.btn_import_room_csv_Click);
             // 
             // flp_import_options
             // 
@@ -933,9 +947,9 @@ namespace ExamManager
             this.flp_import_options.Controls.Add(this.flp_import_email);
             this.flp_import_options.Controls.Add(this.flp_import_nameorder);
             this.flp_import_options.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp_import_options.Location = new System.Drawing.Point(3, 165);
+            this.flp_import_options.Location = new System.Drawing.Point(3, 159);
             this.flp_import_options.Name = "flp_import_options";
-            this.flp_import_options.Size = new System.Drawing.Size(744, 148);
+            this.flp_import_options.Size = new System.Drawing.Size(744, 154);
             this.flp_import_options.TabIndex = 2;
             // 
             // flp_import_file
@@ -1076,18 +1090,6 @@ namespace ExamManager
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(764, 391);
             this.tabControl.TabIndex = 3;
-            // 
-            // lbl_table_filename
-            // 
-            this.lbl_table_filename.AutoSize = true;
-            this.lbl_table_filename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_table_filename.Location = new System.Drawing.Point(309, 5);
-            this.lbl_table_filename.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.lbl_table_filename.Name = "lbl_table_filename";
-            this.lbl_table_filename.Size = new System.Drawing.Size(14, 20);
-            this.lbl_table_filename.TabIndex = 2;
-            this.lbl_table_filename.Text = "-";
-            this.lbl_table_filename.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormImportExport
             // 

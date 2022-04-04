@@ -5,11 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Net.Mime;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace ExamManager
