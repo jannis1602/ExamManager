@@ -42,9 +42,6 @@ namespace ExamManager
             this.stufeVerschiebenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_editgrade_move = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_data_editgrade_delete = new System.Windows.Forms.ToolStripMenuItem();
-            this.filedataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_loadstudents = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_data_loadteacher = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_teacher = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_search_student = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,7 +125,6 @@ namespace ExamManager
             this.lbl_date = new System.Windows.Forms.Label();
             this.dtp_date = new System.Windows.Forms.DateTimePicker();
             this.tlp_duration = new System.Windows.Forms.TableLayoutPanel();
-            this.tb_duration = new System.Windows.Forms.TextBox();
             this.lbl_duration = new System.Windows.Forms.Label();
             this.tlp_time = new System.Windows.Forms.TableLayoutPanel();
             this.dtp_time = new System.Windows.Forms.DateTimePicker();
@@ -141,6 +137,7 @@ namespace ExamManager
             this.panel_top_time = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tooltip_search_filter = new System.Windows.Forms.ToolTip(this.components);
+            this.nud_duration = new System.Windows.Forms.NumericUpDown();
             this.tlp_main.SuspendLayout();
             this.flp_menu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -170,6 +167,7 @@ namespace ExamManager
             this.panel_side_room.SuspendLayout();
             this.panel_sidetop_empty.SuspendLayout();
             this.panel_time_line.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).BeginInit();
             this.SuspendLayout();
             // 
             // tlp_main
@@ -217,8 +215,7 @@ namespace ExamManager
             this.tsmi_data_teachers,
             this.tsmi_data_rooms,
             this.tsmi_data_subjects,
-            this.stufeVerschiebenToolStripMenuItem,
-            this.filedataToolStripMenuItem});
+            this.stufeVerschiebenToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             resources.ApplyResources(this.dataToolStripMenuItem, "dataToolStripMenuItem");
             // 
@@ -265,26 +262,6 @@ namespace ExamManager
             this.tsmi_data_editgrade_delete.Name = "tsmi_data_editgrade_delete";
             resources.ApplyResources(this.tsmi_data_editgrade_delete, "tsmi_data_editgrade_delete");
             this.tsmi_data_editgrade_delete.Click += new System.EventHandler(this.tsmi_data_editgrade_delete_Click);
-            // 
-            // filedataToolStripMenuItem
-            // 
-            this.filedataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_data_loadstudents,
-            this.tsmi_data_loadteacher});
-            this.filedataToolStripMenuItem.Name = "filedataToolStripMenuItem";
-            resources.ApplyResources(this.filedataToolStripMenuItem, "filedataToolStripMenuItem");
-            // 
-            // tsmi_data_loadstudents
-            // 
-            this.tsmi_data_loadstudents.Name = "tsmi_data_loadstudents";
-            resources.ApplyResources(this.tsmi_data_loadstudents, "tsmi_data_loadstudents");
-            this.tsmi_data_loadstudents.Click += new System.EventHandler(this.tsmi_data_loadstudents_Click);
-            // 
-            // tsmi_data_loadteacher
-            // 
-            this.tsmi_data_loadteacher.Name = "tsmi_data_loadteacher";
-            resources.ApplyResources(this.tsmi_data_loadteacher, "tsmi_data_loadteacher");
-            this.tsmi_data_loadteacher.Click += new System.EventHandler(this.tsmi_data_loadteacher_Click);
             // 
             // searchToolStripMenuItem
             // 
@@ -815,13 +792,14 @@ namespace ExamManager
             resources.ApplyResources(this.cb_student_onetime, "cb_student_onetime");
             this.cb_student_onetime.Name = "cb_student_onetime";
             this.cb_student_onetime.UseVisualStyleBackColor = true;
-            this.cb_student_onetime.CheckedChanged += new System.EventHandler(this.update_autocomplete_Event);
+            this.cb_student_onetime.CheckedChanged += new System.EventHandler(this.cb_student_onetime_CheckedChanged);
             // 
             // cb_add_next_time
             // 
             resources.ApplyResources(this.cb_add_next_time, "cb_add_next_time");
             this.cb_add_next_time.Name = "cb_add_next_time";
             this.cb_add_next_time.UseVisualStyleBackColor = true;
+            this.cb_add_next_time.CheckedChanged += new System.EventHandler(this.cb_add_next_time_CheckedChanged);
             // 
             // cb_keep_data
             // 
@@ -830,6 +808,7 @@ namespace ExamManager
             resources.ApplyResources(this.cb_keep_data, "cb_keep_data");
             this.cb_keep_data.Name = "cb_keep_data";
             this.cb_keep_data.UseVisualStyleBackColor = true;
+            this.cb_keep_data.CheckedChanged += new System.EventHandler(this.cb_keep_data_CheckedChanged);
             // 
             // cb_show_subjectteacher
             // 
@@ -871,16 +850,9 @@ namespace ExamManager
             // tlp_duration
             // 
             resources.ApplyResources(this.tlp_duration, "tlp_duration");
-            this.tlp_duration.Controls.Add(this.tb_duration, 1, 0);
             this.tlp_duration.Controls.Add(this.lbl_duration, 0, 0);
+            this.tlp_duration.Controls.Add(this.nud_duration, 1, 0);
             this.tlp_duration.Name = "tlp_duration";
-            // 
-            // tb_duration
-            // 
-            resources.ApplyResources(this.tb_duration, "tb_duration");
-            this.tb_duration.Name = "tb_duration";
-            this.tb_duration.TextChanged += new System.EventHandler(this.tb_duration_TextChanged);
-            this.tb_duration.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_escape_KeyDown);
             // 
             // lbl_duration
             // 
@@ -956,6 +928,27 @@ namespace ExamManager
             // 
             this.toolTip.Tag = "";
             // 
+            // nud_duration
+            // 
+            resources.ApplyResources(this.nud_duration, "nud_duration");
+            this.nud_duration.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.nud_duration.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_duration.Name = "nud_duration";
+            this.nud_duration.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.nud_duration.SizeChanged += new System.EventHandler(this.nud_duration_SizeChanged);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -1001,7 +994,6 @@ namespace ExamManager
             this.tlp_1.PerformLayout();
             this.flp_edit_btns.ResumeLayout(false);
             this.tlp_config.ResumeLayout(false);
-            this.tlp_config.PerformLayout();
             this.tlp_2.ResumeLayout(false);
             this.tlp_date.ResumeLayout(false);
             this.tlp_date.PerformLayout();
@@ -1014,6 +1006,7 @@ namespace ExamManager
             this.panel_sidetop_empty.ResumeLayout(false);
             this.panel_sidetop_empty.PerformLayout();
             this.panel_time_line.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nud_duration)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1027,7 +1020,6 @@ namespace ExamManager
         private System.Windows.Forms.TableLayoutPanel tlp_time;
         private System.Windows.Forms.Label lbl_time;
         private System.Windows.Forms.TableLayoutPanel tlp_duration;
-        private System.Windows.Forms.TextBox tb_duration;
         private System.Windows.Forms.Label lbl_duration;
         private System.Windows.Forms.TableLayoutPanel tlp_3;
         private System.Windows.Forms.TableLayoutPanel tlp_subject;
@@ -1083,8 +1075,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_changeroom;
         private System.Windows.Forms.ToolStripMenuItem tsmi_search_room;
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_examdates;
-        private System.Windows.Forms.ToolStripMenuItem filedataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadstudents;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lbl_grade;
         private System.Windows.Forms.ComboBox cb_grade;
@@ -1105,7 +1095,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_table_teacher;
         private System.Windows.Forms.Panel panel_sidetop_empty;
         private System.Windows.Forms.Label lbl_search;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_data_loadteacher;
         private System.Windows.Forms.CheckBox cb_show_subjectteacher;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_all;
         private System.Windows.Forms.ToolStripMenuItem tsmi_filter_teacher;
@@ -1130,5 +1119,6 @@ namespace ExamManager
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_sendemail;
         private System.Windows.Forms.ToolStripMenuItem tsmi_exam_delete_examday;
         private System.Windows.Forms.ToolStripMenuItem tsmi_tools_deleteoedexams;
+        private System.Windows.Forms.NumericUpDown nud_duration;
     }
 }

@@ -20,9 +20,10 @@ namespace ExamManager
             this.WindowState = FormWindowState.Maximized;
             DateTime Value = DateTime.ParseExact(Properties.Settings.Default.TimelineDate, "dd.MM.yyyy", null);
             string date = Value.ToString("yyyy-MM-dd");
-            //tl = new TimeLineObject(date, Program.database.GetAllExamsAtDate(date));
-            tl = new TimeLineObject(date, Program.database.GetAllExamsFromTeacherAtDate(date, "BRE"));
-            tl.ExportPNG();
+            tl = new TimeLineObject(date, Program.database.GetAllExamsAtDate(date));
+            //tl = new TimeLineObject(date, Program.database.GetAllExamsFromTeacherAtDate(date, "BRE"));
+            //tl.ExportPNG();
+            //tl.PrintPng();
             panel_main.Controls.Add(tl.Panel);
         }
 

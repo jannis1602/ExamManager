@@ -88,8 +88,8 @@ namespace ExamManager
         /// <returns>returns <see langword="true"/> if the student was added successfully</returns>
         public bool AddStudent(StudentObject s)
         {
-            StudentObject ts = GetStudentByName(s.Firstname, s.Lastname);
-            if (ts != null) // TODO change instert!!!
+            /*StudentObject ts = GetStudentByName(s.Firstname, s.Lastname);
+            if (ts != null)
             {
                 DialogResult result = MessageBox.Show("Ein Schüler mit dem Namen " + s.Firstname + " " + s.Lastname + " exestiert bereits in der Stufe " + ts.Grade +
                     "!\nEinen weiteren in der Stufe " + s.Grade + " erstellen?", "Warnung!", MessageBoxButtons.YesNoCancel);
@@ -97,7 +97,7 @@ namespace ExamManager
                 { return false; }
                 if (result != DialogResult.Yes)
                 { return true; }
-            }
+            }*/
             SQLiteCommand sqlite_cmd = connection.CreateCommand();
             sqlite_cmd.CommandText = "INSERT INTO student (firstname, lastname, grade, email, phone_number) VALUES(@firstname,@lastname,@grade,@email,@phone_number) ";
             sqlite_cmd.Parameters.AddWithValue("@firstname", s.Firstname);
@@ -107,96 +107,6 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@phone_number", s.Phonenumber);
             sqlite_cmd.ExecuteNonQuery();
             return true;
-        }
-        /// <summary>Adds all students from a file into the database.</summary>
-        public void InsertStudentFileIntoDB(string file, string grade, bool mailgenerator) // TODO: in FileReaderClass
-        {
-            bool editDoppelnamen = false;
-            LinkedList<int> studentIdList = new LinkedList<int>();
-            if (File.Exists(file))
-            {
-                string[] lines = File.ReadAllLines(file);
-                foreach (string line in lines)
-                {
-                    if (!line[0].Equals('#'))
-                        if (line.Split(' ').Length > 2) // Doppelnamen
-                        {
-                            if (!editDoppelnamen)   // Abfrage am Anfang?
-                            {
-                                string tempfirstname = null;
-                                for (int i = 0; i < line.Split(' ').Length - 1; i++)
-                                    tempfirstname += line.Split(' ')[i] += " ";
-                                tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                                string templastname = null;
-                                templastname += line.Split(' ')[line.Split(' ').Length - 1];
-                                tempfirstname = tempfirstname.Replace(' ', '_');
-                                templastname = templastname.Replace(' ', '_');
-                                if (mailgenerator)
-                                {
-                                    string domain = Properties.Settings.Default.EmailDomain;
-                                    string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                    if (AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail)))
-                                        studentIdList.AddLast(GetStudentByName(tempfirstname, templastname, grade).Id);
-                                    else break;
-                                }
-                                else
-                                {
-                                    if (AddStudent(new StudentObject(0, tempfirstname, templastname, grade)))
-                                        studentIdList.AddLast(GetStudentByName(tempfirstname, templastname, grade).Id);
-                                    else break;
-                                }
-
-                            }
-                            else
-                            {
-                                for (int i = 1; i < line.Split(' ').Length; i++)
-                                {
-                                    string tempfirstname = null;
-                                    for (int fn = 0; fn < i; fn++)
-                                        tempfirstname += line.Split(' ')[fn] += " ";
-                                    tempfirstname = tempfirstname.Remove(tempfirstname.Length - 1, 1);
-                                    string templastname = null;
-                                    for (int ln = i; ln < line.Split(' ').Length; ln++)
-                                        templastname += line.Split(' ')[ln];
-                                    DialogResult result = MessageBox.Show("Auswahl: " + tempfirstname + " - " + templastname, "Info!", MessageBoxButtons.YesNo);
-                                    if (result == DialogResult.Yes)
-                                    {
-                                        if (mailgenerator)
-                                        {
-                                            string domain = Properties.Settings.Default.EmailDomain;
-                                            string mail = tempfirstname.ToLower().Replace(' ', '.').Replace('_', '.') + "." + templastname.ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                            AddStudent(new StudentObject(0, tempfirstname, templastname, grade, mail));
-                                        }
-                                        else AddStudent(new StudentObject(0, tempfirstname, templastname, grade));
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {       // kein doppelnamen
-                            if (mailgenerator)
-                            {
-                                string domain = Properties.Settings.Default.EmailDomain;
-                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                if (AddStudent(new StudentObject(0, line.Split(' ')[0], line.Split(' ')[1], grade, mail)))
-                                    studentIdList.AddLast(GetStudentByName(line.Split(' ')[0], line.Split(' ')[1], grade).Id);
-                                else break;
-                            }
-                            else
-                            {
-                                if (AddStudent(new StudentObject(0, line.Split(' ')[0], line.Split(' ')[1], grade)))
-                                    studentIdList.AddLast(GetStudentByName(line.Split(' ')[0], line.Split(' ')[1], grade).Id);
-                                else break;
-                            }
-                        }
-                }
-                if (studentIdList.Count > 0)
-                {
-                    FormStudentData form = new FormStudentData(studentIdList);
-                    form.ShowDialog();
-                }
-            }
         }
         /// <summary>Searches a student by firstname and lastname (and grade) in the database.</summary>
         /// <returns>Returns the student as <see cref="StudentObject"/>. If it doesn't exist, null is returned</returns>
@@ -348,63 +258,6 @@ namespace ExamManager
             sqlite_cmd.Parameters.AddWithValue("@subject2", t.Subject2);
             sqlite_cmd.Parameters.AddWithValue("@subject3", t.Subject3);
             sqlite_cmd.ExecuteNonQuery();
-        }
-        /// <summary>Adds all teachers from a file into the database.</summary>
-        public void InsertTeacherFileIntoDB(string file, bool mailgenerator) // TODO: in FileReaderClass // TODO: Doppelnamen in file with _ info?
-        {
-            //bool editDoppelnamen = false;
-            LinkedList<string> teacherIdList = new LinkedList<string>();    // TODO: Teacher mail generator
-            if (File.Exists(file))
-            {
-                string[] lines = File.ReadAllLines(file);
-                foreach (string line in lines)
-                {
-                    if (!line[0].Equals('#'))
-                        if (line.Split(' ').Length > 2)
-                        {       // kein doppelnamen
-                            string[] t = line.Replace("Dr.", "").Replace(",", "").Split(' ');
-                            if (mailgenerator)
-                            {
-                                string domain = Properties.Settings.Default.EmailDomain;
-                                string mail = line.Split(' ')[0].ToLower().Replace(' ', '.').Replace('_', '.') + "." + line.Split(' ')[1].ToLower().Replace(" ", ".").Replace('_', '.') + "@" + domain;
-                                if (t.Length == 5)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], null, null));
-                                else if (t.Length == 6)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], t[5], null));
-                                else if (t.Length == 7)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], mail, null, t[4], t[5], t[6]));
-                                teacherIdList.AddLast(t[3]);
-                            }
-                            else
-                            {
-                                if (t.Length == 5)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], null, null));
-                                else if (t.Length == 6)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], null));
-                                else if (t.Length == 7)
-                                    AddTeacher(new TeacherObject(t[3], t[1], t[2], null, null, t[4], t[5], t[6]));
-                                teacherIdList.AddLast(t[3]);
-                            }
-                            if (t.Length >= 5)
-                            {
-                                if (GetSubject(t[4]) == null)
-                                    AddSubject(t[4]);
-                            }
-                            if (t.Length >= 6)
-                            {
-                                if (GetSubject(t[5]) == null)
-                                    AddSubject(t[5]);
-                            }
-                            if (t.Length == 7)
-                            {
-                                if (GetSubject(t[6]) == null)
-                                    AddSubject(t[6]);
-                            }
-                        }
-                }
-            }
-            FormTeacherData form = new FormTeacherData(teacherIdList);
-            form.ShowDialog();
         }
         /// <summary>Searches all teachers in the database.</summary>
         /// <returns>Returns all teachers as a <see cref="LinkedList{T}"/> with <see cref="TeacherObject"/></returns>
@@ -780,9 +633,9 @@ namespace ExamManager
             }
             return data;
         }
-        /// <summary>Searches all exams in a room at a date in the database.</summary>
+        /// <summary>Searches all exams in a room (exam and preparation) at a date in the database.</summary>
         /// <returns>Returns the exams as a <see cref="LinkedList{T}"/> with <see cref="ExamObject"/></returns>
-        public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)   // TODO: split examroom and preparationroom
+        public LinkedList<ExamObject> GetAllExamsAtDateAndRoom(string date, string exam_room)
         {
             LinkedList<ExamObject> data = new LinkedList<ExamObject>();
             SQLiteDataReader reader;

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,7 +77,6 @@ namespace ExamManager
             this.panel_top_time.MaximumSize = new Size(0, 40);
             this.panel_top_time.Size = new Size(PixelPerHour * LengthTL, 40);
             this.panel_time_line.Controls.Add(panel_top_time);
-
             // room
             this.panel_side_room = new Panel();
             this.panel_side_room.Margin = new Padding(0);
@@ -119,10 +121,16 @@ namespace ExamManager
             panel_room_bottom.Size = new Size(panel_side_room.Width - 17, 12);
             panel_side_room.Controls.Add(panel_room_bottom);
 
+            DateTime tlStartTime = DateTime.ParseExact("00:00", "HH:mm", null).AddHours(StartTimeTL);
+            DateTime tlEndTime = DateTime.ParseExact("00:00", "HH:mm", null).AddHours(StartTimeTL + LengthTL);
             foreach (ExamObject exam in tl_exam_entity_list)
-                foreach (Panel p in time_line_list)
-                    if (p.Name.Equals(exam.Examroom))
-                    { exam.CreatePanel(); p.Controls.Add(exam.GetTimelineEntity()); break; }
+            {
+                DateTime examStartTime = DateTime.ParseExact(exam.Time, "HH:mm", null);
+                DateTime examEndTime = DateTime.ParseExact(exam.Time, "HH:mm", null).AddMinutes(exam.Duration);
+                if (examStartTime >= tlStartTime && examEndTime <= tlEndTime) foreach (Panel p in time_line_list)
+                        if (p.Name.Equals(exam.Examroom))
+                        { exam.CreatePanel(); p.Controls.Add(exam.GetTimelineEntity()); break; }
+            }
         }
 
         public void AddTimeline(string room)
@@ -160,7 +168,7 @@ namespace ExamManager
                 // Dock = DockStyle.Top,  // TODO: TL Dock top ----------------------------------------------
             };
             panel_tl.Width = PixelPerHour * LengthTL; // TEST
-            // panel_tl.Width = panel_top_time.Width;
+                                                      // panel_tl.Width = panel_top_time.Width;
             panel_tl.Paint += panel_time_line_Paint;
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
@@ -377,6 +385,30 @@ namespace ExamManager
                 g1.DrawImage(bmp1, new Rectangle(0, 0, Convert.ToInt32(fullWidth1), panel_side_room.Height));
                 return newTLbmp1;
             }
+        }
+
+        public void PrintPng()
+        {
+            string file = Path.GetTempPath() + "\\Prüfungstag_" + date + ".png";
+            ExportPNG(split: false, file: file);
+            string fileP1 = Path.GetTempPath() + "\\Prüfungstag_P1_" + date + ".png";
+            string fileP2 = Path.GetTempPath() + "\\Prüfungstag_P2_" + date + ".png";
+            ExportPNG(split: true, fileP1: fileP1, fileP2: fileP2);
+
+            //FileInfo f0 = new FileInfo(file);
+            FileInfo f1 = new FileInfo(fileP1);
+            FileInfo f2 = new FileInfo(fileP2);
+            FileInfo[] FileList = new FileInfo[] { f1, f2 };
+
+            /*foreach (FileInfo f in FileList)
+            {
+                var p = new Process();
+                p.StartInfo.FileName = f.FullName;
+                // p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                // p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.Verb = "Print";
+                p.Start();
+            }*/
         }
 
     }

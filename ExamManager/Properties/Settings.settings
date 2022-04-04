@@ -71,5 +71,17 @@
     <Setting Name="TLLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
+    <Setting Name="AddOptionKeepData" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AddOptionShowSubjectteacher" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AddOptionAddNextTime" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AddOptionStudentOnetime" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

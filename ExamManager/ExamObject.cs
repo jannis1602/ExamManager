@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace ExamManager
         [JsonIgnore] public Panel Panel { get; private set; }
         public int Id { get; private set; }
         public string Date { get; private set; } // DateTime?
+        [JsonIgnore] public DateTime DateDT { get; private set; }
         public string Time { get; private set; }
         public string Examroom { get; private set; }
         public string Preparationroom { get; private set; }
@@ -43,6 +45,7 @@ namespace ExamManager
         {
             this.Id = id;
             this.Date = date;
+            this.DateDT = Convert.ToDateTime(date);
             this.Time = time;
             this.Examroom = examroom;
             this.Preparationroom = preparationroom;
@@ -72,6 +75,7 @@ namespace ExamManager
                 this.Date = dt.ToString("yyyy-MM-dd");
             }
             this.Time = time;
+            this.DateDT = Convert.ToDateTime(date);
             //if (DateTime.ParseExact(time, "HH:mm", null).Hour > 18) Edit(time: "18:00");
             //if (DateTime.ParseExact(time, "HH:mm", null).Hour < 7) Edit(time: "07:00");
             this.Examroom = examroom;
@@ -94,8 +98,7 @@ namespace ExamManager
             TLStartTime = Properties.Settings.Default.TLStartTime;
             TLLength = Properties.Settings.Default.TLLength;
         }
-        //TODO: return error string, if null -> added
-        public bool Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0, LinkedList<ExamObject> excludeList = null)
+        public string Edit(string date = null, string time = null, string examroom = null, string preparationroom = null, int student = 0, int student2 = 0, int student3 = 0, string teacher1 = null, string teacher2 = null, string teacher3 = null, string subject = null, int duration = 0, LinkedList<ExamObject> excludeList = null, bool addToDB = true)
         {
             if (date != null) this.Date = date;
             if (time != null) this.Time = time;
@@ -113,16 +116,19 @@ namespace ExamManager
             if (subject != null) this.Subject = subject;
             if (duration != 0) this.Duration = duration;
 
+            string checkError = null;
             string checkRoom = CheckRoom(excludeList);
-            if (checkRoom != null) MessageBox.Show(checkRoom, "Fehler");
+            if (checkRoom != null) checkError = checkRoom;
             string checkTeacher = CheckTeacher();
-            if (checkTeacher != null) MessageBox.Show(checkTeacher, "Fehler");
+            if (checkTeacher != null) checkError = checkTeacher;
             string checkStudent = CheckStudent();
-            if (checkStudent != null) MessageBox.Show(checkStudent, "Fehler");
+            if (checkStudent != null) checkError = checkStudent;
             if (checkRoom == null && checkTeacher == null && checkStudent == null)
-                Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
-            else { UpdateDBData(); return false; }
-            return true;
+            {
+                if (addToDB) Program.database.EditExam(this.Id, this.Date, this.Time, this.Examroom, this.Preparationroom, this.StudentId, this.Student2Id, this.Student3Id, this.Teacher1Id, this.Teacher2Id, this.Teacher3Id, this.Subject, this.Duration);
+            }
+            else { UpdateDBData(); return checkError; }
+            return null;
         }
         public bool EditDatabase()
         {
@@ -187,10 +193,9 @@ namespace ExamManager
         public void CreatePanel()
         {
             this.Panel = new Panel();
-            DateTime startTime = DateTime.ParseExact("00:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddHours(TLStartTime);
-            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, System.Globalization.DateTimeStyles.None); // TODO: set temp startTime
+            DateTime startTime = DateTime.ParseExact("00:00", "HH:mm", null, DateTimeStyles.None).AddHours(TLStartTime);
+            DateTime examTime = DateTime.ParseExact(Time, "HH:mm", null, DateTimeStyles.None);
             int totalMins = Convert.ToInt32(examTime.Subtract(startTime).TotalMinutes);
-            //float unit_per_minute = 200F / 60F;
             float unit_per_minute = PixelPerHour / 60F;
             float startpoint = (float)Convert.ToDouble(totalMins) * unit_per_minute + 4;
             this.Panel.Location = new Point(Convert.ToInt32(startpoint), 10);
@@ -235,7 +240,7 @@ namespace ExamManager
         }
         private string CheckRoom(LinkedList<ExamObject> excludeList = null)
         {
-            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom)) // TODO: return if examroom or preproom
+            foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Examroom))
             {
                 if (excludeList != null)
                 {
@@ -244,9 +249,9 @@ namespace ExamManager
                 }
                 else if (Id != s.Id && CheckTime(s.Time, s.Duration)) return s.Examroom + " Raum besetzt ab " + s.Time;
             }
-            if (Preparationroom != null && Preparationroom.Length > 0)
+            /*if (Preparationroom != null && Preparationroom.Length > 0)
                 foreach (ExamObject s in Program.database.GetAllExamsAtDateAndRoom(Date, Preparationroom))
-                    if (Id != s.Id && CheckTime(s.Time, s.Duration)) return s.Examroom + " Raum besetzt ab " + s.Time;
+                    if (Id != s.Id && CheckTime(s.Time, s.Duration)) return s.Examroom + " Vorbereitungsraum besetzt ab " + s.Time;*/
             return null;
         }
         private string CheckTeacher()
@@ -377,6 +382,7 @@ namespace ExamManager
             string line3 = t1 + "  " + t2 + "  " + t3 + "\n";
             string line4 = Subject + "  " + Examroom + "  [" + Preparationroom + "]";
             ToolTip sfToolTip1 = new ToolTip();
+            sfToolTip1.AutomaticDelay = 800;
             sfToolTip1.SetToolTip(panel_tl_entity, line1 + line11 + line12 + line2 + line3 + line4);
         }
         public void SetBorder(Color borderColor, bool solidBorder)

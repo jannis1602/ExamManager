@@ -34,7 +34,8 @@ namespace ExamManager
                     case 2: Colors.ColorTheme(Colors.Theme.bw); break;
                 }
             // -> on change Properties.Settings.Default.Reload(); // TODO restore old settings
-            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text.Replace("@", "");
+            if (tb_emaildomain.Text.Contains("@")) tb_emaildomain.Text = tb_emaildomain.Text.Replace("@", "");
+            Properties.Settings.Default.EmailDomain = tb_emaildomain.Text;
             // smtp
             Properties.Settings.Default.SMTP_server = tb_smtp_server.Text;
             Properties.Settings.Default.SMTP_port = tb_smtp_port.Text;
@@ -107,7 +108,7 @@ namespace ExamManager
             if (Properties.Settings.Default.NameOrderTeacher)
                 cb_teacher_nameorder.SelectedIndex = 0;
             else cb_teacher_nameorder.SelectedIndex = 1;
-            // TODO load settings
+
             tb_smtp_server.Text = Properties.Settings.Default.SMTP_server;
             tb_smtp_port.Text = Properties.Settings.Default.SMTP_port;
             tb_smtp_email.Text = Properties.Settings.Default.SMTP_email;
@@ -190,7 +191,7 @@ namespace ExamManager
             {
                 DatabasePath = Properties.Settings.Default.DatabasePath,
                 EmailDomain = Properties.Settings.Default.EmailDomain,
-                SMTPSettings = new SMTP_Settings // TODO: get from settings
+                SMTPSettings = new SMTP_Settings
                 {
                     Server = tb_smtp_server.Text,
                     Port = tb_smtp_port.Text,

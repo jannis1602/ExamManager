@@ -19,10 +19,11 @@ namespace ExamManager
         private LinkedList<StudentObject> StudentList;
         private LinkedList<TeacherObject> TeacherList;
         private LinkedList<ExamObject> ExamList;
+        private LinkedList<string> RoomList;
         private string SelectedFile = null;
         LinkedList<string[]> DataArrayList;
 
-        enum DataType { Exam, Student, Teacher };
+        enum DataType { Exam, Student, Teacher, Room };
         enum DataFormat { json, csv, txt };
 
         DataType dataType;
@@ -109,6 +110,13 @@ namespace ExamManager
                     Console.WriteLine(TeacherList.Count());
                     foreach (TeacherObject to in TeacherList)
                         Console.WriteLine(to.Fullname());
+                }
+                else if (dataType == DataType.Room && RoomList.Count > 0)
+                {
+                    foreach (string s in RoomList)
+                    {
+                        Program.database.AddRoom(s);
+                    }
                 }
             }
             else if (dataFormat == DataFormat.json)
@@ -293,6 +301,39 @@ namespace ExamManager
             }
 
 
+        }
+        private void btn_import_room_txt_Click(object sender, EventArgs e)
+        {
+            flp_import_grade.Visible = false;
+            flp_import_email.Visible = false;
+            flp_import_nameorder.Visible = false;
+            dataFormat = DataFormat.txt;
+            dataType = DataType.Room;
+            RoomList = new LinkedList<string>();
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = "Raumliste auswählen",
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string file = ofd.FileName;
+                lbl_import_file.Text = file;
+                if (File.Exists(file))
+                {
+                    string[] lines = File.ReadAllLines(file);
+                    foreach (string line in lines)
+                    {
+                        if (!line[0].Equals('#'))
+                        {
+                            if (!RoomList.Contains(line) && line.Length > 0) RoomList.AddLast(line);
+                        }
+                    }
+                }
+            }
         }
         // json
         private void btn_import_exam_json_Click(object sender, EventArgs e)
@@ -739,7 +780,7 @@ namespace ExamManager
             ofd.FilterIndex = 1;
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             if (ofd.ShowDialog() != DialogResult.OK) return;
-            btn_table_select_file.Text = ofd.FileName;
+            lbl_table_filename.Text = ofd.FileName;
             SelectedFile = ofd.FileName;
         }
         private void btn_table_add_Click(object sender, EventArgs e)
@@ -759,5 +800,6 @@ namespace ExamManager
             string domain = Properties.Settings.Default.EmailDomain;
             if (cb_import_generateemail.Checked && domain.Length < 2) { cb_import_generateemail.Checked = false; MessageBox.Show("Domain in den Einstellungen festlegen", "Warnung"); }
         }
+
     }
 }

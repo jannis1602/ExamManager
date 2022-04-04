@@ -132,8 +132,8 @@ namespace ExamManager
                 };
                 string senderName = Properties.Settings.Default.SMTP_email_name;
                 string mail_title = title;
-                string mail_receiver = Properties.Settings.Default.SMTP_email;  // TODO: change to var ----------------------------------------------
-                string mail_text = text; // TODO: change email text
+                string mail_receiver = Properties.Settings.Default.SMTP_email;  // TODO: change to Teacher email
+                string mail_text = text;
                 if (mail_receiver.Length == 0 || senderName.Length == 0 || mail_title.Length == 0 || mail_text.Length == 0) { MessageBox.Show("alle Daten ausfüllen!", "Achtung"); return false; }
                 try
                 {
@@ -161,7 +161,7 @@ namespace ExamManager
         {
             string fileExamDay = Path.GetTempPath() + "\\Prüfungstag_" + date + ".csv";
             var csv = new StringBuilder();
-            var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
+            var firstLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Lehrer", "Datum", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
             csv.AppendLine(firstLine);
             foreach (TeacherObject teacher in teacherList)
                 foreach (ExamObject exam in Program.database.GetAllExamsFromTeacherAtDate(date, teacher.Shortname))
@@ -169,9 +169,9 @@ namespace ExamManager
                     DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                     DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
                     string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
-                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", teacher.Shortname.Replace("*", ""), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", teacher.Shortname.Replace("*", ""), exam.DateDT.ToString("dd.MM.yyyy"), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
                     if (exam.Teacher1 != null)
-                        newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", exam.Teacher1.Fullname(), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                        newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", exam.Teacher1.Fullname(), exam.DateDT.ToString("dd.MM.yyyy"), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
                     csv.AppendLine(newLine);
                 }
             File.WriteAllText(fileExamDay, csv.ToString());
@@ -182,16 +182,16 @@ namespace ExamManager
         {
             string teacherExamFile = Path.GetTempPath() + "\\Prüfungstag_" + date + "_" + to.Shortname + ".csv";
             var csv1 = new StringBuilder();
-            var firstLine1 = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", "Lehrer", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
+            var firstLine1 = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", "Lehrer", "Datum", "Zeit", "Prüfungsraum", "Vorbereitungsraum", "Schüler", "Lehrer Vorsitz", "Lehrer Prüfer", "Lehrer Protokoll", "Fach", "Dauer");
             csv1.AppendLine(firstLine1);
             foreach (ExamObject exam in Program.database.GetAllExamsFromTeacherAtDate(date, to.Shortname))
             {
                 DateTime start = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None);
                 DateTime end = DateTime.ParseExact(exam.Time, "HH:mm", null, System.Globalization.DateTimeStyles.None).AddMinutes(exam.Duration);
                 string time = start.ToString("HH:mm") + " - " + end.ToString("HH:mm");
-                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", to.Shortname.Replace("*", ""), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", to.Shortname.Replace("*", ""), exam.DateDT.ToString("dd.MM.yyyy"), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
                 if (exam.Teacher1 != null)
-                    newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", exam.Teacher1.Fullname(), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
+                    newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", exam.Teacher1.Fullname(), exam.DateDT.ToString("dd.MM.yyyy"), time, exam.Examroom, exam.Preparationroom, exam.Student.Fullname(), exam.Teacher1Id.Replace("*", ""), exam.Teacher2Id.Replace("*", ""), exam.Teacher3Id.Replace("*", ""), exam.Subject, exam.Duration);
                 csv1.AppendLine(newLine);
             }
             File.WriteAllText(teacherExamFile, csv1.ToString());

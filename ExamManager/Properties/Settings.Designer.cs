@@ -298,5 +298,53 @@ namespace ExamManager.Properties {
                 this["TLLength"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AddOptionKeepData {
+            get {
+                return ((bool)(this["AddOptionKeepData"]));
+            }
+            set {
+                this["AddOptionKeepData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AddOptionShowSubjectteacher {
+            get {
+                return ((bool)(this["AddOptionShowSubjectteacher"]));
+            }
+            set {
+                this["AddOptionShowSubjectteacher"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AddOptionAddNextTime {
+            get {
+                return ((bool)(this["AddOptionAddNextTime"]));
+            }
+            set {
+                this["AddOptionAddNextTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AddOptionStudentOnetime {
+            get {
+                return ((bool)(this["AddOptionStudentOnetime"]));
+            }
+            set {
+                this["AddOptionStudentOnetime"] = value;
+            }
+        }
     }
 }

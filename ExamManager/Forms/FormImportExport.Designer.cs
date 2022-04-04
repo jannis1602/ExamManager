@@ -55,6 +55,9 @@ namespace ExamManager
             this.flp_export_date = new System.Windows.Forms.FlowLayoutPanel();
             this.cb_export_singleexamday = new System.Windows.Forms.CheckBox();
             this.cb_export_days = new System.Windows.Forms.ComboBox();
+            this.flp_export_grade = new System.Windows.Forms.FlowLayoutPanel();
+            this.cb_export_singlegrade = new System.Windows.Forms.CheckBox();
+            this.cb_export_grade = new System.Windows.Forms.ComboBox();
             this.tlp_grid_export = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_export_teacher_csv = new System.Windows.Forms.Button();
@@ -71,6 +74,7 @@ namespace ExamManager
             this.tlp_import_main_grid = new System.Windows.Forms.TableLayoutPanel();
             this.btn_import_add = new System.Windows.Forms.Button();
             this.tlp_grid_import = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_import_room = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_import_teacher_txt = new System.Windows.Forms.Button();
             this.btn_import_exam_txt = new System.Windows.Forms.Button();
@@ -86,6 +90,9 @@ namespace ExamManager
             this.btn_import_exam_json = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.btn_import_room_txt = new System.Windows.Forms.Button();
+            this.btn_import_room_json = new System.Windows.Forms.Button();
+            this.btn_import_room_csv = new System.Windows.Forms.Button();
             this.flp_import_options = new System.Windows.Forms.FlowLayoutPanel();
             this.flp_import_file = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_import_filetext = new System.Windows.Forms.Label();
@@ -99,9 +106,7 @@ namespace ExamManager
             this.lbl_import_nameorder = new System.Windows.Forms.Label();
             this.cb_import_nameorder = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.flp_export_grade = new System.Windows.Forms.FlowLayoutPanel();
-            this.cb_export_grade = new System.Windows.Forms.ComboBox();
-            this.cb_export_singlegrade = new System.Windows.Forms.CheckBox();
+            this.lbl_table_filename = new System.Windows.Forms.Label();
             this.page_table.SuspendLayout();
             this.tlp_table_main.SuspendLayout();
             this.flp_table_main.SuspendLayout();
@@ -114,6 +119,7 @@ namespace ExamManager
             this.tlp_export_main_grid.SuspendLayout();
             this.flp_export_options.SuspendLayout();
             this.flp_export_date.SuspendLayout();
+            this.flp_export_grade.SuspendLayout();
             this.tlp_grid_export.SuspendLayout();
             this.page_import.SuspendLayout();
             this.tlp_import_main_grid.SuspendLayout();
@@ -124,7 +130,6 @@ namespace ExamManager
             this.flp_import_email.SuspendLayout();
             this.flp_import_nameorder.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.flp_export_grade.SuspendLayout();
             this.SuspendLayout();
             // 
             // page_table
@@ -170,6 +175,7 @@ namespace ExamManager
             // 
             this.flp_table_1.Controls.Add(this.lbl_table_file);
             this.flp_table_1.Controls.Add(this.btn_table_select_file);
+            this.flp_table_1.Controls.Add(this.lbl_table_filename);
             this.flp_table_1.Location = new System.Drawing.Point(2, 2);
             this.flp_table_1.Margin = new System.Windows.Forms.Padding(2);
             this.flp_table_1.Name = "flp_table_1";
@@ -418,6 +424,39 @@ namespace ExamManager
             this.cb_export_days.Size = new System.Drawing.Size(220, 28);
             this.cb_export_days.TabIndex = 14;
             // 
+            // flp_export_grade
+            // 
+            this.flp_export_grade.Controls.Add(this.cb_export_singlegrade);
+            this.flp_export_grade.Controls.Add(this.cb_export_grade);
+            this.flp_export_grade.Location = new System.Drawing.Point(2, 38);
+            this.flp_export_grade.Margin = new System.Windows.Forms.Padding(2);
+            this.flp_export_grade.Name = "flp_export_grade";
+            this.flp_export_grade.Size = new System.Drawing.Size(736, 30);
+            this.flp_export_grade.TabIndex = 5;
+            // 
+            // cb_export_singlegrade
+            // 
+            this.cb_export_singlegrade.AutoSize = true;
+            this.cb_export_singlegrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_export_singlegrade.Location = new System.Drawing.Point(3, 3);
+            this.cb_export_singlegrade.Name = "cb_export_singlegrade";
+            this.cb_export_singlegrade.Size = new System.Drawing.Size(219, 24);
+            this.cb_export_singlegrade.TabIndex = 14;
+            this.cb_export_singlegrade.Text = "Einzelne Stufe exportieren:";
+            this.cb_export_singlegrade.UseVisualStyleBackColor = true;
+            this.cb_export_singlegrade.CheckedChanged += new System.EventHandler(this.cb_export_singlegrade_CheckedChanged);
+            // 
+            // cb_export_grade
+            // 
+            this.cb_export_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_export_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cb_export_grade.FormattingEnabled = true;
+            this.cb_export_grade.Location = new System.Drawing.Point(228, 1);
+            this.cb_export_grade.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
+            this.cb_export_grade.Name = "cb_export_grade";
+            this.cb_export_grade.Size = new System.Drawing.Size(120, 28);
+            this.cb_export_grade.TabIndex = 11;
+            // 
             // tlp_grid_export
             // 
             this.tlp_grid_export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -603,7 +642,7 @@ namespace ExamManager
             this.tlp_import_main_grid.Location = new System.Drawing.Point(3, 3);
             this.tlp_import_main_grid.Name = "tlp_import_main_grid";
             this.tlp_import_main_grid.RowCount = 3;
-            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
             this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlp_import_main_grid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlp_import_main_grid.Size = new System.Drawing.Size(750, 356);
@@ -629,6 +668,7 @@ namespace ExamManager
             this.tlp_grid_import.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_grid_import.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_grid_import.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlp_grid_import.Controls.Add(this.lbl_import_room, 0, 4);
             this.tlp_grid_import.Controls.Add(this.label1, 0, 1);
             this.tlp_grid_import.Controls.Add(this.btn_import_teacher_txt, 3, 3);
             this.tlp_grid_import.Controls.Add(this.btn_import_exam_txt, 3, 1);
@@ -644,25 +684,39 @@ namespace ExamManager
             this.tlp_grid_import.Controls.Add(this.btn_import_exam_json, 1, 1);
             this.tlp_grid_import.Controls.Add(this.label5, 0, 3);
             this.tlp_grid_import.Controls.Add(this.label9, 3, 0);
+            this.tlp_grid_import.Controls.Add(this.btn_import_room_txt, 3, 4);
+            this.tlp_grid_import.Controls.Add(this.btn_import_room_json, 1, 4);
+            this.tlp_grid_import.Controls.Add(this.btn_import_room_csv, 2, 4);
             this.tlp_grid_import.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_grid_import.Location = new System.Drawing.Point(3, 3);
             this.tlp_grid_import.Name = "tlp_grid_import";
-            this.tlp_grid_import.RowCount = 4;
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlp_grid_import.Size = new System.Drawing.Size(744, 120);
+            this.tlp_grid_import.RowCount = 5;
+            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_grid_import.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_grid_import.Size = new System.Drawing.Size(744, 156);
             this.tlp_grid_import.TabIndex = 1;
+            // 
+            // lbl_import_room
+            // 
+            this.lbl_import_room.AutoSize = true;
+            this.lbl_import_room.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lbl_import_room.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_import_room.Location = new System.Drawing.Point(4, 132);
+            this.lbl_import_room.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_import_room.Name = "lbl_import_room";
+            this.lbl_import_room.Size = new System.Drawing.Size(178, 20);
+            this.lbl_import_room.TabIndex = 14;
+            this.lbl_import_room.Text = "Räume:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(4, 35);
+            this.label1.Location = new System.Drawing.Point(4, 39);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(178, 20);
@@ -672,7 +726,7 @@ namespace ExamManager
             // btn_import_teacher_txt
             // 
             this.btn_import_teacher_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_teacher_txt.Location = new System.Drawing.Point(557, 89);
+            this.btn_import_teacher_txt.Location = new System.Drawing.Point(557, 95);
             this.btn_import_teacher_txt.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_teacher_txt.Name = "btn_import_teacher_txt";
             this.btn_import_teacher_txt.Size = new System.Drawing.Size(100, 28);
@@ -684,10 +738,10 @@ namespace ExamManager
             // btn_import_exam_txt
             // 
             this.btn_import_exam_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_exam_txt.Location = new System.Drawing.Point(557, 31);
+            this.btn_import_exam_txt.Location = new System.Drawing.Point(557, 33);
             this.btn_import_exam_txt.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_exam_txt.Name = "btn_import_exam_txt";
-            this.btn_import_exam_txt.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_exam_txt.Size = new System.Drawing.Size(100, 28);
             this.btn_import_exam_txt.TabIndex = 8;
             this.btn_import_exam_txt.Text = "import";
             this.btn_import_exam_txt.UseVisualStyleBackColor = true;
@@ -696,10 +750,10 @@ namespace ExamManager
             // btn_import_student_txt
             // 
             this.btn_import_student_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_student_txt.Location = new System.Drawing.Point(557, 60);
+            this.btn_import_student_txt.Location = new System.Drawing.Point(557, 64);
             this.btn_import_student_txt.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_student_txt.Name = "btn_import_student_txt";
-            this.btn_import_student_txt.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_student_txt.Size = new System.Drawing.Size(100, 28);
             this.btn_import_student_txt.TabIndex = 10;
             this.btn_import_student_txt.Text = "import";
             this.btn_import_student_txt.UseVisualStyleBackColor = true;
@@ -708,7 +762,7 @@ namespace ExamManager
             // btn_import_teacher_csv
             // 
             this.btn_import_teacher_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_teacher_csv.Location = new System.Drawing.Point(372, 89);
+            this.btn_import_teacher_csv.Location = new System.Drawing.Point(372, 95);
             this.btn_import_teacher_csv.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_teacher_csv.Name = "btn_import_teacher_csv";
             this.btn_import_teacher_csv.Size = new System.Drawing.Size(100, 28);
@@ -720,10 +774,10 @@ namespace ExamManager
             // btn_import_exam_csv
             // 
             this.btn_import_exam_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_exam_csv.Location = new System.Drawing.Point(372, 31);
+            this.btn_import_exam_csv.Location = new System.Drawing.Point(372, 33);
             this.btn_import_exam_csv.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_exam_csv.Name = "btn_import_exam_csv";
-            this.btn_import_exam_csv.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_exam_csv.Size = new System.Drawing.Size(100, 28);
             this.btn_import_exam_csv.TabIndex = 9;
             this.btn_import_exam_csv.Text = "import";
             this.btn_import_exam_csv.UseVisualStyleBackColor = true;
@@ -732,10 +786,10 @@ namespace ExamManager
             // btn_import_student_csv
             // 
             this.btn_import_student_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_student_csv.Location = new System.Drawing.Point(372, 60);
+            this.btn_import_student_csv.Location = new System.Drawing.Point(372, 64);
             this.btn_import_student_csv.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_student_csv.Name = "btn_import_student_csv";
-            this.btn_import_student_csv.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_student_csv.Size = new System.Drawing.Size(100, 28);
             this.btn_import_student_csv.TabIndex = 11;
             this.btn_import_student_csv.Text = "import";
             this.btn_import_student_csv.UseVisualStyleBackColor = true;
@@ -744,10 +798,10 @@ namespace ExamManager
             // btn_import_student_json
             // 
             this.btn_import_student_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_student_json.Location = new System.Drawing.Point(187, 60);
+            this.btn_import_student_json.Location = new System.Drawing.Point(187, 64);
             this.btn_import_student_json.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_student_json.Name = "btn_import_student_json";
-            this.btn_import_student_json.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_student_json.Size = new System.Drawing.Size(100, 28);
             this.btn_import_student_json.TabIndex = 8;
             this.btn_import_student_json.Text = "import";
             this.btn_import_student_json.UseVisualStyleBackColor = true;
@@ -756,7 +810,7 @@ namespace ExamManager
             // btn_import_teacher_json
             // 
             this.btn_import_teacher_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_teacher_json.Location = new System.Drawing.Point(187, 89);
+            this.btn_import_teacher_json.Location = new System.Drawing.Point(187, 95);
             this.btn_import_teacher_json.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_teacher_json.Name = "btn_import_teacher_json";
             this.btn_import_teacher_json.Size = new System.Drawing.Size(100, 28);
@@ -770,7 +824,7 @@ namespace ExamManager
             this.lbl_json.AutoSize = true;
             this.lbl_json.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lbl_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_json.Location = new System.Drawing.Point(189, 6);
+            this.lbl_json.Location = new System.Drawing.Point(189, 8);
             this.lbl_json.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_json.Name = "lbl_json";
             this.lbl_json.Size = new System.Drawing.Size(178, 20);
@@ -782,7 +836,7 @@ namespace ExamManager
             this.lbl_csv.AutoSize = true;
             this.lbl_csv.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lbl_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_csv.Location = new System.Drawing.Point(374, 6);
+            this.lbl_csv.Location = new System.Drawing.Point(374, 8);
             this.lbl_csv.Margin = new System.Windows.Forms.Padding(3);
             this.lbl_csv.Name = "lbl_csv";
             this.lbl_csv.Size = new System.Drawing.Size(178, 20);
@@ -794,7 +848,7 @@ namespace ExamManager
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(4, 64);
+            this.label3.Location = new System.Drawing.Point(4, 70);
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(178, 20);
@@ -804,10 +858,10 @@ namespace ExamManager
             // btn_import_exam_json
             // 
             this.btn_import_exam_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_import_exam_json.Location = new System.Drawing.Point(187, 31);
+            this.btn_import_exam_json.Location = new System.Drawing.Point(187, 33);
             this.btn_import_exam_json.Margin = new System.Windows.Forms.Padding(1);
             this.btn_import_exam_json.Name = "btn_import_exam_json";
-            this.btn_import_exam_json.Size = new System.Drawing.Size(100, 26);
+            this.btn_import_exam_json.Size = new System.Drawing.Size(100, 28);
             this.btn_import_exam_json.TabIndex = 7;
             this.btn_import_exam_json.Text = "import";
             this.btn_import_exam_json.UseVisualStyleBackColor = true;
@@ -818,7 +872,7 @@ namespace ExamManager
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 96);
+            this.label5.Location = new System.Drawing.Point(4, 101);
             this.label5.Margin = new System.Windows.Forms.Padding(3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(178, 20);
@@ -830,12 +884,46 @@ namespace ExamManager
             this.label9.AutoSize = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(559, 6);
+            this.label9.Location = new System.Drawing.Point(559, 8);
             this.label9.Margin = new System.Windows.Forms.Padding(3);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(181, 20);
             this.label9.TabIndex = 13;
             this.label9.Text = "TXT:";
+            // 
+            // btn_import_room_txt
+            // 
+            this.btn_import_room_txt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_import_room_txt.Location = new System.Drawing.Point(557, 126);
+            this.btn_import_room_txt.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_import_room_txt.Name = "btn_import_room_txt";
+            this.btn_import_room_txt.Size = new System.Drawing.Size(100, 28);
+            this.btn_import_room_txt.TabIndex = 15;
+            this.btn_import_room_txt.Text = "import";
+            this.btn_import_room_txt.UseVisualStyleBackColor = true;
+            this.btn_import_room_txt.Click += new System.EventHandler(this.btn_import_room_txt_Click);
+            // 
+            // btn_import_room_json
+            // 
+            this.btn_import_room_json.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_import_room_json.Location = new System.Drawing.Point(187, 126);
+            this.btn_import_room_json.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_import_room_json.Name = "btn_import_room_json";
+            this.btn_import_room_json.Size = new System.Drawing.Size(100, 28);
+            this.btn_import_room_json.TabIndex = 16;
+            this.btn_import_room_json.Text = "import";
+            this.btn_import_room_json.UseVisualStyleBackColor = true;
+            // 
+            // btn_import_room_csv
+            // 
+            this.btn_import_room_csv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_import_room_csv.Location = new System.Drawing.Point(372, 126);
+            this.btn_import_room_csv.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_import_room_csv.Name = "btn_import_room_csv";
+            this.btn_import_room_csv.Size = new System.Drawing.Size(100, 28);
+            this.btn_import_room_csv.TabIndex = 17;
+            this.btn_import_room_csv.Text = "import";
+            this.btn_import_room_csv.UseVisualStyleBackColor = true;
             // 
             // flp_import_options
             // 
@@ -845,9 +933,9 @@ namespace ExamManager
             this.flp_import_options.Controls.Add(this.flp_import_email);
             this.flp_import_options.Controls.Add(this.flp_import_nameorder);
             this.flp_import_options.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flp_import_options.Location = new System.Drawing.Point(3, 129);
+            this.flp_import_options.Location = new System.Drawing.Point(3, 165);
             this.flp_import_options.Name = "flp_import_options";
-            this.flp_import_options.Size = new System.Drawing.Size(744, 184);
+            this.flp_import_options.Size = new System.Drawing.Size(744, 148);
             this.flp_import_options.TabIndex = 2;
             // 
             // flp_import_file
@@ -989,38 +1077,17 @@ namespace ExamManager
             this.tabControl.Size = new System.Drawing.Size(764, 391);
             this.tabControl.TabIndex = 3;
             // 
-            // flp_export_grade
+            // lbl_table_filename
             // 
-            this.flp_export_grade.Controls.Add(this.cb_export_singlegrade);
-            this.flp_export_grade.Controls.Add(this.cb_export_grade);
-            this.flp_export_grade.Location = new System.Drawing.Point(2, 38);
-            this.flp_export_grade.Margin = new System.Windows.Forms.Padding(2);
-            this.flp_export_grade.Name = "flp_export_grade";
-            this.flp_export_grade.Size = new System.Drawing.Size(736, 30);
-            this.flp_export_grade.TabIndex = 5;
-            // 
-            // cb_export_grade
-            // 
-            this.cb_export_grade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_export_grade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.cb_export_grade.FormattingEnabled = true;
-            this.cb_export_grade.Location = new System.Drawing.Point(228, 1);
-            this.cb_export_grade.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
-            this.cb_export_grade.Name = "cb_export_grade";
-            this.cb_export_grade.Size = new System.Drawing.Size(120, 28);
-            this.cb_export_grade.TabIndex = 11;
-            // 
-            // cb_export_singlegrade
-            // 
-            this.cb_export_singlegrade.AutoSize = true;
-            this.cb_export_singlegrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_export_singlegrade.Location = new System.Drawing.Point(3, 3);
-            this.cb_export_singlegrade.Name = "cb_export_singlegrade";
-            this.cb_export_singlegrade.Size = new System.Drawing.Size(219, 24);
-            this.cb_export_singlegrade.TabIndex = 14;
-            this.cb_export_singlegrade.Text = "Einzelne Stufe exportieren:";
-            this.cb_export_singlegrade.UseVisualStyleBackColor = true;
-            this.cb_export_singlegrade.CheckedChanged += new System.EventHandler(this.cb_export_singlegrade_CheckedChanged);
+            this.lbl_table_filename.AutoSize = true;
+            this.lbl_table_filename.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_table_filename.Location = new System.Drawing.Point(309, 5);
+            this.lbl_table_filename.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.lbl_table_filename.Name = "lbl_table_filename";
+            this.lbl_table_filename.Size = new System.Drawing.Size(14, 20);
+            this.lbl_table_filename.TabIndex = 2;
+            this.lbl_table_filename.Text = "-";
+            this.lbl_table_filename.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormImportExport
             // 
@@ -1049,6 +1116,8 @@ namespace ExamManager
             this.flp_export_options.ResumeLayout(false);
             this.flp_export_date.ResumeLayout(false);
             this.flp_export_date.PerformLayout();
+            this.flp_export_grade.ResumeLayout(false);
+            this.flp_export_grade.PerformLayout();
             this.tlp_grid_export.ResumeLayout(false);
             this.tlp_grid_export.PerformLayout();
             this.page_import.ResumeLayout(false);
@@ -1065,8 +1134,6 @@ namespace ExamManager
             this.flp_import_nameorder.ResumeLayout(false);
             this.flp_import_nameorder.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            this.flp_export_grade.ResumeLayout(false);
-            this.flp_export_grade.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1145,5 +1212,10 @@ namespace ExamManager
         private System.Windows.Forms.FlowLayoutPanel flp_export_grade;
         private System.Windows.Forms.ComboBox cb_export_grade;
         private System.Windows.Forms.CheckBox cb_export_singlegrade;
+        private System.Windows.Forms.Label lbl_import_room;
+        private System.Windows.Forms.Button btn_import_room_txt;
+        private System.Windows.Forms.Button btn_import_room_json;
+        private System.Windows.Forms.Button btn_import_room_csv;
+        private System.Windows.Forms.Label lbl_table_filename;
     }
 }
