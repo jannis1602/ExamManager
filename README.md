@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/jannis1602/exammanager">
-    <img src="images/exam.png" alt="Logo" width="80" height="80">
+    <img src="images/exam.png" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">Exam Manager</h3>
@@ -41,9 +41,27 @@ Add teachers, students, rooms and subjects to start planning exams.
 
 manage exams
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+### __________________________________________________________________________
 
-# ____________________________________________________
+## Anleitung
+    📄 Textformat: [ein Eintrag pro Zeile]
+
+    **Schüler**: Vorname Nachname (Doppelnamen mit _ verbinden)
+
+    **Lehrer**: [Herr/Frau/Dr.] Vorname Nachname Kürzel Fach1, Fach2, Fach3
+
+    **Räume**: Raumname
+
+1. Tools → import/export 
+2. Lehrer: hinzufügen
+3. Schüler: hinzufügen
+4. Räume hinzufügen
+5. Prüfung hinzüfügen
+6. Tools → Zeitachse exportieren (png)
+7. Zeitachse schwarz/weiß: ja
+8. Zeitachse teilen: ja
+
+### __________________________________________________________________________
 
 
 ### Images from v1.0
