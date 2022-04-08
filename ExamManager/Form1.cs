@@ -165,20 +165,30 @@ namespace ExamManager
                 BackColor = Colors.TL_TimeLineBg,
                 // Dock = DockStyle.Top,  // TODO: TL Dock top ----------------------------------------------
             };
-            panel_tl.Width = PixelPerHour * LengthTL; // TEST
-            // panel_tl.Width = panel_top_time.Width;
+            panel_tl.Width = PixelPerHour * LengthTL;
+            panel_tl.MouseMove += panel_time_line_MouseMove; // TODO: TEST MOUSEMOVE
             panel_tl.Paint += panel_time_line_Paint;
             panel_tl.MouseDown += panel_time_line_MouseDown;
             void panel_time_line_MouseDown(object sender, MouseEventArgs e)
             {
                 if (e.Button == MouseButtons.Left && editPanel != null)
                 {
+                    float editTimePos = (float)e.X / (float)PixelPerHour;
+                    Console.WriteLine(editTimePos);
+                    dtp_time.Value = DateTime.ParseExact("00:00", "HH:mm", null, System.Globalization.DateTimeStyles.None).AddHours(StartTimeTL);
+
+                    this.dtp_time.Value = this.dtp_time.Value.AddMinutes(editTimePos * 60);
+                    // string time = dtp_time.Value.Hour + ":" + dtp_time.Value.Minute / 10 * 10;
+                    this.dtp_time.Value = RoundUp(dtp_time.Value.AddMinutes(-15), TimeSpan.FromMinutes(15));
                     Panel p = sender as Panel;
                     if (EditExamOldTL == p) return;
                     EditExamOldTL = p;
                     cb_exam_room.SelectedItem = p.Name;
                     UpdatePreviewPanel();
+                    AddExam();
                 }
+                DateTime RoundUp(DateTime dt, TimeSpan d)
+                { return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind); }
             }
             this.panel_time_line.Controls.Add(panel_tl);
             time_line_list.AddLast(panel_tl);
@@ -533,7 +543,12 @@ namespace ExamManager
                     foreach (Panel p in time_line_list)
                     {
                         if (p.Name.Equals(exam.Examroom))
-                        { p.Controls.Add(exam.GetTimelineEntity()); break; }
+                        {
+                            Panel examP = exam.GetTimelineEntity();
+                            examP.MouseMove += panel_time_line_MouseMove;
+                            p.Controls.Add(examP);
+                            break;
+                        }
                     }
             }
         }
@@ -609,8 +624,8 @@ namespace ExamManager
                     break;
                 }
             }
-            editPanel.MouseMove += editPanel_MouseMove;
             editPanel.MouseDown += editPanel_MouseDown;
+            editPanel.MouseMove += editPanel_MouseMove;
             void editPanel_MouseDown(object sender, MouseEventArgs e)
             { EditExamMovePanelOldPos = new Point(e.X, e.Y); }
             void editPanel_MouseMove(object sender, MouseEventArgs e)
@@ -1927,7 +1942,7 @@ namespace ExamManager
             Console.WriteLine("lbl_mode: ");
             if (e.KeyData == Keys.Enter)
             { if (tl_entity_multiselect_list.Count >= 1) AddMultieditExam(); else AddExam(); }
-            else if (e.KeyData == Keys.Left) dtp_time.Value = dtp_time.Value.AddMinutes(-15); 
+            else if (e.KeyData == Keys.Left) dtp_time.Value = dtp_time.Value.AddMinutes(-15);
             else if (e.KeyData == Keys.Right) dtp_time.Value = dtp_time.Value.AddMinutes(15);
             UpdatePreviewPanel();
             // -- default focused panel --
@@ -1964,6 +1979,16 @@ namespace ExamManager
             Properties.Settings.Default.AddOptionStudentOnetime = cb_student_onetime.Checked;
             Properties.Settings.Default.Save();
         }
-
+        private void panel_time_line_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (editPanel != null)
+            {
+                panel_time_line.Controls.Add(editPanel);
+                panel_time_line.Controls.SetChildIndex(editPanel, 0);
+                editPanel.Location = PointToClient(new Point(Cursor.Position.X - panel_time_line.Location.X, Cursor.Position.Y - panel_time_line.Location.Y - 25));
+                //floatingPanel.Size = new Size(100, 100);
+                //floatingPanel.BackColor = Color.Red;
+            }
+        }
     }
 }

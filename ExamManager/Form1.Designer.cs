@@ -936,6 +936,7 @@ namespace ExamManager
             this.panel_time_line.Controls.Add(this.panel_top_time);
             this.panel_time_line.Name = "panel_time_line";
             this.panel_time_line.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_time_line_master_Paint);
+            this.panel_time_line.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_time_line_MouseMove);
             this.panel_time_line.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.panel_time_line_PreviewKeyDown);
             // 
             // panel_top_time
